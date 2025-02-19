@@ -1,0 +1,54 @@
+[gd_scene load_steps=8 format=3 uid="uid://cxebh7brfntkv"]
+
+[ext_resource type="Texture2D" uid="uid://bbubwm0w5w3am" path="res://assets/sprites/placeholders.png" id="1_0ll0s"]
+[ext_resource type="Script" path="res://testing/SimpleCharacter.cs" id="1_w5kkd"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8wlh6"]
+atlas = ExtResource("1_0ll0s")
+region = Rect2(32, 96, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_33xqu"]
+atlas = ExtResource("1_0ll0s")
+region = Rect2(96, 96, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_l20wg"]
+atlas = ExtResource("1_0ll0s")
+region = Rect2(64, 96, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_u1wwe"]
+atlas = ExtResource("1_0ll0s")
+region = Rect2(0, 96, 32, 32)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_b55qg"]
+radius = 12.0
+
+[node name="SimpleCharacter" type="Node2D" node_paths=PackedStringArray("Body")]
+script = ExtResource("1_w5kkd")
+Body = NodePath("CharacterBody2D")
+
+[node name="CharacterBody2D" type="CharacterBody2D" parent="."]
+motion_mode = 1
+platform_floor_layers = 4294967294
+platform_wall_layers = 1
+
+[node name="Left" type="Sprite2D" parent="CharacterBody2D"]
+texture = SubResource("AtlasTexture_8wlh6")
+
+[node name="Right" type="Sprite2D" parent="CharacterBody2D"]
+texture = SubResource("AtlasTexture_33xqu")
+
+[node name="Backward" type="Sprite2D" parent="CharacterBody2D"]
+texture = SubResource("AtlasTexture_l20wg")
+
+[node name="Forward" type="Sprite2D" parent="CharacterBody2D"]
+texture = SubResource("AtlasTexture_u1wwe")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CharacterBody2D"]
+shape = SubResource("CircleShape2D_b55qg")
+
+[node name="Camera2D" type="Camera2D" parent="CharacterBody2D"]
+zoom = Vector2(3, 3)
+limit_left = 0
+limit_top = 0
+limit_right = 480
+limit_bottom = 256
