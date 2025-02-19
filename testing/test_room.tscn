@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=4 uid="uid://254wm8i5pdt4"]
 
-[ext_resource type="Texture2D" uid="uid://bbubwm0w5w3am" path="res://assets/sprites/placeholders.png" id="1_d4fuj"]
+[ext_resource type="Texture2D" uid="uid://dteuo3synsbla" path="res://assets/sprites/placeholders.png" id="1_d4fuj"]
 [ext_resource type="PackedScene" uid="uid://cxebh7brfntkv" path="res://testing/simple_character.tscn" id="2_t38vf"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_3ch7c"]
@@ -10,10 +10,11 @@ texture_region_size = Vector2i(32, 32)
 0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-16, -16, 16, -16, 16, 16, -16, 16)
 1:0/0 = 0
 2:0/0 = 0
+2:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-10, -10, 10, -10, 10, 10, -10, 10)
 
 [sub_resource type="TileSet" id="TileSet_7mgmh"]
 tile_size = Vector2i(32, 32)
-physics_layer_0/collision_layer = 1
+physics_layer_0/collision_layer = 3
 sources/0 = SubResource("TileSetAtlasSource_3ch7c")
 
 [node name="TestRoom" type="Node2D"]

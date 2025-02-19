@@ -1,15 +1,34 @@
 using Godot;
 using System;
+using System.Collections.Generic;
 
 public static class Const
 {
   public static class InputMap
   {
-    public const string MoveUp = "move_up";
-    public const string MoveDown = "move_down";
-    public const string MoveLeft = "move_left";
-    public const string MoveRight = "move_right";
+    public enum Action
+    {
+      None,
+      MoveUp,
+      MoveDown,
+      MoveLeft,
+      MoveRight,
+      ShootUp,
+      ShootDown,
+      ShootRight,
+      ShootLeft
+    }
 
-    public static readonly string[] Move = new[] { MoveUp, MoveDown, MoveLeft, MoveRight };
+    public static readonly Godot.Collections.Dictionary<Action, string> ActionInputDict = new Godot.Collections.Dictionary<Action, string>()
+    {
+      { Action.MoveUp, "move_up" },
+      { Action.MoveDown, "move_down" },
+      { Action.MoveLeft, "move_left" },
+      { Action.MoveRight, "move_right" },
+      { Action.ShootUp, "shoot_up" },
+      { Action.ShootDown, "shoot_down" },
+      { Action.ShootRight, "shoot_right" },
+      { Action.ShootLeft, "shoot_left" }
+    };
   }
 }

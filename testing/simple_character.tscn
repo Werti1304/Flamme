@@ -1,47 +1,76 @@
-[gd_scene load_steps=8 format=3 uid="uid://cxebh7brfntkv"]
+[gd_scene load_steps=12 format=3 uid="uid://cxebh7brfntkv"]
 
-[ext_resource type="Texture2D" uid="uid://bbubwm0w5w3am" path="res://assets/sprites/placeholders.png" id="1_0ll0s"]
+[ext_resource type="Texture2D" uid="uid://dteuo3synsbla" path="res://assets/sprites/placeholders.png" id="1_0ll0s"]
 [ext_resource type="Script" path="res://testing/SimpleCharacter.cs" id="1_w5kkd"]
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_8wlh6"]
-atlas = ExtResource("1_0ll0s")
-region = Rect2(32, 96, 32, 32)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_33xqu"]
-atlas = ExtResource("1_0ll0s")
-region = Rect2(96, 96, 32, 32)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_l20wg"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_83a6q"]
 atlas = ExtResource("1_0ll0s")
 region = Rect2(64, 96, 32, 32)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_u1wwe"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_tc8yd"]
+atlas = ExtResource("1_0ll0s")
+region = Rect2(0, 96, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_q53d8"]
+atlas = ExtResource("1_0ll0s")
+region = Rect2(32, 96, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hdt4n"]
+atlas = ExtResource("1_0ll0s")
+region = Rect2(96, 96, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wnwx3"]
+atlas = ExtResource("1_0ll0s")
+region = Rect2(0, 64, 32, 32)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_i066a"]
+radius = 5.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_ul25x"]
+radius = 8.0
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8wlh6"]
 atlas = ExtResource("1_0ll0s")
 region = Rect2(0, 96, 32, 32)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_b55qg"]
 radius = 12.0
 
-[node name="SimpleCharacter" type="Node2D" node_paths=PackedStringArray("Body")]
+[node name="SimpleCharacter" type="Node2D" node_paths=PackedStringArray("Body", "Staff", "StaffArea", "CharSprite")]
 script = ExtResource("1_w5kkd")
 Body = NodePath("CharacterBody2D")
+Staff = NodePath("Staff")
+StaffArea = NodePath("Staff/StaffArea")
+CharSprite = NodePath("CharacterBody2D/CharSprite")
+TextureCharUp = SubResource("AtlasTexture_83a6q")
+TextureCharDown = SubResource("AtlasTexture_tc8yd")
+TextureCharLeft = SubResource("AtlasTexture_q53d8")
+TextureCharRight = SubResource("AtlasTexture_hdt4n")
+
+[node name="Staff" type="RigidBody2D" parent="."]
+position = Vector2(0, 20)
+collision_layer = 0
+collision_mask = 2
+angular_damp = 5.0
+
+[node name="Sprite2D" type="Sprite2D" parent="Staff"]
+texture = SubResource("AtlasTexture_wnwx3")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Staff"]
+shape = SubResource("CircleShape2D_i066a")
+
+[node name="StaffArea" type="Area2D" parent="Staff"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Staff/StaffArea"]
+shape = SubResource("CircleShape2D_ul25x")
 
 [node name="CharacterBody2D" type="CharacterBody2D" parent="."]
 motion_mode = 1
-platform_floor_layers = 4294967294
+platform_floor_layers = 4294967292
 platform_wall_layers = 1
 
-[node name="Left" type="Sprite2D" parent="CharacterBody2D"]
+[node name="CharSprite" type="Sprite2D" parent="CharacterBody2D"]
 texture = SubResource("AtlasTexture_8wlh6")
-
-[node name="Right" type="Sprite2D" parent="CharacterBody2D"]
-texture = SubResource("AtlasTexture_33xqu")
-
-[node name="Backward" type="Sprite2D" parent="CharacterBody2D"]
-texture = SubResource("AtlasTexture_l20wg")
-
-[node name="Forward" type="Sprite2D" parent="CharacterBody2D"]
-texture = SubResource("AtlasTexture_u1wwe")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="CharacterBody2D"]
 shape = SubResource("CircleShape2D_b55qg")
