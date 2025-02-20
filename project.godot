@@ -15,6 +15,13 @@ run/main_scene="res://testing/test_room.tscn"
 config/features=PackedStringArray("4.3", "C#", "GL Compatibility")
 config/icon="res://icon.svg"
 
+[display]
+
+window/size/viewport_width=640
+window/size/viewport_height=360
+window/size/window_width_override=1920
+window/size/window_height_override=1080
+
 [dotnet]
 
 project/assembly_name="Flamme"

@@ -1,7 +1,8 @@
-[gd_scene load_steps=12 format=3 uid="uid://cxebh7brfntkv"]
+[gd_scene load_steps=16 format=3 uid="uid://cxebh7brfntkv"]
 
 [ext_resource type="Texture2D" uid="uid://dteuo3synsbla" path="res://assets/sprites/placeholders.png" id="1_0ll0s"]
 [ext_resource type="Script" path="res://testing/SimpleCharacter.cs" id="1_w5kkd"]
+[ext_resource type="PackedScene" uid="uid://by7dwhb651c2j" path="res://testing/bullet.tscn" id="2_n84tm"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_83a6q"]
 atlas = ExtResource("1_0ll0s")
@@ -29,6 +30,45 @@ radius = 5.0
 [sub_resource type="CircleShape2D" id="CircleShape2D_ul25x"]
 radius = 8.0
 
+[sub_resource type="Animation" id="Animation_hvmog"]
+resource_name = "Staff Idle"
+length = 4.0
+loop_mode = 1
+step = 0.333
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:position")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(1, 3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(0, -5), Vector2(0, 5)]
+}
+
+[sub_resource type="Animation" id="Animation_hm8rc"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_wf5nv"]
+_data = {
+"RESET": SubResource("Animation_hm8rc"),
+"Staff Idle": SubResource("Animation_hvmog")
+}
+
 [sub_resource type="AtlasTexture" id="AtlasTexture_8wlh6"]
 atlas = ExtResource("1_0ll0s")
 region = Rect2(0, 96, 32, 32)
@@ -36,18 +76,21 @@ region = Rect2(0, 96, 32, 32)
 [sub_resource type="CircleShape2D" id="CircleShape2D_b55qg"]
 radius = 12.0
 
-[node name="SimpleCharacter" type="Node2D" node_paths=PackedStringArray("Body", "Staff", "StaffArea", "CharSprite")]
+[node name="SimpleCharacter" type="Node2D" node_paths=PackedStringArray("Body", "Staff", "StaffArea", "CharSprite", "StaffIdleAnimationPlayer")]
 script = ExtResource("1_w5kkd")
 Body = NodePath("CharacterBody2D")
 Staff = NodePath("Staff")
 StaffArea = NodePath("Staff/StaffArea")
 CharSprite = NodePath("CharacterBody2D/CharSprite")
+StaffIdleAnimationPlayer = NodePath("Staff/StaffIdleAnimationPlayer")
+Bullet = ExtResource("2_n84tm")
 TextureCharUp = SubResource("AtlasTexture_83a6q")
 TextureCharDown = SubResource("AtlasTexture_tc8yd")
 TextureCharLeft = SubResource("AtlasTexture_q53d8")
 TextureCharRight = SubResource("AtlasTexture_hdt4n")
 
 [node name="Staff" type="RigidBody2D" parent="."]
+z_index = 1
 position = Vector2(0, 20)
 collision_layer = 0
 collision_mask = 2
@@ -64,6 +107,11 @@ shape = SubResource("CircleShape2D_i066a")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Staff/StaffArea"]
 shape = SubResource("CircleShape2D_ul25x")
 
+[node name="StaffIdleAnimationPlayer" type="AnimationPlayer" parent="Staff"]
+libraries = {
+"": SubResource("AnimationLibrary_wf5nv")
+}
+
 [node name="CharacterBody2D" type="CharacterBody2D" parent="."]
 motion_mode = 1
 platform_floor_layers = 4294967292
@@ -76,7 +124,7 @@ texture = SubResource("AtlasTexture_8wlh6")
 shape = SubResource("CircleShape2D_b55qg")
 
 [node name="Camera2D" type="Camera2D" parent="CharacterBody2D"]
-zoom = Vector2(3, 3)
+zoom = Vector2(4.5, 4.5)
 limit_left = 0
 limit_top = 0
 limit_right = 480

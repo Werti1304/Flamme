@@ -1,70 +1,88 @@
 using System;
 using System.Collections.Generic;
 using Godot;
+using System.Linq;
+
 // ReSharper disable InvertIf
 
 namespace Flamme.testing;
 
 public partial class SimpleCharacter : Node2D
 {
+  [ExportGroup("Character")]
 	[Export] public float SpeedMultiplier = 25.0f;
 	[Export] public float FrictionMultiplier = .1f;
   [Export] public float MaxSpeed = 150.0f;
-  [Export] public float MaxSpeedStaff = 300.0f;
+  [Export] public float ProjectileSpawnFromPlayer = 30.0f; 
+  
+  [ExportGroup("Staff")]
   [Export] public float StaffDistanceFromPlayer = 20.0f;
-	
-	[ExportCategory("Meta")] 
+  [Export] public float MaxSpeedStaff = 500.0f;
+  [Export] public float StaffFrictionMultiplier = .1f;
+  [ExportSubgroup("Snapping")]
+  [Export] public float SnapForceStaff = 100.0f;
+  [Export] public float StaffSnapFrictionMultiplier = .3f;
+  [Export] public float AngularFrictionMultiplierStaff = .1f;
+  [ExportSubgroup("Trailing")]
+  [Export] public float StaffCharDistStartTrail = 150.0f;
+  [Export] public float StaffCharDistStopTrail = 50.0f;
+  [Export] public float TrailForceStaff = 40.0f;
+  [Export] public float StaffTrailFrictionMultiplier = .04f;
+
+
+  [ExportGroup("Meta")] 
   [Export] public CharacterBody2D Body;
   [Export] public RigidBody2D Staff;
   [Export] public Area2D StaffArea;
   [Export] public Sprite2D CharSprite;
+  [Export] public AnimationPlayer StaffIdleAnimationPlayer;
+  [Export] public PackedScene Bullet;
   [Export] public AtlasTexture TextureCharUp;
   [Export] public AtlasTexture TextureCharDown;
   [Export] public AtlasTexture TextureCharLeft;
   [Export] public AtlasTexture TextureCharRight;
-
-  private enum Facing
-  {
-    Up,
-    Down,
-    Left,
-    Right
-  }
-
-  private readonly Dictionary<Facing, Const.InputMap.Action> _facingActionDict = new Dictionary<Facing, Const.InputMap.Action>()
-  {
-    { Facing.Up, Const.InputMap.Action.MoveUp },
-    { Facing.Down, Const.InputMap.Action.MoveDown },
-    { Facing.Left, Const.InputMap.Action.MoveLeft },
-    { Facing.Right, Const.InputMap.Action.MoveRight },
-  };
   
-  private readonly Dictionary<Facing, Vector2> _facingNormVecDict = new Dictionary<Facing, Vector2>()
+  private readonly Dictionary<Const.Facing, float> _facingStaffRotationDict = new Dictionary<Const.Facing, float>()
   {
-    { Facing.Up, Vector2.Up },
-    { Facing.Down, Vector2.Down },
-    { Facing.Left, Vector2.Left },
-    { Facing.Right, Vector2.Right },
+    { Const.Facing.Up, Mathf.DegToRad(270) },
+    { Const.Facing.Down, Mathf.DegToRad(0) },
+    { Const.Facing.Left, Mathf.DegToRad(-45 + 5) },
+    { Const.Facing.Right, Mathf.DegToRad(-45 - 5) },
   };
 
-  private Dictionary<Facing, AtlasTexture> _facingCharTextureDict;
-  
-	public readonly List<Const.InputMap.Action> CurrentActions = new List<Const.InputMap.Action>();
+  private Dictionary<Const.Facing, AtlasTexture> _facingCharTextureDict;
 
-  private Facing _currentFacing = Facing.Down;
+  private Const.InputMap.Action _currentActionsBmap = Const.InputMap.Action.None;
+
+  private Dictionary<Const.InputMap.Action, Action> _actionInputActionDict;
+
+  private Const.Facing _currentFacing = Const.Facing.Down;
+
+  private bool _isTrailing = false;
 
   // Called when the node enters the scene tree for the first time.
 	public override void _Ready()
   {
-    _facingCharTextureDict = new Dictionary<Facing, AtlasTexture>()
+    // Needs to be here
+    _facingCharTextureDict = new Dictionary<Const.Facing, AtlasTexture>()
     {
-      { Facing.Up, TextureCharUp },
-      { Facing.Down, TextureCharDown },
-      { Facing.Left, TextureCharLeft },
-      { Facing.Right, TextureCharRight }
+      { Const.Facing.Up, TextureCharUp },
+      { Const.Facing.Down, TextureCharDown },
+      { Const.Facing.Left, TextureCharLeft },
+      { Const.Facing.Right, TextureCharRight }
     };
-      
+    
+    _actionInputActionDict = new Dictionary<Const.InputMap.Action, Action>
+    {
+      { Const.InputMap.Action.MoveUp, () => Body.Velocity += Vector2.Up * SpeedMultiplier },
+      { Const.InputMap.Action.MoveDown, () => Body.Velocity += Vector2.Down * SpeedMultiplier },
+      { Const.InputMap.Action.MoveLeft, () => Body.Velocity += Vector2.Left * SpeedMultiplier },
+      { Const.InputMap.Action.MoveRight,  () => Body.Velocity += Vector2.Right * SpeedMultiplier },
+    };
+    
 		ExportMetaNonNull.Check(this);
+    
+    StaffIdleAnimationPlayer.Play("Staff Idle");
 	}
 
   public override void _UnhandledKeyInput(InputEvent @event)
@@ -74,36 +92,52 @@ public partial class SimpleCharacter : Node2D
     {
       if (@event.IsActionPressed(pair.Value))
       {
-        CurrentActions.Add(pair.Key);
+        _currentActionsBmap |= pair.Key;
         GetViewport().SetInputAsHandled();
         break;
       }
 
       if (@event.IsActionReleased(pair.Value))
       {
-        CurrentActions.Remove(pair.Key);
+        _currentActionsBmap &= ~pair.Key;
         GetViewport().SetInputAsHandled();
         break;
       }
     }
-
+    
     // Efficiency increase possible here
     var newFacing = _currentFacing;
-    if (CurrentActions.Contains(_facingActionDict[Facing.Down]))
+    if ((_currentActionsBmap & Const.InputMap.Action.ShootDown) > 0)
     {
-      newFacing = Facing.Down;
+      newFacing = Const.Facing.Down;
     }
-    else if (CurrentActions.Contains(_facingActionDict[Facing.Up]))
+    else if ((_currentActionsBmap & Const.InputMap.Action.ShootUp) > 0)
     {
-      newFacing = Facing.Up;
+      newFacing = Const.Facing.Up;
     }
-    else if (CurrentActions.Contains(_facingActionDict[Facing.Left]))
+    else if ((_currentActionsBmap & Const.InputMap.Action.ShootLeft) > 0)
     {
-      newFacing = Facing.Left;
+      newFacing = Const.Facing.Left;
     }
-    else if (CurrentActions.Contains(_facingActionDict[Facing.Right]))
+    else if ((_currentActionsBmap & Const.InputMap.Action.ShootRight) > 0)
     {
-      newFacing = Facing.Right;
+      newFacing = Const.Facing.Right;
+    }
+    else if ((_currentActionsBmap & Const.InputMap.Action.MoveDown) > 0)
+    {
+      newFacing = Const.Facing.Down;
+    }
+    else if ((_currentActionsBmap & Const.InputMap.Action.MoveUp) > 0)
+    {
+      newFacing = Const.Facing.Up;
+    }
+    else if ((_currentActionsBmap & Const.InputMap.Action.MoveLeft) > 0)
+    {
+      newFacing = Const.Facing.Left;
+    }
+    else if ((_currentActionsBmap & Const.InputMap.Action.MoveRight) > 0)
+    {
+      newFacing = Const.Facing.Right;
     }
 
     if (newFacing != _currentFacing)
@@ -115,36 +149,93 @@ public partial class SimpleCharacter : Node2D
 
   public override void _PhysicsProcess(double delta)
   {
-    foreach (var action in CurrentActions)
+    // Get all actions for every active flag
+    var actions = _actionInputActionDict.Where(kv => _currentActionsBmap.HasFlag(kv.Key)).Select(kv => kv.Value);
+
+    // Run every action from the bitmap
+    foreach (var action in actions)
     {
-      Body.Velocity += action switch
-      {
-        Const.InputMap.Action.MoveUp => Vector2.Up * SpeedMultiplier,
-        Const.InputMap.Action.MoveDown => Vector2.Down * SpeedMultiplier,
-        Const.InputMap.Action.MoveLeft => Vector2.Left * SpeedMultiplier,
-        Const.InputMap.Action.MoveRight => Vector2.Right * SpeedMultiplier,
-        Const.InputMap.Action.ShootUp => throw new ArgumentOutOfRangeException(),
-        Const.InputMap.Action.ShootDown => throw new ArgumentOutOfRangeException(),
-        Const.InputMap.Action.ShootRight => throw new ArgumentOutOfRangeException(),
-        Const.InputMap.Action.ShootLeft => throw new ArgumentOutOfRangeException(),
-        Const.InputMap.Action.None => throw new ArgumentOutOfRangeException(),
-        _ => throw new ArgumentOutOfRangeException()
-      };
+      action();
     }
+    
     Body.Velocity = Body.Velocity.LimitLength(MaxSpeed);
     Body.Velocity = Body.Velocity.Lerp(Vector2.Zero, FrictionMultiplier);
     Body.MoveAndSlide();
     
-    var targetVec = Body.GlobalPosition + (_facingNormVecDict[_currentFacing] * StaffDistanceFromPlayer) - Staff.GlobalTransform.Origin;
-    var direction = targetVec.Normalized();
-    var distance = targetVec.Length();
-    Staff.ApplyCentralForce(direction * Mathf.Clamp(distance, 0, 10) * 300);
-    Staff.LinearVelocity = Staff.LinearVelocity.LimitLength(MaxSpeedStaff);
-    Staff.LinearVelocity = Staff.LinearVelocity.Lerp(Vector2.Zero, FrictionMultiplier);
-
-    if (StaffArea.GetOverlappingBodies().Count == 0)
+    // If actively shooting, the staff should snap to the right direction
+    var isShooting = (_currentActionsBmap & (Const.InputMap.Action.ShootDown 
+                                            | Const.InputMap.Action.ShootUp 
+                                            | Const.InputMap.Action.ShootLeft 
+                                            | Const.InputMap.Action.ShootRight)) > 0;
+    
+    // If too far from character, staff should trail behind, can't snap and trail at the same time though
+    if (!_isTrailing && !isShooting && Body.GlobalPosition.DistanceTo(Staff.GlobalPosition) > StaffCharDistStartTrail)
     {
-      Staff.AngularVelocity = Mathf.LerpAngle(Staff.GlobalRotation, 0, 2);
+      _isTrailing = true;
     }
+    else if(_isTrailing && Body.GlobalPosition.DistanceTo(Staff.GlobalPosition) < StaffCharDistStopTrail)
+    {
+      _isTrailing = false;
+    }
+    
+    // Projectile stuff stuff
+    if (isShooting)
+    {
+      var bullet = Bullet.Instantiate<Bullet>();
+      AddChild(bullet);
+      bullet.Owner = GetTree().Root;
+      bullet.Position = Body.Position + (Const.FacingNormVecDict[_currentFacing] * ProjectileSpawnFromPlayer);
+      bullet.SetDirection(_currentFacing);
+    }
+      
+      // Staff and snapping stuff
+    if (isShooting)
+    {
+      var targetVec = Body.GlobalPosition + (Const.FacingNormVecDict[_currentFacing] * StaffDistanceFromPlayer) - Staff.GlobalTransform.Origin;
+      var direction = targetVec.Normalized();
+      var distance = targetVec.Length();
+      Staff.ApplyCentralForce(direction * Mathf.Clamp(distance, 0, 200) * SnapForceStaff);
+      Staff.LinearVelocity = Staff.LinearVelocity.Lerp(Vector2.Zero, StaffSnapFrictionMultiplier); // Friction
+    }
+    else if(_isTrailing)
+    {
+      // Otherwise, just trail behind the player if they're too far away
+      var targetVec = Body.GlobalPosition - Staff.GlobalTransform.Origin;
+      var direction = targetVec.Normalized();
+      var distance = targetVec.Length();
+      Staff.ApplyCentralForce(direction * Mathf.Clamp(distance, 0, 10) * TrailForceStaff);
+      Staff.LinearVelocity = Staff.LinearVelocity.Lerp(Vector2.Zero, StaffTrailFrictionMultiplier); // Friction
+    }
+    else
+    {
+      Staff.LinearVelocity = Staff.LinearVelocity.Lerp(Vector2.Zero, StaffFrictionMultiplier);
+    }
+    
+    // Max speed
+    Staff.LinearVelocity = Staff.LinearVelocity.LimitLength(MaxSpeedStaff * 10);
+    
+    var overlapsPlayer = StaffArea.GetOverlappingBodies().Contains(Body);
+    var overlapMinusPlayer = StaffArea.GetOverlappingBodies().Count - (overlapsPlayer ? 1 : 0);
+    
+    if (isShooting && overlapMinusPlayer == 0 && Mathf.Abs(_facingStaffRotationDict[_currentFacing] - Staff.Rotation) > 0.01)
+    {
+      var targetRotation = _facingStaffRotationDict[_currentFacing];
+      GD.Print(Staff.Rotation);
+      var angleDiff = Mathf.PosMod(_facingStaffRotationDict[_currentFacing] - Staff.Rotation, Mathf.Tau);
+
+      if (angleDiff > Mathf.Pi)
+      {
+        angleDiff -= Mathf.Tau;
+      }
+      else
+      {
+        angleDiff += Mathf.Tau;
+      }
+      Staff.AngularVelocity = angleDiff * 5;
+      GD.Print(targetRotation);
+    }
+    
+    // Angular friction
+    Staff.AngularVelocity = Mathf.Lerp(Staff.AngularVelocity, 0, AngularFrictionMultiplierStaff);
   }
 }

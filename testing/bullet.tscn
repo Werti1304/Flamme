@@ -1,0 +1,22 @@
+[gd_scene load_steps=5 format=3 uid="uid://by7dwhb651c2j"]
+
+[ext_resource type="Script" path="res://testing/Bullet.cs" id="1_tb8f0"]
+[ext_resource type="Texture2D" uid="uid://dteuo3synsbla" path="res://assets/sprites/placeholders.png" id="1_wfr2b"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5akn2"]
+atlas = ExtResource("1_wfr2b")
+region = Rect2(0, 32, 32, 32)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_a1wm4"]
+radius = 5.0
+
+[node name="Area2D" type="Area2D"]
+collision_layer = 4
+collision_mask = 4
+script = ExtResource("1_tb8f0")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = SubResource("AtlasTexture_5akn2")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_a1wm4")
