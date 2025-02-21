@@ -1,0 +1,24 @@
+[gd_scene load_steps=5 format=3 uid="uid://bkcj6njh3vwda"]
+
+[ext_resource type="Texture2D" uid="uid://dteuo3synsbla" path="res://assets/sprites/placeholders.png" id="1_r1jnj"]
+[ext_resource type="Script" path="res://testing/Door.cs" id="1_txf51"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lf5db"]
+atlas = ExtResource("1_r1jnj")
+region = Rect2(96, 32, 32, 32)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_5f0ol"]
+size = Vector2(32, 32)
+
+[node name="Door" type="StaticBody2D" node_paths=PackedStringArray("ClosedSprite", "ClosedShape")]
+collision_layer = 7
+collision_mask = 4
+script = ExtResource("1_txf51")
+ClosedSprite = NodePath("Sprite")
+ClosedShape = NodePath("CollisionShape2D")
+
+[node name="Sprite" type="Sprite2D" parent="."]
+texture = SubResource("AtlasTexture_lf5db")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_5f0ol")

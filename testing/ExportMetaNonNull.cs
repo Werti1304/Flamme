@@ -7,6 +7,8 @@ public static class ExportMetaNonNull
 {
   public static void Check(Node node)
   {
+    // TODO Add check if in (debug?) mode or not
+    
     // https://docs.godotengine.org/en/stable/classes/class_object.html#class-object-method-get-property-list
     foreach (var nodeDict in node.GetPropertyList())
     {

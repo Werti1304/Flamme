@@ -16,12 +16,12 @@ public partial class SimpleCharacter : Node2D
   [Export] public float ProjectileSpawnFromPlayer = 30.0f; 
   
   [ExportGroup("Staff")]
-  [Export] public float StaffDistanceFromPlayer = 20.0f;
+  [Export] public float StaffDistanceFromPlayer = 15.0f;
   [Export] public float MaxSpeedStaff = 500.0f;
   [Export] public float StaffFrictionMultiplier = .1f;
   [ExportSubgroup("Snapping")]
-  [Export] public float SnapForceStaff = 100.0f;
-  [Export] public float StaffSnapFrictionMultiplier = .3f;
+  [Export] public float SnapForceStaff = 500.0f;
+  [Export] public float StaffSnapFrictionMultiplier = .4f;
   [Export] public float AngularFrictionMultiplierStaff = .1f;
   [ExportSubgroup("Trailing")]
   [Export] public float StaffCharDistStartTrail = 150.0f;
@@ -29,14 +29,16 @@ public partial class SimpleCharacter : Node2D
   [Export] public float TrailForceStaff = 40.0f;
   [Export] public float StaffTrailFrictionMultiplier = .04f;
 
-
   [ExportGroup("Meta")] 
   [Export] public CharacterBody2D Body;
+  [Export] public Area2D BodyArea;
+  [Export] public Camera2D Camera;
   [Export] public RigidBody2D Staff;
   [Export] public Area2D StaffArea;
   [Export] public Sprite2D CharSprite;
   [Export] public AnimationPlayer StaffIdleAnimationPlayer;
   [Export] public PackedScene Bullet;
+  [Export] public Timer BulletCooldownTimer;
   [Export] public AtlasTexture TextureCharUp;
   [Export] public AtlasTexture TextureCharDown;
   [Export] public AtlasTexture TextureCharLeft;
@@ -59,6 +61,8 @@ public partial class SimpleCharacter : Node2D
   private Const.Facing _currentFacing = Const.Facing.Down;
 
   private bool _isTrailing = false;
+  
+  private bool _isBulletOnCooldown = false;
 
   // Called when the node enters the scene tree for the first time.
 	public override void _Ready()
@@ -82,8 +86,23 @@ public partial class SimpleCharacter : Node2D
     
 		ExportMetaNonNull.Check(this);
     
+    BulletCooldownTimer.Timeout += OnBulletCooldownTimer;
+    BodyArea.AreaEntered += AreaEntered;
+    
     StaffIdleAnimationPlayer.Play("Staff Idle");
 	}
+
+  private void AreaEntered(Area2D area)
+  {
+    if (area is Room newRoom)
+    {
+      var roomRect = newRoom.CollisionShape.Shape.GetRect();
+      Camera.LimitLeft = (int)area.GlobalPosition.X;
+      Camera.LimitTop = (int)area.GlobalPosition.Y;
+      Camera.LimitRight = Camera.LimitLeft + (int)roomRect.Size.X;
+      Camera.LimitBottom = Camera.LimitTop + (int)roomRect.Size.Y;
+    }
+  }
 
   public override void _UnhandledKeyInput(InputEvent @event)
   {
@@ -179,13 +198,15 @@ public partial class SimpleCharacter : Node2D
     }
     
     // Projectile stuff stuff
-    if (isShooting)
+    if (isShooting && !_isBulletOnCooldown)
     {
       var bullet = Bullet.Instantiate<Bullet>();
       AddChild(bullet);
       bullet.Owner = GetTree().Root;
       bullet.Position = Body.Position + (Const.FacingNormVecDict[_currentFacing] * ProjectileSpawnFromPlayer);
       bullet.SetDirection(_currentFacing);
+      _isBulletOnCooldown = true;
+      BulletCooldownTimer.Start();
     }
       
       // Staff and snapping stuff
@@ -220,7 +241,6 @@ public partial class SimpleCharacter : Node2D
     if (isShooting && overlapMinusPlayer == 0 && Mathf.Abs(_facingStaffRotationDict[_currentFacing] - Staff.Rotation) > 0.01)
     {
       var targetRotation = _facingStaffRotationDict[_currentFacing];
-      GD.Print(Staff.Rotation);
       var angleDiff = Mathf.PosMod(_facingStaffRotationDict[_currentFacing] - Staff.Rotation, Mathf.Tau);
 
       if (angleDiff > Mathf.Pi)
@@ -232,10 +252,14 @@ public partial class SimpleCharacter : Node2D
         angleDiff += Mathf.Tau;
       }
       Staff.AngularVelocity = angleDiff * 5;
-      GD.Print(targetRotation);
     }
     
     // Angular friction
     Staff.AngularVelocity = Mathf.Lerp(Staff.AngularVelocity, 0, AngularFrictionMultiplierStaff);
+  }
+
+  private void OnBulletCooldownTimer()
+  {
+    _isBulletOnCooldown = false;
   }
 }

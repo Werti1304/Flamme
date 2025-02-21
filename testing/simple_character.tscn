@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://cxebh7brfntkv"]
+[gd_scene load_steps=17 format=3 uid="uid://cxebh7brfntkv"]
 
 [ext_resource type="Texture2D" uid="uid://dteuo3synsbla" path="res://assets/sprites/placeholders.png" id="1_0ll0s"]
 [ext_resource type="Script" path="res://testing/SimpleCharacter.cs" id="1_w5kkd"]
@@ -30,6 +30,21 @@ radius = 5.0
 [sub_resource type="CircleShape2D" id="CircleShape2D_ul25x"]
 radius = 8.0
 
+[sub_resource type="Animation" id="Animation_hm8rc"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
+
 [sub_resource type="Animation" id="Animation_hvmog"]
 resource_name = "Staff Idle"
 length = 4.0
@@ -48,21 +63,6 @@ tracks/0/keys = {
 "values": [Vector2(0, -5), Vector2(0, 5)]
 }
 
-[sub_resource type="Animation" id="Animation_hm8rc"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite2D:position")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(0, 0)]
-}
-
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_wf5nv"]
 _data = {
 "RESET": SubResource("Animation_hm8rc"),
@@ -76,14 +76,19 @@ region = Rect2(0, 96, 32, 32)
 [sub_resource type="CircleShape2D" id="CircleShape2D_b55qg"]
 radius = 12.0
 
-[node name="SimpleCharacter" type="Node2D" node_paths=PackedStringArray("Body", "Staff", "StaffArea", "CharSprite", "StaffIdleAnimationPlayer")]
+[sub_resource type="CircleShape2D" id="CircleShape2D_fcvnj"]
+
+[node name="SimpleCharacter" type="Node2D" node_paths=PackedStringArray("Body", "BodyArea", "Camera", "Staff", "StaffArea", "CharSprite", "StaffIdleAnimationPlayer", "BulletCooldownTimer")]
 script = ExtResource("1_w5kkd")
 Body = NodePath("CharacterBody2D")
+BodyArea = NodePath("CharacterBody2D/BodyArea")
+Camera = NodePath("CharacterBody2D/Camera2D")
 Staff = NodePath("Staff")
 StaffArea = NodePath("Staff/StaffArea")
 CharSprite = NodePath("CharacterBody2D/CharSprite")
 StaffIdleAnimationPlayer = NodePath("Staff/StaffIdleAnimationPlayer")
 Bullet = ExtResource("2_n84tm")
+BulletCooldownTimer = NodePath("BulletCooldownTimer")
 TextureCharUp = SubResource("AtlasTexture_83a6q")
 TextureCharDown = SubResource("AtlasTexture_tc8yd")
 TextureCharLeft = SubResource("AtlasTexture_q53d8")
@@ -127,5 +132,12 @@ shape = SubResource("CircleShape2D_b55qg")
 zoom = Vector2(4.5, 4.5)
 limit_left = 0
 limit_top = 0
-limit_right = 480
-limit_bottom = 256
+position_smoothing_enabled = true
+
+[node name="BodyArea" type="Area2D" parent="CharacterBody2D"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CharacterBody2D/BodyArea"]
+shape = SubResource("CircleShape2D_fcvnj")
+
+[node name="BulletCooldownTimer" type="Timer" parent="."]
+process_callback = 0

@@ -9,6 +9,7 @@ public static class Const
     [Flags]
     public enum Action
     {
+      // For fast ref: https://cvickery.com/courses/cs343/Powers_of_Two.html
       None =      0,
       MoveUp =    0x1,
       MoveDown =  0x2,

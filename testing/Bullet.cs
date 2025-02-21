@@ -3,7 +3,7 @@ using System;
 
 public partial class Bullet : Area2D
 {
-  [Export] public int Speed = 750;
+  [Export] public int Speed = 200;
   [Export] private Vector2 _direction = Const.FacingNormVecDict[Const.Facing.Down];
 
   public override void _Ready()
@@ -18,6 +18,10 @@ public partial class Bullet : Area2D
 
   private void OnBulletEntered(Node2D body)
   {
+    if (body is Door door)
+    {
+      door.Open();
+    }
     QueueFree();
   }
 
