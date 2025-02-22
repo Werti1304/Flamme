@@ -1,3 +1,4 @@
+using Flamme.Ui;
 using System;
 using System.Collections.Generic;
 using Godot;
@@ -7,13 +8,15 @@ using System.Linq;
 
 namespace Flamme.testing;
 
-public partial class SimpleCharacter : Node2D
+public partial class SimpleCharacter : CharacterBody2D
 {
   [ExportGroup("Character")]
 	[Export] public float SpeedMultiplier = 25.0f;
 	[Export] public float FrictionMultiplier = .1f;
   [Export] public float MaxSpeed = 150.0f;
-  [Export] public float ProjectileSpawnFromPlayer = 30.0f; 
+  [Export] public float ProjectileSpawnFromPlayer = 20.0f;
+  // Player hearts = health / 4 
+  [Export] public int PlayerHealth = 12;
   
   [ExportGroup("Staff")]
   [Export] public float StaffDistanceFromPlayer = 15.0f;
@@ -24,25 +27,23 @@ public partial class SimpleCharacter : Node2D
   [Export] public float StaffSnapFrictionMultiplier = .4f;
   [Export] public float AngularFrictionMultiplierStaff = .1f;
   [ExportSubgroup("Trailing")]
-  [Export] public float StaffCharDistStartTrail = 150.0f;
+  [Export] public float StaffCharDistStartTrail = 100.0f;
   [Export] public float StaffCharDistStopTrail = 50.0f;
   [Export] public float TrailForceStaff = 40.0f;
   [Export] public float StaffTrailFrictionMultiplier = .04f;
 
   [ExportGroup("Meta")] 
-  [Export] public CharacterBody2D Body;
   [Export] public Area2D BodyArea;
   [Export] public Camera2D Camera;
-  [Export] public RigidBody2D Staff;
-  [Export] public Area2D StaffArea;
+  [Export] public Staff Staff;
   [Export] public Sprite2D CharSprite;
-  [Export] public AnimationPlayer StaffIdleAnimationPlayer;
   [Export] public PackedScene Bullet;
   [Export] public Timer BulletCooldownTimer;
-  [Export] public AtlasTexture TextureCharUp;
-  [Export] public AtlasTexture TextureCharDown;
-  [Export] public AtlasTexture TextureCharLeft;
-  [Export] public AtlasTexture TextureCharRight;
+  [Export] public Timer InvinciblityTimer; // After taking damage, invincibility++
+  [Export] public AtlasTexture CharUpTexture;
+  [Export] public AtlasTexture CharDownTexture;
+  [Export] public AtlasTexture CharLeftTexture;
+  [Export] public AtlasTexture CharRightTexture;
   
   private readonly Dictionary<Const.Facing, float> _facingStaffRotationDict = new Dictionary<Const.Facing, float>()
   {
@@ -52,17 +53,26 @@ public partial class SimpleCharacter : Node2D
     { Const.Facing.Right, Mathf.DegToRad(-45 - 5) },
   };
 
+  public readonly Dictionary<Const.Facing, Vector2I> FacingVectorDict = new Dictionary<Const.Facing, Vector2I>()
+  {
+    { Const.Facing.Up, Vector2I.Up },
+    { Const.Facing.Down, Vector2I.Down },
+    { Const.Facing.Left, Vector2I.Left },
+    { Const.Facing.Right, Vector2I.Right }
+  };
+
   private Dictionary<Const.Facing, AtlasTexture> _facingCharTextureDict;
 
   private Const.InputMap.Action _currentActionsBmap = Const.InputMap.Action.None;
 
   private Dictionary<Const.InputMap.Action, Action> _actionInputActionDict;
 
-  private Const.Facing _currentFacing = Const.Facing.Down;
+  public Const.Facing CurrentFacing = Const.Facing.Down;
 
   private bool _isTrailing = false;
-  
   private bool _isBulletOnCooldown = false;
+
+  public bool IsInvincible = false;
 
   // Called when the node enters the scene tree for the first time.
 	public override void _Ready()
@@ -70,29 +80,41 @@ public partial class SimpleCharacter : Node2D
     // Needs to be here
     _facingCharTextureDict = new Dictionary<Const.Facing, AtlasTexture>()
     {
-      { Const.Facing.Up, TextureCharUp },
-      { Const.Facing.Down, TextureCharDown },
-      { Const.Facing.Left, TextureCharLeft },
-      { Const.Facing.Right, TextureCharRight }
+      { Const.Facing.Up, CharUpTexture },
+      { Const.Facing.Down, CharDownTexture },
+      { Const.Facing.Left, CharLeftTexture },
+      { Const.Facing.Right, CharRightTexture }
     };
     
     _actionInputActionDict = new Dictionary<Const.InputMap.Action, Action>
     {
-      { Const.InputMap.Action.MoveUp, () => Body.Velocity += Vector2.Up * SpeedMultiplier },
-      { Const.InputMap.Action.MoveDown, () => Body.Velocity += Vector2.Down * SpeedMultiplier },
-      { Const.InputMap.Action.MoveLeft, () => Body.Velocity += Vector2.Left * SpeedMultiplier },
-      { Const.InputMap.Action.MoveRight,  () => Body.Velocity += Vector2.Right * SpeedMultiplier },
+      { Const.InputMap.Action.MoveUp, () => Velocity += Vector2.Up * SpeedMultiplier },
+      { Const.InputMap.Action.MoveDown, () => Velocity += Vector2.Down * SpeedMultiplier },
+      { Const.InputMap.Action.MoveLeft, () => Velocity += Vector2.Left * SpeedMultiplier },
+      { Const.InputMap.Action.MoveRight,  () => Velocity += Vector2.Right * SpeedMultiplier },
     };
     
 		ExportMetaNonNull.Check(this);
     
     BulletCooldownTimer.Timeout += OnBulletCooldownTimer;
-    BodyArea.AreaEntered += AreaEntered;
+    InvinciblityTimer.Timeout += OnInvincibilityOver;
+    BodyArea.AreaEntered += OnAreaEntered;
+    BodyArea.BodyEntered += OnBodyEntered;
     
-    StaffIdleAnimationPlayer.Play("Staff Idle");
+    Hud.Instance.UpdateHealth(PlayerHealth);
+    
+    Staff.IdleAnimationPlayer.Play("Staff Idle");
 	}
 
-  private void AreaEntered(Area2D area)
+  private void OnBodyEntered(Node2D body)
+  {
+    if (body is Enemy e)
+    {
+      TakeDamage(e.GetMeleeDamage());
+    }
+  }
+
+  private void OnAreaEntered(Area2D area)
   {
     if (area is Room newRoom)
     {
@@ -104,7 +126,7 @@ public partial class SimpleCharacter : Node2D
     }
   }
 
-  public override void _UnhandledKeyInput(InputEvent @event)
+  public override void _UnhandledInput(InputEvent @event)
   {
     // Iterate over each possible action
     foreach (var pair in Const.InputMap.ActionInputDict)
@@ -125,7 +147,7 @@ public partial class SimpleCharacter : Node2D
     }
     
     // Efficiency increase possible here
-    var newFacing = _currentFacing;
+    var newFacing = CurrentFacing;
     if ((_currentActionsBmap & Const.InputMap.Action.ShootDown) > 0)
     {
       newFacing = Const.Facing.Down;
@@ -159,10 +181,10 @@ public partial class SimpleCharacter : Node2D
       newFacing = Const.Facing.Right;
     }
 
-    if (newFacing != _currentFacing)
+    if (newFacing != CurrentFacing)
     {
-      _currentFacing = newFacing;
-      CharSprite.Texture = _facingCharTextureDict[_currentFacing];
+      CurrentFacing = newFacing;
+      CharSprite.Texture = _facingCharTextureDict[CurrentFacing];
     }
   }
 
@@ -177,9 +199,9 @@ public partial class SimpleCharacter : Node2D
       action();
     }
     
-    Body.Velocity = Body.Velocity.LimitLength(MaxSpeed);
-    Body.Velocity = Body.Velocity.Lerp(Vector2.Zero, FrictionMultiplier);
-    Body.MoveAndSlide();
+    Velocity = Velocity.LimitLength(MaxSpeed);
+    Velocity = Velocity.Lerp(Vector2.Zero, FrictionMultiplier);
+    MoveAndSlide();
     
     // If actively shooting, the staff should snap to the right direction
     var isShooting = (_currentActionsBmap & (Const.InputMap.Action.ShootDown 
@@ -188,11 +210,11 @@ public partial class SimpleCharacter : Node2D
                                             | Const.InputMap.Action.ShootRight)) > 0;
     
     // If too far from character, staff should trail behind, can't snap and trail at the same time though
-    if (!_isTrailing && !isShooting && Body.GlobalPosition.DistanceTo(Staff.GlobalPosition) > StaffCharDistStartTrail)
+    if (!_isTrailing && !isShooting && GlobalPosition.DistanceTo(Staff.GlobalPosition) > StaffCharDistStartTrail)
     {
       _isTrailing = true;
     }
-    else if(_isTrailing && Body.GlobalPosition.DistanceTo(Staff.GlobalPosition) < StaffCharDistStopTrail)
+    else if(_isTrailing && GlobalPosition.DistanceTo(Staff.GlobalPosition) < StaffCharDistStopTrail)
     {
       _isTrailing = false;
     }
@@ -201,10 +223,16 @@ public partial class SimpleCharacter : Node2D
     if (isShooting && !_isBulletOnCooldown)
     {
       var bullet = Bullet.Instantiate<Bullet>();
-      AddChild(bullet);
-      bullet.Owner = GetTree().Root;
-      bullet.Position = Body.Position + (Const.FacingNormVecDict[_currentFacing] * ProjectileSpawnFromPlayer);
-      bullet.SetDirection(_currentFacing);
+      GetTree().Root.AddChild(bullet);
+      bullet.GlobalPosition = GlobalPosition + (Const.FacingNormVecDict[CurrentFacing] * ProjectileSpawnFromPlayer);
+      if (Velocity.Length() > 10)
+      {
+        bullet.Direction = 0.6f * Const.FacingNormVecDict[CurrentFacing] + 0.4f * Velocity.Normalized();
+      }
+      else
+      {
+        bullet.Direction = Const.FacingNormVecDict[CurrentFacing];
+      }
       _isBulletOnCooldown = true;
       BulletCooldownTimer.Start();
     }
@@ -212,7 +240,7 @@ public partial class SimpleCharacter : Node2D
       // Staff and snapping stuff
     if (isShooting)
     {
-      var targetVec = Body.GlobalPosition + (Const.FacingNormVecDict[_currentFacing] * StaffDistanceFromPlayer) - Staff.GlobalTransform.Origin;
+      var targetVec = GlobalPosition + (Const.FacingNormVecDict[CurrentFacing] * StaffDistanceFromPlayer) - Staff.GlobalTransform.Origin;
       var direction = targetVec.Normalized();
       var distance = targetVec.Length();
       Staff.ApplyCentralForce(direction * Mathf.Clamp(distance, 0, 200) * SnapForceStaff);
@@ -221,7 +249,7 @@ public partial class SimpleCharacter : Node2D
     else if(_isTrailing)
     {
       // Otherwise, just trail behind the player if they're too far away
-      var targetVec = Body.GlobalPosition - Staff.GlobalTransform.Origin;
+      var targetVec = GlobalPosition - Staff.GlobalTransform.Origin;
       var direction = targetVec.Normalized();
       var distance = targetVec.Length();
       Staff.ApplyCentralForce(direction * Mathf.Clamp(distance, 0, 10) * TrailForceStaff);
@@ -235,13 +263,13 @@ public partial class SimpleCharacter : Node2D
     // Max speed
     Staff.LinearVelocity = Staff.LinearVelocity.LimitLength(MaxSpeedStaff * 10);
     
-    var overlapsPlayer = StaffArea.GetOverlappingBodies().Contains(Body);
-    var overlapMinusPlayer = StaffArea.GetOverlappingBodies().Count - (overlapsPlayer ? 1 : 0);
+    var overlapsPlayer = Staff.Area.GetOverlappingBodies().Contains(this);
+    var overlapMinusPlayer = Staff.Area.GetOverlappingBodies().Count - (overlapsPlayer ? 1 : 0);
     
-    if (isShooting && overlapMinusPlayer == 0 && Mathf.Abs(_facingStaffRotationDict[_currentFacing] - Staff.Rotation) > 0.01)
+    if (isShooting && overlapMinusPlayer == 0 && Mathf.Abs(_facingStaffRotationDict[CurrentFacing] - Staff.Rotation) > 0.01)
     {
-      var targetRotation = _facingStaffRotationDict[_currentFacing];
-      var angleDiff = Mathf.PosMod(_facingStaffRotationDict[_currentFacing] - Staff.Rotation, Mathf.Tau);
+      var targetRotation = _facingStaffRotationDict[CurrentFacing];
+      var angleDiff = Mathf.PosMod(_facingStaffRotationDict[CurrentFacing] - Staff.Rotation, Mathf.Tau);
 
       if (angleDiff > Mathf.Pi)
       {
@@ -256,6 +284,38 @@ public partial class SimpleCharacter : Node2D
     
     // Angular friction
     Staff.AngularVelocity = Mathf.Lerp(Staff.AngularVelocity, 0, AngularFrictionMultiplierStaff);
+  }
+
+  public void TakeDamage(int damage)
+  {
+    if (IsInvincible)
+    {
+      return;
+    }
+    IsInvincible = true;
+    InvinciblityTimer.Start();
+    // calculate actual damage through idk
+    PlayerHealth -= damage;
+
+    if (PlayerHealth < 1)
+    {
+      // Game over screen
+      GetTree().Quit();
+    }
+    Hud.Instance.UpdateHealth(PlayerHealth);
+  }
+
+  public void OnInvincibilityOver()
+  {
+    IsInvincible = false;
+    
+    foreach(var body in BodyArea.GetOverlappingBodies())
+    {
+      if (body is Enemy e)
+      {
+        TakeDamage(e.GetMeleeDamage());
+      }
+    }
   }
 
   private void OnBulletCooldownTimer()

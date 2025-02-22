@@ -1,14 +1,15 @@
 using Flamme.testing;
 using Godot;
-using System;
 
 public partial class Door : StaticBody2D
 {
   [ExportGroup("Meta")] 
   [Export] public Sprite2D ClosedSprite;
+  [Export] public Sprite2D ClosedSprite2;
   [Export] public CollisionShape2D ClosedShape;
   
   private bool _isOpen = false;
+  private bool _isLocked = false;
 
   public override void _Ready()
   {
@@ -17,7 +18,7 @@ public partial class Door : StaticBody2D
 
   public void Open()
   {
-    if (_isOpen)
+    if (_isOpen || _isLocked)
     {
       return;
     }
@@ -25,6 +26,7 @@ public partial class Door : StaticBody2D
 
     ClosedShape.SetDeferred("disabled", true);
     ClosedSprite.Visible = false;
+    ClosedSprite2.Visible = false;
   }
 
   public void Close()
@@ -36,5 +38,17 @@ public partial class Door : StaticBody2D
     _isOpen = false;
     ClosedShape.SetDeferred("disabled", false);
     ClosedSprite.Visible = true;
+    ClosedSprite2.Visible = true;
+  }
+
+  public void Lock()
+  {
+    Close();
+    _isLocked = true;
+  }
+
+  public void Unlock()
+  {
+    _isLocked = false;
   }
 }

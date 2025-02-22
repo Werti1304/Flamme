@@ -11,8 +11,8 @@
 #endregion
 
 using Godot;
-using Godot.Collections;
 using System;
+using System.Collections.Generic;
 
 namespace Flamme.testing;
 
@@ -21,6 +21,9 @@ public abstract partial class Room : Area2D
   [ExportGroup("Meta")] 
   [Export] public TileMapLayer TileMap;
   [Export] public CollisionShape2D CollisionShape;
+
+  public List<Enemy> Enemies = new List<Enemy>();
+  public List<Door> Doors = new List<Door>();
   
   public enum Type
   {
@@ -56,6 +59,70 @@ public abstract partial class Room : Area2D
   {
     ZIndex = -1;
     ExportMetaNonNull.Check(this);
+    
+    this.BodyEntered += OnBodyEntered;
+    this.BodyExited += OnBodyExited;
+  }
+
+  private void OnBodyExited(Node2D body)
+  {
+    if (body is Enemy e)
+    {
+      Enemies.Remove(e);
+
+      if (Enemies.Count != 0)
+        return;
+
+      foreach (var door in Doors)
+      {
+        door.Unlock();
+        door.Open(); 
+      }
+    }
+    else if (body is SimpleCharacter s)
+    {
+      if (Enemies.Count == 0)
+      {
+        return;
+      }
+
+      foreach (var enemy in Enemies)
+      {
+        enemy.Chasing = null;
+      }
+    }
+  }
+
+  private void OnBodyEntered(Node2D body)
+  {
+    if (body is Enemy e)
+    {
+      Enemies.Add(e);
+    }
+    else if (body is Door d)
+    {
+      Doors.Add(d);
+    }
+    else if (body is SimpleCharacter s)
+    {
+      s.Position += s.FacingVectorDict[s.CurrentFacing] * 32;
+      // Can't directly set pos of rigid body
+      s.Staff.ShouldReset = true;
+      s.Staff.ResetPos = s.Position;
+      if (Enemies.Count == 0)
+      {
+        return;
+      }
+      foreach (var door in Doors)
+      {
+        door.Close(); 
+        door.Lock();
+      }
+      foreach (var enemy in Enemies)
+      {
+        enemy.Chasing = s;
+      }
+    }
   }
 
   public abstract Type GetRoomType();
@@ -63,7 +130,7 @@ public abstract partial class Room : Area2D
   public abstract void Open(DoorPos doorPos);
   public abstract void Close(DoorPos doorPos);
 
-  protected abstract Dictionary<DoorPos, Vector2I> GetDoorTileMapDict();
+  protected abstract Godot.Collections.Dictionary<DoorPos, Vector2I> GetDoorTileMapDict();
 
   public void OpenAll()
   {

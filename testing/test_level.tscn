@@ -1,8 +1,12 @@
-[gd_scene load_steps=5 format=3 uid="uid://254wm8i5pdt4"]
+[gd_scene load_steps=9 format=4 uid="uid://254wm8i5pdt4"]
 
 [ext_resource type="PackedScene" uid="uid://bwc3uhxa3o24o" path="res://testing/test_room_1.tscn" id="1_jl4nv"]
 [ext_resource type="PackedScene" uid="uid://cxebh7brfntkv" path="res://testing/simple_character.tscn" id="2_4uii6"]
 [ext_resource type="Texture2D" uid="uid://dteuo3synsbla" path="res://assets/sprites/placeholders.png" id="3_vvv4k"]
+[ext_resource type="PackedScene" uid="uid://cefkfgi5yotw2" path="res://testing/enemy.tscn" id="4_f8loh"]
+[ext_resource type="PackedScene" uid="uid://t6bcys8h5uf7" path="res://testing/staff.tscn" id="5_qgix1"]
+[ext_resource type="PackedScene" uid="uid://bkcj6njh3vwda" path="res://testing/door.tscn" id="6_oh6bh"]
+[ext_resource type="TileSet" uid="uid://cgyo6mc240x5s" path="res://testing/placeholder_tileset.tres" id="7_7frt7"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_53jna"]
 atlas = ExtResource("3_vvv4k")
@@ -12,14 +16,15 @@ region = Rect2(0, 32, 32, 32)
 
 [node name="Room" parent="." instance=ExtResource("1_jl4nv")]
 
-[node name="SimpleCharacter" parent="." instance=ExtResource("2_4uii6")]
+[node name="SimpleCharacter" parent="." node_paths=PackedStringArray("Staff") instance=ExtResource("2_4uii6")]
 position = Vector2(288, 158)
+Staff = NodePath("../Staff")
 
 [node name="Room 2" parent="." instance=ExtResource("1_jl4nv")]
 position = Vector2(0, 288)
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-position = Vector2(179, 378)
+position = Vector2(157, 379)
 texture = SubResource("AtlasTexture_53jna")
 
 [node name="Room 3" parent="." instance=ExtResource("1_jl4nv")]
@@ -27,3 +32,86 @@ position = Vector2(481, 0)
 
 [node name="Room 4" parent="." instance=ExtResource("1_jl4nv")]
 position = Vector2(481, 288)
+
+[node name="Enemy" parent="." instance=ExtResource("4_f8loh")]
+MeleeDamage = 2
+
+[node name="Staff" parent="." instance=ExtResource("5_qgix1")]
+position = Vector2(288, 183)
+
+[node name="Enemy2" parent="." instance=ExtResource("4_f8loh")]
+position = Vector2(559, 76)
+MeleeDamage = 2
+
+[node name="Enemy3" parent="." instance=ExtResource("4_f8loh")]
+position = Vector2(753, 135)
+MeleeDamage = 2
+
+[node name="Door" parent="." instance=ExtResource("6_oh6bh")]
+position = Vector2(481, 432)
+rotation = 1.57079
+
+[node name="Door2" parent="." instance=ExtResource("6_oh6bh")]
+position = Vector2(481, 144)
+rotation = 1.57079
+
+[node name="Door3" parent="." instance=ExtResource("6_oh6bh")]
+position = Vector2(721, 288)
+
+[node name="Door4" parent="." instance=ExtResource("6_oh6bh")]
+position = Vector2(240, 288)
+
+[node name="Enemy4" parent="." instance=ExtResource("4_f8loh")]
+position = Vector2(272, 448)
+scale = Vector2(3, 3)
+Speed = 50
+MaxSpeed = 50
+Health = 20.0
+MeleeDamage = 4
+
+[node name="Room2" parent="." instance=ExtResource("1_jl4nv")]
+position = Vector2(0, 576)
+
+[node name="TileMapLayer" type="TileMapLayer" parent="."]
+modulate = Color(0.980697, 0.000118979, 0.781477, 1)
+tile_map_data = PackedByteArray("AAAWAAAAAAAAAAAAAAAdAAQAAAAAAAAAAAAdAA0AAAAAAAAAAAAWABEAAAAAAAAAAAAAAAQAAAAAAAAAAAAHAAAAAAAAAAAAAAAHAAgAAAAAAAAAAAAHAAkAAAAAAAAAAAABABQAAAABAAAAAAABABUAAAABAAAAAAACABYAAAABAAAAAAADABQAAAABAAAAAAADABUAAAABAAAAAAAFABQAAAABAAAAAAAFABUAAAABAAAAAAAGABYAAAABAAAAAAAHABUAAAABAAAAAAAIABYAAAABAAAAAAAJABQAAAABAAAAAAAJABUAAAABAAAAAAALABQAAAABAAAAAAALABUAAAABAAAAAAAMABYAAAABAAAAAAANABQAAAABAAAAAAANABUAAAABAAAAAAAAAA0AAAAAAAAAAAAGABgAAAABAAAAAAAGABkAAAABAAAAAAAHABkAAAABAAAAAAAIABkAAAABAAAAAAAHABoAAAABAAAAAAAIABgAAAABAAAAAAA=")
+tile_set = ExtResource("7_7frt7")
+
+[node name="Enemy5" parent="." instance=ExtResource("4_f8loh")]
+position = Vector2(775, 464)
+scale = Vector2(0.5, 0.5)
+Speed = 110
+MaxSpeed = 110
+Health = 5.0
+
+[node name="Enemy6" parent="." instance=ExtResource("4_f8loh")]
+position = Vector2(820, 405)
+scale = Vector2(0.5, 0.5)
+Speed = 110
+MaxSpeed = 110
+Health = 5.0
+
+[node name="Enemy7" parent="." instance=ExtResource("4_f8loh")]
+position = Vector2(618, 413)
+scale = Vector2(0.5, 0.5)
+Speed = 110
+MaxSpeed = 110
+Health = 5.0
+
+[node name="Enemy8" parent="." instance=ExtResource("4_f8loh")]
+position = Vector2(866, 413)
+scale = Vector2(0.5, 0.5)
+Speed = 110
+MaxSpeed = 110
+Health = 5.0
+
+[node name="Enemy9" parent="." instance=ExtResource("4_f8loh")]
+position = Vector2(588, 456)
+scale = Vector2(0.5, 0.5)
+Speed = 110
+MaxSpeed = 110
+Health = 5.0
+
+[node name="Door5" parent="." instance=ExtResource("6_oh6bh")]
+position = Vector2(240, 576)
+rotation = 3.14159

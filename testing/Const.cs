@@ -21,6 +21,8 @@ public static class Const
       ShootLeft = 0x80
     }
 
+    public const string EscapeMenu = "open_escape_menu";
+
     public static readonly Godot.Collections.Dictionary<Action, string> ActionInputDict = new Godot.Collections.Dictionary<Action, string>()
     {
       { Action.MoveUp, "move_up" },

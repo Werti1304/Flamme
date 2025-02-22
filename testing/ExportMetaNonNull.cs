@@ -38,6 +38,12 @@ public static class ExportMetaNonNull
       {
         continue;
       }
+
+      // Exemptions go here
+      if (propertyName == "shortcut_context")
+      {
+        continue;
+      }
       
       GD.PushWarning($"Property {propertyName} from node {node} is null!");
     }

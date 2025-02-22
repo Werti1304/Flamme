@@ -1,0 +1,79 @@
+[gd_scene load_steps=9 format=3 uid="uid://t6bcys8h5uf7"]
+
+[ext_resource type="Texture2D" uid="uid://dteuo3synsbla" path="res://assets/sprites/placeholders.png" id="1_h4i33"]
+[ext_resource type="Script" path="res://testing/Staff.cs" id="1_pv6p5"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wnwx3"]
+atlas = ExtResource("1_h4i33")
+region = Rect2(0, 64, 32, 32)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_i066a"]
+radius = 5.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_ul25x"]
+radius = 8.0
+
+[sub_resource type="Animation" id="Animation_hm8rc"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_hvmog"]
+resource_name = "Staff Idle"
+length = 4.0
+loop_mode = 1
+step = 0.333
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:position")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(1, 3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(0, -5), Vector2(0, 5)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_wf5nv"]
+_data = {
+"RESET": SubResource("Animation_hm8rc"),
+"Staff Idle": SubResource("Animation_hvmog")
+}
+
+[node name="Staff" type="RigidBody2D" node_paths=PackedStringArray("Area", "IdleAnimationPlayer")]
+z_index = 1
+position = Vector2(0, 20)
+collision_layer = 0
+collision_mask = 2
+angular_damp = 5.0
+script = ExtResource("1_pv6p5")
+Area = NodePath("StaffArea")
+IdleAnimationPlayer = NodePath("StaffIdleAnimationPlayer")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = SubResource("AtlasTexture_wnwx3")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_i066a")
+
+[node name="StaffArea" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaffArea"]
+shape = SubResource("CircleShape2D_ul25x")
+
+[node name="StaffIdleAnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_wf5nv")
+}

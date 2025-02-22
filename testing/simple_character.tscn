@@ -1,143 +1,70 @@
-[gd_scene load_steps=17 format=3 uid="uid://cxebh7brfntkv"]
+[gd_scene load_steps=11 format=3 uid="uid://cxebh7brfntkv"]
 
 [ext_resource type="Texture2D" uid="uid://dteuo3synsbla" path="res://assets/sprites/placeholders.png" id="1_0ll0s"]
 [ext_resource type="Script" path="res://testing/SimpleCharacter.cs" id="1_w5kkd"]
 [ext_resource type="PackedScene" uid="uid://by7dwhb651c2j" path="res://testing/bullet.tscn" id="2_n84tm"]
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_83a6q"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_u4hgy"]
 atlas = ExtResource("1_0ll0s")
 region = Rect2(64, 96, 32, 32)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_tc8yd"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_4pb35"]
 atlas = ExtResource("1_0ll0s")
 region = Rect2(0, 96, 32, 32)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_q53d8"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_3vwff"]
 atlas = ExtResource("1_0ll0s")
 region = Rect2(32, 96, 32, 32)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_hdt4n"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_5akwl"]
 atlas = ExtResource("1_0ll0s")
 region = Rect2(96, 96, 32, 32)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_wnwx3"]
-atlas = ExtResource("1_0ll0s")
-region = Rect2(0, 64, 32, 32)
-
-[sub_resource type="CircleShape2D" id="CircleShape2D_i066a"]
-radius = 5.0
-
-[sub_resource type="CircleShape2D" id="CircleShape2D_ul25x"]
-radius = 8.0
-
-[sub_resource type="Animation" id="Animation_hm8rc"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite2D:position")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(0, 0)]
-}
-
-[sub_resource type="Animation" id="Animation_hvmog"]
-resource_name = "Staff Idle"
-length = 4.0
-loop_mode = 1
-step = 0.333
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite2D:position")
-tracks/0/interp = 2
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(1, 3),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [Vector2(0, -5), Vector2(0, 5)]
-}
-
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_wf5nv"]
-_data = {
-"RESET": SubResource("Animation_hm8rc"),
-"Staff Idle": SubResource("Animation_hvmog")
-}
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_8wlh6"]
 atlas = ExtResource("1_0ll0s")
 region = Rect2(0, 96, 32, 32)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_b55qg"]
-radius = 12.0
+radius = 11.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_fcvnj"]
+radius = 12.0
 
-[node name="SimpleCharacter" type="Node2D" node_paths=PackedStringArray("Body", "BodyArea", "Camera", "Staff", "StaffArea", "CharSprite", "StaffIdleAnimationPlayer", "BulletCooldownTimer")]
-script = ExtResource("1_w5kkd")
-Body = NodePath("CharacterBody2D")
-BodyArea = NodePath("CharacterBody2D/BodyArea")
-Camera = NodePath("CharacterBody2D/Camera2D")
-Staff = NodePath("Staff")
-StaffArea = NodePath("Staff/StaffArea")
-CharSprite = NodePath("CharacterBody2D/CharSprite")
-StaffIdleAnimationPlayer = NodePath("Staff/StaffIdleAnimationPlayer")
-Bullet = ExtResource("2_n84tm")
-BulletCooldownTimer = NodePath("BulletCooldownTimer")
-TextureCharUp = SubResource("AtlasTexture_83a6q")
-TextureCharDown = SubResource("AtlasTexture_tc8yd")
-TextureCharLeft = SubResource("AtlasTexture_q53d8")
-TextureCharRight = SubResource("AtlasTexture_hdt4n")
-
-[node name="Staff" type="RigidBody2D" parent="."]
-z_index = 1
-position = Vector2(0, 20)
-collision_layer = 0
-collision_mask = 2
-angular_damp = 5.0
-
-[node name="Sprite2D" type="Sprite2D" parent="Staff"]
-texture = SubResource("AtlasTexture_wnwx3")
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Staff"]
-shape = SubResource("CircleShape2D_i066a")
-
-[node name="StaffArea" type="Area2D" parent="Staff"]
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Staff/StaffArea"]
-shape = SubResource("CircleShape2D_ul25x")
-
-[node name="StaffIdleAnimationPlayer" type="AnimationPlayer" parent="Staff"]
-libraries = {
-"": SubResource("AnimationLibrary_wf5nv")
-}
-
-[node name="CharacterBody2D" type="CharacterBody2D" parent="."]
+[node name="SimpleCharacter" type="CharacterBody2D" node_paths=PackedStringArray("BodyArea", "Camera", "CharSprite", "BulletCooldownTimer", "InvinciblityTimer")]
 motion_mode = 1
 platform_floor_layers = 4294967292
 platform_wall_layers = 1
+script = ExtResource("1_w5kkd")
+BodyArea = NodePath("BodyArea")
+Camera = NodePath("Camera2D")
+CharSprite = NodePath("CharSprite")
+Bullet = ExtResource("2_n84tm")
+BulletCooldownTimer = NodePath("BulletCooldownTimer")
+InvinciblityTimer = NodePath("InvincibilityTimer")
+CharUpTexture = SubResource("AtlasTexture_u4hgy")
+CharDownTexture = SubResource("AtlasTexture_4pb35")
+CharLeftTexture = SubResource("AtlasTexture_3vwff")
+CharRightTexture = SubResource("AtlasTexture_5akwl")
 
-[node name="CharSprite" type="Sprite2D" parent="CharacterBody2D"]
+[node name="BulletCooldownTimer" type="Timer" parent="."]
+process_callback = 0
+
+[node name="CharSprite" type="Sprite2D" parent="."]
 texture = SubResource("AtlasTexture_8wlh6")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="CharacterBody2D"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_b55qg")
 
-[node name="Camera2D" type="Camera2D" parent="CharacterBody2D"]
-zoom = Vector2(4.5, 4.5)
+[node name="Camera2D" type="Camera2D" parent="."]
+zoom = Vector2(2, 2)
 limit_left = 0
 limit_top = 0
 position_smoothing_enabled = true
 
-[node name="BodyArea" type="Area2D" parent="CharacterBody2D"]
+[node name="BodyArea" type="Area2D" parent="."]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="CharacterBody2D/BodyArea"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BodyArea"]
 shape = SubResource("CircleShape2D_fcvnj")
 
-[node name="BulletCooldownTimer" type="Timer" parent="."]
+[node name="InvincibilityTimer" type="Timer" parent="."]
 process_callback = 0
