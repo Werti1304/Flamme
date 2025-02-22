@@ -37,6 +37,20 @@ public partial class Enemy : CharacterBody2D, IPlayerDamageable
     {
       return;
     }
+    
+    for (var i = 0; i < GetSlideCollisionCount(); i++)
+    {
+      var collider = GetSlideCollision(i);
+      
+      if (collider.GetCollider() is RigidBody2D rigidBody2D)
+      {
+        rigidBody2D.ApplyCentralForce(-collider.GetNormal() * 100);
+      }
+      if (collider.GetCollider() is Enemy e)
+      {
+        e.Velocity += -collider.GetNormal() * 50;
+      }
+    }
 
     if (!_stunned)
     {

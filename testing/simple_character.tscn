@@ -25,12 +25,13 @@ atlas = ExtResource("1_0ll0s")
 region = Rect2(0, 96, 32, 32)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_b55qg"]
-radius = 11.0
+radius = 9.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_fcvnj"]
 radius = 12.0
 
 [node name="SimpleCharacter" type="CharacterBody2D" node_paths=PackedStringArray("BodyArea", "Camera", "CharSprite", "BulletCooldownTimer", "InvinciblityTimer")]
+z_index = 1
 motion_mode = 1
 platform_floor_layers = 4294967292
 platform_wall_layers = 1
@@ -56,10 +57,9 @@ texture = SubResource("AtlasTexture_8wlh6")
 shape = SubResource("CircleShape2D_b55qg")
 
 [node name="Camera2D" type="Camera2D" parent="."]
-zoom = Vector2(2, 2)
+zoom = Vector2(6, 6)
 limit_left = 0
 limit_top = 0
-position_smoothing_enabled = true
 
 [node name="BodyArea" type="Area2D" parent="."]
 

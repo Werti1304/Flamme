@@ -15,8 +15,9 @@ region = Rect2(64, 32, 32, 32)
 atlas = ExtResource("2_d1y3m")
 region = Rect2(32, 32, 32, 32)
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_astih"]
-size = Vector2(9, 15)
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_ue6cm"]
+radius = 4.0
+height = 14.0
 
 [node name="Enemy" type="CharacterBody2D" node_paths=PackedStringArray("Sprite", "StunTimer")]
 position = Vector2(653, 93)
@@ -34,7 +35,7 @@ texture = SubResource("AtlasTexture_bocbp")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0.5, -0.5)
-shape = SubResource("RectangleShape2D_astih")
+shape = SubResource("CapsuleShape2D_ue6cm")
 
 [node name="StunTimer" type="Timer" parent="."]
 wait_time = 0.3

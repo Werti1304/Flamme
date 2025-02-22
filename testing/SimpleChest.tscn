@@ -1,0 +1,41 @@
+[gd_scene load_steps=8 format=3 uid="uid://wk6i8cghddad"]
+
+[ext_resource type="Texture2D" uid="uid://5uf1o0e1yytl" path="res://assets/sprites/entities/env/chests.png" id="1_bfxif"]
+[ext_resource type="Script" path="res://testing/SimpleChest.cs" id="1_ew0nr"]
+[ext_resource type="PackedScene" uid="uid://bha88ktifef7e" path="res://testing/TestItem.tscn" id="3_xhmi3"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vjctb"]
+atlas = ExtResource("1_bfxif")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mhu8v"]
+atlas = ExtResource("1_bfxif")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gt5ls"]
+atlas = ExtResource("1_bfxif")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_dgaia"]
+radius = 8.0
+height = 24.0
+
+[node name="SimpleChest" type="RigidBody2D" node_paths=PackedStringArray("Sprite", "HeldItem")]
+lock_rotation = true
+linear_damp = 5.0
+script = ExtResource("1_ew0nr")
+ClosedTexture = SubResource("AtlasTexture_vjctb")
+OpenTexture = SubResource("AtlasTexture_mhu8v")
+Sprite = NodePath("Sprite2D")
+HeldItem = NodePath("TestItem")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = SubResource("AtlasTexture_gt5ls")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 4)
+rotation = 1.5708
+shape = SubResource("CapsuleShape2D_dgaia")
+
+[node name="TestItem" parent="." instance=ExtResource("3_xhmi3")]
+position = Vector2(0, -8)

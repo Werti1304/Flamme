@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=4 uid="uid://254wm8i5pdt4"]
+[gd_scene load_steps=10 format=4 uid="uid://254wm8i5pdt4"]
 
 [ext_resource type="PackedScene" uid="uid://bwc3uhxa3o24o" path="res://testing/test_room_1.tscn" id="1_jl4nv"]
 [ext_resource type="PackedScene" uid="uid://cxebh7brfntkv" path="res://testing/simple_character.tscn" id="2_4uii6"]
@@ -7,6 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://t6bcys8h5uf7" path="res://testing/staff.tscn" id="5_qgix1"]
 [ext_resource type="PackedScene" uid="uid://bkcj6njh3vwda" path="res://testing/door.tscn" id="6_oh6bh"]
 [ext_resource type="TileSet" uid="uid://cgyo6mc240x5s" path="res://testing/placeholder_tileset.tres" id="7_7frt7"]
+[ext_resource type="PackedScene" uid="uid://wk6i8cghddad" path="res://testing/SimpleChest.tscn" id="8_65pep"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_53jna"]
 atlas = ExtResource("3_vvv4k")
@@ -74,7 +75,7 @@ position = Vector2(0, 576)
 
 [node name="TileMapLayer" type="TileMapLayer" parent="."]
 modulate = Color(0.980697, 0.000118979, 0.781477, 1)
-tile_map_data = PackedByteArray("AAAWAAAAAAAAAAAAAAAdAAQAAAAAAAAAAAAdAA0AAAAAAAAAAAAWABEAAAAAAAAAAAAAAAQAAAAAAAAAAAAHAAAAAAAAAAAAAAAHAAgAAAAAAAAAAAAHAAkAAAAAAAAAAAABABQAAAABAAAAAAABABUAAAABAAAAAAACABYAAAABAAAAAAADABQAAAABAAAAAAADABUAAAABAAAAAAAFABQAAAABAAAAAAAFABUAAAABAAAAAAAGABYAAAABAAAAAAAHABUAAAABAAAAAAAIABYAAAABAAAAAAAJABQAAAABAAAAAAAJABUAAAABAAAAAAALABQAAAABAAAAAAALABUAAAABAAAAAAAMABYAAAABAAAAAAANABQAAAABAAAAAAANABUAAAABAAAAAAAAAA0AAAAAAAAAAAAGABgAAAABAAAAAAAGABkAAAABAAAAAAAHABkAAAABAAAAAAAIABkAAAABAAAAAAAHABoAAAABAAAAAAAIABgAAAABAAAAAAA=")
+tile_map_data = PackedByteArray("AAAWAAAAAAAAAAAAAAAdAAQAAAAAAAAAAAAdAA0AAAAAAAAAAAAWABEAAAAAAAAAAAAAAAQAAAAAAAAAAAAHAAAAAAAAAAAAAAAHAAgAAAAAAAAAAAAHAAkAAAAAAAAAAAAAAA0AAAAAAAAAAAACABQAAAABAAAAAAACABUAAAABAAAAAAACABYAAAABAAAAAAACABcAAAABAAAAAAACABgAAAABAAAAAAADABQAAAABAAAAAAAEABQAAAABAAAAAAADABYAAAABAAAAAAAGABQAAAABAAAAAAAGABUAAAABAAAAAAAGABYAAAABAAAAAAAGABcAAAABAAAAAAAGABgAAAABAAAAAAAIABgAAAABAAAAAAAIABcAAAABAAAAAAAIABYAAAABAAAAAAAIABUAAAABAAAAAAAIABQAAAABAAAAAAAJABUAAAABAAAAAAAKABYAAAABAAAAAAAMABgAAAABAAAAAAAMABcAAAABAAAAAAAMABYAAAABAAAAAAAMABUAAAABAAAAAAAMABQAAAABAAAAAAALABcAAAABAAAAAAA=")
 tile_set = ExtResource("7_7frt7")
 
 [node name="Enemy5" parent="." instance=ExtResource("4_f8loh")]
@@ -115,3 +116,12 @@ Health = 5.0
 [node name="Door5" parent="." instance=ExtResource("6_oh6bh")]
 position = Vector2(240, 576)
 rotation = 3.14159
+
+[node name="SimpleChest" parent="." instance=ExtResource("8_65pep")]
+position = Vector2(256, 118)
+
+[node name="SimpleChest2" parent="." instance=ExtResource("8_65pep")]
+position = Vector2(66, 220)
+
+[node name="SimpleChest3" parent="." instance=ExtResource("8_65pep")]
+position = Vector2(129, 70)

@@ -16,7 +16,8 @@ public partial class SimpleCharacter : CharacterBody2D
   [Export] public float MaxSpeed = 150.0f;
   [Export] public float ProjectileSpawnFromPlayer = 20.0f;
   // Player hearts = health / 4 
-  [Export] public int PlayerHealth = 12;
+  [Export] public int PlayerBaseHealth = 12;
+  [Export] public float BulletBaseDmg = 3;
   
   [ExportGroup("Staff")]
   [Export] public float StaffDistanceFromPlayer = 15.0f;
@@ -24,13 +25,13 @@ public partial class SimpleCharacter : CharacterBody2D
   [Export] public float StaffFrictionMultiplier = .1f;
   [ExportSubgroup("Snapping")]
   [Export] public float SnapForceStaff = 500.0f;
-  [Export] public float StaffSnapFrictionMultiplier = .4f;
-  [Export] public float AngularFrictionMultiplierStaff = .1f;
+  [Export] public float StaffSnapFrictionMultiplier = .5f;
+  [Export] public float AngularFrictionMultiplierStaff = .05f;
   [ExportSubgroup("Trailing")]
-  [Export] public float StaffCharDistStartTrail = 100.0f;
-  [Export] public float StaffCharDistStopTrail = 50.0f;
-  [Export] public float TrailForceStaff = 40.0f;
-  [Export] public float StaffTrailFrictionMultiplier = .04f;
+  [Export] public float StaffCharDistStartTrail = 50.0f;
+  [Export] public float StaffCharDistStopTrail = 30.0f;
+  [Export] public float TrailForceStaff = 100.0f;
+  [Export] public float StaffTrailFrictionMultiplier = .1f;
 
   [ExportGroup("Meta")] 
   [Export] public Area2D BodyArea;
@@ -44,13 +45,15 @@ public partial class SimpleCharacter : CharacterBody2D
   [Export] public AtlasTexture CharDownTexture;
   [Export] public AtlasTexture CharLeftTexture;
   [Export] public AtlasTexture CharRightTexture;
+
+  public List<TestItem> HeldItems = new List<TestItem>();
   
   private readonly Dictionary<Const.Facing, float> _facingStaffRotationDict = new Dictionary<Const.Facing, float>()
   {
-    { Const.Facing.Up, Mathf.DegToRad(270) },
-    { Const.Facing.Down, Mathf.DegToRad(0) },
-    { Const.Facing.Left, Mathf.DegToRad(-45 + 5) },
-    { Const.Facing.Right, Mathf.DegToRad(-45 - 5) },
+    { Const.Facing.Up, Mathf.DegToRad(40) },
+    { Const.Facing.Down, Mathf.DegToRad(40) },
+    { Const.Facing.Left, Mathf.DegToRad(-45) },
+    { Const.Facing.Right, Mathf.DegToRad(-45) },
   };
 
   public readonly Dictionary<Const.Facing, Vector2I> FacingVectorDict = new Dictionary<Const.Facing, Vector2I>()
@@ -100,17 +103,58 @@ public partial class SimpleCharacter : CharacterBody2D
     InvinciblityTimer.Timeout += OnInvincibilityOver;
     BodyArea.AreaEntered += OnAreaEntered;
     BodyArea.BodyEntered += OnBodyEntered;
+
+    UpdateStats();
+
+    // Staff.IdleAnimationPlayer.Play("Staff Idle");
+  }
+
+  public int EffHealth;
+  public float EffDamage;
+
+  private void UpdateStats()
+  {
+    var upgradeHealth = 0;
+    var upgradeDamage = 0;
+    // ReSharper disable once ForeachCanBePartlyConvertedToQueryUsingAnotherGetEnumerator
+    foreach (var item in HeldItems)
+    {
+      foreach (var statUp in item.StatUpDict)
+      {
+        switch (statUp.Key)
+        {
+          case TestItem.Stats.Health:
+            upgradeHealth += statUp.Value;
+            break;
+          case TestItem.Stats.Damage:
+            upgradeDamage += statUp.Value;
+            break;
+          default:
+            throw new ArgumentOutOfRangeException();
+        }
+      }
+    }
+    EffDamage = BulletBaseDmg + upgradeDamage;
+    EffHealth = PlayerBaseHealth + upgradeHealth;
     
-    Hud.Instance.UpdateHealth(PlayerHealth);
-    
-    Staff.IdleAnimationPlayer.Play("Staff Idle");
-	}
+    Hud.Instance.UpdateHealth(EffHealth);
+  }
 
   private void OnBodyEntered(Node2D body)
   {
     if (body is Enemy e)
     {
       TakeDamage(e.GetMeleeDamage());
+    }
+    else if (body is SimpleChest t)
+    {
+      if (!t.TryInteract(this))
+      {
+        var item = t.PickupItem();
+        Hud.Instance.CollectItem(item);
+        HeldItems.Add(item);
+        UpdateStats();
+      }
     }
   }
 
@@ -199,6 +243,21 @@ public partial class SimpleCharacter : CharacterBody2D
       action();
     }
     
+    // Push rigidbodies if found
+    for (int i = 0; i < GetSlideCollisionCount(); i++)
+    {
+      var collider = GetSlideCollision(i);
+      
+      if (collider.GetCollider() is RigidBody2D rigidBody2D)
+      {
+        rigidBody2D.ApplyCentralForce(-collider.GetNormal() * 100);
+      }
+      if (collider.GetCollider() is Enemy e)
+      {
+        e.Velocity += -collider.GetNormal() * 100;
+      }
+    }
+    
     Velocity = Velocity.LimitLength(MaxSpeed);
     Velocity = Velocity.Lerp(Vector2.Zero, FrictionMultiplier);
     MoveAndSlide();
@@ -225,6 +284,7 @@ public partial class SimpleCharacter : CharacterBody2D
       var bullet = Bullet.Instantiate<Bullet>();
       GetTree().Root.AddChild(bullet);
       bullet.GlobalPosition = GlobalPosition + (Const.FacingNormVecDict[CurrentFacing] * ProjectileSpawnFromPlayer);
+      bullet.Damage = EffDamage;
       if (Velocity.Length() > 10)
       {
         bullet.Direction = 0.6f * Const.FacingNormVecDict[CurrentFacing] + 0.4f * Velocity.Normalized();
@@ -279,7 +339,7 @@ public partial class SimpleCharacter : CharacterBody2D
       {
         angleDiff += Mathf.Tau;
       }
-      Staff.AngularVelocity = angleDiff * 5;
+      Staff.AngularVelocity = angleDiff * 10;
     }
     
     // Angular friction
@@ -295,14 +355,14 @@ public partial class SimpleCharacter : CharacterBody2D
     IsInvincible = true;
     InvinciblityTimer.Start();
     // calculate actual damage through idk
-    PlayerHealth -= damage;
+    PlayerBaseHealth -= damage;
 
-    if (PlayerHealth < 1)
+    if (PlayerBaseHealth < 1)
     {
       // Game over screen
       GetTree().Quit();
     }
-    Hud.Instance.UpdateHealth(PlayerHealth);
+    Hud.Instance.UpdateHealth(PlayerBaseHealth);
   }
 
   public void OnInvincibilityOver()

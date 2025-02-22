@@ -11,13 +11,33 @@ public partial class Hud : CanvasLayer
   [Export] public Texture2D HeartHalf;
   [Export] public Texture2D Heart1Qt;
 
-  [ExportGroup("Meta")] [Export] public TextureRect[] HealthTextureRects = new TextureRect[10];
+  [ExportGroup("Meta")] 
+  [Export] public Label ItemNameLabel;
+  [Export] public Label ItemDescriptionLabel;
+  [Export] public TextureRect[] HealthTextureRects = new TextureRect[10];
 
   public override void _Ready()
   {
     ExportMetaNonNull.Check(this);
+
+    HideCollectItem();
     
     Show();
+  }
+
+  public void HideCollectItem()
+  {
+    ItemNameLabel.Hide();
+    ItemDescriptionLabel.Hide();
+  }
+
+  public void CollectItem(TestItem item)
+  {
+    ItemNameLabel.Text = item.getName();
+    ItemDescriptionLabel.Text = item.getDescription();
+    ItemNameLabel.Show();
+    ItemDescriptionLabel.Show();
+    GetTree().CreateTimer(5).Timeout += HideCollectItem;
   }
 
   public void UpdateHealth(int health)

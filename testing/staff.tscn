@@ -54,7 +54,6 @@ _data = {
 
 [node name="Staff" type="RigidBody2D" node_paths=PackedStringArray("Area", "IdleAnimationPlayer")]
 z_index = 1
-position = Vector2(0, 20)
 collision_layer = 0
 collision_mask = 2
 angular_damp = 5.0
