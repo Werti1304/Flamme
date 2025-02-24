@@ -1,5 +1,6 @@
 using Godot;
-using System;
+
+namespace Flamme.entities;
 
 public interface IPlayerDamageable
 {

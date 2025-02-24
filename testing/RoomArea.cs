@@ -1,5 +1,6 @@
 using Godot;
-using System;
+
+namespace Flamme.testing;
 
 public partial class RoomArea : Area2D
 {

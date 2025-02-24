@@ -1,5 +1,7 @@
+using Flamme.entities;
 using Godot;
-using System;
+
+namespace Flamme.testing;
 
 public partial class Bullet : Area2D
 {

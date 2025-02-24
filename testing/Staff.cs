@@ -1,6 +1,6 @@
-using Flamme.testing;
 using Godot;
-using System;
+
+namespace Flamme.testing;
 
 public partial class Staff : RigidBody2D
 {

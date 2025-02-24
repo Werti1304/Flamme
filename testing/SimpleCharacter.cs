@@ -1,3 +1,5 @@
+using Flamme.common.enums;
+using Flamme.items;
 using Flamme.Ui;
 using System;
 using System.Collections.Generic;
@@ -46,7 +48,7 @@ public partial class SimpleCharacter : CharacterBody2D
   [Export] public AtlasTexture CharLeftTexture;
   [Export] public AtlasTexture CharRightTexture;
 
-  public List<TestItem> HeldItems = new List<TestItem>();
+  public List<Item> HeldItems = new List<Item>();
   
   private readonly Dictionary<Const.Facing, float> _facingStaffRotationDict = new Dictionary<Const.Facing, float>()
   {
@@ -119,18 +121,21 @@ public partial class SimpleCharacter : CharacterBody2D
     // ReSharper disable once ForeachCanBePartlyConvertedToQueryUsingAnotherGetEnumerator
     foreach (var item in HeldItems)
     {
-      foreach (var statUp in item.StatUpDict)
+      foreach (var statUp in item.StatsUpDict)
       {
         switch (statUp.Key)
         {
-          case TestItem.Stats.Health:
+          case StatType.Health:
             upgradeHealth += statUp.Value;
             break;
-          case TestItem.Stats.Damage:
+          case StatType.Damage:
             upgradeDamage += statUp.Value;
             break;
+          // TODO 5 Implement functionality of missing stat-up types
+          // See PlayerStats for explanation on what stat should do what
           default:
-            throw new ArgumentOutOfRangeException();
+            GD.PushWarning($"Stat Up Type {statUp.Key} not yet implemented!");
+            break;
         }
       }
     }
@@ -151,6 +156,11 @@ public partial class SimpleCharacter : CharacterBody2D
       if (!t.TryInteract(this))
       {
         var item = t.PickupItem();
+
+        if (item == null)
+        {
+          return;
+        }
         Hud.Instance.CollectItem(item);
         HeldItems.Add(item);
         UpdateStats();

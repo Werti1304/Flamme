@@ -1,6 +1,6 @@
 using Godot;
-using Godot.Collections;
-using System;
+
+namespace Flamme.world.generation;
 
 public partial class Level : Node2D
 {

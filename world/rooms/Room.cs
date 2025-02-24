@@ -1,9 +1,9 @@
 using Flamme.testing;
 using Godot;
 using Godot.Collections;
-using Godot.NativeInterop;
 using System;
-using System.Diagnostics;
+
+namespace Flamme.world.rooms;
 
 [Tool]
 public partial class Room : Area2D
@@ -97,7 +97,7 @@ public partial class Room : Area2D
   private static readonly Vector2I TemplateTileAtlasCoords = new Vector2I(1, 0);
   private static readonly Vector2I TemplateWallAtlasCoords = new Vector2I(0, 0);
   
-    private void GenerateTemplate()
+  private void GenerateTemplate()
   {
     if (TileMap == null)
       return;

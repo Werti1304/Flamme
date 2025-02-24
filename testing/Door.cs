@@ -1,5 +1,6 @@
-using Flamme.testing;
 using Godot;
+
+namespace Flamme.testing;
 
 public partial class Door : StaticBody2D
 {

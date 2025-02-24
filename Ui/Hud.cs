@@ -1,3 +1,4 @@
+using Flamme.items;
 using Flamme.testing;
 using Godot;
 
@@ -31,10 +32,10 @@ public partial class Hud : CanvasLayer
     ItemDescriptionLabel.Hide();
   }
 
-  public void CollectItem(TestItem item)
+  public void CollectItem(Item item)
   {
-    ItemNameLabel.Text = item.getName();
-    ItemDescriptionLabel.Text = item.getDescription();
+    ItemNameLabel.Text = item.Name;
+    ItemDescriptionLabel.Text = item.Description;
     ItemNameLabel.Show();
     ItemDescriptionLabel.Show();
     GetTree().CreateTimer(5).Timeout += HideCollectItem;

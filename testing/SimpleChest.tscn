@@ -1,8 +1,8 @@
-[gd_scene load_steps=8 format=3 uid="uid://wk6i8cghddad"]
+[gd_scene load_steps=9 format=3 uid="uid://wk6i8cghddad"]
 
 [ext_resource type="Texture2D" uid="uid://5uf1o0e1yytl" path="res://assets/sprites/entities/env/chests.png" id="1_bfxif"]
 [ext_resource type="Script" path="res://testing/SimpleChest.cs" id="1_ew0nr"]
-[ext_resource type="PackedScene" uid="uid://bha88ktifef7e" path="res://testing/TestItem.tscn" id="3_xhmi3"]
+[ext_resource type="Texture2D" uid="uid://dteuo3synsbla" path="res://assets/sprites/placeholders.png" id="3_rkb6x"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_vjctb"]
 atlas = ExtResource("1_bfxif")
@@ -20,14 +20,19 @@ region = Rect2(0, 0, 32, 32)
 radius = 8.0
 height = 24.0
 
-[node name="SimpleChest" type="RigidBody2D" node_paths=PackedStringArray("Sprite", "HeldItem")]
+[sub_resource type="AtlasTexture" id="AtlasTexture_7gk7n"]
+atlas = ExtResource("3_rkb6x")
+region = Rect2(96, 64, 32, 32)
+
+[node name="SimpleChest" type="RigidBody2D" node_paths=PackedStringArray("Sprite", "HeldItemSprite")]
+position = Vector2(1, 0)
 lock_rotation = true
 linear_damp = 5.0
 script = ExtResource("1_ew0nr")
 ClosedTexture = SubResource("AtlasTexture_vjctb")
 OpenTexture = SubResource("AtlasTexture_mhu8v")
 Sprite = NodePath("Sprite2D")
-HeldItem = NodePath("TestItem")
+HeldItemSprite = NodePath("HeldItem")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = SubResource("AtlasTexture_gt5ls")
@@ -37,5 +42,6 @@ position = Vector2(0, 4)
 rotation = 1.5708
 shape = SubResource("CapsuleShape2D_dgaia")
 
-[node name="TestItem" parent="." instance=ExtResource("3_xhmi3")]
-position = Vector2(0, -8)
+[node name="HeldItem" type="Sprite2D" parent="."]
+position = Vector2(0, -11)
+texture = SubResource("AtlasTexture_7gk7n")

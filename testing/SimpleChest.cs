@@ -1,6 +1,8 @@
-using Flamme.testing;
+using Flamme.common.enums;
+using Flamme.items;
 using Godot;
-using System;
+
+namespace Flamme.testing;
 
 public interface ITouchInteractable
 {
@@ -25,13 +27,17 @@ public partial class SimpleChest : RigidBody2D, ITouchInteractable
 
   [ExportGroup("Meta")] 
   [Export] public Sprite2D Sprite;
-  [Export] public TestItem HeldItem;
+  [Export] public Sprite2D HeldItemSprite;
 
+  private Item _heldItem;
+  
   public override void _Ready()
   {
     ExportMetaNonNull.Check(this);
     
-    HeldItem.Hide();
+    HeldItemSprite.Hide();
+    _heldItem = ItemManager.Instance.GetRandomFromPool(LootPool.Chest);
+    HeldItemSprite.Texture = _heldItem.SpriteFull;
   }
 
   public bool TryInteract(SimpleCharacter simpleCharacter)
@@ -43,23 +49,23 @@ public partial class SimpleChest : RigidBody2D, ITouchInteractable
     return true;
   }
 
-  public TestItem PickupItem()
+  public Item PickupItem()
   {
-    if (HeldItem == null)
+    if (_heldItem == null)
     {
       return null;
     }
-    HeldItem.Hide();
-    var retItem = HeldItem;
-    HeldItem = null;
+    HeldItemSprite.Hide();
+    var itemToPickup = _heldItem;
+    _heldItem = null;
     
-    return retItem;
+    return itemToPickup;
   }
 
   public void Open()
   {
     Closed = false;
     Sprite.Texture = OpenTexture;
-    HeldItem.Show();
+    HeldItemSprite.Show();
   }
 }

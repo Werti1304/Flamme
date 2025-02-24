@@ -2,6 +2,8 @@ using Godot;
 using System;
 using System.Collections.Generic;
 
+namespace Flamme.testing;
+
 public static class Const
 {
   public static class InputMap

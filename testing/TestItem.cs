@@ -1,6 +1,7 @@
 using Godot;
-using System;
 using System.Collections.Generic;
+
+namespace Flamme.testing;
 
 public partial class TestItem : Sprite2D
 {
