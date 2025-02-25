@@ -1,6 +1,11 @@
-[gd_scene load_steps=2 format=3 uid="uid://bna3ai6fvr4er"]
+[gd_scene load_steps=3 format=3 uid="uid://bna3ai6fvr4er"]
 
 [ext_resource type="Script" path="res://entities/player/PlayableCharacter.cs" id="1_7xu7i"]
+[ext_resource type="Script" path="res://entities/player/PlayerStats.cs" id="2_75lbi"]
 
-[node name="PlayableCharacter" type="CharacterBody2D"]
+[node name="PlayableCharacter" type="CharacterBody2D" node_paths=PackedStringArray("Stats")]
 script = ExtResource("1_7xu7i")
+Stats = NodePath("PlayerStats")
+
+[node name="PlayerStats" type="Node2D" parent="."]
+script = ExtResource("2_75lbi")
