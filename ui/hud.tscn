@@ -1,7 +1,7 @@
 [gd_scene load_steps=8 format=3 uid="uid://dykd30fkfcn81"]
 
-[ext_resource type="Texture2D" uid="uid://d26yb5kn43kuv" path="res://assets/sprites/Ui.png" id="1_nco5p"]
-[ext_resource type="Script" path="res://Ui/Hud.cs" id="1_sdgqe"]
+[ext_resource type="Texture2D" uid="uid://bkoyp014i01ct" path="res://assets/sprites/Ui.png" id="1_nco5p"]
+[ext_resource type="Script" path="res://ui/Hud.cs" id="1_sdgqe"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_jsaj1"]
 atlas = ExtResource("1_nco5p")
@@ -23,7 +23,7 @@ region = Rect2(8, 8, 8, 8)
 atlas = ExtResource("1_nco5p")
 region = Rect2(0, 0, 8, 8)
 
-[node name="HUD" type="CanvasLayer" node_paths=PackedStringArray("ItemNameLabel", "ItemDescriptionLabel", "HealthTextureRects")]
+[node name="HUD" type="CanvasLayer" node_paths=PackedStringArray("ItemNameLabel", "ItemDescriptionLabel")]
 script = ExtResource("1_sdgqe")
 HeartFull = SubResource("AtlasTexture_jsaj1")
 Heart3Qt = SubResource("AtlasTexture_uij71")
@@ -31,7 +31,6 @@ HeartHalf = SubResource("AtlasTexture_pfyxd")
 Heart1Qt = SubResource("AtlasTexture_ce8hc")
 ItemNameLabel = NodePath("MarginContainer/VBoxContainer/ItemUpName")
 ItemDescriptionLabel = NodePath("MarginContainer/VBoxContainer/ItemUpDescription")
-HealthTextureRects = [NodePath("MarginContainer/VBoxContainer/HBoxContainer/TextureRect"), NodePath("MarginContainer/VBoxContainer/HBoxContainer/TextureRect2"), NodePath("MarginContainer/VBoxContainer/HBoxContainer/TextureRect3"), NodePath("MarginContainer/VBoxContainer/HBoxContainer/TextureRect4"), NodePath("MarginContainer/VBoxContainer/HBoxContainer/TextureRect5"), NodePath("MarginContainer/VBoxContainer/HBoxContainer/TextureRect6"), NodePath("MarginContainer/VBoxContainer/HBoxContainer/TextureRect7"), NodePath("MarginContainer/VBoxContainer/HBoxContainer/TextureRect8"), NodePath("MarginContainer/VBoxContainer/HBoxContainer/TextureRect9"), NodePath("MarginContainer/VBoxContainer/HBoxContainer/TextureRect10")]
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 anchors_preset = 15

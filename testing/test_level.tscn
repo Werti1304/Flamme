@@ -2,7 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://bwc3uhxa3o24o" path="res://testing/test_room_1.tscn" id="1_jl4nv"]
 [ext_resource type="PackedScene" uid="uid://cxebh7brfntkv" path="res://testing/simple_character.tscn" id="2_4uii6"]
-[ext_resource type="Texture2D" uid="uid://dteuo3synsbla" path="res://assets/sprites/placeholders.png" id="3_vvv4k"]
+[ext_resource type="Texture2D" uid="uid://bbubwm0w5w3am" path="res://assets/sprites/placeholders.png" id="3_vvv4k"]
 [ext_resource type="PackedScene" uid="uid://cefkfgi5yotw2" path="res://testing/enemy.tscn" id="4_f8loh"]
 [ext_resource type="PackedScene" uid="uid://t6bcys8h5uf7" path="res://testing/staff.tscn" id="5_qgix1"]
 [ext_resource type="PackedScene" uid="uid://bkcj6njh3vwda" path="res://testing/door.tscn" id="6_oh6bh"]

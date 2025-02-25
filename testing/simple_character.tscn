@@ -1,22 +1,22 @@
 [gd_scene load_steps=11 format=3 uid="uid://cxebh7brfntkv"]
 
-[ext_resource type="Texture2D" uid="uid://dteuo3synsbla" path="res://assets/sprites/placeholders.png" id="1_0ll0s"]
+[ext_resource type="Texture2D" uid="uid://bbubwm0w5w3am" path="res://assets/sprites/placeholders.png" id="1_0ll0s"]
 [ext_resource type="Script" path="res://testing/SimpleCharacter.cs" id="1_w5kkd"]
 [ext_resource type="PackedScene" uid="uid://by7dwhb651c2j" path="res://testing/bullet.tscn" id="2_n84tm"]
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_u4hgy"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_x3655"]
 atlas = ExtResource("1_0ll0s")
 region = Rect2(64, 96, 32, 32)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_4pb35"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_j3b5q"]
 atlas = ExtResource("1_0ll0s")
 region = Rect2(0, 96, 32, 32)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_3vwff"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_mxqvo"]
 atlas = ExtResource("1_0ll0s")
 region = Rect2(32, 96, 32, 32)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_5akwl"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_ns7hs"]
 atlas = ExtResource("1_0ll0s")
 region = Rect2(96, 96, 32, 32)
 
@@ -42,10 +42,10 @@ CharSprite = NodePath("CharSprite")
 Bullet = ExtResource("2_n84tm")
 BulletCooldownTimer = NodePath("BulletCooldownTimer")
 InvinciblityTimer = NodePath("InvincibilityTimer")
-CharUpTexture = SubResource("AtlasTexture_u4hgy")
-CharDownTexture = SubResource("AtlasTexture_4pb35")
-CharLeftTexture = SubResource("AtlasTexture_3vwff")
-CharRightTexture = SubResource("AtlasTexture_5akwl")
+CharUpTexture = SubResource("AtlasTexture_x3655")
+CharDownTexture = SubResource("AtlasTexture_j3b5q")
+CharLeftTexture = SubResource("AtlasTexture_mxqvo")
+CharRightTexture = SubResource("AtlasTexture_ns7hs")
 
 [node name="BulletCooldownTimer" type="Timer" parent="."]
 process_callback = 0

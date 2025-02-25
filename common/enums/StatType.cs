@@ -18,7 +18,10 @@ public enum StatType
   Absorption, // Extra hearts that can't be filled again
   Speed,
   Damage,
+  DamageMultiplier,
+  DamageFlat,
   FireRate,
+  FireMultiplier,
   ShotSpeed,
   ShotSize,
   Luck,

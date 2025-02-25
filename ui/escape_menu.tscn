@@ -1,7 +1,7 @@
 [gd_scene load_steps=10 format=3 uid="uid://co7tcblqmu258"]
 
-[ext_resource type="Script" path="res://Ui/EscapeMenu.cs" id="1_4h62w"]
-[ext_resource type="Texture2D" uid="uid://ddg7670el61un" path="res://assets/sprites/EscapeMenu.png" id="1_6kgr1"]
+[ext_resource type="Script" path="res://ui/EscapeMenu.cs" id="1_4h62w"]
+[ext_resource type="Texture2D" uid="uid://djyibtpo5ch1m" path="res://assets/sprites/EscapeMenu.png" id="1_6kgr1"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_7es34"]
 atlas = ExtResource("1_6kgr1")

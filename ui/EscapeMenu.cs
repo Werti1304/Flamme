@@ -1,7 +1,7 @@
 using Flamme.testing;
 using Godot;
 
-namespace Flamme.Ui;
+namespace Flamme.ui;
 
 public partial class EscapeMenu : CanvasLayer
 {
