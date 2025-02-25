@@ -40,6 +40,12 @@ public partial class PlayerStats : Node2D
   {
     // Absorption Hearts have to be added manually
     AbsorptionHealth = StartingAbsorption;
+
+    // Initialize dictionary
+    foreach (var statType in Enum.GetValues(typeof(StatType)))
+    {
+      _statSumDict[(StatType)statType] = 0;
+    }
   }
 
   /// <summary>
@@ -58,6 +64,7 @@ public partial class PlayerStats : Node2D
     // Damage has to be calculated before ShotSize!
     CalculateDamage();
     CalculateFireRate();
+    CalculateSpeed();
     CalculateShotSpeed();
     CalculateShotSize();
     CalculateLuck();
@@ -95,6 +102,12 @@ public partial class PlayerStats : Node2D
     Health = Mathf.Max(Health - AbsorptionHealth, 0);
     AbsorptionHealth = 0;
     return Health != 0;
+  }
+  
+  private void CalculateSpeed()
+  {
+    Speed = BaseSpeed + _statSumDict[StatType.Speed];
+    Speed = Mathf.Max(Speed, 200);
   }
 
   public void AddAbsorptionHealth(int absorption)

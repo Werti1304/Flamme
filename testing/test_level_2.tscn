@@ -1,0 +1,11 @@
+[gd_scene load_steps=3 format=3 uid="uid://pfvcl3kpnlnv"]
+
+[ext_resource type="PackedScene" uid="uid://bna3ai6fvr4er" path="res://entities/player/PlayableCharacter.tscn" id="1_2w77c"]
+[ext_resource type="PackedScene" uid="uid://bx0rce1ladhe6" path="res://world/rooms/pathway/pathway_testing.tscn" id="2_wx30n"]
+
+[node name="TestLevel2" type="Node2D"]
+
+[node name="PlayableCharacter" parent="." instance=ExtResource("1_2w77c")]
+position = Vector2(265, 167)
+
+[node name="Room" parent="." instance=ExtResource("2_wx30n")]

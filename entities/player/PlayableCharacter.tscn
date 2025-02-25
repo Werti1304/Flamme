@@ -1,11 +1,40 @@
-[gd_scene load_steps=3 format=3 uid="uid://bna3ai6fvr4er"]
+[gd_scene load_steps=11 format=3 uid="uid://bna3ai6fvr4er"]
 
 [ext_resource type="Script" path="res://entities/player/PlayableCharacter.cs" id="1_7xu7i"]
 [ext_resource type="Script" path="res://entities/player/PlayerStats.cs" id="2_75lbi"]
+[ext_resource type="Texture2D" uid="uid://bbubwm0w5w3am" path="res://assets/sprites/placeholders.png" id="2_ubm3h"]
+[ext_resource type="Script" path="res://entities/player/PlayerSprite.cs" id="3_xncd8"]
+[ext_resource type="Texture2D" uid="uid://bappkv8oew5gr" path="res://entities/player/textures/up.tres" id="4_066q3"]
+[ext_resource type="Texture2D" uid="uid://dk0ahkbvil5rn" path="res://entities/player/textures/down.tres" id="5_3ijsy"]
+[ext_resource type="Texture2D" uid="uid://ks73tphvblgw" path="res://entities/player/textures/left.tres" id="6_3tq2x"]
+[ext_resource type="Texture2D" uid="uid://b61echs27fvfp" path="res://entities/player/textures/right.tres" id="7_6xcbt"]
 
-[node name="PlayableCharacter" type="CharacterBody2D" node_paths=PackedStringArray("Stats")]
+[sub_resource type="AtlasTexture" id="AtlasTexture_nkoxa"]
+atlas = ExtResource("2_ubm3h")
+region = Rect2(0, 96, 32, 32)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_3pk4b"]
+
+[node name="PlayableCharacter" type="CharacterBody2D" node_paths=PackedStringArray("Stats", "Sprite")]
+z_index = 100
 script = ExtResource("1_7xu7i")
 Stats = NodePath("PlayerStats")
+Sprite = NodePath("PlayerSprite")
+
+[node name="PlayerSprite" type="Sprite2D" parent="."]
+texture = SubResource("AtlasTexture_nkoxa")
+script = ExtResource("3_xncd8")
+Up = ExtResource("4_066q3")
+Down = ExtResource("5_3ijsy")
+Left = ExtResource("6_3tq2x")
+Right = ExtResource("7_6xcbt")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_3pk4b")
 
 [node name="PlayerStats" type="Node2D" parent="."]
 script = ExtResource("2_75lbi")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+zoom = Vector2(2, 2)
+position_smoothing_enabled = true

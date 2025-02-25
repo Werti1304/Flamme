@@ -1,7 +1,8 @@
-[gd_scene load_steps=8 format=3 uid="uid://dykd30fkfcn81"]
+[gd_scene load_steps=9 format=3 uid="uid://dykd30fkfcn81"]
 
 [ext_resource type="Texture2D" uid="uid://bkoyp014i01ct" path="res://assets/sprites/Ui.png" id="1_nco5p"]
 [ext_resource type="Script" path="res://ui/Hud.cs" id="1_sdgqe"]
+[ext_resource type="Script" path="res://ui/FpsLabel.cs" id="3_opnbn"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_jsaj1"]
 atlas = ExtResource("1_nco5p")
@@ -38,16 +39,16 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/margin_left = 32
-theme_override_constants/margin_top = 32
-theme_override_constants/margin_right = 32
-theme_override_constants/margin_bottom = 32
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
 layout_mode = 2
 
 [node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
-custom_minimum_size = Vector2(0, 64)
+custom_minimum_size = Vector2(0, 32)
 layout_mode = 2
 theme_override_constants/separation = 0
 
@@ -111,14 +112,21 @@ texture = SubResource("AtlasTexture_gte7p")
 expand_mode = 2
 stretch_mode = 4
 
+[node name="FPSLabel" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Text"
+horizontal_alignment = 2
+script = ExtResource("3_opnbn")
+
 [node name="ItemUpName" type="Label" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 64
+theme_override_font_sizes/font_size = 32
 text = "Item Up "
 horizontal_alignment = 1
 
 [node name="ItemUpDescription" type="Label" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 28
+theme_override_font_sizes/font_size = 16
 text = "Description"
 horizontal_alignment = 1
