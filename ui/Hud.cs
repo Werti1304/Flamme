@@ -1,3 +1,4 @@
+using Flamme.entities.player;
 using Flamme.items;
 using Flamme.testing;
 using Godot;
@@ -15,22 +16,21 @@ public partial class Hud : CanvasLayer
   [ExportGroup("Meta")] 
   [Export] public Label ItemNameLabel;
   [Export] public Label ItemDescriptionLabel;
-
-  private TextureRect[] _healthTextureRects = new TextureRect[10];
+  [Export] public StatsDisplay StatsDisplay;
+  [Export] private TextureRect[] _healthTextureRects = new TextureRect[10];
 
   public override void _Ready()
   {
     ExportMetaNonNull.Check(this);
 
     HideCollectItem();
-    
     Show();
   }
 
   public void HideCollectItem()
   {
-    ItemNameLabel.Hide();
-    ItemDescriptionLabel.Hide();
+    ItemNameLabel.Text = "";
+    ItemDescriptionLabel.Text = "";
   }
 
   public void CollectItem(Item item)
@@ -42,6 +42,12 @@ public partial class Hud : CanvasLayer
     GetTree().CreateTimer(5).Timeout += HideCollectItem;
   }
 
+  public void UpdateStats(PlayerStats playerStats)
+  {
+    UpdateHealth(playerStats.Health);
+    StatsDisplay.UpdateStats(playerStats);
+  }
+  
   public void UpdateHealth(int health)
   {
     // Max health
@@ -62,21 +68,14 @@ public partial class Hud : CanvasLayer
 
     var lastContainer = health % 4;
 
-    switch (lastContainer)
+    _healthTextureRects[fullContainers].Texture = lastContainer switch
     {
-      case 3:
-        _healthTextureRects[fullContainers].Texture = Heart3Qt;
-        break;
-      case 2:
-        _healthTextureRects[fullContainers].Texture = HeartHalf;
-        break;
-      case 1:
-        _healthTextureRects[fullContainers].Texture = Heart1Qt;
-        break;
-      case 0:
-        _healthTextureRects[fullContainers].Texture = null;
-        break;
-    }
+      3 => Heart3Qt,
+      2 => HeartHalf,
+      1 => Heart1Qt,
+      0 => null,
+      _ => _healthTextureRects[fullContainers].Texture
+    };
 
     for (int i = fullContainers + 1; i < (40 / 4); i++)
     {
@@ -90,12 +89,6 @@ public partial class Hud : CanvasLayer
   public Hud()
   {
     _instance = this;
-
-    for (var i = 0; i < _healthTextureRects.Length; i++)
-    {
-      _healthTextureRects[i] = new TextureRect();
-      AddChild(_healthTextureRects[i]);
-    }
   }
   
   public static Hud Instance

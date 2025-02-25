@@ -20,6 +20,8 @@ radius = 12.0
 
 [node name="PlayableCharacter" type="CharacterBody2D" node_paths=PackedStringArray("Stats", "Sprite", "InteractionArea")]
 z_index = 100
+motion_mode = 1
+slide_on_ceiling = false
 script = ExtResource("1_7xu7i")
 Stats = NodePath("PlayerStats")
 Sprite = NodePath("PlayerSprite")
@@ -38,10 +40,6 @@ shape = SubResource("CircleShape2D_3pk4b")
 
 [node name="PlayerStats" type="Node2D" parent="."]
 script = ExtResource("2_75lbi")
-
-[node name="Camera2D" type="Camera2D" parent="."]
-zoom = Vector2(2, 2)
-position_smoothing_enabled = true
 
 [node name="InteractionArea" type="Area2D" parent="."]
 

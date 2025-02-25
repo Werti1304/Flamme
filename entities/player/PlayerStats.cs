@@ -11,12 +11,14 @@ namespace Flamme.entities.player;
 public partial class PlayerStats : Node2D
 {
   [Export] public int BaseHealth = 12; // /4 = Hearts
+  [Export] public int StartingHealth = 12;
   [Export] public int StartingAbsorption = 0;
-  [Export] public int BaseSpeed = 20; // px/sec?
+  [Export] public int BaseSpeed = 200; // px/sec?
   [Export] public float BaseDamage = 3; // Damage against enemies
   [Export] public float BaseDamageMultiplier = 1;
   [Export] public int BaseFireRate = 60; // /min?
   [Export] public int BaseFireRateMultiplier = 1;
+  [Export] public int BaseRange = 32; // In pixels
   [Export] public float BaseFireMultiplier = 1; // /min?
   [Export] public int BaseShotSpeed = 100; // px/sec?
   [Export] public int BaseShotSize = 6; // px radius? Different bullets for different sizes
@@ -27,6 +29,7 @@ public partial class PlayerStats : Node2D
   public int HealthContainers { get; private set; }
   public int AbsorptionHealth { get; private set; }
   public int Speed { get; private set; }
+  public int Range { get; private set; }
   public float Damage { get; private set; }
   public int FireRate { get; private set; }
   public int ShotSpeed { get; private set; }
@@ -39,6 +42,7 @@ public partial class PlayerStats : Node2D
   public override void _Ready()
   {
     // Absorption Hearts have to be added manually
+    Health = StartingHealth;
     AbsorptionHealth = StartingAbsorption;
 
     // Initialize dictionary
@@ -65,6 +69,7 @@ public partial class PlayerStats : Node2D
     CalculateDamage();
     CalculateFireRate();
     CalculateSpeed();
+    CalculateRange();
     CalculateShotSpeed();
     CalculateShotSize();
     CalculateLuck();
@@ -122,7 +127,7 @@ private void CalculateHealth()
 
   private void CalculateDamage()
   {
-    var damageMultiplier = BaseDamageMultiplier * _statSumDict[StatType.DamageMultiplier];
+    var damageMultiplier = BaseDamageMultiplier + _statSumDict[StatType.DamageMultiplier];
     Damage = (float)(damageMultiplier *
               (BaseDamage + Mathf.Sqrt(_statSumDict[StatType.Damage] * 1.3 + 1) + _statSumDict[StatType.DamageFlat]));
   }
@@ -132,6 +137,11 @@ private void CalculateHealth()
     var fireRateMultiplier = BaseFireMultiplier * _statSumDict[StatType.FireMultiplier];
     FireRate =  (int)(fireRateMultiplier * (BaseFireRate + _statSumDict[StatType.FireRate]));
     FireRate = Mathf.Max(600, FireRate);
+  }
+  
+  private void CalculateRange()
+  {
+    Range = (_statSumDict[StatType.RangeMultiplier] + 1) * (BaseRange + _statSumDict[StatType.Range]);
   }
 
   private void CalculateShotSpeed()

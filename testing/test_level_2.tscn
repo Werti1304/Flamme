@@ -1,16 +1,46 @@
-[gd_scene load_steps=4 format=3 uid="uid://pfvcl3kpnlnv"]
+[gd_scene load_steps=11 format=3 uid="uid://pfvcl3kpnlnv"]
 
 [ext_resource type="PackedScene" uid="uid://bna3ai6fvr4er" path="res://entities/player/PlayableCharacter.tscn" id="1_2w77c"]
 [ext_resource type="PackedScene" uid="uid://bx0rce1ladhe6" path="res://world/rooms/pathway/pathway_testing.tscn" id="2_wx30n"]
-[ext_resource type="PackedScene" uid="uid://wk6i8cghddad" path="res://testing/SimpleChest.tscn" id="3_68m4d"]
+[ext_resource type="PackedScene" uid="uid://bns3echaf4llk" path="res://entities/player/player_camera.tscn" id="4_xcfh3"]
+[ext_resource type="PackedScene" uid="uid://dlasale5untkh" path="res://world/rooms/shop/shop_testing.tscn" id="5_faba2"]
+[ext_resource type="PackedScene" uid="uid://crem8565jjbno" path="res://world/rooms/pathway/pathway_testing3.tscn" id="6_7tm1i"]
+[ext_resource type="PackedScene" uid="uid://f60xbh3r3ygg" path="res://world/rooms/pathway/pathway_testing2.tscn" id="7_mchvp"]
+[ext_resource type="PackedScene" uid="uid://cjmotjp6hbk5a" path="res://world/rooms/treasure/treasure_testing.tscn" id="8_r01lo"]
+[ext_resource type="PackedScene" uid="uid://ptdj1hgu0o51" path="res://world/rooms/boss/boss_testing.tscn" id="9_fehq6"]
+[ext_resource type="PackedScene" uid="uid://dklsmvvianbkf" path="res://world/rooms/smithy/smithy_testing.tscn" id="10_457r1"]
+[ext_resource type="PackedScene" uid="uid://dcwn4swb42rlv" path="res://world/rooms/pathway/pathway_testing7.tscn" id="11_avohp"]
 
 [node name="TestLevel2" type="Node2D"]
 
 [node name="PlayableCharacter" parent="." instance=ExtResource("1_2w77c")]
 position = Vector2(265, 167)
 
-[node name="Room" parent="." instance=ExtResource("2_wx30n")]
-position = Vector2(-24, 22)
+[node name="PlayerCamera" parent="." node_paths=PackedStringArray("Player") instance=ExtResource("4_xcfh3")]
+Player = NodePath("../PlayableCharacter")
 
-[node name="SimpleChest" parent="." instance=ExtResource("3_68m4d")]
-position = Vector2(186, 177)
+[node name="Node2D" type="Node2D" parent="."]
+
+[node name="Start" parent="Node2D" instance=ExtResource("2_wx30n")]
+position = Vector2(-24, 21)
+
+[node name="Shop" parent="Node2D" instance=ExtResource("5_faba2")]
+position = Vector2(-24, 373)
+
+[node name="Room" parent="Node2D" instance=ExtResource("6_7tm1i")]
+position = Vector2(520, 21)
+
+[node name="Room6" parent="Node2D" instance=ExtResource("10_457r1")]
+position = Vector2(520, -331)
+
+[node name="Room5" parent="Node2D" instance=ExtResource("11_avohp")]
+position = Vector2(-24, -331)
+
+[node name="Room4" parent="Node2D" instance=ExtResource("9_fehq6")]
+position = Vector2(-568, 21)
+
+[node name="Room3" parent="Node2D" instance=ExtResource("8_r01lo")]
+position = Vector2(1064, -331)
+
+[node name="Room2" parent="Node2D" instance=ExtResource("7_mchvp")]
+position = Vector2(1064, 21)

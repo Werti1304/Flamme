@@ -27,14 +27,20 @@ EscapeMenu="*res://ui/escape_menu.tscn"
 
 window/size/viewport_width=640
 window/size/viewport_height=360
-window/size/resizable=false
-window/size/window_width_override=1280
-window/size/window_height_override=720
-window/stretch/mode="viewport"
+window/size/window_width_override=1920
+window/size/window_height_override=1080
+window/stretch/mode="canvas_items"
 
 [dotnet]
 
 project/assembly_name="Flamme"
+
+[gui]
+
+theme/custom_font="res://assets/ui/Retro Gaming.ttf"
+theme/default_font_antialiasing=0
+theme/default_font_subpixel_positioning=0
+theme/default_font_generate_mipmaps=true
 
 [input]
 
@@ -88,6 +94,13 @@ open_escape_menu={
 , Object(InputEventJoypadButton,"resource_local_to_scene":false,"resource_name":"","device":-1,"button_index":6,"pressure":0.0,"pressed":true,"script":null)
 ]
 }
+
+[layer_names]
+
+2d_physics/layer_1="Walls"
+2d_physics/layer_2="Player"
+2d_physics/layer_3="Enemy"
+2d_physics/layer_4="Entities"
 
 [physics]
 

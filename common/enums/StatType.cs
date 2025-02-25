@@ -20,6 +20,8 @@ public enum StatType
   Damage,
   DamageMultiplier,
   DamageFlat,
+  Range,
+  RangeMultiplier,
   FireRate,
   FireMultiplier,
   ShotSpeed,

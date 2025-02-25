@@ -1,3 +1,4 @@
+using Flamme.world.rooms;
 using Godot;
 
 namespace Flamme.world.generation;

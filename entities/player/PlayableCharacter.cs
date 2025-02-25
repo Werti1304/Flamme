@@ -1,19 +1,19 @@
 using Flamme.items;
 using Godot;
-using System;
 using System.Collections.Generic;
 using Flamme.common.enums;
 using Flamme.common.input;
 using Flamme.entities.player;
 using Flamme.testing;
 using Flamme.ui;
+using Room = Flamme.world.rooms.Room;
 
 public partial class PlayableCharacter : CharacterBody2D
 {
   [ExportGroup("Character")]
   
   [ExportSubgroup("Physics")]
-  [Export] public float AccelerationFactor = 0.2f;
+  [Export] public float AccelerationFactor = 0.1f;
   [Export] public float Friction = .1f;
   
   [ExportGroup("Meta")] 
@@ -29,8 +29,8 @@ public partial class PlayableCharacter : CharacterBody2D
     
     InteractionArea.AreaEntered += AreaEntered;
     InteractionArea.BodyEntered += BodyEntered;
-    
-    Stats.Update(HeldItems);
+
+    OnItemChange();
   }
   
   private Vector2 _movingVector = Vector2.Zero;
@@ -49,6 +49,7 @@ public partial class PlayableCharacter : CharacterBody2D
       PlayerInputMap.Dict[PlayerInputMap.Action.MoveRight],
       PlayerInputMap.Dict[PlayerInputMap.Action.MoveUp],
       PlayerInputMap.Dict[PlayerInputMap.Action.MoveDown]);
+    _movingVector = _movingVector.Normalized().Round();
     
     _shootingVector = Input.GetVector(
       PlayerInputMap.Dict[PlayerInputMap.Action.ShootLeft],
@@ -70,11 +71,10 @@ public partial class PlayableCharacter : CharacterBody2D
     Move(delta);
   }
 
-  public void PickupItem(Item item)
+  private void OnItemChange()
   {
-    HeldItems.Add(item);
     Stats.Update(HeldItems);
-    Hud.Instance.UpdateHealth(Stats.HealthContainers);
+    Hud.Instance.UpdateStats(Stats);
   }
   
   private void BodyEntered(Node2D body)
@@ -90,24 +90,30 @@ public partial class PlayableCharacter : CharacterBody2D
           return;
         }
 
-        Hud.Instance.CollectItem(item);
         HeldItems.Add(item);
-        Stats.Update(HeldItems);
+        Hud.Instance.CollectItem(item);
+        OnItemChange();
       }
     }
   }
 
   private void AreaEntered(Area2D area)
   {
-
+    if (area is Room room)
+    {
+      if (GetViewport().GetCamera2D() is PlayerCamera camera)
+      {
+        camera.SetRoom(room);
+      }
+    }
   }
 
   private void Move(double delta)
   {
-    var factor = (float)(delta * 60);
-    Velocity = factor * Velocity.Lerp(Vector2.Zero, Friction);
-    Velocity += factor * _movingVector * (AccelerationFactor * Stats.Speed);
+    Velocity = Velocity.Lerp(_movingVector.Round() * Stats.Speed, AccelerationFactor);
     Velocity = Velocity.LimitLength(Stats.Speed);
+    // Velocity = Velocity.Lerp(Vector2.Zero, Friction);
+    
     MoveAndSlide();
   }
 }

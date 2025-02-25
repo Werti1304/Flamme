@@ -59,7 +59,7 @@ layout_mode = 2
 alignment = 1
 
 [node name="ContinueButton" type="TextureButton" parent="Control/MarginContainer/VBoxContainer"]
-custom_minimum_size = Vector2(0, 192)
+custom_minimum_size = Vector2(0, 64)
 layout_mode = 2
 texture_normal = SubResource("AtlasTexture_7es34")
 texture_pressed = SubResource("AtlasTexture_rggcx")
@@ -67,14 +67,14 @@ texture_hover = SubResource("AtlasTexture_vrj0n")
 stretch_mode = 5
 
 [node name="OptionsButton" type="TextureButton" parent="Control/MarginContainer/VBoxContainer"]
-custom_minimum_size = Vector2(0, 192)
+custom_minimum_size = Vector2(0, 64)
 layout_mode = 2
 texture_normal = SubResource("AtlasTexture_x3vlh")
 texture_hover = SubResource("AtlasTexture_6qvfa")
 stretch_mode = 5
 
 [node name="QuitButton" type="TextureButton" parent="Control/MarginContainer/VBoxContainer"]
-custom_minimum_size = Vector2(0, 192)
+custom_minimum_size = Vector2(0, 64)
 layout_mode = 2
 texture_normal = SubResource("AtlasTexture_io40a")
 texture_hover = SubResource("AtlasTexture_vcb5n")

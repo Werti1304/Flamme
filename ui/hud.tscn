@@ -1,8 +1,16 @@
-[gd_scene load_steps=9 format=3 uid="uid://dykd30fkfcn81"]
+[gd_scene load_steps=18 format=3 uid="uid://dykd30fkfcn81"]
 
 [ext_resource type="Texture2D" uid="uid://bkoyp014i01ct" path="res://assets/sprites/Ui.png" id="1_nco5p"]
 [ext_resource type="Script" path="res://ui/Hud.cs" id="1_sdgqe"]
+[ext_resource type="Shader" path="res://ui/vignette.gdshader" id="3_dwg6y"]
 [ext_resource type="Script" path="res://ui/FpsLabel.cs" id="3_opnbn"]
+[ext_resource type="Script" path="res://ui/StatsDisplay.cs" id="4_44t1d"]
+[ext_resource type="Texture2D" uid="uid://bn6r24kyp722p" path="res://assets/ui/Damage.png" id="5_sbasx"]
+[ext_resource type="Texture2D" uid="uid://cx1xji7m38snb" path="res://assets/ui/Fire Rate.png" id="6_pemib"]
+[ext_resource type="Texture2D" uid="uid://calce3udjb716" path="res://assets/ui/Speed.png" id="7_bbmlp"]
+[ext_resource type="Texture2D" uid="uid://mtioqtnjk5xs" path="res://assets/ui/Range.png" id="8_876hy"]
+[ext_resource type="Texture2D" uid="uid://c5of008isrvka" path="res://assets/ui/ShotSpeed.png" id="9_qwxl3"]
+[ext_resource type="Texture2D" uid="uid://chm1nsogymsdx" path="res://assets/ui/Luck.png" id="10_wiy0u"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_jsaj1"]
 atlas = ExtResource("1_nco5p")
@@ -20,11 +28,15 @@ region = Rect2(0, 8, 8, 8)
 atlas = ExtResource("1_nco5p")
 region = Rect2(8, 8, 8, 8)
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_2uaof"]
+shader = ExtResource("3_dwg6y")
+shader_parameter/darkness_intensity = 1.0
+
 [sub_resource type="AtlasTexture" id="AtlasTexture_gte7p"]
 atlas = ExtResource("1_nco5p")
 region = Rect2(0, 0, 8, 8)
 
-[node name="HUD" type="CanvasLayer" node_paths=PackedStringArray("ItemNameLabel", "ItemDescriptionLabel")]
+[node name="HUD" type="CanvasLayer" node_paths=PackedStringArray("ItemNameLabel", "ItemDescriptionLabel", "StatsDisplay", "_healthTextureRects")]
 script = ExtResource("1_sdgqe")
 HeartFull = SubResource("AtlasTexture_jsaj1")
 Heart3Qt = SubResource("AtlasTexture_uij71")
@@ -32,23 +44,36 @@ HeartHalf = SubResource("AtlasTexture_pfyxd")
 Heart1Qt = SubResource("AtlasTexture_ce8hc")
 ItemNameLabel = NodePath("MarginContainer/VBoxContainer/ItemUpName")
 ItemDescriptionLabel = NodePath("MarginContainer/VBoxContainer/ItemUpDescription")
+StatsDisplay = NodePath("MarginContainer/VBoxContainer/HBoxContainer2/StatsDisplay")
+_healthTextureRects = [NodePath("MarginContainer/VBoxContainer/HBoxContainer/TextureRect"), NodePath("MarginContainer/VBoxContainer/HBoxContainer/TextureRect2"), NodePath("MarginContainer/VBoxContainer/HBoxContainer/TextureRect3"), NodePath("MarginContainer/VBoxContainer/HBoxContainer/TextureRect4"), NodePath("MarginContainer/VBoxContainer/HBoxContainer/TextureRect5"), NodePath("MarginContainer/VBoxContainer/HBoxContainer/TextureRect6"), NodePath("MarginContainer/VBoxContainer/HBoxContainer/TextureRect7"), NodePath("MarginContainer/VBoxContainer/HBoxContainer/TextureRect8"), NodePath("MarginContainer/VBoxContainer/HBoxContainer/TextureRect9"), NodePath("MarginContainer/VBoxContainer/HBoxContainer/TextureRect10")]
 
-[node name="MarginContainer" type="MarginContainer" parent="."]
+[node name="Vignette" type="ColorRect" parent="."]
+material = SubResource("ShaderMaterial_2uaof")
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/margin_left = 16
-theme_override_constants/margin_top = 16
-theme_override_constants/margin_right = 16
-theme_override_constants/margin_bottom = 16
+color = Color(0, 0, 0, 0.0392157)
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -1.0
+offset_bottom = -1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 4
+theme_override_constants/margin_bottom = 4
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
 layout_mode = 2
 
 [node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
-custom_minimum_size = Vector2(0, 32)
+custom_minimum_size = Vector2(0, 16)
 layout_mode = 2
 theme_override_constants/separation = 0
 
@@ -115,18 +140,44 @@ stretch_mode = 4
 [node name="FPSLabel" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
-text = "Text"
+text = "FPS"
 horizontal_alignment = 2
 script = ExtResource("3_opnbn")
 
 [node name="ItemUpName" type="Label" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 32
+theme_override_font_sizes/font_size = 33
 text = "Item Up "
 horizontal_alignment = 1
 
 [node name="ItemUpDescription" type="Label" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 16
+theme_override_font_sizes/font_size = 22
 text = "Description"
 horizontal_alignment = 1
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="StatsDisplay" type="RichTextLabel" parent="MarginContainer/VBoxContainer/HBoxContainer2"]
+custom_minimum_size = Vector2(92, 32)
+layout_mode = 2
+theme_override_colors/default_color = Color(0.779291, 0.779291, 0.779291, 1)
+theme_override_font_sizes/normal_font_size = 11
+bbcode_enabled = true
+text = "Health
+Damage
+FireRate
+Speed
+Range
+ShotSpeed
+ShotSize
+Luck"
+script = ExtResource("4_44t1d")
+DamageIcon = ExtResource("5_sbasx")
+FireRateIcon = ExtResource("6_pemib")
+SpeedIcon = ExtResource("7_bbmlp")
+RangeIcon = ExtResource("8_876hy")
+ShotSpeedIcon = ExtResource("9_qwxl3")
+LuckIcon = ExtResource("10_wiy0u")
