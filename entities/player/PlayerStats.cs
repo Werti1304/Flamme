@@ -12,7 +12,7 @@ public partial class PlayerStats : Node2D
 {
   [Export] public int BaseHealth = 12; // /4 = Hearts
   [Export] public int StartingAbsorption = 0;
-  [Export] public int BaseSpeed = 50; // px/sec?
+  [Export] public int BaseSpeed = 20; // px/sec?
   [Export] public float BaseDamage = 3; // Damage against enemies
   [Export] public float BaseDamageMultiplier = 1;
   [Export] public int BaseFireRate = 60; // /min?
@@ -57,7 +57,7 @@ public partial class PlayerStats : Node2D
   {
     foreach (var statUp in items.SelectMany(item => item.StatsUpDict))
     {
-      _statSumDict.Add(statUp.Key, statUp.Value);
+      _statSumDict[statUp.Key] += statUp.Value;
     }
 
     CalculateHealth();
@@ -107,7 +107,7 @@ public partial class PlayerStats : Node2D
   private void CalculateSpeed()
   {
     Speed = BaseSpeed + _statSumDict[StatType.Speed];
-    Speed = Mathf.Max(Speed, 200);
+    Speed = Mathf.Min(Speed, 200);
   }
 
   public void AddAbsorptionHealth(int absorption)

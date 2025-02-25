@@ -39,6 +39,15 @@ public partial class SimpleChest : RigidBody2D, ITouchInteractable
     _heldItem = ItemManager.Instance.GetRandomFromPool(LootPool.Chest);
     HeldItemSprite.Texture = _heldItem.SpriteFull;
   }
+  
+  public bool TryInteract(PlayableCharacter character)
+  {
+    if (!Closed)
+      return false;
+
+    Open();
+    return true;
+  }
 
   public bool TryInteract(SimpleCharacter simpleCharacter)
   {

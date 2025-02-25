@@ -67,7 +67,7 @@ public partial class PlayableCharacter : CharacterBody2D
 
   public override void _PhysicsProcess(double delta)
   {
-    Move();
+    Move(delta);
   }
 
   public void PickupItem(Item item)
@@ -79,7 +79,22 @@ public partial class PlayableCharacter : CharacterBody2D
   
   private void BodyEntered(Node2D body)
   {
+    if (body is SimpleChest chest)
+    {
+      if (!chest.TryInteract(this))
+      {
+        var item = chest.PickupItem();
 
+        if (item == null)
+        {
+          return;
+        }
+
+        Hud.Instance.CollectItem(item);
+        HeldItems.Add(item);
+        Stats.Update(HeldItems);
+      }
+    }
   }
 
   private void AreaEntered(Area2D area)
@@ -87,11 +102,12 @@ public partial class PlayableCharacter : CharacterBody2D
 
   }
 
-  private void Move()
+  private void Move(double delta)
   {
-    Velocity += _movingVector * (AccelerationFactor * Stats.Speed);
+    var factor = (float)(delta * 60);
+    Velocity = factor * Velocity.Lerp(Vector2.Zero, Friction);
+    Velocity += factor * _movingVector * (AccelerationFactor * Stats.Speed);
     Velocity = Velocity.LimitLength(Stats.Speed);
-    Velocity = Velocity.Lerp(Vector2.Zero, Friction);
     MoveAndSlide();
   }
 }
