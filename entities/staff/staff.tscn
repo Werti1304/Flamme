@@ -24,11 +24,12 @@ StaffCore = NodePath("Model/CoreSprite")
 PickupArea = NodePath("Model/PickupArea")
 Area = NodePath("StaffArea")
 PinJoint = NodePath("PinJoint2D")
-CollisionShape = NodePath("StaffArea/CollisionShape2D")
+CollisionShape = NodePath("CollisionShape2D")
 ShootingTimer = NodePath("Timer")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_i6gfb")
+debug_color = Color(1, 0, 0.145098, 1)
 
 [node name="Model" type="Node2D" parent="."]
 

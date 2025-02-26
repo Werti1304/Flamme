@@ -31,6 +31,7 @@ public partial class Staff : RigidBody2D
   private bool _staffOverlappingWithPlayer = false;
   private bool _snapped = false;
   private bool _trailing = false;
+  private bool _collisionDisabled = false;
   private Tween _tween;
 
   // TODO 2 make pulsate when no owner yet
@@ -68,9 +69,10 @@ public partial class Staff : RigidBody2D
       }
       
       // When shooting, remove all collision from staff
-      if (!CollisionShape.Disabled)
+      if (!_collisionDisabled)
       {
-        CollisionShape.SetDeferred("Disabled", true);
+        _collisionDisabled = true;
+        CollisionShape.SetDeferred("disabled", true);
       }
 
       // Move Staff towards player
@@ -82,9 +84,10 @@ public partial class Staff : RigidBody2D
     }
     
     // Not snapping anymore, enable collision again for staff
-    if (CollisionShape.Disabled)
+    if (_collisionDisabled && Area.GetOverlappingBodies().Count == 0)
     {
-      CollisionShape.SetDeferred("Disabled", false);
+      _collisionDisabled = false;
+      CollisionShape.SetDeferred("disabled", false);
     }
 
     if (!ShootingTimer.IsStopped())
