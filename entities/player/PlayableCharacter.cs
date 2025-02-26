@@ -20,6 +20,9 @@ public partial class PlayableCharacter : CharacterBody2D
   [Export] public PlayerStats Stats;
   [Export] public PlayerSprite Sprite;
   [Export] public Area2D InteractionArea;
+
+  [Signal]
+  public delegate void StatsChangedEventHandler(PlayerStats stats);
   
   public List<Item> HeldItems = new List<Item>();
   
@@ -79,6 +82,7 @@ public partial class PlayableCharacter : CharacterBody2D
   private void OnItemChange()
   {
     Stats.Update(HeldItems);
+    EmitSignal(SignalName.StatsChanged, Stats);
     Hud.Instance.UpdateStats(Stats);
   }
   

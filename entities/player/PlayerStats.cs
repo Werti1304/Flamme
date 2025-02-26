@@ -10,6 +10,7 @@ namespace Flamme.entities.player;
 
 public partial class PlayerStats : Node2D
 {
+  // TODO Include Staff Stats in all calculations.. yaaay
   [Export] public int BaseHealth = 12; // /4 = Hearts
   [Export] public int StartingHealth = 12;
   [Export] public int StartingAbsorption = 0;

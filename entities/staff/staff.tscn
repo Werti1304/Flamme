@@ -13,7 +13,7 @@ height = 40.0
 [sub_resource type="CircleShape2D" id="CircleShape2D_mqpgm"]
 radius = 8.0
 
-[node name="Staff" type="RigidBody2D" node_paths=PackedStringArray("StaffSprite", "StaffCore", "PickupArea", "Area", "PinJoint", "CollisionShape")]
+[node name="Staff" type="RigidBody2D" node_paths=PackedStringArray("StaffSprite", "StaffCore", "PickupArea", "Area", "PinJoint", "CollisionShape", "ShootingTimer")]
 z_index = 90
 collision_layer = 0
 collision_mask = 13
@@ -25,6 +25,7 @@ PickupArea = NodePath("Model/PickupArea")
 Area = NodePath("StaffArea")
 PinJoint = NodePath("PinJoint2D")
 CollisionShape = NodePath("StaffArea/CollisionShape2D")
+ShootingTimer = NodePath("Timer")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_i6gfb")
@@ -56,4 +57,8 @@ shape = SubResource("CircleShape2D_mqpgm")
 
 [node name="PinJoint2D" type="PinJoint2D" parent="."]
 node_a = NodePath("..")
+bias = 0.9
 angular_limit_enabled = true
+
+[node name="Timer" type="Timer" parent="."]
+process_callback = 0

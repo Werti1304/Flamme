@@ -1,3 +1,4 @@
+using Flamme.entities.player;
 using Flamme.testing;
 using Godot;
 
@@ -24,11 +25,13 @@ public partial class Staff : RigidBody2D
   [Export] public Area2D Area;
   [Export] public PinJoint2D PinJoint;
   [Export] public CollisionShape2D CollisionShape;
+  [Export] public Timer ShootingTimer;
 
   private PlayableCharacter _owner;
   private bool _staffOverlappingWithPlayer = false;
   private bool _snapped = false;
   private bool _trailing = false;
+  private Tween _tween;
 
   // TODO 2 make pulsate when no owner yet
   // TODO 2 add shadow below and hovering of staff when neither trailing nor shooting (but has owner)
@@ -37,11 +40,15 @@ public partial class Staff : RigidBody2D
   public override void _Ready()
   {
     ExportMetaNonNull.Check(this);
+
+    StaffCore.Modulate = StaffCore.Modulate with { A = 0 };
     
     PickupArea.BodyEntered += PickupAreaOnBodyEntered;
     
     Area.BodyEntered += AreaOnBodyEntered;
     Area.BodyExited += AreaOnBodyExited;
+    
+    ShootingTimer.Timeout += ShootingTimerOnTimeout;
   }
   
   public override void _PhysicsProcess(double delta)
@@ -55,6 +62,11 @@ public partial class Staff : RigidBody2D
     
     if (_owner.IsShooting)
     {
+      if (ShootingTimer.IsStopped())
+      {
+        ShootingTimer.Start();
+      }
+      
       // When shooting, remove all collision from staff
       if (!CollisionShape.Disabled)
       {
@@ -73,6 +85,11 @@ public partial class Staff : RigidBody2D
     if (CollisionShape.Disabled)
     {
       CollisionShape.SetDeferred("Disabled", false);
+    }
+
+    if (!ShootingTimer.IsStopped())
+    {
+      ShootingTimer.Stop();
     }
     
     // --- Trailing ---
@@ -93,54 +110,6 @@ public partial class Staff : RigidBody2D
     var directionTrailing = targetVecTrailing.Normalized();
     var distanceTrailing = targetVecTrailing.Length();
     ApplyCentralForce(directionTrailing * Mathf.Pow(Mathf.Clamp(distanceTrailing, 0, 10), 2) * TrailingForce);
-    
-    // if (!_isTrailing && !isShooting && GlobalPosition.DistanceTo(Staff.GlobalPosition) > StaffCharDistStartTrail)
-    // {
-    //   _isTrailing = true;
-    // }
-    // else if(_isTrailing && GlobalPosition.DistanceTo(Staff.GlobalPosition) < StaffCharDistStopTrail)
-    // {
-    //   _isTrailing = false;
-    // }
-    //
-    // else if(_isTrailing)
-    // {
-    //   // Otherwise, just trail behind the player if they're too far away
-    //   var targetVec = GlobalPosition - Staff.GlobalTransform.Origin;
-    //   var direction = targetVec.Normalized();
-    //   var distance = targetVec.Length();
-    //   Staff.ApplyCentralForce(direction * Mathf.Clamp(distance, 0, 10) * TrailForceStaff);
-    //   Staff.LinearVelocity = Staff.LinearVelocity.Lerp(Vector2.Zero, StaffTrailFrictionMultiplier); // Friction
-    // }
-    // else
-    // {
-    //   Staff.LinearVelocity = Staff.LinearVelocity.Lerp(Vector2.Zero, StaffFrictionMultiplier);
-    // }
-    //
-    // // Max speed
-    // Staff.LinearVelocity = Staff.LinearVelocity.LimitLength(MaxSpeedStaff * 10);
-    //
-    // var overlapsPlayer = Staff.Area.GetOverlappingBodies().Contains(this);
-    // var overlapMinusPlayer = Staff.Area.GetOverlappingBodies().Count - (overlapsPlayer ? 1 : 0);
-    //
-    // if (isShooting && overlapMinusPlayer == 0 && Mathf.Abs(_facingStaffRotationDict[CurrentFacing] - Staff.Rotation) > 0.01)
-    // {
-    //   var targetRotation = _facingStaffRotationDict[CurrentFacing];
-    //   var angleDiff = Mathf.PosMod(_facingStaffRotationDict[CurrentFacing] - Staff.Rotation, Mathf.Tau);
-    //
-    //   if (angleDiff > Mathf.Pi)
-    //   {
-    //     angleDiff -= Mathf.Tau;
-    //   }
-    //   else
-    //   {
-    //     angleDiff += Mathf.Tau;
-    //   }
-    //   Staff.AngularVelocity = angleDiff * 10;
-    // }
-    //
-    // // Angular friction
-    // Staff.AngularVelocity = Mathf.Lerp(Staff.AngularVelocity, 0, AngularFrictionMultiplierStaff);
   }
 
   public override void _IntegrateForces(PhysicsDirectBodyState2D state)
@@ -166,7 +135,23 @@ public partial class Staff : RigidBody2D
       LinearVelocity = LinearVelocity.Lerp(Vector2.Zero, BaseFriction);
     }
   }
-  
+
+  public void UpdateFireRate()
+  {
+    ShootingTimer.Stop();
+    ShootingTimer.WaitTime = 60.0f / _owner.Stats.FireRate;
+  }
+
+  private void ShootingTimerOnTimeout()
+  {
+    _tween?.Kill();
+    _tween = GetTree().CreateTween();
+
+    _tween.TweenProperty(StaffCore, "modulate:a", 1, 0.2f).SetTrans(Tween.TransitionType.Sine);
+    _tween.TweenProperty(StaffCore, "modulate:a", 0, ShootingTimer.WaitTime / 2.0f)
+      .SetTrans(Tween.TransitionType.Sine);
+  }
+
   private void AreaOnBodyEntered(Node2D body)
   {
     if (body is not PlayableCharacter)
@@ -189,9 +174,16 @@ public partial class Staff : RigidBody2D
       return;
     
     _owner = playableCharacter;
+    _owner.StatsChanged += OwnerOnStatsChanged;
+    OwnerOnStatsChanged(_owner.Stats);
     PickupArea.SetDeferred("Monitoring", false);
   }
-  
+
+  private void OwnerOnStatsChanged(PlayerStats stats)
+  {
+    UpdateFireRate();
+  }
+
   private void CheckSnap()
   {
     if (_owner.IsShooting)
