@@ -294,7 +294,7 @@ public partial class SimpleCharacter : CharacterBody2D
       var bullet = Bullet.Instantiate<Bullet>();
       GetTree().Root.AddChild(bullet);
       bullet.GlobalPosition = GlobalPosition + (Const.FacingNormVecDict[CurrentFacing] * ProjectileSpawnFromPlayer);
-      bullet.Damage = EffDamage;
+      // bullet.Damage = EffDamage;
       if (Velocity.Length() > 10)
       {
         bullet.Direction = 0.6f * Const.FacingNormVecDict[CurrentFacing] + 0.4f * Velocity.Normalized();

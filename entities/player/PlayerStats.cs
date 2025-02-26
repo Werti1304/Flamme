@@ -21,8 +21,8 @@ public partial class PlayerStats : Node2D
   [Export] public int BaseFireRateMultiplier = 1;
   [Export] public int BaseRange = 32; // In pixels
   [Export] public float BaseFireMultiplier = 1; // /min?
-  [Export] public int BaseShotSpeed = 100; // px/sec?
-  [Export] public int BaseShotSize = 6; // px radius? Different bullets for different sizes
+  [Export] public int BaseShotSpeed = 2; // px/sec? no
+  [Export] public int BaseShotSize = 6; // px radius? Different bullets for different sizes // TODO 2 Implement using muliple sprites
   [Export] public int BaseLuck = 3; // Chance for more loot / better items
   [Export] public int BaseMana = 100; // Idk yet
 

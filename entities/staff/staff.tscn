@@ -19,7 +19,6 @@ z_index = 90
 collision_layer = 0
 collision_mask = 15
 script = ExtResource("1_w1xtw")
-SnapForce = 200.0
 StaffSprite = NodePath("Model/StaffSprite")
 StaffCore = NodePath("Model/CoreSprite")
 PickupArea = NodePath("Model/PickupArea")

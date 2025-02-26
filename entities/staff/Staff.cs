@@ -8,10 +8,10 @@ public partial class Staff : RigidBody2D
 {
   [Export] public float BaseFriction = .1f;
   [ExportCategory("Staff Player Interaction")]
-  [Export] public float DistanceFromPlayer = 18;
+  [Export] public float DistanceFromPlayer = 16;
   [ExportGroup("Snapping")] 
-  [Export] public float SnapForce = 500.0f;
-  [Export] public float SnapFrictionWeight = .3f;
+  [Export] public float SnapSpeed = 700.0f;
+  [Export] public float SnapDamp = 0.3f;
   [ExportGroup("Trailing")] 
   [Export] public float TrailingForce = 30.0f;
   [Export] public float TrailingFrictionWeight = .3f;
@@ -81,7 +81,7 @@ public partial class Staff : RigidBody2D
       var targetVec = _owner.GlobalPosition + (_owner.ShootingVector * DistanceFromPlayer) - GlobalPosition; // ;
       var direction = targetVec.Normalized();
       var distance = targetVec.Length();
-      ApplyCentralForce(direction * Mathf.Clamp(distance, 0, 200) * SnapForce);
+      // ApplyCentralForce(direction * Mathf.Clamp(distance, 0, 200) * SnapForce);
       return;
     }
     
@@ -90,11 +90,6 @@ public partial class Staff : RigidBody2D
     {
       _collisionDisabled = false;
       CollisionShape.SetDeferred("disabled", false);
-    }
-
-    if (!ShootingTimer.IsStopped())
-    {
-      ShootingTimer.Stop();
     }
     
     // --- Trailing ---
@@ -126,11 +121,13 @@ public partial class Staff : RigidBody2D
     if (_owner.IsShooting)
     {
       var targetPos = _owner.Position + (_owner.ShootingVector * DistanceFromPlayer);
-      var direction = _owner.Position.DirectionTo(targetPos);
-      var targetRotation = direction.Angle();
+      var rotationDirection = _owner.Position.DirectionTo(targetPos);
+      var targetRotation = rotationDirection.Angle();
       Rotation = targetRotation;
 
-      LinearVelocity = LinearVelocity.Lerp(Vector2.Zero, SnapFrictionWeight);
+      var targetVec = _owner.GlobalPosition + (_owner.ShootingVector * DistanceFromPlayer) - GlobalPosition; // ;
+      var direction = targetVec.Normalized();
+      LinearVelocity = LinearVelocity.Lerp(direction * SnapSpeed, SnapDamp);
     }
     else if (_trailing)
     {
@@ -150,6 +147,11 @@ public partial class Staff : RigidBody2D
 
   private void ShootingTimerOnTimeout()
   {
+    if (!_owner.IsShooting)
+    {
+      ShootingTimer.Stop();
+      return;
+    }
     _tween?.Kill();
     _tween = GetTree().CreateTween();
 
@@ -167,8 +169,18 @@ public partial class Staff : RigidBody2D
     var bullet = _bullet.Instantiate<Bullet>();
     GetTree().Root.AddChild(bullet);
     bullet.GlobalPosition = Position + (_owner.ShootingVector * ShootDistanceFromStaff);
-    bullet.Damage = _owner.Stats.Damage;
-    bullet.Direction = (_owner.ShootingVector + _owner.Velocity / _owner.Stats.Speed).Normalized();
+    // bullet.Direction = (_owner.ShootingVector + (_owner.Velocity / _owner.Stats.Speed)).Normalized();
+    if (_owner.Velocity.Length() > 10)
+    {
+      bullet.Direction = 0.8f * _owner.ShootingVector + 0.4f * _owner.Velocity.Normalized();
+    }
+    else
+    {
+      bullet.Direction = _owner.ShootingVector;
+    }
+    var targetRotation = bullet.Direction.Angle();
+    bullet.Rotation = targetRotation;
+    bullet.Fire(_owner.Stats);
   }
 
   private void AreaOnBodyEntered(Node2D body)
@@ -214,8 +226,9 @@ public partial class Staff : RigidBody2D
       {
         SetSnap(false);
       }
-      else if (!_snapped && distance < 3.0f)
+      else if (!_snapped && distance < 5.0f)
       {
+        SetDeferred(Node2D.PropertyName.GlobalPosition, _owner.Position + (_owner.ShootingVector * DistanceFromPlayer));
         SetSnap(true);
       }
     }
