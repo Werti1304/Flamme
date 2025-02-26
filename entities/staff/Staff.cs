@@ -8,7 +8,7 @@ public partial class Staff : RigidBody2D
 {
   [Export] public float BaseFriction = .1f;
   [ExportCategory("Staff Player Interaction")]
-  [Export] public float DistanceFromPlayer = 15;
+  [Export] public float DistanceFromPlayer = 18;
   [ExportGroup("Snapping")] 
   [Export] public float SnapForce = 500.0f;
   [Export] public float SnapFrictionWeight = .3f;
@@ -17,6 +17,8 @@ public partial class Staff : RigidBody2D
   [Export] public float TrailingFrictionWeight = .3f;
   [Export] public float DistanceToStartTrailing = 60.0f;
   [Export] public float DistanceToStopTrailing = 40.0f;
+  [ExportGroup("Shooting")] 
+  [Export] public float ShootDistanceFromStaff = 10.0f;
   
   [ExportGroup("Meta")]
   [Export] public Sprite2D StaffSprite;
@@ -127,6 +129,7 @@ public partial class Staff : RigidBody2D
       var direction = _owner.Position.DirectionTo(targetPos);
       var targetRotation = direction.Angle();
       Rotation = targetRotation;
+
       LinearVelocity = LinearVelocity.Lerp(Vector2.Zero, SnapFrictionWeight);
     }
     else if (_trailing)
@@ -150,9 +153,22 @@ public partial class Staff : RigidBody2D
     _tween?.Kill();
     _tween = GetTree().CreateTween();
 
-    _tween.TweenProperty(StaffCore, "modulate:a", 1, 0.2f).SetTrans(Tween.TransitionType.Sine);
+    _tween.TweenProperty(StaffCore, "modulate:a", 1, 0.2f).SetTrans(Tween.TransitionType.Sine)
+      .Finished += Shoot;
     _tween.TweenProperty(StaffCore, "modulate:a", 0, ShootingTimer.WaitTime / 2.0f)
       .SetTrans(Tween.TransitionType.Sine);
+  }
+
+  [Export] private PackedScene _bullet;
+  
+  private void Shoot()
+  {
+    // TODO In the works
+    var bullet = _bullet.Instantiate<Bullet>();
+    GetTree().Root.AddChild(bullet);
+    bullet.GlobalPosition = Position + (_owner.ShootingVector * ShootDistanceFromStaff);
+    bullet.Damage = _owner.Stats.Damage;
+    bullet.Direction = (_owner.ShootingVector + _owner.Velocity / _owner.Stats.Speed).Normalized();
   }
 
   private void AreaOnBodyEntered(Node2D body)
@@ -215,11 +231,13 @@ public partial class Staff : RigidBody2D
     if (snapEnabled)
     {
       PinJoint.NodeB = _owner.GetPath();
+      SetDeferred(RigidBody2D.PropertyName.LockRotation, true);
       _snapped = true;
     }
     else
     {
       PinJoint.NodeB = null;
+      SetDeferred(RigidBody2D.PropertyName.LockRotation, false);
       _snapped = false;
     }
   }

@@ -5,7 +5,7 @@ namespace Flamme.testing;
 
 public partial class Bullet : Area2D
 {
-  [Export] public int Speed = 200;
+  [Export] public int Speed = 2;
   [Export] public float DespawnTime = 5;
   [Export] public Vector2 Direction = Const.FacingNormVecDict[Const.Facing.Down];
 
@@ -20,7 +20,7 @@ public partial class Bullet : Area2D
 
   public override void _PhysicsProcess(double delta)
   {
-    Position += Direction * Speed * (float)delta;
+    Position += Direction * Speed;
   }
 
   private void OnBulletEntered(Node2D body)
