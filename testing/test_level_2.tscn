@@ -1,7 +1,8 @@
-[gd_scene load_steps=11 format=3 uid="uid://pfvcl3kpnlnv"]
+[gd_scene load_steps=12 format=3 uid="uid://pfvcl3kpnlnv"]
 
 [ext_resource type="PackedScene" uid="uid://bna3ai6fvr4er" path="res://entities/player/PlayableCharacter.tscn" id="1_2w77c"]
 [ext_resource type="PackedScene" uid="uid://bx0rce1ladhe6" path="res://world/rooms/pathway/pathway_testing.tscn" id="2_wx30n"]
+[ext_resource type="PackedScene" uid="uid://wk6i8cghddad" path="res://testing/SimpleChest.tscn" id="3_68m4d"]
 [ext_resource type="PackedScene" uid="uid://bns3echaf4llk" path="res://entities/player/player_camera.tscn" id="4_xcfh3"]
 [ext_resource type="PackedScene" uid="uid://dlasale5untkh" path="res://world/rooms/shop/shop_testing.tscn" id="5_faba2"]
 [ext_resource type="PackedScene" uid="uid://crem8565jjbno" path="res://world/rooms/pathway/pathway_testing3.tscn" id="6_7tm1i"]
@@ -44,3 +45,41 @@ position = Vector2(1064, -331)
 
 [node name="Room2" parent="Node2D" instance=ExtResource("7_mchvp")]
 position = Vector2(1064, 21)
+
+[node name="Entities" type="Node2D" parent="."]
+
+[node name="SimpleChest" parent="Entities" instance=ExtResource("3_68m4d")]
+position = Vector2(148, -177)
+
+[node name="SimpleChest2" parent="Entities" instance=ExtResource("3_68m4d")]
+position = Vector2(214, -111)
+
+[node name="SimpleChest3" parent="Entities" instance=ExtResource("3_68m4d")]
+position = Vector2(114, -79)
+
+[node name="SimpleChest4" parent="Entities" instance=ExtResource("3_68m4d")]
+position = Vector2(368, -145)
+
+[node name="SimpleChest5" parent="Entities" instance=ExtResource("3_68m4d")]
+position = Vector2(331, -225)
+
+[node name="SimpleChest6" parent="Entities" instance=ExtResource("3_68m4d")]
+position = Vector2(327, -70)
+
+[node name="SimpleChest7" parent="Entities" instance=ExtResource("3_68m4d")]
+position = Vector2(445, -113)
+
+[node name="SimpleChest8" parent="Entities" instance=ExtResource("3_68m4d")]
+position = Vector2(426, -214)
+
+[node name="SimpleChest9" parent="Entities" instance=ExtResource("3_68m4d")]
+position = Vector2(211, -249)
+
+[node name="SimpleChest10" parent="Entities" instance=ExtResource("3_68m4d")]
+position = Vector2(109, -257)
+
+[node name="SimpleChest11" parent="Entities" instance=ExtResource("3_68m4d")]
+position = Vector2(67, -180)
+
+[node name="SimpleChest12" parent="Entities" instance=ExtResource("3_68m4d")]
+position = Vector2(56, -113)

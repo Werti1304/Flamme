@@ -26,7 +26,7 @@ public partial class PlayerStats : Node2D
   [Export] public int BaseMana = 100; // Idk yet
 
   public int Health { get; private set; }
-  public int HealthContainers { get; private set; }
+  public int HealthContainerMax { get; private set; }
   public int AbsorptionHealth { get; private set; }
   public int Speed { get; private set; }
   public int Range { get; private set; }
@@ -43,13 +43,8 @@ public partial class PlayerStats : Node2D
   {
     // Absorption Hearts have to be added manually
     Health = StartingHealth;
+    HealthContainerMax = BaseHealth;
     AbsorptionHealth = StartingAbsorption;
-
-    // Initialize dictionary
-    foreach (var statType in Enum.GetValues(typeof(StatType)))
-    {
-      _statSumDict[(StatType)statType] = 0;
-    }
   }
 
   /// <summary>
@@ -59,12 +54,28 @@ public partial class PlayerStats : Node2D
   /// <param name="items">items held by the player</param>
   public void Update(IEnumerable<Item> items)
   {
+    foreach (StatType statType in Enum.GetValues(typeof(StatType)))
+    {
+      _statSumDict[statType] = 0;
+    }
+    
     foreach (var statUp in items.SelectMany(item => item.StatsUpDict))
     {
       _statSumDict[statUp.Key] += statUp.Value;
     }
-
+    
+    var oldHealthMax = HealthContainerMax;
     CalculateHealth();
+    // We got more health
+    if (oldHealthMax < HealthContainerMax)
+    {
+      Health += HealthContainerMax - oldHealthMax;
+    }
+    else if (oldHealthMax > HealthContainerMax)
+    {
+      Health = HealthContainerMax;
+    }
+    
     // Damage has to be calculated before ShotSize!
     CalculateDamage();
     CalculateFireRate();
@@ -84,11 +95,11 @@ public partial class PlayerStats : Node2D
   /// -> means normally if false, don't let player pick up</returns>
   public bool AddHealth(int health)
   {
-    if (Health == HealthContainers)
+    if (Health == HealthContainerMax)
     {
       return false;
     }
-    Health = Mathf.Min(Health + health, HealthContainers);
+    Health = Mathf.Min(Health + health, HealthContainerMax);
     return true;
   }
 
@@ -112,7 +123,7 @@ public partial class PlayerStats : Node2D
   private void CalculateSpeed()
   {
     Speed = BaseSpeed + _statSumDict[StatType.Speed];
-    Speed = Mathf.Min(Speed, 200);
+    Speed = Mathf.Min(Speed, 1000);
   }
 
   public void AddAbsorptionHealth(int absorption)
@@ -120,9 +131,9 @@ public partial class PlayerStats : Node2D
     AbsorptionHealth += absorption;
   }
 
-private void CalculateHealth()
+  private void CalculateHealth()
   {
-    HealthContainers = BaseHealth + _statSumDict[StatType.Health];
+    HealthContainerMax = BaseHealth + _statSumDict[StatType.Health];
   }
 
   private void CalculateDamage()
@@ -134,9 +145,9 @@ private void CalculateHealth()
 
   private void CalculateFireRate()
   {
-    var fireRateMultiplier = BaseFireMultiplier * _statSumDict[StatType.FireMultiplier];
+    var fireRateMultiplier = BaseFireMultiplier + _statSumDict[StatType.FireMultiplier];
     FireRate =  (int)(fireRateMultiplier * (BaseFireRate + _statSumDict[StatType.FireRate]));
-    FireRate = Mathf.Max(600, FireRate);
+    FireRate = Mathf.Min(1000, FireRate);
   }
   
   private void CalculateRange()
@@ -147,7 +158,7 @@ private void CalculateHealth()
   private void CalculateShotSpeed()
   {
     ShotSpeed = BaseShotSpeed + _statSumDict[StatType.ShotSpeed];
-    ShotSpeed = Mathf.Max(400, ShotSpeed);
+    ShotSpeed = Mathf.Min(400, ShotSpeed);
   }
 
   private void CalculateShotSize()

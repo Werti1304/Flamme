@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://dykd30fkfcn81"]
+[gd_scene load_steps=22 format=3 uid="uid://dykd30fkfcn81"]
 
 [ext_resource type="Texture2D" uid="uid://bkoyp014i01ct" path="res://assets/sprites/Ui.png" id="1_nco5p"]
 [ext_resource type="Script" path="res://ui/Hud.cs" id="1_sdgqe"]
@@ -28,6 +28,22 @@ region = Rect2(0, 8, 8, 8)
 atlas = ExtResource("1_nco5p")
 region = Rect2(8, 8, 8, 8)
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_442fi"]
+atlas = ExtResource("1_nco5p")
+region = Rect2(16, 0, 8, 8)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_assum"]
+atlas = ExtResource("1_nco5p")
+region = Rect2(24, 0, 8, 8)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_eimnk"]
+atlas = ExtResource("1_nco5p")
+region = Rect2(16, 8, 8, 8)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_q30bv"]
+atlas = ExtResource("1_nco5p")
+region = Rect2(24, 8, 8, 8)
+
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_2uaof"]
 shader = ExtResource("3_dwg6y")
 shader_parameter/darkness_intensity = 1.0
@@ -42,6 +58,10 @@ HeartFull = SubResource("AtlasTexture_jsaj1")
 Heart3Qt = SubResource("AtlasTexture_uij71")
 HeartHalf = SubResource("AtlasTexture_pfyxd")
 Heart1Qt = SubResource("AtlasTexture_ce8hc")
+AbsorptionHeartFull = SubResource("AtlasTexture_442fi")
+AbsorptionHeart3Qt = SubResource("AtlasTexture_assum")
+AbsorptionHeartHalf = SubResource("AtlasTexture_eimnk")
+AbsorptionHeart1Qt = SubResource("AtlasTexture_q30bv")
 ItemNameLabel = NodePath("MarginContainer/VBoxContainer/ItemUpName")
 ItemDescriptionLabel = NodePath("MarginContainer/VBoxContainer/ItemUpDescription")
 StatsDisplay = NodePath("MarginContainer/VBoxContainer/HBoxContainer2/StatsDisplay")

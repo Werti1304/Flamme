@@ -2,6 +2,7 @@ using Flamme.entities.player;
 using Flamme.items;
 using Flamme.testing;
 using Godot;
+using System;
 
 namespace Flamme.ui;
 
@@ -12,6 +13,10 @@ public partial class Hud : CanvasLayer
   [Export] public Texture2D Heart3Qt;
   [Export] public Texture2D HeartHalf;
   [Export] public Texture2D Heart1Qt;
+  [Export] public Texture2D AbsorptionHeartFull;
+  [Export] public Texture2D AbsorptionHeart3Qt;
+  [Export] public Texture2D AbsorptionHeartHalf;
+  [Export] public Texture2D AbsorptionHeart1Qt;
 
   [ExportGroup("Meta")] 
   [Export] public Label ItemNameLabel;
@@ -45,6 +50,7 @@ public partial class Hud : CanvasLayer
   public void UpdateStats(PlayerStats playerStats)
   {
     UpdateHealth(playerStats.Health);
+    UpdateAbsorptionHealth(playerStats.Health, playerStats.AbsorptionHealth);
     StatsDisplay.UpdateStats(playerStats);
   }
   
@@ -64,7 +70,12 @@ public partial class Hud : CanvasLayer
       {
         _healthTextureRects[i].Texture = HeartFull;
       }
-    } 
+    }
+
+    if (_healthTextureRects[fullContainers] == null)
+    {
+      return;
+    }
 
     var lastContainer = health % 4;
 
@@ -73,6 +84,55 @@ public partial class Hud : CanvasLayer
       3 => Heart3Qt,
       2 => HeartHalf,
       1 => Heart1Qt,
+      0 => null,
+      _ => _healthTextureRects[fullContainers].Texture
+    };
+
+    for (int i = fullContainers + 1; i < (40 / 4); i++)
+    {
+      _healthTextureRects[i].Texture = null;
+    }
+  }
+  
+  public void UpdateAbsorptionHealth(int health, int absorptionHealth)
+  {
+    // Max health
+    // TODO Correct so that sum <=40
+    if (absorptionHealth > 40)
+    {
+      absorptionHealth = 40;
+    }
+
+    if (absorptionHealth == 0)
+    {
+      return;
+    }
+
+    var alreadyFullContainers = health / 4;
+    alreadyFullContainers += (int)Math.Ceiling((double)(health % 4));
+    
+    var fullContainers = alreadyFullContainers + (absorptionHealth / 4);
+
+    for (var i = alreadyFullContainers; i < fullContainers; i++)
+    {
+      if (_healthTextureRects[i].Texture != AbsorptionHeartFull)
+      {
+        _healthTextureRects[i].Texture = AbsorptionHeartFull;
+      }
+    }
+
+    if (_healthTextureRects[fullContainers] == null)
+    {
+      return;
+    }
+
+    var lastContainer = absorptionHealth % 4;
+
+    _healthTextureRects[fullContainers].Texture = lastContainer switch
+    {
+      3 => AbsorptionHeart3Qt,
+      2 => AbsorptionHeartHalf,
+      1 => AbsorptionHeart1Qt,
       0 => null,
       _ => _healthTextureRects[fullContainers].Texture
     };

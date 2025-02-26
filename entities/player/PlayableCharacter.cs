@@ -92,6 +92,10 @@ public partial class PlayableCharacter : CharacterBody2D
 
         HeldItems.Add(item);
         Hud.Instance.CollectItem(item);
+        if (item.StatsUpDict.ContainsKey(StatType.Absorption))
+        {
+          Stats.AddAbsorptionHealth(item.StatsUpDict[StatType.Absorption]);
+        }
         OnItemChange();
       }
     }
