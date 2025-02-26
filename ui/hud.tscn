@@ -2,45 +2,33 @@
 
 [ext_resource type="Texture2D" uid="uid://bkoyp014i01ct" path="res://assets/sprites/Ui.png" id="1_nco5p"]
 [ext_resource type="Script" path="res://ui/Hud.cs" id="1_sdgqe"]
+[ext_resource type="Texture2D" uid="uid://dvc802522cyjx" path="res://ui/textures/heart_full.tres" id="2_rrwcl"]
+[ext_resource type="Texture2D" uid="uid://duth7gbgdil5t" path="res://ui/heart_3qt.tres" id="3_b3eg3"]
 [ext_resource type="Shader" path="res://ui/vignette.gdshader" id="3_dwg6y"]
 [ext_resource type="Script" path="res://ui/FpsLabel.cs" id="3_opnbn"]
 [ext_resource type="Script" path="res://ui/StatsDisplay.cs" id="4_44t1d"]
-[ext_resource type="Texture2D" uid="uid://bn6r24kyp722p" path="res://assets/ui/Damage.png" id="5_sbasx"]
-[ext_resource type="Texture2D" uid="uid://cx1xji7m38snb" path="res://assets/ui/Fire Rate.png" id="6_pemib"]
-[ext_resource type="Texture2D" uid="uid://calce3udjb716" path="res://assets/ui/Speed.png" id="7_bbmlp"]
-[ext_resource type="Texture2D" uid="uid://mtioqtnjk5xs" path="res://assets/ui/Range.png" id="8_876hy"]
-[ext_resource type="Texture2D" uid="uid://c5of008isrvka" path="res://assets/ui/ShotSpeed.png" id="9_qwxl3"]
-[ext_resource type="Texture2D" uid="uid://chm1nsogymsdx" path="res://assets/ui/Luck.png" id="10_wiy0u"]
+[ext_resource type="Texture2D" uid="uid://bae3a1vhywbt7" path="res://ui/heart_half.tres" id="4_l6dvw"]
+[ext_resource type="Texture2D" uid="uid://dwax5g2tt7bqn" path="res://ui/heart_1qt.tres" id="5_ebido"]
+[ext_resource type="Texture2D" uid="uid://sttg1cvv3j3y" path="res://assets/ui/Damage.png" id="5_sbasx"]
+[ext_resource type="Texture2D" uid="uid://ws8c2nse6kyc" path="res://assets/ui/Fire Rate.png" id="6_pemib"]
+[ext_resource type="Texture2D" uid="uid://bh1nalqj8im08" path="res://assets/ui/Speed.png" id="7_bbmlp"]
+[ext_resource type="Texture2D" uid="uid://bnjo074osaek1" path="res://assets/ui/Range.png" id="8_876hy"]
+[ext_resource type="Texture2D" uid="uid://b2yagdmls8oyk" path="res://assets/ui/ShotSpeed.png" id="9_qwxl3"]
+[ext_resource type="Texture2D" uid="uid://de73grn2gs1tk" path="res://assets/ui/Luck.png" id="10_wiy0u"]
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_jsaj1"]
-atlas = ExtResource("1_nco5p")
-region = Rect2(0, 0, 8, 8)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_uij71"]
-atlas = ExtResource("1_nco5p")
-region = Rect2(8, 0, 8, 8)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_pfyxd"]
-atlas = ExtResource("1_nco5p")
-region = Rect2(0, 8, 8, 8)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_ce8hc"]
-atlas = ExtResource("1_nco5p")
-region = Rect2(8, 8, 8, 8)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_442fi"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_clops"]
 atlas = ExtResource("1_nco5p")
 region = Rect2(16, 0, 8, 8)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_assum"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_m5wq6"]
 atlas = ExtResource("1_nco5p")
 region = Rect2(24, 0, 8, 8)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_eimnk"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_ltgti"]
 atlas = ExtResource("1_nco5p")
 region = Rect2(16, 8, 8, 8)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_q30bv"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_fxh8e"]
 atlas = ExtResource("1_nco5p")
 region = Rect2(24, 8, 8, 8)
 
@@ -54,14 +42,14 @@ region = Rect2(0, 0, 8, 8)
 
 [node name="HUD" type="CanvasLayer" node_paths=PackedStringArray("ItemNameLabel", "ItemDescriptionLabel", "StatsDisplay", "_healthTextureRects")]
 script = ExtResource("1_sdgqe")
-HeartFull = SubResource("AtlasTexture_jsaj1")
-Heart3Qt = SubResource("AtlasTexture_uij71")
-HeartHalf = SubResource("AtlasTexture_pfyxd")
-Heart1Qt = SubResource("AtlasTexture_ce8hc")
-AbsorptionHeartFull = SubResource("AtlasTexture_442fi")
-AbsorptionHeart3Qt = SubResource("AtlasTexture_assum")
-AbsorptionHeartHalf = SubResource("AtlasTexture_eimnk")
-AbsorptionHeart1Qt = SubResource("AtlasTexture_q30bv")
+HeartFull = ExtResource("2_rrwcl")
+Heart3Qt = ExtResource("3_b3eg3")
+HeartHalf = ExtResource("4_l6dvw")
+Heart1Qt = ExtResource("5_ebido")
+AbsorptionHeartFull = SubResource("AtlasTexture_clops")
+AbsorptionHeart3Qt = SubResource("AtlasTexture_m5wq6")
+AbsorptionHeartHalf = SubResource("AtlasTexture_ltgti")
+AbsorptionHeart1Qt = SubResource("AtlasTexture_fxh8e")
 ItemNameLabel = NodePath("MarginContainer/VBoxContainer/ItemUpName")
 ItemDescriptionLabel = NodePath("MarginContainer/VBoxContainer/ItemUpDescription")
 StatsDisplay = NodePath("MarginContainer/VBoxContainer/HBoxContainer2/StatsDisplay")

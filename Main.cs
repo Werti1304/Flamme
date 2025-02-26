@@ -17,8 +17,9 @@ namespace Flamme;
 
 public partial class Main : Node
 {
-  // TODO Item Inventory
-  // TODO Item List ingame
+  // TODO 2 Item Inventory
+  // TODO 2 Item List ingame
+  // TODO 3 Main Menu
   // TODO Minimap (After world gen?)
   // TODO Add Staff with physics (pulsing as long as not picked up)
   // TODO Add Bullet, then add Trail, then into small streaks like ori:blind forest/fern offensive magic
