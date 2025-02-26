@@ -22,6 +22,8 @@ public partial class PlayableCharacter : CharacterBody2D
   [Export] public Area2D InteractionArea;
   
   public List<Item> HeldItems = new List<Item>();
+  
+  public bool IsShooting { get; private set; }
 
   public override void _Ready()
   {
@@ -34,8 +36,8 @@ public partial class PlayableCharacter : CharacterBody2D
   }
   
   private Vector2 _movingVector = Vector2.Zero;
-  private Vector2 _shootingVector = Vector2.Zero;
-  private PlayerFacing _facing = PlayerFacing.Down;
+  public Vector2 ShootingVector { get; private set; } = Vector2.Zero;
+  public PlayerFacing Facing { get; private set; } = PlayerFacing.Down;
 
   public override void _UnhandledInput(InputEvent @event)
   {
@@ -51,18 +53,21 @@ public partial class PlayableCharacter : CharacterBody2D
       PlayerInputMap.Dict[PlayerInputMap.Action.MoveDown]);
     _movingVector = _movingVector.Normalized().Round();
     
-    _shootingVector = Input.GetVector(
+    ShootingVector = Input.GetVector(
       PlayerInputMap.Dict[PlayerInputMap.Action.ShootLeft],
       PlayerInputMap.Dict[PlayerInputMap.Action.ShootRight],
       PlayerInputMap.Dict[PlayerInputMap.Action.ShootUp],
       PlayerInputMap.Dict[PlayerInputMap.Action.ShootDown]);
+    ShootingVector = ShootingVector.Normalized().Round();
+    // TODO 1 Possible race condition
+    IsShooting = ShootingVector.Length() > 0;
 
     GetViewport().SetInputAsHandled();
-    var newFacing = PlayerFacingMethods.GetFacing(_shootingVector, _movingVector);
-    if (newFacing == _facing) 
+    var newFacing = PlayerFacingMethods.GetFacing(ShootingVector, _movingVector);
+    if (newFacing == Facing) 
       return;
     
-    _facing = newFacing;
+    Facing = newFacing;
     Sprite.OnFacingChange(newFacing);
   }
 
@@ -114,7 +119,7 @@ public partial class PlayableCharacter : CharacterBody2D
 
   private void Move(double delta)
   {
-    Velocity = Velocity.Lerp(_movingVector.Round() * Stats.Speed, AccelerationFactor);
+    Velocity = Velocity.Lerp(_movingVector * Stats.Speed, AccelerationFactor);
     Velocity = Velocity.LimitLength(Stats.Speed);
     // Velocity = Velocity.Lerp(Vector2.Zero, Friction);
     

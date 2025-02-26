@@ -1,0 +1,59 @@
+[gd_scene load_steps=7 format=3 uid="uid://d3h1ghlubga01"]
+
+[ext_resource type="Script" path="res://entities/staff/Staff.cs" id="1_w1xtw"]
+[ext_resource type="Texture2D" uid="uid://bkwmrh02f1rsj" path="res://assets/sprites/entities/staff/Staff.png" id="2_7uusl"]
+[ext_resource type="Texture2D" uid="uid://bq66ymwa7kyyw" path="res://assets/sprites/entities/staff/StaffCore.png" id="3_662pr"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_i6gfb"]
+radius = 7.0
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_5gjyi"]
+height = 40.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_mqpgm"]
+radius = 8.0
+
+[node name="Staff" type="RigidBody2D" node_paths=PackedStringArray("StaffSprite", "StaffCore", "PickupArea", "Area", "PinJoint", "CollisionShape")]
+z_index = 90
+collision_layer = 0
+collision_mask = 13
+script = ExtResource("1_w1xtw")
+SnapForce = 200.0
+StaffSprite = NodePath("Model/StaffSprite")
+StaffCore = NodePath("Model/CoreSprite")
+PickupArea = NodePath("Model/PickupArea")
+Area = NodePath("StaffArea")
+PinJoint = NodePath("PinJoint2D")
+CollisionShape = NodePath("StaffArea/CollisionShape2D")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_i6gfb")
+
+[node name="Model" type="Node2D" parent="."]
+
+[node name="StaffSprite" type="Sprite2D" parent="Model"]
+rotation = -0.785398
+texture = ExtResource("2_7uusl")
+
+[node name="CoreSprite" type="Sprite2D" parent="Model"]
+rotation = -0.785398
+texture = ExtResource("3_662pr")
+
+[node name="PickupArea" type="Area2D" parent="Model"]
+collision_layer = 0
+collision_mask = 2
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Model/PickupArea"]
+shape = SubResource("CapsuleShape2D_5gjyi")
+
+[node name="StaffArea" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaffArea"]
+shape = SubResource("CircleShape2D_mqpgm")
+
+[node name="PinJoint2D" type="PinJoint2D" parent="."]
+node_a = NodePath("..")
+angular_limit_enabled = true

@@ -307,13 +307,13 @@ public partial class SimpleCharacter : CharacterBody2D
       BulletCooldownTimer.Start();
     }
       
-      // Staff and snapping stuff
+    // Staff and snapping stuff
     if (isShooting)
     {
       var targetVec = GlobalPosition + (Const.FacingNormVecDict[CurrentFacing] * StaffDistanceFromPlayer) - Staff.GlobalTransform.Origin;
       var direction = targetVec.Normalized();
       var distance = targetVec.Length();
-      Staff.ApplyCentralForce(direction * Mathf.Clamp(distance, 0, 200) * SnapForceStaff);
+      Staff.ApplyCentralForce(direction * Mathf.Clamp(distance, 20, 200) * SnapForceStaff);
       Staff.LinearVelocity = Staff.LinearVelocity.Lerp(Vector2.Zero, StaffSnapFrictionMultiplier); // Friction
     }
     else if(_isTrailing)
