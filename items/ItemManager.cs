@@ -2,6 +2,7 @@ using Flamme.common.enums;
 using Godot;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Flamme.items;
 
@@ -64,6 +65,50 @@ public partial class ItemManager : Node
       }
     }
     return _itemDict[itemId];
+  }
+
+  /// <summary>
+  /// This function will always find the item, even if it's been removed from pools
+  /// </summary>
+  /// <param name="id">id of item</param>
+  /// <param name="removeFromPools">whether to remove it from loot pools</param>
+  /// <returns></returns>
+  public Item GetFromId(uint id, bool removeFromPools = true)
+  {
+    if (removeFromPools)
+    {
+      foreach (var itemDict in _lootPoolItemDict)
+      {
+        itemDict.Value.Remove(id);
+      }
+    }
+    return _itemDict[id];
+  }
+
+  /// <summary>
+  /// This function will always find the item, even if it's been removed from pools
+  /// </summary>
+  /// <param name="itemName">name of item</param>
+  /// <param name="removeFromPools">whether to remove it from loot pools</param>
+  /// <returns></returns>
+  public Item GetFromName(string itemName, bool removeFromPools = true)
+  {
+    var item = (from itemPair in _itemDict where itemPair.Value.Name == itemName select itemPair.Value).FirstOrDefault();
+
+    if (item == null)
+    {
+      GD.Print($"Tried to get item by name, but was not found: {itemName}");
+      return null;
+    }
+
+    if (removeFromPools)
+    {
+      foreach (var itemDict in _lootPoolItemDict)
+      {
+        itemDict.Value.Remove(item.Id);
+      }
+    }
+    return item;
   }
   
   public static ItemManager Instance

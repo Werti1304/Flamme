@@ -39,7 +39,16 @@ public partial class Runner : Enemy
     }
     else
     {
-      Velocity = GlobalPosition.DirectionTo(Target.GlobalPosition) * Speed;
+      var direction = GlobalPosition.DirectionTo(Target.GlobalPosition);
+      if (direction.X < 0 && !Sprite.FlipH)
+      {
+        Sprite.FlipH = true;
+      }
+      else if (direction.X > 0 && Sprite.FlipH)
+      {
+        Sprite.FlipH = false;
+      }
+      Velocity = direction * Speed;
     }
         
     MoveAndSlide();

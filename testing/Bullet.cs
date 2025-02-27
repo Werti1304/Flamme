@@ -14,6 +14,7 @@ public partial class Bullet : Area2D
   private PlayerStats _playerStats;
   private bool _fired = false;
   private bool _destructing = false;
+  private bool _hitSomething = false;
 
   public override void _Ready()
   {
@@ -41,6 +42,13 @@ public partial class Bullet : Area2D
 
   private void OnBulletEntered(Node2D body)
   {
+    // Change to counter for piercing rounds
+    if (_hitSomething)
+    {
+      return;
+    }
+    _hitSomething = true;
+      
     if (body is Door door)
     {
       door.Open();
@@ -50,7 +58,7 @@ public partial class Bullet : Area2D
     {
       enemy.Hit(_playerStats.Damage, 100, (body.GlobalPosition - GlobalPosition).Normalized());
     }
-    InitBulletDestruction();
+    QueueFree();
   }
 
   private void InitBulletDestruction()
@@ -62,6 +70,6 @@ public partial class Bullet : Area2D
     
     var tween = GetTree().CreateTween();
     tween.TweenProperty(Sprite, Node2D.PropertyName.Scale.ToString(), Vector2.Zero, 0.1f);
-    tween.TweenCallback(Callable.From(Sprite.QueueFree));
+    tween.TweenCallback(Callable.From(QueueFree));
   }
 }

@@ -34,10 +34,11 @@ public partial class PlayableCharacter : CharacterBody2D, IEnemyDamagable
     ExportMetaNonNull.Check(this);
     
     InteractionArea.BodyEntered += BodyEntered;
+    InteractionArea.AreaEntered += OnAreaEntered;
 
     OnStatsChange();
   }
-  
+
   private Vector2 _movingVector = Vector2.Zero;
   public Vector2 ShootingVector { get; private set; } = Vector2.Zero;
   public PlayerFacing Facing { get; private set; } = PlayerFacing.Down;
@@ -94,6 +95,17 @@ public partial class PlayableCharacter : CharacterBody2D, IEnemyDamagable
     OnStatsChange();
   }
 
+  private void pickupItem(Item item)
+  {
+    HeldItems.Add(item);
+    Hud.Instance.CollectItem(item);
+    if (item.StatsUpDict.ContainsKey(StatType.Absorption))
+    {
+      Stats.AddAbsorptionHealth(item.StatsUpDict[StatType.Absorption]);
+    }
+    OnStatsChange();
+  }
+
   private void OnStatsChange()
   {
     Stats.Update(HeldItems);
@@ -114,14 +126,16 @@ public partial class PlayableCharacter : CharacterBody2D, IEnemyDamagable
           return;
         }
 
-        HeldItems.Add(item);
-        Hud.Instance.CollectItem(item);
-        if (item.StatsUpDict.ContainsKey(StatType.Absorption))
-        {
-          Stats.AddAbsorptionHealth(item.StatsUpDict[StatType.Absorption]);
-        }
-        OnStatsChange();
+        pickupItem(item);
       }
+    }
+  }
+  
+  private void OnAreaEntered(Area2D area)
+  {
+    if (area is ItemPickup itemPickup)
+    {
+      pickupItem(itemPickup.Pickup());
     }
   }
 

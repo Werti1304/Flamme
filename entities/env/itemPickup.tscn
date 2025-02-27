@@ -1,0 +1,17 @@
+[gd_scene load_steps=3 format=3 uid="uid://bfulsjxd53ikv"]
+
+[ext_resource type="Script" path="res://entities/env/ItemPickup.cs" id="1_rp6wu"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_qluf5"]
+
+[node name="ItemPickup" type="Area2D" node_paths=PackedStringArray("_sprite", "_collisionShape")]
+position = Vector2(3, -2)
+script = ExtResource("1_rp6wu")
+_sprite = NodePath("Sprite2D")
+_collisionShape = NodePath("CollisionShape2D")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_qluf5")
+disabled = true
+
+[node name="Sprite2D" type="Sprite2D" parent="."]

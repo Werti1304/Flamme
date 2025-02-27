@@ -89,6 +89,11 @@ public partial class Room : Area2D
         break;
       case Enemy e:
         _enemies.Remove(e);
+
+        if (_enemies.Count == 0)
+        {
+          SetRoomCleared();
+        }
         break;
     }
   }
@@ -102,6 +107,14 @@ public partial class Room : Area2D
       camera.SetRoom(this);
     }
 
+    if (_enemies.Count == 0)
+    {
+      SetRoomCleared();
+      return;
+    }
+    
+    GD.Print($"Room {Name} Locked!");
+      
     // Could replace with signals but idk
     foreach (var enemy in _enemies)
     {
@@ -109,8 +122,15 @@ public partial class Room : Area2D
     }
   }
 
+  private void SetRoomCleared()
+  {
+    GD.Print($"Room {Name} Cleared!");
+  }
+
   private void SetRoomPassive()
   {
+    GD.Print($"Door opened around Room {Name}");
+    
     _playableCharacter = null;
     
     foreach (var enemy in _enemies)
