@@ -3,12 +3,13 @@ using Godot;
 using System.Collections.Generic;
 using Flamme.common.enums;
 using Flamme.common.input;
+using Flamme.entities.common;
 using Flamme.entities.player;
 using Flamme.testing;
 using Flamme.ui;
 using Room = Flamme.world.rooms.Room;
 
-public partial class PlayableCharacter : CharacterBody2D
+public partial class PlayableCharacter : CharacterBody2D, IEnemyDamagable
 {
   [ExportGroup("Character")]
   
@@ -32,10 +33,9 @@ public partial class PlayableCharacter : CharacterBody2D
   {
     ExportMetaNonNull.Check(this);
     
-    InteractionArea.AreaEntered += AreaEntered;
     InteractionArea.BodyEntered += BodyEntered;
 
-    OnItemChange();
+    OnStatsChange();
   }
   
   private Vector2 _movingVector = Vector2.Zero;
@@ -78,8 +78,23 @@ public partial class PlayableCharacter : CharacterBody2D
   {
     Move(delta);
   }
+  
+  public void TakeDamage(int damage)
+  {
+    if (!Stats.RemoveHealth(damage))
+    {
+      // Player Death
+      if (GetViewport().GetCamera2D() is PlayerCamera camera)
+      {
+        // Deactivate camera
+        camera.SetPhysicsProcess(false);
+      }
+      QueueFree(); 
+    }
+    OnStatsChange();
+  }
 
-  private void OnItemChange()
+  private void OnStatsChange()
   {
     Stats.Update(HeldItems);
     EmitSignal(SignalName.StatsChanged, Stats);
@@ -105,18 +120,7 @@ public partial class PlayableCharacter : CharacterBody2D
         {
           Stats.AddAbsorptionHealth(item.StatsUpDict[StatType.Absorption]);
         }
-        OnItemChange();
-      }
-    }
-  }
-
-  private void AreaEntered(Area2D area)
-  {
-    if (area is Room room)
-    {
-      if (GetViewport().GetCamera2D() is PlayerCamera camera)
-      {
-        camera.SetRoom(room);
+        OnStatsChange();
       }
     }
   }
@@ -129,4 +133,6 @@ public partial class PlayableCharacter : CharacterBody2D
     
     MoveAndSlide();
   }
+
+
 }

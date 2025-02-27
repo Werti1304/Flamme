@@ -19,9 +19,9 @@ public partial class PlayerStats : Node2D
   [Export] public float BaseDamageMultiplier = 1;
   [Export] public int BaseFireRate = 60; // /min?
   [Export] public int BaseFireRateMultiplier = 1;
-  [Export] public int BaseRange = 32; // In pixels
+  [Export] public int BaseRange = 2; // In pixels
   [Export] public float BaseFireMultiplier = 1; // /min?
-  [Export] public int BaseShotSpeed = 2; // px/sec? no
+  [Export] public int BaseShotSpeed = 1; // px/sec
   [Export] public int BaseShotSize = 6; // px radius? Different bullets for different sizes // TODO 2 Implement using muliple sprites
   [Export] public int BaseLuck = 3; // Chance for more loot / better items
   [Export] public int BaseMana = 100; // Idk yet
@@ -108,7 +108,7 @@ public partial class PlayerStats : Node2D
   /// Removes health points, takes absorption hearts into account
   /// </summary>
   /// <param name="health">health points to be removed</param>
-  /// <returns> Whether or not the health could be fully removed
+  /// <returns> Whether or not the health was fully removed
   /// -> means its false if player died</returns>
   public bool RemoveHealth(int health)
   {
@@ -116,7 +116,7 @@ public partial class PlayerStats : Node2D
 
     if (AbsorptionHealth > 0)
       return true;
-    Health = Mathf.Max(Health - AbsorptionHealth, 0);
+    Health = Mathf.Max(Health + AbsorptionHealth, 0);
     AbsorptionHealth = 0;
     return Health != 0;
   }

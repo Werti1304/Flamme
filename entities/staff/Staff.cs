@@ -120,8 +120,8 @@ public partial class Staff : RigidBody2D
     // Friction
     if (_owner.IsShooting)
     {
-      var targetPos = _owner.Position + (_owner.ShootingVector * DistanceFromPlayer);
-      var rotationDirection = _owner.Position.DirectionTo(targetPos);
+      var targetPos = _owner.GlobalPosition + (_owner.ShootingVector * DistanceFromPlayer);
+      var rotationDirection = _owner.GlobalPosition.DirectionTo(targetPos);
       var targetRotation = rotationDirection.Angle();
       Rotation = targetRotation;
 
@@ -168,7 +168,7 @@ public partial class Staff : RigidBody2D
     // TODO In the works
     var bullet = _bullet.Instantiate<Bullet>();
     GetTree().Root.AddChild(bullet);
-    bullet.GlobalPosition = Position + (_owner.ShootingVector * ShootDistanceFromStaff);
+    bullet.GlobalPosition = GlobalPosition + (_owner.ShootingVector * ShootDistanceFromStaff);
     // bullet.Direction = (_owner.ShootingVector + (_owner.Velocity / _owner.Stats.Speed)).Normalized();
     if (_owner.Velocity.Length() > 10)
     {
@@ -219,7 +219,7 @@ public partial class Staff : RigidBody2D
   {
     if (_owner.IsShooting)
     {
-      var targetVec = _owner.Position + (_owner.ShootingVector * DistanceFromPlayer) - Position; // ;
+      var targetVec = _owner.GlobalPosition + (_owner.ShootingVector * DistanceFromPlayer) - GlobalPosition; // ;
       var distance = targetVec.Length();
       
       if (_snapped && distance > 10.0f)
@@ -228,7 +228,7 @@ public partial class Staff : RigidBody2D
       }
       else if (!_snapped && distance < 5.0f)
       {
-        SetDeferred(Node2D.PropertyName.GlobalPosition, _owner.Position + (_owner.ShootingVector * DistanceFromPlayer));
+        SetDeferred(Node2D.PropertyName.GlobalPosition, _owner.GlobalPosition + (_owner.ShootingVector * DistanceFromPlayer));
         SetSnap(true);
       }
     }
@@ -240,7 +240,6 @@ public partial class Staff : RigidBody2D
 
   private void SetSnap(bool snapEnabled)
   {
-    GD.Print($"Staff Snap: {snapEnabled}");
     if (snapEnabled)
     {
       PinJoint.NodeB = _owner.GetPath();

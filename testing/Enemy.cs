@@ -69,7 +69,7 @@ public partial class Enemy : CharacterBody2D, IPlayerDamageable
     return Health;
   }
 
-  public void Damage(float attackDamage, float knockBackStrength, Vector2 attackDirection)
+  public void Hit(float attackDamage, float knockBackStrength, Vector2 attackDirection)
   {
     Health -= attackDamage;
     _stunned = true;

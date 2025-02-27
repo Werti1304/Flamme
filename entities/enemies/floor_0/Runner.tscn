@@ -1,0 +1,38 @@
+[gd_scene load_steps=6 format=3 uid="uid://bh5tvnrt4tk45"]
+
+[ext_resource type="Script" path="res://entities/enemies/floor_0/Runner.cs" id="1_mluks"]
+[ext_resource type="Texture2D" uid="uid://bbubwm0w5w3am" path="res://assets/sprites/placeholders.png" id="2_k8mqi"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0jywm"]
+atlas = ExtResource("2_k8mqi")
+region = Rect2(32, 32, 32, 32)
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_51umw"]
+radius = 4.0
+height = 12.0
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_5r16c"]
+radius = 5.0
+height = 14.0
+
+[node name="Runner" type="CharacterBody2D" node_paths=PackedStringArray("Sprite", "EnemyArea")]
+collision_layer = 15
+collision_mask = 15
+motion_mode = 1
+script = ExtResource("1_mluks")
+Sprite = NodePath("Sprite2D")
+EnemyArea = NodePath("Area2D")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = SubResource("AtlasTexture_0jywm")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CapsuleShape2D_51umw")
+
+[node name="Area2D" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 2
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("CapsuleShape2D_5r16c")

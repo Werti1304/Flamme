@@ -1,0 +1,30 @@
+[gd_scene load_steps=7 format=3 uid="uid://cs66mytyvgfwr"]
+
+[ext_resource type="Script" path="res://world/generation/Level.cs" id="1_y0xvm"]
+[ext_resource type="PackedScene" uid="uid://bna3ai6fvr4er" path="res://entities/player/PlayableCharacter.tscn" id="2_qox26"]
+[ext_resource type="PackedScene" uid="uid://d3h1ghlubga01" path="res://entities/staff/staff.tscn" id="4_h7omj"]
+[ext_resource type="PackedScene" uid="uid://bns3echaf4llk" path="res://entities/player/player_camera.tscn" id="4_jo87b"]
+[ext_resource type="PackedScene" uid="uid://c2eekwqrmvxjg" path="res://world/rooms/spawn/spawn.tscn" id="5_3t1bn"]
+[ext_resource type="PackedScene" uid="uid://crl2m55hpy44y" path="res://world/rooms/pathway/pathway_0.tscn" id="5_8fuwv"]
+
+[node name="ExampleLevel" type="Node2D"]
+script = ExtResource("1_y0xvm")
+
+[node name="Character" type="Node2D" parent="."]
+position = Vector2(282, 166)
+
+[node name="PlayableCharacter" parent="Character" instance=ExtResource("2_qox26")]
+
+[node name="Staff" parent="Character" instance=ExtResource("4_h7omj")]
+position = Vector2(-108, -42)
+
+[node name="PlayerCamera" parent="Character" node_paths=PackedStringArray("Player") instance=ExtResource("4_jo87b")]
+Player = NodePath("../PlayableCharacter")
+
+[node name="Rooms" type="Node2D" parent="."]
+position = Vector2(0, -1)
+
+[node name="Spawn" parent="Rooms" instance=ExtResource("5_3t1bn")]
+
+[node name="Pathway0" parent="." instance=ExtResource("5_8fuwv")]
+position = Vector2(544, -1)

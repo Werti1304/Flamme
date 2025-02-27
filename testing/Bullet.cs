@@ -25,7 +25,8 @@ public partial class Bullet : Area2D
     BodyEntered += OnBulletEntered;
 
     _playerStats = playerStats;
-    GetTree().CreateTimer(_playerStats.Range).Timeout += InitBulletDestruction;
+    var timeTillDisappear = _playerStats.Range / _playerStats.ShotSpeed;
+    GetTree().CreateTimer(timeTillDisappear).Timeout += InitBulletDestruction;
     _fired = true;
   }
 
@@ -34,6 +35,7 @@ public partial class Bullet : Area2D
     if (!_fired)
       return;
     
+    // Does more or less the trick
     Position += Direction * _playerStats.ShotSpeed;
   }
 
@@ -46,7 +48,7 @@ public partial class Bullet : Area2D
 
     if (body is IPlayerDamageable enemy)
     {
-      enemy.Damage(_playerStats.Damage, 100, (body.GlobalPosition - GlobalPosition).Normalized());
+      enemy.Hit(_playerStats.Damage, 100, (body.GlobalPosition - GlobalPosition).Normalized());
     }
     InitBulletDestruction();
   }
