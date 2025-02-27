@@ -16,6 +16,14 @@ public static class StatUpItems
       .AddSpriteFull(AssetManager.Asset.SpriteItemStatup1, new Vector2I(0, 0))
       .AddSpriteInventory()
       .AddStatUp(StatType.Health, 4));
+    
+    manager.RegisterItem(
+      new Item(ItemId.HealthToken, "Token of Health", "+1 Heart", Item.Tier.Uncommon)
+        .AddSpriteFull(AssetManager.Asset.SpriteItemStatup1, new Vector2I(0, 0))
+        .AddSpriteInventory()
+        .AddStatUp(StatType.Health, 4),
+      LootPool.Treasure, LootPool.Chest, LootPool.Boss, LootPool.Shop
+    );
 
     manager.RegisterItem(
       new Item(ItemId.AbsorptionToken,"Token of Absorption", "+3 Absorption Hearts", Item.Tier.Common)
@@ -37,7 +45,7 @@ public static class StatUpItems
       new Item(ItemId.SpeedToken,"Token of Speed", "Speeed up!", Item.Tier.Common)
         .AddSpriteFull(AssetManager.Asset.SpriteItemStatup1, new Vector2I(3, 0))
         .AddSpriteInventory()
-        .AddStatUp(StatType.Speed, 20),
+        .AddStatUp(StatType.Speed, 50),
       LootPool.Treasure, LootPool.Chest, LootPool.Boss, LootPool.Shop
     );
     
@@ -45,7 +53,7 @@ public static class StatUpItems
       new Item(ItemId.ShotSpeedToken,"Token of Shot Speed", "Shot speed up!", Item.Tier.Common)
         .AddSpriteFull(AssetManager.Asset.SpriteItemStatup1, new Vector2I(4, 0))
         .AddSpriteInventory()
-        .AddStatUp(StatType.ShotSpeed, 30),
+        .AddStatUp(StatType.ShotSpeed, 1),
       LootPool.Treasure, LootPool.Chest, LootPool.Boss, LootPool.Shop
     );
     
@@ -74,8 +82,16 @@ public static class StatUpItems
     );
     
     manager.RegisterItem(
-      new Item(ItemId.AllStatsUpToken,"Lucky Wheel Token", "All Stats Up!", Item.Tier.Uncommon)
+      new Item(ItemId.RangeToken,"Range Token", "Range Up!", Item.Tier.Common)
         .AddSpriteFull(AssetManager.Asset.SpriteItemStatup1, new Vector2I(0, 1))
+        .AddSpriteInventory()
+        .AddStatUp(StatType.Range, 4),
+      LootPool.Treasure, LootPool.Chest, LootPool.Boss, LootPool.Shop
+    );
+    
+    manager.RegisterItem(
+      new Item(ItemId.AllStatsUpToken,"Lucky Wheel Token", "All Stats Up!", Item.Tier.Uncommon)
+        .AddSpriteFull(AssetManager.Asset.SpriteItemStatup1, new Vector2I(1, 1))
         .AddSpriteInventory()
         .AddStatUp(StatType.Health, 4).AddStatUp(StatType.Damage, 12).AddStatUp(StatType.Speed, 10),
       LootPool.Treasure, LootPool.Chest, LootPool.Boss, LootPool.Shop

@@ -23,5 +23,6 @@ public enum ItemId
   FireRateToken,
   ShotSizeToken,
   LuckToken,
+  RangeToken,
   AllStatsUpToken
 }

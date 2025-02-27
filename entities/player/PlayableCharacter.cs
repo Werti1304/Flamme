@@ -141,8 +141,8 @@ public partial class PlayableCharacter : CharacterBody2D, IEnemyDamagable
 
   private void Move(double delta)
   {
-    Velocity = Velocity.Lerp(_movingVector * Stats.Speed, AccelerationFactor);
-    Velocity = Velocity.LimitLength(Stats.Speed);
+    Velocity = Velocity.Lerp(_movingVector * Stats.Speed * 2, AccelerationFactor);
+    Velocity = Velocity.LimitLength(Stats.Speed * 2);
     // Velocity = Velocity.Lerp(Vector2.Zero, Friction);
     
     MoveAndSlide();
