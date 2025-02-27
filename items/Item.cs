@@ -31,7 +31,7 @@ public class Item
     Exotic // Game-Changing
   }
 
-  public uint Id { get; init; }
+  public ItemId Id { get; init; }
   public string Name { get; init; }
   public string Description { get; init; }
   public Texture2D SpriteFull { get; private set; }
@@ -42,19 +42,11 @@ public class Item
   public event EventHandler ItemPickedUp;
   public event EventHandler ItemRemoved;
 
-  private static readonly object IdCountLock = new object();
-  public static uint IdCount => _idCount;
-  private static uint _idCount = 0;
-
   public readonly Dictionary<StatType, int> StatsUpDict = new Dictionary<StatType, int>();
 
-  public Item(string name, string description, Tier tier)
+  public Item(ItemId id, string name, string description, Tier tier)
   {
-    lock (IdCountLock)
-    {
-      Id = _idCount;
-      _idCount++;
-    }
+    Id = id;
     Name = name;
     Description = description;
     ItemTier = tier;

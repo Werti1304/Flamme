@@ -10,11 +10,11 @@ public partial class ItemManager : Node
 {
   // Stores item id and item as a dict, I don't trust an array alone
   // And Item Registration in the Item Class feels like bad form
-  private readonly Dictionary<uint, Item> _itemDict = new Dictionary<uint, Item>();
+  private readonly Dictionary<ItemId, Item> _itemDict = new Dictionary<ItemId, Item>();
   
   // Stores list of item (ids) of every loot table
   // Gets smaller as items are less
-  private readonly Dictionary<LootPool, List<uint>> _lootPoolItemDict = new Dictionary<LootPool, List<uint>>();
+  private readonly Dictionary<LootPool, List<ItemId>> _lootPoolItemDict = new Dictionary<LootPool, List<ItemId>>();
 
   // When there is no other item in the loot pool, pick this
   private Item _defaultItem;
@@ -35,7 +35,7 @@ public partial class ItemManager : Node
     // Adds dictionaries for every loot pool
     foreach (LootPool lootPool in Enum.GetValues(typeof(LootPool)))
     {
-      _lootPoolItemDict[lootPool] = new List<uint>();
+      _lootPoolItemDict[lootPool] = new List<ItemId>();
     }
   }
 
@@ -73,7 +73,7 @@ public partial class ItemManager : Node
   /// <param name="id">id of item</param>
   /// <param name="removeFromPools">whether to remove it from loot pools</param>
   /// <returns></returns>
-  public Item GetFromId(uint id, bool removeFromPools = true)
+  public Item GetFromId(ItemId id, bool removeFromPools = true)
   {
     if (removeFromPools)
     {
@@ -83,32 +83,6 @@ public partial class ItemManager : Node
       }
     }
     return _itemDict[id];
-  }
-
-  /// <summary>
-  /// This function will always find the item, even if it's been removed from pools
-  /// </summary>
-  /// <param name="itemName">name of item</param>
-  /// <param name="removeFromPools">whether to remove it from loot pools</param>
-  /// <returns></returns>
-  public Item GetFromName(string itemName, bool removeFromPools = true)
-  {
-    var item = (from itemPair in _itemDict where itemPair.Value.Name == itemName select itemPair.Value).FirstOrDefault();
-
-    if (item == null)
-    {
-      GD.Print($"Tried to get item by name, but was not found: {itemName}");
-      return null;
-    }
-
-    if (removeFromPools)
-    {
-      foreach (var itemDict in _lootPoolItemDict)
-      {
-        itemDict.Value.Remove(item.Id);
-      }
-    }
-    return item;
   }
   
   public static ItemManager Instance

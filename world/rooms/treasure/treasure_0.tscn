@@ -30,4 +30,4 @@ position = Vector2(272, 174)
 
 [node name="ItemPickup" parent="." instance=ExtResource("4_38tr6")]
 position = Vector2(271, 237)
-ItemName = "Token of Fire Rate"
+_itemId = 4

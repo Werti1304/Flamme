@@ -7,7 +7,7 @@ using System.Collections;
 public partial class ItemPickup : Area2D
 {
   // TODO 3 Refactor from string to item id in one giant enum?
-  [Export] public string ItemName = "";
+  [Export] private ItemId _itemId;
   
   [ExportGroup("Meta")] 
   [Export] private Sprite2D _sprite;
@@ -21,9 +21,9 @@ public partial class ItemPickup : Area2D
     
     _sprite.Hide();
 
-    if (ItemName != "")
+    if (_itemId != ItemId.None)
     {
-      var item = ItemManager.Instance.GetFromName(ItemName);
+      var item = ItemManager.Instance.GetFromId(_itemId);
 
       if (item == null)
         return;
