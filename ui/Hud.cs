@@ -23,6 +23,7 @@ public partial class Hud : CanvasLayer
   [Export] public Label ItemDescriptionLabel;
   [Export] public StatsDisplay StatsDisplay;
   [Export] private TextureRect[] _healthTextureRects = new TextureRect[10];
+  [Export] public ColorRect Vignette;
 
   public override void _Ready()
   {

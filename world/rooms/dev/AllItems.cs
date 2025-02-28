@@ -12,6 +12,9 @@ public partial class AllItems : Room
   {
     base._Ready();
 
+    if (Engine.IsEditorHint())
+      return;
+
     var currentVec = new Vector2(128, 128);
     
     foreach (ItemId itemid in Enum.GetValues(typeof(ItemId)))

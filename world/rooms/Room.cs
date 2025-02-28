@@ -4,6 +4,7 @@ using Godot;
 using System;
 using System.Collections.Generic;
 using System.Net.Http.Headers;
+using Environment = Godot.Environment;
 
 namespace Flamme.world.rooms;
 
@@ -58,9 +59,14 @@ public partial class Room : Area2D
     CollisionLayer = 0b1110;
   }
 
-  public Vector2 GetMidPoint()
+  private Vector2 GetMidPoint()
   {
     return new Vector2(RoomSizeDict[Size].X / 2.0f, RoomSizeDict[Size].Y / 2.0f);
+  }
+
+  public Vector2 GetGlobalMidPoint()
+  {
+    return GlobalPosition + GetMidPoint() * 32.0f;
   }
   
   private void OnBodyEntered(Node2D body)

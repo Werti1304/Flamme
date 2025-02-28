@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://cs66mytyvgfwr"]
+[gd_scene load_steps=12 format=3 uid="uid://cs66mytyvgfwr"]
 
 [ext_resource type="Script" path="res://world/generation/Level.cs" id="1_y0xvm"]
 [ext_resource type="PackedScene" uid="uid://bna3ai6fvr4er" path="res://entities/player/PlayableCharacter.tscn" id="2_qox26"]
@@ -9,9 +9,15 @@
 [ext_resource type="PackedScene" uid="uid://c7d2wb64sns8a" path="res://world/rooms/boss/boss_0.tscn" id="7_c8qfv"]
 [ext_resource type="PackedScene" uid="uid://btpdoq2hpghxc" path="res://world/rooms/treasure/treasure_0.tscn" id="8_v63ye"]
 [ext_resource type="PackedScene" uid="uid://4ai73c80kxoj" path="res://world/rooms/dev/all_items.tscn" id="9_d4jkt"]
+[ext_resource type="PackedScene" uid="uid://dqvcpot6wxnyt" path="res://entities/env/warper.tscn" id="10_qu0v0"]
+[ext_resource type="PackedScene" uid="uid://crtnskko55g5u" path="res://world/generation/Example_Level_2.tscn" id="11_hm2ft"]
 
-[node name="ExampleLevel" type="Node2D"]
+[node name="ExampleLevel" type="Node2D" node_paths=PackedStringArray("Spawn", "PlayableCharacter", "ActiveStaff", "PlayerCamera")]
 script = ExtResource("1_y0xvm")
+Spawn = NodePath("Rooms/Spawn")
+PlayableCharacter = NodePath("Character/PlayableCharacter")
+ActiveStaff = NodePath("Character/Staff")
+PlayerCamera = NodePath("Character/PlayerCamera")
 
 [node name="Character" type="Node2D" parent="."]
 position = Vector2(282, 166)
@@ -28,20 +34,19 @@ Player = NodePath("../PlayableCharacter")
 position = Vector2(0, -1)
 
 [node name="Spawn" parent="Rooms" instance=ExtResource("5_3t1bn")]
-collision_mask = 14
 
 [node name="Pathway0" parent="Rooms" instance=ExtResource("5_8fuwv")]
 position = Vector2(544, 0)
 
 [node name="Boss0" parent="Rooms" instance=ExtResource("7_c8qfv")]
 position = Vector2(-544, 0)
-collision_layer = 14
-collision_mask = 14
 
 [node name="Treasure0" parent="Rooms" instance=ExtResource("8_v63ye")]
 position = Vector2(0, -352)
 
 [node name="AllItems" parent="Rooms/Treasure0" instance=ExtResource("9_d4jkt")]
 position = Vector2(0, 704)
-collision_layer = 14
-collision_mask = 14
+
+[node name="Warper" parent="." instance=ExtResource("10_qu0v0")]
+position = Vector2(144, 239)
+NewLevel = ExtResource("11_hm2ft")

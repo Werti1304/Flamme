@@ -20,6 +20,7 @@ config/icon="res://icon.svg"
 ItemManager="*res://items/ItemManager.cs"
 AssetManager="*res://common/assets/AssetManager.cs"
 Main="*res://Main.cs"
+LevelManager="*res://world/LevelManager.cs"
 Hud="*res://ui/hud.tscn"
 EscapeMenu="*res://ui/escape_menu.tscn"
 

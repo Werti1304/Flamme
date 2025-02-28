@@ -35,12 +35,14 @@ region = Rect2(24, 8, 8, 8)
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_2uaof"]
 shader = ExtResource("3_dwg6y")
 shader_parameter/darkness_intensity = 1.0
+shader_parameter/darkness_out = 0.5
+shader_parameter/darkness_in = 1.5
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_gte7p"]
 atlas = ExtResource("1_nco5p")
 region = Rect2(0, 0, 8, 8)
 
-[node name="HUD" type="CanvasLayer" node_paths=PackedStringArray("ItemNameLabel", "ItemDescriptionLabel", "StatsDisplay", "_healthTextureRects")]
+[node name="HUD" type="CanvasLayer" node_paths=PackedStringArray("ItemNameLabel", "ItemDescriptionLabel", "StatsDisplay", "_healthTextureRects", "Vignette")]
 script = ExtResource("1_sdgqe")
 HeartFull = ExtResource("2_rrwcl")
 Heart3Qt = ExtResource("3_b3eg3")
@@ -54,6 +56,7 @@ ItemNameLabel = NodePath("MarginContainer/VBoxContainer/ItemUpName")
 ItemDescriptionLabel = NodePath("MarginContainer/VBoxContainer/ItemUpDescription")
 StatsDisplay = NodePath("MarginContainer/VBoxContainer/HBoxContainer2/StatsDisplay")
 _healthTextureRects = [NodePath("MarginContainer/VBoxContainer/HBoxContainer/TextureRect"), NodePath("MarginContainer/VBoxContainer/HBoxContainer/TextureRect2"), NodePath("MarginContainer/VBoxContainer/HBoxContainer/TextureRect3"), NodePath("MarginContainer/VBoxContainer/HBoxContainer/TextureRect4"), NodePath("MarginContainer/VBoxContainer/HBoxContainer/TextureRect5"), NodePath("MarginContainer/VBoxContainer/HBoxContainer/TextureRect6"), NodePath("MarginContainer/VBoxContainer/HBoxContainer/TextureRect7"), NodePath("MarginContainer/VBoxContainer/HBoxContainer/TextureRect8"), NodePath("MarginContainer/VBoxContainer/HBoxContainer/TextureRect9"), NodePath("MarginContainer/VBoxContainer/HBoxContainer/TextureRect10")]
+Vignette = NodePath("Vignette")
 
 [node name="Vignette" type="ColorRect" parent="."]
 material = SubResource("ShaderMaterial_2uaof")
@@ -62,7 +65,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0, 0, 0, 0.0392157)
+color = Color(0, 0, 0, 0)
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 anchors_preset = 15

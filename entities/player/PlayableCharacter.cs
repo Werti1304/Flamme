@@ -7,6 +7,7 @@ using Flamme.entities.common;
 using Flamme.entities.player;
 using Flamme.testing;
 using Flamme.ui;
+using Flamme.world;
 using Room = Flamme.world.rooms.Room;
 
 public partial class PlayableCharacter : CharacterBody2D, IEnemyDamagable

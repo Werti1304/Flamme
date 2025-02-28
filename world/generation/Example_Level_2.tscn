@@ -1,0 +1,39 @@
+[gd_scene load_steps=8 format=3 uid="uid://crtnskko55g5u"]
+
+[ext_resource type="Script" path="res://world/generation/Level.cs" id="1_6uho5"]
+[ext_resource type="PackedScene" uid="uid://bfulsjxd53ikv" path="res://entities/env/itemPickup.tscn" id="5_32ohh"]
+[ext_resource type="PackedScene" uid="uid://c2eekwqrmvxjg" path="res://world/rooms/spawn/spawn.tscn" id="5_v512o"]
+[ext_resource type="PackedScene" uid="uid://crl2m55hpy44y" path="res://world/rooms/pathway/pathway_0.tscn" id="6_84a7d"]
+[ext_resource type="PackedScene" uid="uid://c7d2wb64sns8a" path="res://world/rooms/boss/boss_0.tscn" id="7_cb5qx"]
+[ext_resource type="PackedScene" uid="uid://btpdoq2hpghxc" path="res://world/rooms/treasure/treasure_0.tscn" id="8_f2f6b"]
+[ext_resource type="PackedScene" uid="uid://4ai73c80kxoj" path="res://world/rooms/dev/all_items.tscn" id="9_dkdvi"]
+
+[node name="ExampleLevel" type="Node2D" node_paths=PackedStringArray("Spawn")]
+script = ExtResource("1_6uho5")
+Spawn = NodePath("Rooms/Spawn")
+
+[node name="ItemPickup" parent="." instance=ExtResource("5_32ohh")]
+position = Vector2(351, 114)
+_itemId = 8
+
+[node name="Rooms" type="Node2D" parent="."]
+position = Vector2(0, -1)
+
+[node name="Spawn" parent="Rooms" instance=ExtResource("5_v512o")]
+
+[node name="Pathway0" parent="Rooms" instance=ExtResource("6_84a7d")]
+position = Vector2(544, 0)
+
+[node name="Boss0" parent="Rooms" instance=ExtResource("7_cb5qx")]
+position = Vector2(-544, 0)
+
+[node name="Treasure0" parent="Rooms" instance=ExtResource("8_f2f6b")]
+position = Vector2(0, -352)
+
+[node name="AllItems" parent="Rooms/Treasure0" instance=ExtResource("9_dkdvi")]
+position = Vector2(0, 704)
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(122, -16)
+enabled = false
+zoom = Vector2(0.5, 0.5)

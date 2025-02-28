@@ -5,6 +5,7 @@
 [sub_resource type="CircleShape2D" id="CircleShape2D_qluf5"]
 
 [node name="ItemPickup" type="Area2D" node_paths=PackedStringArray("_sprite", "_collisionShape")]
+z_index = 10
 position = Vector2(3, -2)
 script = ExtResource("1_rp6wu")
 _sprite = NodePath("Sprite2D")

@@ -1,5 +1,7 @@
 using Flamme.entities.player;
 using Flamme.testing;
+using Flamme.world;
+using Flamme.world.generation;
 using Godot;
 
 namespace Flamme.entities.staff;
@@ -13,7 +15,7 @@ public partial class Staff : RigidBody2D
   [Export] public float SnapSpeed = 700.0f;
   [Export] public float SnapDamp = 0.3f;
   [ExportGroup("Trailing")] 
-  [Export] public float TrailingForce = 30.0f;
+  [Export] public float TrailingForce = 0f; // Deprecated; Set according to player speed stat now 
   [Export] public float TrailingFrictionWeight = .3f;
   [Export] public float DistanceToStartTrailing = 60.0f;
   [Export] public float DistanceToStopTrailing = 40.0f;
@@ -206,12 +208,22 @@ public partial class Staff : RigidBody2D
     
     _owner = playableCharacter;
     _owner.StatsChanged += OwnerOnStatsChanged;
+    LevelManager.Instance.CurrentLevel.ActiveStaff = this;
     OwnerOnStatsChanged(_owner.Stats);
     PickupArea.SetDeferred("Monitoring", false);
   }
 
+  public void ClearOwner()
+  {
+    _owner.StatsChanged -= OwnerOnStatsChanged;
+    _owner = null;
+    LevelManager.Instance.CurrentLevel.ActiveStaff = null;
+    PickupArea.SetDeferred("Monitoring", true);
+  }
+
   private void OwnerOnStatsChanged(PlayerStats stats)
   {
+    TrailingForce = stats.Speed / 3.0f;
     UpdateFireRate();
   }
 
