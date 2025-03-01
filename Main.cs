@@ -1,4 +1,5 @@
 using Flamme.items;
+using Flamme.world.generation;
 using Godot;
 
 namespace Flamme;
@@ -17,6 +18,8 @@ public partial class Main : Node
     // Use GD.[...] for seeded stuff -> level Layout, Room Layout, Items, Enemies, Chest Contents, etc.
     // GD.Seet() For when we want to use seed
     GD.Randomize();
+    
+    WorldGenerator.Instance.GenerateLevels();
   }
 
   public Main()

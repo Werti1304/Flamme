@@ -17,6 +17,9 @@ public partial class Level : Node2D
   public override void _Ready()
   {
     LevelManager.Instance.SetLevelActive(this);
+
+    WorldGenerator.Instance.ActualGeneration(this or GetTree().CurrentScene;);
+    
   }
 
   // TODO: Add grid and everything about a level here

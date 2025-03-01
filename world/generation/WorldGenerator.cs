@@ -9,7 +9,16 @@ public partial class WorldGenerator : Node
 
   public override void _Ready()
   {
+    
+  }
 
+  public void GenerateLevels()
+  {
+    var levelScene = GD.Load<PackedScene>("... path to level");
+    var level = levelScene.Instantiate<Level>();
+    
+    // Transition here
+    GetTree().ChangeSceneToPacked(levelScene);
   }
 
   public WorldGenerator()
