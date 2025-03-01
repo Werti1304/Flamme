@@ -17,7 +17,8 @@ public partial class Main : Node
   {
     // Use GD.[...] for seeded stuff -> level Layout, Room Layout, Items, Enemies, Chest Contents, etc.
     // GD.Seet() For when we want to use seed
-    GD.Randomize();
+    //GD.Randomize();
+    GD.Seed(1304);
   }
 
   public Main()
