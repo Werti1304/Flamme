@@ -24,6 +24,9 @@ public partial class Room : Area2D
   [ExportSubgroup("Exits")]
   // All positions where the room may be entered/exited. Important for generation
   [Export] public RoomExit AllowedExits;
+
+  public RoomExit ActualExits;
+  public RoomLoot Loot;
   
   [ExportGroup("Generation")]
   [Export]
