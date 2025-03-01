@@ -8,5 +8,6 @@ public enum RoomType
   Shop,
   Smithy,
   Boss,
-  Secret
+  Secret,
+  Dev
 }

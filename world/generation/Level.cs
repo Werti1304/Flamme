@@ -16,6 +16,11 @@ public partial class Level : Node2D
 
   public override void _Ready()
   {
+    if (WorldGenerator.Instance.GeneratingFirstLevel)
+    {
+      WorldGenerator.Instance.GenerateFirstLevel(this);
+      WorldGenerator.Instance.GeneratingFirstLevel = false;
+    }
     LevelManager.Instance.SetLevelActive(this);
   }
 

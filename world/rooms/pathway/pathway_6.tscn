@@ -7,7 +7,7 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_24tvo"]
 size = Vector2(544, 352)
 
-[node name="Pathway1" type="Area2D" node_paths=PackedStringArray("TileMap", "CollisionShape")]
+[node name="Pathway6" type="Area2D" node_paths=PackedStringArray("TileMap", "CollisionShape")]
 collision_layer = 14
 collision_mask = 14
 script = ExtResource("1_6cnbx")

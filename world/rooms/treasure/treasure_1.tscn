@@ -7,7 +7,8 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_6u1st"]
 size = Vector2(544, 352)
 
-[node name="Treasure0" type="Area2D" node_paths=PackedStringArray("TileMap", "CollisionShape")]
+[node name="Treasure1" type="Area2D" node_paths=PackedStringArray("TileMap", "CollisionShape")]
+position = Vector2(2, -3)
 collision_layer = 14
 collision_mask = 14
 script = ExtResource("1_n1swq")
@@ -27,8 +28,6 @@ shape = SubResource("RectangleShape2D_6u1st")
 
 [node name="ItemPickup" parent="." instance=ExtResource("4_51vnn")]
 position = Vector2(368, 111)
-_itemId = null
 
 [node name="ItemPickup2" parent="." instance=ExtResource("4_51vnn")]
 position = Vector2(178, 111)
-_itemId = null

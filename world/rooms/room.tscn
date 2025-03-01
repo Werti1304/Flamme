@@ -12,6 +12,7 @@ size = Vector2(544, 352)
 collision_layer = 14
 collision_mask = 14
 script = ExtResource("1_mxigg")
+Type = 7
 TileMap = NodePath("TileMapLayer")
 CollisionShape = NodePath("CollisionShape2D")
 

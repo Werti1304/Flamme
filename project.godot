@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="Flamme"
-run/main_scene="res://world/generation/Example_Level.tscn"
+run/main_scene="res://ui/main_menu.tscn"
 config/features=PackedStringArray("4.3", "C#", "GL Compatibility")
 config/icon="res://icon.svg"
 
@@ -19,6 +19,7 @@ config/icon="res://icon.svg"
 
 ItemManager="*res://items/ItemManager.cs"
 AssetManager="*res://common/assets/AssetManager.cs"
+WorldGenerator="*res://world/generation/WorldGenerator.cs"
 Main="*res://Main.cs"
 LevelManager="*res://world/LevelManager.cs"
 Hud="*res://ui/hud.tscn"
