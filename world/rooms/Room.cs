@@ -17,7 +17,8 @@ public partial class Room : Area2D
   [Export] public RoomType Type;
   // How likely this specific room is generated in comparison to others
   // To make a room super rare for example, make it 10
-  [Export] public int RoomGenerationTickets = 100;
+  // 0.999 is the workaround, cuz 1 will give you no slider at all in the editor :/
+  [Export(PropertyHint.Range, "1,100,0.999")] public int RoomGenerationTickets = 100;
   [Export] public TileSet TileSet;
   
   [ExportSubgroup("Exits")]
