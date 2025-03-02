@@ -19,7 +19,7 @@ config/icon="res://icon.svg"
 
 ItemManager="*res://items/ItemManager.cs"
 AssetManager="*res://common/assets/AssetManager.cs"
-WorldGenerator="*res://world/generation/WorldGenerator.cs"
+WorldGenerator="*res://world/generation/world_generator.tscn"
 Main="*res://Main.cs"
 LevelManager="*res://world/LevelManager.cs"
 Hud="*res://ui/hud.tscn"
