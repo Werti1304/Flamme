@@ -68,4 +68,28 @@ public partial class Level : Node2D
     }
     return count;
   }
+  
+  public int CountNeighbours(int [,] weightGrid, Vector2I position)
+  {
+    Array<Vector2I> neighbours = new()
+    {
+      new Vector2I(0, -1),
+      new Vector2I(1, 0),
+      new Vector2I(0, 1),
+      new Vector2I(-1, 0)
+    };
+    
+    int count = 0;
+    foreach (var n in neighbours)
+    {
+      var pos = position + n;
+      if (pos is { X: 0, Y: 0 }) continue;
+      if (!IsPosValid(pos)) continue;
+      if (weightGrid[pos.X, pos.Y] != -1)
+      {
+        count++;
+      }
+    }
+    return count;
+  }
 }

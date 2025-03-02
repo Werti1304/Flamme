@@ -126,7 +126,7 @@ public partial class WorldGenerator : Node2D
       for (var i = 0; i < potNeighbours.Count; i++)
       {
         if ((weightGrid[potNeighbours[i].position.X, potNeighbours[i].position.Y] != -1) || // already filled
-            (level.CountNeighbours(potNeighbours[i].position) > 1))                         // too many neighbours
+            (level.CountNeighbours(weightGrid, potNeighbours[i].position) > 1))             // too many neighbours
         {
           potNeighbours.RemoveAt(i);
           i--;
@@ -137,9 +137,9 @@ public partial class WorldGenerator : Node2D
       foreach (var pos in Neighbours)
       {
         var neighbour = position + pos;
-        if ((!level.IsPosValid(neighbour)) ||            // out of bounds
-            (weightGrid[neighbour.X, neighbour.Y] != -1) || // already filled
-            (level.CountNeighbours(neighbour) > 1))         // too many neighbours
+        if ((!level.IsPosValid(neighbour)) ||                // out of bounds
+            (weightGrid[neighbour.X, neighbour.Y] != -1) ||     // already filled
+            (level.CountNeighbours(weightGrid, neighbour) > 1)) // too many neighbours
         {
           continue;
         }
@@ -157,7 +157,8 @@ public partial class WorldGenerator : Node2D
       //RoomType.Secret,
     };
     
-    var tileSize = new Vector2I(16, 16);
+    var tileSize = new Vector2I(32, 32);
+    var roomSize = new Vector2I(17, 11);
     
     // end rooms
     var hasBossRoom = false;
@@ -186,8 +187,7 @@ public partial class WorldGenerator : Node2D
       var room = roomData.RoomScene.Instantiate<Room>();
       room.ActualExits = actualExits;
 
-      var placeGlobalPos = new Vector2I((endRooms[randomEndRoomIndex].X - levelCenter.X) * 17 * 32, (endRooms[randomEndRoomIndex].Y - levelCenter.Y) * 11 * 32);
-      // placeGlobalPos = new Vector2I(endRooms[randomEndRoomIndex].X * 17 * 32, endRooms[randomEndRoomIndex].Y * 11 * 32);
+      var placeGlobalPos = (endRooms[randomEndRoomIndex] - levelCenter) * roomSize * tileSize;
       GD.Print($"Placing down room {room.Name} at {placeGlobalPos}, index {endRooms[randomEndRoomIndex]}");
       room.GlobalPosition = placeGlobalPos;
       level.AddChild(room);
@@ -208,9 +208,11 @@ public partial class WorldGenerator : Node2D
             continue;
           }
           var room = roomData.RoomScene.Instantiate<Room>();
-          var placeGlobalPos = new Vector2I((x - levelCenter.X) * 17 * 32, (y - levelCenter.Y) * 11 * 32);
+          var roomPos = new Vector2I(x, y);
+          var placeGlobalPos = (roomPos - levelCenter) * roomSize * tileSize;
           GD.Print($"Placing down room at {placeGlobalPos}");
           room.GlobalPosition = placeGlobalPos;
+          room.ActualExits = GetRoomExits(ref weightGrid, roomPos); // get exits for room
           level.AddChild(room);
           room.Owner = level;
           level.Grid[x, y] = room;
@@ -225,7 +227,12 @@ public partial class WorldGenerator : Node2D
       var line = "";
       for (var x = 0; x < level.Grid.GetLength(0); x++)
       {
-        var number = weightGrid[x, y].ToString("D2");
+        var number = $"{weightGrid[x, y]}";
+        // add leading 0s
+        while (number.Length < 2)
+        {
+          number = "0" + number;
+        }
         line += level.Grid[x, y] != null ? number : "--";
       }
       GD.Print(line);

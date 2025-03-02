@@ -19,9 +19,9 @@ public partial class Minimap : GridContainer
   {
     ExportMetaNonNull.Check(this);
 
-    for (int x = 0; x < Columns; x++)
+    for (int y = 0; y < Columns; y++)
     {
-      for (int y = 0; y < Columns; y++)
+      for (int x = 0; x < Columns; x++)
       {
         var textureRect = new TextureRect();
         AddChild(textureRect);
@@ -36,9 +36,9 @@ public partial class Minimap : GridContainer
     var lowestX = int.MaxValue;
     var lowestY = int.MaxValue;
     
-    for (var x = 0; x < level.Grid.GetLength(0); x++)
+    for (var y = 0; y < level.Grid.GetLength(0); y++)
     {
-      for (var y = 0; y < level.Grid.GetLength(0); y++)
+      for (var x = 0; x < level.Grid.GetLength(0); x++)
       {
         var room = level.Grid[x, y];
         if(room == null)
@@ -56,9 +56,9 @@ public partial class Minimap : GridContainer
       }
     }
     
-    for (var x = 0; x < level.Grid.GetLength(0); x++)
+    for (var y = 0; y < level.Grid.GetLength(0); y++)
     {
-      for (var y = 0; y < level.Grid.GetLength(0); y++)
+      for (var x = 0; x < level.Grid.GetLength(0); x++)
       {
         var room = level.Grid[x, y];
         if(room == null)
