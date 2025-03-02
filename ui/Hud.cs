@@ -24,6 +24,7 @@ public partial class Hud : CanvasLayer
   [Export] public StatsDisplay StatsDisplay;
   [Export] private TextureRect[] _healthTextureRects = new TextureRect[10];
   [Export] public ColorRect Vignette;
+  [Export] public Minimap Minimap;
 
   public override void _Ready()
   {

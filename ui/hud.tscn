@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=3 uid="uid://dykd30fkfcn81"]
+[gd_scene load_steps=28 format=3 uid="uid://dykd30fkfcn81"]
 
 [ext_resource type="Texture2D" uid="uid://bkoyp014i01ct" path="res://assets/sprites/Ui.png" id="1_nco5p"]
 [ext_resource type="Script" path="res://ui/Hud.cs" id="1_sdgqe"]
@@ -15,6 +15,12 @@
 [ext_resource type="Texture2D" uid="uid://bnjo074osaek1" path="res://assets/ui/Range.png" id="8_876hy"]
 [ext_resource type="Texture2D" uid="uid://b2yagdmls8oyk" path="res://assets/ui/ShotSpeed.png" id="9_qwxl3"]
 [ext_resource type="Texture2D" uid="uid://de73grn2gs1tk" path="res://assets/ui/Luck.png" id="10_wiy0u"]
+[ext_resource type="Script" path="res://ui/Minimap.cs" id="16_1adnu"]
+[ext_resource type="Texture2D" uid="uid://dipk4krxegcpp" path="res://ui/textures/minimap_pathway.tres" id="18_cal8r"]
+[ext_resource type="Texture2D" uid="uid://c8byjn0x10u64" path="res://ui/textures/minimap_spawn.tres" id="18_gljsg"]
+[ext_resource type="Texture2D" uid="uid://c343ocvsluku8" path="res://ui/textures/minimap_treasure.tres" id="19_0fmmc"]
+[ext_resource type="Texture2D" uid="uid://cbvu8alql60w0" path="res://ui/textures/minimap_boss.tres" id="20_gua6x"]
+[ext_resource type="Texture2D" uid="uid://dkcavwnhe4cnp" path="res://ui/textures/minimap_shop.tres" id="21_kenvh"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_clops"]
 atlas = ExtResource("1_nco5p")
@@ -42,7 +48,7 @@ shader_parameter/darkness_in = 1.5
 atlas = ExtResource("1_nco5p")
 region = Rect2(0, 0, 8, 8)
 
-[node name="HUD" type="CanvasLayer" node_paths=PackedStringArray("ItemNameLabel", "ItemDescriptionLabel", "StatsDisplay", "_healthTextureRects", "Vignette")]
+[node name="HUD" type="CanvasLayer" node_paths=PackedStringArray("ItemNameLabel", "ItemDescriptionLabel", "StatsDisplay", "_healthTextureRects", "Vignette", "Minimap")]
 script = ExtResource("1_sdgqe")
 HeartFull = ExtResource("2_rrwcl")
 Heart3Qt = ExtResource("3_b3eg3")
@@ -57,6 +63,7 @@ ItemDescriptionLabel = NodePath("MarginContainer/VBoxContainer/ItemUpDescription
 StatsDisplay = NodePath("MarginContainer/VBoxContainer/HBoxContainer2/StatsDisplay")
 _healthTextureRects = [NodePath("MarginContainer/VBoxContainer/HBoxContainer/TextureRect"), NodePath("MarginContainer/VBoxContainer/HBoxContainer/TextureRect2"), NodePath("MarginContainer/VBoxContainer/HBoxContainer/TextureRect3"), NodePath("MarginContainer/VBoxContainer/HBoxContainer/TextureRect4"), NodePath("MarginContainer/VBoxContainer/HBoxContainer/TextureRect5"), NodePath("MarginContainer/VBoxContainer/HBoxContainer/TextureRect6"), NodePath("MarginContainer/VBoxContainer/HBoxContainer/TextureRect7"), NodePath("MarginContainer/VBoxContainer/HBoxContainer/TextureRect8"), NodePath("MarginContainer/VBoxContainer/HBoxContainer/TextureRect9"), NodePath("MarginContainer/VBoxContainer/HBoxContainer/TextureRect10")]
 Vignette = NodePath("Vignette")
+Minimap = NodePath("MarginContainer/VBoxContainer/HBoxContainer2/MarginContainer/Minimap")
 
 [node name="Vignette" type="ColorRect" parent="."]
 material = SubResource("ShaderMaterial_2uaof")
@@ -192,3 +199,20 @@ SpeedIcon = ExtResource("7_bbmlp")
 RangeIcon = ExtResource("8_876hy")
 ShotSpeedIcon = ExtResource("9_qwxl3")
 LuckIcon = ExtResource("10_wiy0u")
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+theme_override_constants/margin_left = 360
+
+[node name="Minimap" type="GridContainer" parent="MarginContainer/VBoxContainer/HBoxContainer2/MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/h_separation = 0
+theme_override_constants/v_separation = 0
+columns = 16
+script = ExtResource("16_1adnu")
+PathwayTexture = ExtResource("18_cal8r")
+SpawnTexture = ExtResource("18_gljsg")
+TreasureTexture = ExtResource("19_0fmmc")
+BossTexture = ExtResource("20_gua6x")
+ShopTexture = ExtResource("21_kenvh")

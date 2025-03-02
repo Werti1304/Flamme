@@ -1,5 +1,7 @@
 using Flamme.common.constant;
 using Flamme.common.enums;
+using Flamme.entities.staff;
+using Flamme.ui;
 using Flamme.world.rooms;
 using Godot;
 using System.Collections.Generic;
@@ -49,13 +51,41 @@ public partial class WorldGenerator : Node2D
     Debug.Assert(level == GetTree().CurrentScene);
     var spawn = spawnData.RoomScene.Instantiate<Room>();
     level.AddChild(spawn);
+    level.Spawn = spawn;
     level.Grid[levelCenter.X, levelCenter.Y] = spawn;
+    GD.Print($"Placing down spawn {spawn.Name} at {spawn.GlobalPosition}");
     
     GD.Print("Generating rooms...");
     GenerateRooms(level);
     GD.Print("Level generated!");
     
     GD.Print("Placing down character, camera & staff");
+    var globalSpawnPosition = spawn.GetGlobalMidPoint();
+    
+    // TODO 1 Preload 
+    var playerScene = GD.Load<PackedScene>(PathConstants.PlayerScenePath);
+    var player = playerScene.Instantiate<PlayableCharacter>();
+    player.GlobalPosition = globalSpawnPosition;
+    level.AddChild(player);
+    player.Owner = level;
+    
+    // ...
+    var playerCameraScene = GD.Load<PackedScene>(PathConstants.PlayerCameraScenePath);
+    var playerCamera = playerCameraScene.Instantiate<PlayerCamera>();
+    playerCamera.GlobalPosition = globalSpawnPosition;
+    level.AddChild(playerCamera);
+    playerCamera.Player = player;
+    playerCamera.Owner = level;
+    
+    // ...
+    var startingStaffScene = GD.Load<PackedScene>(PathConstants.StartingStaffScenePath);
+    var startingStaff = startingStaffScene.Instantiate<Staff>();
+    startingStaff.GlobalPosition = globalSpawnPosition - new Vector2(64, 64);
+    level.AddChild(startingStaff);
+    startingStaff.Owner = level;
+    
+    // Update Minimap
+    Hud.Instance.Minimap.Update(level);
   }
 
   private void GenerateRooms(Level level)
@@ -88,7 +118,6 @@ public partial class WorldGenerator : Node2D
       
       // remove from queue
       potNeighbours.RemoveAt(index);
-      level.Grid[position.X, position.Y] = new Room();
       weightGrid[position.X, position.Y] = weight;
       currRoomCount++;
       if (currRoomCount == roomCount) break;
@@ -156,9 +185,13 @@ public partial class WorldGenerator : Node2D
       
       var room = roomData.RoomScene.Instantiate<Room>();
       room.ActualExits = actualExits;
-      
-      room.GlobalPosition = (new Vector2I(endRooms[randomEndRoomIndex].X * 17, endRooms[randomEndRoomIndex].Y * 11)-levelCenter) * tileSize;
+
+      var placeGlobalPos = new Vector2I((endRooms[randomEndRoomIndex].X - levelCenter.X) * 17 * 32, (endRooms[randomEndRoomIndex].Y - levelCenter.Y) * 11 * 32);
+      // placeGlobalPos = new Vector2I(endRooms[randomEndRoomIndex].X * 17 * 32, endRooms[randomEndRoomIndex].Y * 11 * 32);
+      GD.Print($"Placing down room {room.Name} at {placeGlobalPos}, index {endRooms[randomEndRoomIndex]}");
+      room.GlobalPosition = placeGlobalPos;
       level.AddChild(room);
+      room.Owner = level;
       level.Grid[endRooms[randomEndRoomIndex].X, endRooms[randomEndRoomIndex].Y] = room;
     }
     
@@ -175,8 +208,11 @@ public partial class WorldGenerator : Node2D
             continue;
           }
           var room = roomData.RoomScene.Instantiate<Room>();
-          room.GlobalPosition = (new Vector2I(x * 17, y * 11)-levelCenter) * tileSize;
+          var placeGlobalPos = new Vector2I((x - levelCenter.X) * 17 * 32, (y - levelCenter.Y) * 11 * 32);
+          GD.Print($"Placing down room at {placeGlobalPos}");
+          room.GlobalPosition = placeGlobalPos;
           level.AddChild(room);
+          room.Owner = level;
           level.Grid[x, y] = room;
         }
       }
@@ -189,12 +225,7 @@ public partial class WorldGenerator : Node2D
       var line = "";
       for (var x = 0; x < level.Grid.GetLength(0); x++)
       {
-        var number = $"{weightGrid[x, y]}";
-        // add leading 0s
-        while (number.Length < 2)
-        {
-          number = "0" + number;
-        }
+        var number = weightGrid[x, y].ToString("D2");
         line += level.Grid[x, y] != null ? number : "--";
       }
       GD.Print(line);
