@@ -1,7 +1,10 @@
-[gd_scene load_steps=4 format=4 uid="uid://c2eekwqrmvxjg"]
+[gd_scene load_steps=7 format=4 uid="uid://c2eekwqrmvxjg"]
 
 [ext_resource type="Script" path="res://world/rooms/Room.cs" id="1_x6qr4"]
 [ext_resource type="TileSet" uid="uid://cgyo6mc240x5s" path="res://testing/placeholder_tileset.tres" id="2_usqwj"]
+[ext_resource type="PackedScene" uid="uid://bqlr8l7agsr6" path="res://entities/env/purse/Key.tscn" id="3_hqdvv"]
+[ext_resource type="PackedScene" uid="uid://bup66binra50f" path="res://entities/env/purse/Crystal.tscn" id="4_rxoj4"]
+[ext_resource type="PackedScene" uid="uid://b31xv74m5ykab" path="res://entities/env/purse/Coin.tscn" id="5_628fi"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_w6rau"]
 size = Vector2(544, 352)
@@ -23,3 +26,68 @@ tile_set = ExtResource("2_usqwj")
 [node name="CollisionShape" type="CollisionShape2D" parent="."]
 position = Vector2(272, 176)
 shape = SubResource("RectangleShape2D_w6rau")
+
+[node name="purse pickups" type="Node2D" parent="."]
+position = Vector2(64, 64)
+
+[node name="Key" parent="purse pickups" instance=ExtResource("3_hqdvv")]
+z_index = 5
+position = Vector2(17, 17)
+
+[node name="Crystal" parent="purse pickups" instance=ExtResource("4_rxoj4")]
+position = Vector2(47, 14)
+
+[node name="Crystal2" parent="purse pickups" instance=ExtResource("4_rxoj4")]
+position = Vector2(80, 14)
+_count = 2
+
+[node name="Crystal3" parent="purse pickups" instance=ExtResource("4_rxoj4")]
+position = Vector2(111, 14)
+_count = 3
+
+[node name="Coin" parent="purse pickups" instance=ExtResource("5_628fi")]
+position = Vector2(16, 47)
+
+[node name="Coin2" parent="purse pickups" instance=ExtResource("5_628fi")]
+position = Vector2(47, 47)
+_count = 2
+
+[node name="Coin3" parent="purse pickups" instance=ExtResource("5_628fi")]
+position = Vector2(80, 47)
+_count = 3
+
+[node name="Coin4" parent="purse pickups" instance=ExtResource("5_628fi")]
+position = Vector2(111, 47)
+_count = 4
+
+[node name="Coin5" parent="purse pickups" instance=ExtResource("5_628fi")]
+position = Vector2(16, 79)
+_count = 5
+
+[node name="Coin6" parent="purse pickups" instance=ExtResource("5_628fi")]
+position = Vector2(47, 79)
+_count = 6
+
+[node name="Coin7" parent="purse pickups" instance=ExtResource("5_628fi")]
+position = Vector2(80, 79)
+_count = 7
+
+[node name="Coin8" parent="purse pickups" instance=ExtResource("5_628fi")]
+position = Vector2(111, 79)
+_count = 8
+
+[node name="Coin9" parent="purse pickups" instance=ExtResource("5_628fi")]
+position = Vector2(16, 112)
+_count = 9
+
+[node name="Coin10" parent="purse pickups" instance=ExtResource("5_628fi")]
+position = Vector2(47, 112)
+_count = 10
+
+[node name="Coin20" parent="purse pickups" instance=ExtResource("5_628fi")]
+position = Vector2(80, 112)
+_count = 20
+
+[node name="Coin30" parent="purse pickups" instance=ExtResource("5_628fi")]
+position = Vector2(111, 112)
+_count = 30

@@ -5,6 +5,8 @@ namespace Flamme.ui;
 
 public partial class EscapeMenu : CanvasLayer
 {
+  [Export] public StatsDisplay StatsDisplay;
+  
   public override void _Ready()
   {
     Hide();
@@ -30,6 +32,7 @@ public partial class EscapeMenu : CanvasLayer
   {
     //Engine.TimeScale = 0;
     GetTree().Paused = true;
+    Hud.Instance.PurseDisplay.Modulate = Colors.Transparent;
     Show();
   }
   
@@ -38,10 +41,30 @@ public partial class EscapeMenu : CanvasLayer
     //Engine.TimeScale = 0;
     GetTree().Paused = false;
     Hide();
+    Hud.Instance.PurseDisplay.Modulate = Colors.White;
   }
 
   private void Quit()
   {
     GetTree().Quit();
+  }
+  
+  private static EscapeMenu _instance;
+  private static readonly object Padlock = new();
+  
+  public EscapeMenu()
+  {
+    _instance = this;
+  }
+  
+  public static EscapeMenu Instance
+  {
+    get
+    {
+      lock (Padlock)
+      {
+        return _instance;
+      }
+    }
   }
 }

@@ -21,7 +21,7 @@ public partial class Hud : CanvasLayer
   [ExportGroup("Meta")] 
   [Export] public Label ItemNameLabel;
   [Export] public Label ItemDescriptionLabel;
-  [Export] public StatsDisplay StatsDisplay;
+  [Export] public PurseDisplay PurseDisplay;
   [Export] private TextureRect[] _healthTextureRects = new TextureRect[10];
   [Export] public ColorRect Vignette;
   [Export] public Minimap Minimap;
@@ -53,7 +53,6 @@ public partial class Hud : CanvasLayer
   {
     UpdateHealth(playerStats.Health);
     UpdateAbsorptionHealth(playerStats.Health, playerStats.AbsorptionHealth);
-    StatsDisplay.UpdateStats(playerStats);
   }
   
   public void UpdateHealth(int health)
@@ -73,12 +72,7 @@ public partial class Hud : CanvasLayer
         _healthTextureRects[i].Texture = HeartFull;
       }
     }
-
-    if (_healthTextureRects[fullContainers] == null)
-    {
-      return;
-    }
-
+    
     var lastContainer = health % 4;
 
     _healthTextureRects[fullContainers].Texture = lastContainer switch

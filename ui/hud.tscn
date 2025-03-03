@@ -1,4 +1,4 @@
-[gd_scene load_steps=28 format=3 uid="uid://dykd30fkfcn81"]
+[gd_scene load_steps=25 format=3 uid="uid://dykd30fkfcn81"]
 
 [ext_resource type="Texture2D" uid="uid://bkoyp014i01ct" path="res://assets/sprites/Ui.png" id="1_nco5p"]
 [ext_resource type="Script" path="res://ui/Hud.cs" id="1_sdgqe"]
@@ -6,15 +6,12 @@
 [ext_resource type="Texture2D" uid="uid://duth7gbgdil5t" path="res://ui/heart_3qt.tres" id="3_b3eg3"]
 [ext_resource type="Shader" path="res://ui/vignette.gdshader" id="3_dwg6y"]
 [ext_resource type="Script" path="res://ui/FpsLabel.cs" id="3_opnbn"]
-[ext_resource type="Script" path="res://ui/StatsDisplay.cs" id="4_44t1d"]
 [ext_resource type="Texture2D" uid="uid://bae3a1vhywbt7" path="res://ui/heart_half.tres" id="4_l6dvw"]
 [ext_resource type="Texture2D" uid="uid://dwax5g2tt7bqn" path="res://ui/heart_1qt.tres" id="5_ebido"]
-[ext_resource type="Texture2D" uid="uid://sttg1cvv3j3y" path="res://assets/ui/Damage.png" id="5_sbasx"]
-[ext_resource type="Texture2D" uid="uid://ws8c2nse6kyc" path="res://assets/ui/Fire Rate.png" id="6_pemib"]
-[ext_resource type="Texture2D" uid="uid://bh1nalqj8im08" path="res://assets/ui/Speed.png" id="7_bbmlp"]
-[ext_resource type="Texture2D" uid="uid://bnjo074osaek1" path="res://assets/ui/Range.png" id="8_876hy"]
-[ext_resource type="Texture2D" uid="uid://b2yagdmls8oyk" path="res://assets/ui/ShotSpeed.png" id="9_qwxl3"]
-[ext_resource type="Texture2D" uid="uid://de73grn2gs1tk" path="res://assets/ui/Luck.png" id="10_wiy0u"]
+[ext_resource type="Script" path="res://ui/PurseDisplay.cs" id="9_5tmca"]
+[ext_resource type="Texture2D" uid="uid://dhcferuf3nn3m" path="res://ui/textures/coin.tres" id="10_cjltx"]
+[ext_resource type="Texture2D" uid="uid://dril6gqctm2mb" path="res://ui/textures/crystal.tres" id="11_2inc7"]
+[ext_resource type="Texture2D" uid="uid://ldlfckl4ir5k" path="res://ui/textures/key.tres" id="12_pood5"]
 [ext_resource type="Script" path="res://ui/Minimap.cs" id="16_1adnu"]
 [ext_resource type="Texture2D" uid="uid://dipk4krxegcpp" path="res://ui/textures/minimap_pathway.tres" id="18_cal8r"]
 [ext_resource type="Texture2D" uid="uid://c8byjn0x10u64" path="res://ui/textures/minimap_spawn.tres" id="18_gljsg"]
@@ -48,7 +45,7 @@ shader_parameter/darkness_in = 1.5
 atlas = ExtResource("1_nco5p")
 region = Rect2(0, 0, 8, 8)
 
-[node name="HUD" type="CanvasLayer" node_paths=PackedStringArray("ItemNameLabel", "ItemDescriptionLabel", "StatsDisplay", "_healthTextureRects", "Vignette", "Minimap")]
+[node name="HUD" type="CanvasLayer" node_paths=PackedStringArray("ItemNameLabel", "ItemDescriptionLabel", "PurseDisplay", "_healthTextureRects", "Vignette", "Minimap")]
 script = ExtResource("1_sdgqe")
 HeartFull = ExtResource("2_rrwcl")
 Heart3Qt = ExtResource("3_b3eg3")
@@ -60,7 +57,7 @@ AbsorptionHeartHalf = SubResource("AtlasTexture_ltgti")
 AbsorptionHeart1Qt = SubResource("AtlasTexture_fxh8e")
 ItemNameLabel = NodePath("MarginContainer/VBoxContainer/ItemUpName")
 ItemDescriptionLabel = NodePath("MarginContainer/VBoxContainer/ItemUpDescription")
-StatsDisplay = NodePath("MarginContainer/VBoxContainer/HBoxContainer2/StatsDisplay")
+PurseDisplay = NodePath("MarginContainer/VBoxContainer/HBoxContainer2/PurseDisplay")
 _healthTextureRects = [NodePath("MarginContainer/VBoxContainer/HBoxContainer/TextureRect"), NodePath("MarginContainer/VBoxContainer/HBoxContainer/TextureRect2"), NodePath("MarginContainer/VBoxContainer/HBoxContainer/TextureRect3"), NodePath("MarginContainer/VBoxContainer/HBoxContainer/TextureRect4"), NodePath("MarginContainer/VBoxContainer/HBoxContainer/TextureRect5"), NodePath("MarginContainer/VBoxContainer/HBoxContainer/TextureRect6"), NodePath("MarginContainer/VBoxContainer/HBoxContainer/TextureRect7"), NodePath("MarginContainer/VBoxContainer/HBoxContainer/TextureRect8"), NodePath("MarginContainer/VBoxContainer/HBoxContainer/TextureRect9"), NodePath("MarginContainer/VBoxContainer/HBoxContainer/TextureRect10")]
 Vignette = NodePath("Vignette")
 Minimap = NodePath("MarginContainer/VBoxContainer/HBoxContainer2/MarginContainer/Minimap")
@@ -78,8 +75,7 @@ color = Color(0, 0, 0, 0)
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_top = -1.0
-offset_bottom = -1.0
+offset_bottom = 11.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/margin_left = 4
@@ -177,28 +173,20 @@ horizontal_alignment = 1
 [node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="StatsDisplay" type="RichTextLabel" parent="MarginContainer/VBoxContainer/HBoxContainer2"]
+[node name="PurseDisplay" type="RichTextLabel" parent="MarginContainer/VBoxContainer/HBoxContainer2"]
 custom_minimum_size = Vector2(92, 128)
 layout_mode = 2
 theme_override_colors/default_color = Color(0.779291, 0.779291, 0.779291, 1)
 theme_override_font_sizes/normal_font_size = 11
 bbcode_enabled = true
-text = "Health
-Damage
-FireRate
-Speed
-Range
-ShotSpeed
-ShotSize
-Luck"
+text = "Coins
+Crystals
+Keys"
 scroll_active = false
-script = ExtResource("4_44t1d")
-DamageIcon = ExtResource("5_sbasx")
-FireRateIcon = ExtResource("6_pemib")
-SpeedIcon = ExtResource("7_bbmlp")
-RangeIcon = ExtResource("8_876hy")
-ShotSpeedIcon = ExtResource("9_qwxl3")
-LuckIcon = ExtResource("10_wiy0u")
+script = ExtResource("9_5tmca")
+CoinIcon = ExtResource("10_cjltx")
+CrystalIcon = ExtResource("11_2inc7")
+KeyIcon = ExtResource("12_pood5")
 
 [node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/HBoxContainer2"]
 layout_mode = 2

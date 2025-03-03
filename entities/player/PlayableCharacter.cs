@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Flamme.common.enums;
 using Flamme.common.input;
 using Flamme.entities.common;
+using Flamme.entities.env;
 using Flamme.entities.player;
 using Flamme.testing;
 using Flamme.ui;
@@ -20,6 +21,7 @@ public partial class PlayableCharacter : CharacterBody2D, IEnemyDamagable
   
   [ExportGroup("Meta")] 
   [Export] public PlayerStats Stats;
+  [Export] public PlayerPurse Purse;
   [Export] public PlayerSprite Sprite;
   [Export] public Area2D InteractionArea;
 
@@ -38,6 +40,7 @@ public partial class PlayableCharacter : CharacterBody2D, IEnemyDamagable
     InteractionArea.AreaEntered += OnAreaEntered;
 
     OnStatsChange();
+    Hud.Instance.PurseDisplay.UpdatePurse(Purse);
   }
 
   private Vector2 _movingVector = Vector2.Zero;
@@ -112,6 +115,7 @@ public partial class PlayableCharacter : CharacterBody2D, IEnemyDamagable
     Stats.Update(HeldItems);
     EmitSignal(SignalName.StatsChanged, Stats);
     Hud.Instance.UpdateStats(Stats);
+    EscapeMenu.Instance.StatsDisplay.UpdateStats(Stats);
   }
   
   private void BodyEntered(Node2D body)
@@ -129,6 +133,7 @@ public partial class PlayableCharacter : CharacterBody2D, IEnemyDamagable
 
         PickupItem(item);
       }
+      SetDeferred(PropertyName.Velocity, Velocity += (chest.GlobalPosition.DirectionTo(GlobalPosition) * 1000.0f));
     }
   }
   
@@ -137,6 +142,11 @@ public partial class PlayableCharacter : CharacterBody2D, IEnemyDamagable
     if (area is ItemPickup itemPickup)
     {
       PickupItem(itemPickup.Pickup());
+    }
+    else if (area is IPursePickup pursePickup)
+    {
+      Purse.Add(pursePickup.Pickup());
+      Hud.Instance.PurseDisplay.UpdatePurse(Purse);
     }
   }
 
