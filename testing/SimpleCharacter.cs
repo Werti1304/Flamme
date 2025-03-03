@@ -38,7 +38,6 @@ public partial class SimpleCharacter : CharacterBody2D
   [ExportGroup("Meta")] 
   [Export] public Area2D BodyArea;
   [Export] public Camera2D Camera;
-  [Export] public Staff Staff;
   [Export] public Sprite2D CharSprite;
   [Export] public PackedScene Bullet;
   [Export] public Timer BulletCooldownTimer;
@@ -271,89 +270,6 @@ public partial class SimpleCharacter : CharacterBody2D
     Velocity = Velocity.LimitLength(MaxSpeed);
     Velocity = Velocity.Lerp(Vector2.Zero, FrictionMultiplier);
     MoveAndSlide();
-    
-    // If actively shooting, the staff should snap to the right direction
-    var isShooting = (_currentActionsBmap & (Const.InputMap.Action.ShootDown 
-                                            | Const.InputMap.Action.ShootUp 
-                                            | Const.InputMap.Action.ShootLeft 
-                                            | Const.InputMap.Action.ShootRight)) > 0;
-    
-    // If too far from character, staff should trail behind, can't snap and trail at the same time though
-    if (!_isTrailing && !isShooting && GlobalPosition.DistanceTo(Staff.GlobalPosition) > StaffCharDistStartTrail)
-    {
-      _isTrailing = true;
-    }
-    else if(_isTrailing && GlobalPosition.DistanceTo(Staff.GlobalPosition) < StaffCharDistStopTrail)
-    {
-      _isTrailing = false;
-    }
-    
-    // Projectile stuff stuff
-    if (isShooting && !_isBulletOnCooldown)
-    {
-      var bullet = Bullet.Instantiate<Bullet>();
-      GetTree().Root.AddChild(bullet);
-      bullet.GlobalPosition = GlobalPosition + (Const.FacingNormVecDict[CurrentFacing] * ProjectileSpawnFromPlayer);
-      // bullet.Damage = EffDamage;
-      if (Velocity.Length() > 10)
-      {
-        bullet.Direction = 0.6f * Const.FacingNormVecDict[CurrentFacing] + 0.4f * Velocity.Normalized();
-      }
-      else
-      {
-        bullet.Direction = Const.FacingNormVecDict[CurrentFacing];
-      }
-      _isBulletOnCooldown = true;
-      BulletCooldownTimer.Start();
-    }
-      
-    // Staff and snapping stuff
-    if (isShooting)
-    {
-      var targetVec = GlobalPosition + (Const.FacingNormVecDict[CurrentFacing] * StaffDistanceFromPlayer) - Staff.GlobalTransform.Origin;
-      var direction = targetVec.Normalized();
-      var distance = targetVec.Length();
-      Staff.ApplyCentralForce(direction * Mathf.Clamp(distance, 20, 200) * SnapForceStaff);
-      Staff.LinearVelocity = Staff.LinearVelocity.Lerp(Vector2.Zero, StaffSnapFrictionMultiplier); // Friction
-    }
-    else if(_isTrailing)
-    {
-      // Otherwise, just trail behind the player if they're too far away
-      var targetVec = GlobalPosition - Staff.GlobalTransform.Origin;
-      var direction = targetVec.Normalized();
-      var distance = targetVec.Length();
-      Staff.ApplyCentralForce(direction * Mathf.Clamp(distance, 0, 10) * TrailForceStaff);
-      Staff.LinearVelocity = Staff.LinearVelocity.Lerp(Vector2.Zero, StaffTrailFrictionMultiplier); // Friction
-    }
-    else
-    {
-      Staff.LinearVelocity = Staff.LinearVelocity.Lerp(Vector2.Zero, StaffFrictionMultiplier);
-    }
-    
-    // Max speed
-    Staff.LinearVelocity = Staff.LinearVelocity.LimitLength(MaxSpeedStaff * 10);
-    
-    var overlapsPlayer = Staff.Area.GetOverlappingBodies().Contains(this);
-    var overlapMinusPlayer = Staff.Area.GetOverlappingBodies().Count - (overlapsPlayer ? 1 : 0);
-    
-    if (isShooting && overlapMinusPlayer == 0 && Mathf.Abs(_facingStaffRotationDict[CurrentFacing] - Staff.Rotation) > 0.01)
-    {
-      var targetRotation = _facingStaffRotationDict[CurrentFacing];
-      var angleDiff = Mathf.PosMod(_facingStaffRotationDict[CurrentFacing] - Staff.Rotation, Mathf.Tau);
-
-      if (angleDiff > Mathf.Pi)
-      {
-        angleDiff -= Mathf.Tau;
-      }
-      else
-      {
-        angleDiff += Mathf.Tau;
-      }
-      Staff.AngularVelocity = angleDiff * 10;
-    }
-    
-    // Angular friction
-    Staff.AngularVelocity = Mathf.Lerp(Staff.AngularVelocity, 0, AngularFrictionMultiplierStaff);
   }
 
   public void TakeDamage(int damage)

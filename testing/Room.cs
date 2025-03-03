@@ -107,8 +107,6 @@ public abstract partial class Room : Area2D
     {
       s.Position += s.FacingVectorDict[s.CurrentFacing] * 32;
       // Can't directly set pos of rigid body
-      s.Staff.ShouldReset = true;
-      s.Staff.ResetPos = s.Position;
       if (Enemies.Count == 0)
       {
         return;
