@@ -200,23 +200,24 @@ public partial class WorldGenerator : Node2D
     {
       for (var x = 0; x < level.Grid.GetLength(0); x++)
       {
-        if (level.Grid[x, y] == null && weightGrid[x, y] != -1)
-        {
-          var roomData = RoomMeta.RoomDict[RoomType.Pathway][0];
-          if (y == levelCenter.Y && x == levelCenter.X)
-          {
-            continue;
-          }
-          var room = roomData.RoomScene.Instantiate<Room>();
-          var roomPos = new Vector2I(x, y);
-          var placeGlobalPos = (roomPos - levelCenter) * roomSize * tileSize;
-          GD.Print($"Placing down room at {placeGlobalPos}");
-          room.GlobalPosition = placeGlobalPos;
-          room.ActualExits = GetRoomExits(ref weightGrid, roomPos); // get exits for room
-          level.AddChild(room);
-          room.Owner = level;
-          level.Grid[x, y] = room;
-        }
+        if (level.Grid[x, y] != null || weightGrid[x, y] == -1) 
+          continue;
+        
+        if (y == levelCenter.Y && x == levelCenter.X)
+          continue;
+        
+        // var roomData = RoomMeta.RoomDict[RoomType.Pathway][0];
+        var roomPos = new Vector2I(x, y);
+        var actualExits = GetRoomExits(ref weightGrid, roomPos);
+        var roomMeta = RoomMeta.GetRandomRoom(RoomType.Pathway, RoomSize.S1X1, actualExits);
+        var room = roomMeta.RoomScene.Instantiate<Room>();
+        var placeGlobalPos = (roomPos - levelCenter) * roomSize * tileSize;
+        GD.Print($"Placing down room at {placeGlobalPos}");
+        room.GlobalPosition = placeGlobalPos;
+        room.ActualExits = actualExits; // get exits for room
+        level.AddChild(room);
+        room.Owner = level;
+        level.Grid[x, y] = room;
       }
     }
     
@@ -233,7 +234,7 @@ public partial class WorldGenerator : Node2D
         {
           number = "0" + number;
         }
-        line += level.Grid[x, y] != null ? number : "--";
+        line += level.Grid[x, y] != null ? number : "..";
       }
       GD.Print(line);
     }

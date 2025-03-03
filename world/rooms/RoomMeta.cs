@@ -42,6 +42,21 @@ public class RoomMeta
     RoomGenerationTickets = roomGenerationTickets;
   }
 
+  public static RoomMeta GetRandomRoom(RoomType roomType, RoomSize roomSize, RoomExit roomExits)
+  {
+    var list = RoomDict[roomType];
+    
+    var validRooms = list.FindAll(r => r.Size == roomSize && r.AllowedExits.HasFlag(roomExits));
+    if (validRooms.Count == 0)
+    {
+      GD.PushError($"No room of type {roomType} with size {roomSize} and exits {roomExits} found!");
+      return null;
+    }
+
+    var randomIndex = GD.RandRange(0, validRooms.Count - 1);
+    return validRooms[randomIndex];
+  }
+
   /// <summary>
   /// Fills RoomDict, must only be called once
   /// </summary>

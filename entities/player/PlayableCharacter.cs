@@ -26,7 +26,7 @@ public partial class PlayableCharacter : CharacterBody2D, IEnemyDamagable
   [Signal]
   public delegate void StatsChangedEventHandler(PlayerStats stats);
   
-  public List<Item> HeldItems = new List<Item>();
+  public readonly List<Item> HeldItems = new List<Item>();
   
   public bool IsShooting { get; private set; }
 
@@ -96,7 +96,7 @@ public partial class PlayableCharacter : CharacterBody2D, IEnemyDamagable
     OnStatsChange();
   }
 
-  private void pickupItem(Item item)
+  private void PickupItem(Item item)
   {
     HeldItems.Add(item);
     Hud.Instance.CollectItem(item);
@@ -127,7 +127,7 @@ public partial class PlayableCharacter : CharacterBody2D, IEnemyDamagable
           return;
         }
 
-        pickupItem(item);
+        PickupItem(item);
       }
     }
   }
@@ -136,7 +136,7 @@ public partial class PlayableCharacter : CharacterBody2D, IEnemyDamagable
   {
     if (area is ItemPickup itemPickup)
     {
-      pickupItem(itemPickup.Pickup());
+      PickupItem(itemPickup.Pickup());
     }
   }
 
