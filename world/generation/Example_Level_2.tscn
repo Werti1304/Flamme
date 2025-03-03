@@ -1,6 +1,6 @@
 [gd_scene load_steps=8 format=3 uid="uid://crtnskko55g5u"]
 
-[ext_resource type="Script" path="res://world/generation/Level.cs" id="1_6uho5"]
+[ext_resource type="Script" uid="uid://c6g26aj7v1tnv" path="res://world/generation/Level.cs" id="1_6uho5"]
 [ext_resource type="PackedScene" uid="uid://bfulsjxd53ikv" path="res://entities/env/itemPickup.tscn" id="5_32ohh"]
 [ext_resource type="PackedScene" uid="uid://c2eekwqrmvxjg" path="res://world/rooms/spawn/spawn.tscn" id="5_v512o"]
 [ext_resource type="PackedScene" uid="uid://crl2m55hpy44y" path="res://world/rooms/pathway/pathway_0.tscn" id="6_84a7d"]

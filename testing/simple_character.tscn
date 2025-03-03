@@ -1,7 +1,7 @@
 [gd_scene load_steps=11 format=3 uid="uid://cxebh7brfntkv"]
 
 [ext_resource type="Texture2D" uid="uid://bbubwm0w5w3am" path="res://assets/sprites/placeholders.png" id="1_0ll0s"]
-[ext_resource type="Script" path="res://testing/SimpleCharacter.cs" id="1_w5kkd"]
+[ext_resource type="Script" uid="uid://dric5purxrsrg" path="res://testing/SimpleCharacter.cs" id="1_w5kkd"]
 [ext_resource type="PackedScene" uid="uid://by7dwhb651c2j" path="res://testing/bullet.tscn" id="2_n84tm"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_x3655"]

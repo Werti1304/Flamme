@@ -1,6 +1,6 @@
 [gd_scene load_steps=7 format=3 uid="uid://b31xv74m5ykab"]
 
-[ext_resource type="Script" path="res://entities/env/purse/Coin.cs" id="1_e1mr8"]
+[ext_resource type="Script" uid="uid://brb0eqx5l34ia" path="res://entities/env/purse/Coin.cs" id="1_e1mr8"]
 [ext_resource type="Texture2D" uid="uid://bup7ovfbqhqs6" path="res://entities/env/purse/textures/Coin.tres" id="2_8ka8k"]
 [ext_resource type="Texture2D" uid="uid://catf0j3nf76ba" path="res://assets/sprites/purse/purse.png" id="2_jol23"]
 [ext_resource type="Texture2D" uid="uid://yber1hh57viu" path="res://entities/env/purse/textures/Coin20.tres" id="3_dbjv6"]

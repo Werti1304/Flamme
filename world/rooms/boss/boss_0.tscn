@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=4 uid="uid://c7d2wb64sns8a"]
 
-[ext_resource type="Script" path="res://world/rooms/Room.cs" id="1_g5e5g"]
+[ext_resource type="Script" uid="uid://cu3vdn0r1mer3" path="res://world/rooms/Room.cs" id="1_g5e5g"]
 [ext_resource type="TileSet" uid="uid://cgyo6mc240x5s" path="res://testing/placeholder_tileset.tres" id="2_jqtsg"]
 [ext_resource type="PackedScene" uid="uid://bh5tvnrt4tk45" path="res://entities/enemies/floor_0/Runner.tscn" id="3_beots"]
 

@@ -4,7 +4,6 @@
 [ext_resource type="PackedScene" uid="uid://cxebh7brfntkv" path="res://testing/simple_character.tscn" id="2_4uii6"]
 [ext_resource type="Texture2D" uid="uid://bbubwm0w5w3am" path="res://assets/sprites/placeholders.png" id="3_vvv4k"]
 [ext_resource type="PackedScene" uid="uid://cefkfgi5yotw2" path="res://testing/enemy.tscn" id="4_f8loh"]
-[ext_resource type="PackedScene" uid="uid://t6bcys8h5uf7" path="res://testing/staff.tscn" id="5_qgix1"]
 [ext_resource type="PackedScene" uid="uid://bkcj6njh3vwda" path="res://testing/door.tscn" id="6_oh6bh"]
 [ext_resource type="TileSet" uid="uid://cgyo6mc240x5s" path="res://testing/placeholder_tileset.tres" id="7_7frt7"]
 [ext_resource type="PackedScene" uid="uid://wk6i8cghddad" path="res://testing/SimpleChest.tscn" id="8_65pep"]
@@ -12,6 +11,9 @@
 [sub_resource type="AtlasTexture" id="AtlasTexture_53jna"]
 atlas = ExtResource("3_vvv4k")
 region = Rect2(0, 32, 32, 32)
+
+[sub_resource type="Resource" id="Resource_vbidc"]
+metadata/__load_path__ = "res://testing/staff.tscn"
 
 [node name="TestLevel" type="Node2D"]
 
@@ -37,7 +39,7 @@ position = Vector2(481, 288)
 [node name="Enemy" parent="." instance=ExtResource("4_f8loh")]
 MeleeDamage = 2
 
-[node name="Staff" parent="." instance=ExtResource("5_qgix1")]
+[node name="Staff" parent="."]
 position = Vector2(288, 183)
 
 [node name="Enemy2" parent="." instance=ExtResource("4_f8loh")]

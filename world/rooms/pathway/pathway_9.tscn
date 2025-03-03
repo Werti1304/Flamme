@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=4 uid="uid://7tq2vpkb4pcs"]
 
-[ext_resource type="Script" path="res://world/rooms/Room.cs" id="1_aacvp"]
+[ext_resource type="Script" uid="uid://cu3vdn0r1mer3" path="res://world/rooms/Room.cs" id="1_aacvp"]
 [ext_resource type="TileSet" uid="uid://cgyo6mc240x5s" path="res://testing/placeholder_tileset.tres" id="2_5qvmv"]
 [ext_resource type="PackedScene" uid="uid://cefkfgi5yotw2" path="res://testing/enemy.tscn" id="3_i20v5"]
 

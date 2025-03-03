@@ -1,14 +1,14 @@
 [gd_scene load_steps=13 format=3 uid="uid://bna3ai6fvr4er"]
 
-[ext_resource type="Script" path="res://entities/player/PlayableCharacter.cs" id="1_7xu7i"]
-[ext_resource type="Script" path="res://entities/player/PlayerStats.cs" id="2_75lbi"]
+[ext_resource type="Script" uid="uid://dttg8jtw8o5u6" path="res://entities/player/PlayableCharacter.cs" id="1_7xu7i"]
+[ext_resource type="Script" uid="uid://dky0rhstps7ja" path="res://entities/player/PlayerStats.cs" id="2_75lbi"]
 [ext_resource type="Texture2D" uid="uid://bbubwm0w5w3am" path="res://assets/sprites/placeholders.png" id="2_ubm3h"]
-[ext_resource type="Script" path="res://entities/player/PlayerSprite.cs" id="3_xncd8"]
+[ext_resource type="Script" uid="uid://clno5ewko8ffb" path="res://entities/player/PlayerSprite.cs" id="3_xncd8"]
 [ext_resource type="Texture2D" uid="uid://bappkv8oew5gr" path="res://entities/player/textures/up.tres" id="4_066q3"]
 [ext_resource type="Texture2D" uid="uid://dk0ahkbvil5rn" path="res://entities/player/textures/down.tres" id="5_3ijsy"]
 [ext_resource type="Texture2D" uid="uid://ks73tphvblgw" path="res://entities/player/textures/left.tres" id="6_3tq2x"]
 [ext_resource type="Texture2D" uid="uid://b61echs27fvfp" path="res://entities/player/textures/right.tres" id="7_6xcbt"]
-[ext_resource type="Script" path="res://entities/player/PlayerPurse.cs" id="9_p3q4a"]
+[ext_resource type="Script" uid="uid://b2frx520jntkd" path="res://entities/player/PlayerPurse.cs" id="9_p3q4a"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_nkoxa"]
 atlas = ExtResource("2_ubm3h")

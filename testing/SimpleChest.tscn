@@ -1,7 +1,7 @@
 [gd_scene load_steps=9 format=3 uid="uid://wk6i8cghddad"]
 
 [ext_resource type="Texture2D" uid="uid://bd2bae7mm8cmy" path="res://assets/sprites/entities/env/chests.png" id="1_bfxif"]
-[ext_resource type="Script" path="res://testing/SimpleChest.cs" id="1_ew0nr"]
+[ext_resource type="Script" uid="uid://fd70esu1g15u" path="res://testing/SimpleChest.cs" id="1_ew0nr"]
 [ext_resource type="Texture2D" uid="uid://bbubwm0w5w3am" path="res://assets/sprites/placeholders.png" id="3_rkb6x"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_vjctb"]

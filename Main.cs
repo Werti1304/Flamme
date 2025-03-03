@@ -25,5 +25,4 @@ public partial class Main : Node
   {
     StatUpItems.RegisterStatUpItems();
   }
-
 }

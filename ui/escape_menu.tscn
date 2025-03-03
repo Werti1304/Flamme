@@ -1,8 +1,8 @@
 [gd_scene load_steps=17 format=3 uid="uid://co7tcblqmu258"]
 
-[ext_resource type="Script" path="res://ui/EscapeMenu.cs" id="1_4h62w"]
+[ext_resource type="Script" uid="uid://c0nvmme0liq12" path="res://ui/EscapeMenu.cs" id="1_4h62w"]
 [ext_resource type="Texture2D" uid="uid://djyibtpo5ch1m" path="res://assets/sprites/EscapeMenu.png" id="1_6kgr1"]
-[ext_resource type="Script" path="res://ui/StatsDisplay.cs" id="2_ypqrs"]
+[ext_resource type="Script" uid="uid://bbj0l4skqwx0f" path="res://ui/StatsDisplay.cs" id="2_ypqrs"]
 [ext_resource type="Texture2D" uid="uid://sttg1cvv3j3y" path="res://assets/ui/Damage.png" id="3_fiycp"]
 [ext_resource type="Texture2D" uid="uid://ws8c2nse6kyc" path="res://assets/ui/Fire Rate.png" id="4_d13xr"]
 [ext_resource type="Texture2D" uid="uid://bh1nalqj8im08" path="res://assets/ui/Speed.png" id="5_13mkd"]
