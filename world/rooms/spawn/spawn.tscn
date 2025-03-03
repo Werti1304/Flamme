@@ -1,17 +1,18 @@
-[gd_scene load_steps=7 format=4 uid="uid://c2eekwqrmvxjg"]
+[gd_scene load_steps=8 format=4 uid="uid://c2eekwqrmvxjg"]
 
 [ext_resource type="Script" uid="uid://cu3vdn0r1mer3" path="res://world/rooms/Room.cs" id="1_x6qr4"]
 [ext_resource type="TileSet" uid="uid://cgyo6mc240x5s" path="res://testing/placeholder_tileset.tres" id="2_usqwj"]
 [ext_resource type="PackedScene" uid="uid://bqlr8l7agsr6" path="res://entities/env/purse/Key.tscn" id="3_hqdvv"]
 [ext_resource type="PackedScene" uid="uid://bup66binra50f" path="res://entities/env/purse/Crystal.tscn" id="4_rxoj4"]
 [ext_resource type="PackedScene" uid="uid://b31xv74m5ykab" path="res://entities/env/purse/Coin.tscn" id="5_628fi"]
+[ext_resource type="PackedScene" uid="uid://bgqrp6nhkayrg" path="res://entities/env/shop/coin_buyable.tscn" id="6_sk61c"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_w6rau"]
 size = Vector2(544, 352)
 
 [node name="Spawn" type="Area2D" node_paths=PackedStringArray("TileMap", "CollisionShape")]
-collision_layer = 14
-collision_mask = 14
+collision_layer = 15
+collision_mask = 15
 script = ExtResource("1_x6qr4")
 Type = 1
 TileSet = ExtResource("2_usqwj")
@@ -91,3 +92,6 @@ _count = 20
 [node name="Coin30" parent="purse pickups" instance=ExtResource("5_628fi")]
 position = Vector2(111, 112)
 _count = 30
+
+[node name="CoinBuyable" parent="." instance=ExtResource("6_sk61c")]
+position = Vector2(368, 107)
