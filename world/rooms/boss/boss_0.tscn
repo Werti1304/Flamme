@@ -9,8 +9,8 @@ size = Vector2(544, 352)
 
 [node name="Boss0" type="Area2D" node_paths=PackedStringArray("TileMap", "CollisionShape")]
 position = Vector2(2, -1)
-collision_layer = 14
-collision_mask = 14
+collision_layer = 15
+collision_mask = 15
 script = ExtResource("1_g5e5g")
 Type = 5
 TileSet = ExtResource("2_jqtsg")

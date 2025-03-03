@@ -2,14 +2,14 @@
 
 [ext_resource type="Script" uid="uid://cu3vdn0r1mer3" path="res://world/rooms/Room.cs" id="1_s6dle"]
 [ext_resource type="TileSet" uid="uid://cgyo6mc240x5s" path="res://testing/placeholder_tileset.tres" id="2_lgjhd"]
-[ext_resource type="PackedScene" uid="uid://cefkfgi5yotw2" path="res://testing/enemy.tscn" id="3_05uv2"]
+[ext_resource type="PackedScene" uid="uid://bh5tvnrt4tk45" path="res://entities/enemies/floor_0/Runner.tscn" id="3_rql81"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_0uwll"]
 size = Vector2(544, 352)
 
 [node name="Pathway7" type="Area2D" node_paths=PackedStringArray("TileMap", "CollisionShape")]
-collision_layer = 14
-collision_mask = 14
+collision_layer = 15
+collision_mask = 15
 script = ExtResource("1_s6dle")
 TileSet = ExtResource("2_lgjhd")
 AllowedExits = 12
@@ -24,8 +24,8 @@ tile_set = ExtResource("2_lgjhd")
 position = Vector2(272, 176)
 shape = SubResource("RectangleShape2D_0uwll")
 
-[node name="Enemy" parent="." instance=ExtResource("3_05uv2")]
-position = Vector2(259, 72)
+[node name="Runner" parent="." instance=ExtResource("3_rql81")]
+position = Vector2(271, 75)
 
-[node name="Enemy2" parent="." instance=ExtResource("3_05uv2")]
-position = Vector2(262, 280)
+[node name="Runner2" parent="." instance=ExtResource("3_rql81")]
+position = Vector2(270, 273)

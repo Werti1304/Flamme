@@ -1,5 +1,6 @@
 using Flamme.common.enums;
 using Flamme.testing;
+using Flamme.ui;
 using Godot;
 using System;
 using System.Collections.Generic;
@@ -59,8 +60,8 @@ public partial class Room : Area2D
     BodyEntered += OnBodyEntered;
     BodyExited += OnBodyExited;
 
-    CollisionMask = 0b1110;
-    CollisionLayer = 0b1110;
+    CollisionMask = 0b1111;
+    CollisionLayer = 0b1111;
   }
 
   private Vector2 GetMidPoint()
@@ -110,7 +111,10 @@ public partial class Room : Area2D
 
   private void SetRoomActive(PlayableCharacter playableCharacter)
   {
-    GD.Print($"Player entered Room {Name}");
+    GD.Print($"Player entered Room {Name} with {_enemies.Count} enemies!");
+    // Update player position on minimap
+    Hud.Instance.Minimap.SetActiveRoom(LevelManager.Instance.CurrentLevel, this);
+    
     _playableCharacter = playableCharacter;
     if (GetViewport().GetCamera2D() is PlayerCamera camera)
     {
@@ -119,6 +123,15 @@ public partial class Room : Area2D
 
     if (_enemies.Count == 0)
     {
+      foreach (var body in GetOverlappingBodies())
+      {
+        if (body is Enemy e)
+        {
+          _enemies.Add(e);
+          GD.Print($"Thought room {Name} is empty, but had enemy {e.Name} inside!");
+        }
+      }
+      
       SetRoomCleared();
       return;
     }

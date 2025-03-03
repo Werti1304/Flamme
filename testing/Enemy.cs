@@ -1,5 +1,6 @@
 using Flamme.entities;
 using Godot;
+using System;
 
 namespace Flamme.testing;
 
@@ -25,6 +26,8 @@ public partial class Enemy : CharacterBody2D, IPlayerDamageable
     ExportMetaNonNull.Check(this);
 
     StunTimer.Timeout += () => _stunned = false;
+    
+    throw new StackOverflowException("Don't use me");
   }
 
   public int GetMeleeDamage()
