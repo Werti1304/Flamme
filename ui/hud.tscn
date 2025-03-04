@@ -1,56 +1,58 @@
-[gd_scene load_steps=25 format=3 uid="uid://dykd30fkfcn81"]
+[gd_scene load_steps=26 format=3 uid="uid://dykd30fkfcn81"]
 
-[ext_resource type="Texture2D" uid="uid://bwiidp4kg2031" path="res://assets/ui/ui.png" id="1_nco5p"]
-[ext_resource type="Script" uid="uid://c4i51i2wltxdo" path="res://ui/Hud.cs" id="1_sdgqe"]
-[ext_resource type="Texture2D" uid="uid://dvc802522cyjx" path="res://ui/textures/heart_full.tres" id="2_rrwcl"]
-[ext_resource type="Texture2D" uid="uid://duth7gbgdil5t" path="res://ui/textures/heart_3qt.tres" id="3_b3eg3"]
-[ext_resource type="Shader" uid="uid://bixdo5w2pmdmu" path="res://ui/vignette.gdshader" id="3_dwg6y"]
-[ext_resource type="Script" uid="uid://dvr7l7tthvcm3" path="res://ui/FpsLabel.cs" id="3_opnbn"]
-[ext_resource type="Texture2D" uid="uid://bae3a1vhywbt7" path="res://ui/textures/heart_half.tres" id="4_l6dvw"]
-[ext_resource type="Texture2D" uid="uid://dwax5g2tt7bqn" path="res://ui/textures/heart_1qt.tres" id="5_ebido"]
-[ext_resource type="Script" uid="uid://djq31n3t4gjrm" path="res://ui/PurseDisplay.cs" id="9_5tmca"]
-[ext_resource type="Texture2D" uid="uid://dhcferuf3nn3m" path="res://ui/textures/coin.tres" id="10_cjltx"]
-[ext_resource type="Texture2D" uid="uid://dril6gqctm2mb" path="res://ui/textures/crystal.tres" id="11_2inc7"]
-[ext_resource type="Texture2D" uid="uid://ldlfckl4ir5k" path="res://ui/textures/key.tres" id="12_pood5"]
-[ext_resource type="Script" uid="uid://drlgr7gmgmbuk" path="res://ui/Minimap.cs" id="16_1adnu"]
-[ext_resource type="Texture2D" uid="uid://dipk4krxegcpp" path="res://ui/textures/minimap_pathway.tres" id="18_cal8r"]
-[ext_resource type="Texture2D" uid="uid://c8byjn0x10u64" path="res://ui/textures/minimap_spawn.tres" id="18_gljsg"]
-[ext_resource type="Texture2D" uid="uid://c343ocvsluku8" path="res://ui/textures/minimap_treasure.tres" id="19_0fmmc"]
-[ext_resource type="Texture2D" uid="uid://cbvu8alql60w0" path="res://ui/textures/minimap_boss.tres" id="20_gua6x"]
-[ext_resource type="Texture2D" uid="uid://dkcavwnhe4cnp" path="res://ui/textures/minimap_shop.tres" id="21_kenvh"]
+[ext_resource type="Script" uid="uid://c4i51i2wltxdo" path="res://ui/Hud.cs" id="1_kc1f2"]
+[ext_resource type="Texture2D" uid="uid://dvc802522cyjx" path="res://ui/textures/heart_full.tres" id="2_6mpex"]
+[ext_resource type="Texture2D" uid="uid://c54dw0f216ffs" path="res://ui/textures/heart_empty.tres" id="2_mlhsj"]
+[ext_resource type="Texture2D" uid="uid://duth7gbgdil5t" path="res://ui/textures/heart_3qt.tres" id="3_mlhsj"]
+[ext_resource type="Texture2D" uid="uid://bae3a1vhywbt7" path="res://ui/textures/heart_half.tres" id="4_x3e77"]
+[ext_resource type="Texture2D" uid="uid://dwax5g2tt7bqn" path="res://ui/textures/heart_1qt.tres" id="5_exqf6"]
+[ext_resource type="Texture2D" uid="uid://bwiidp4kg2031" path="res://assets/ui/ui.png" id="6_3ju8l"]
+[ext_resource type="Shader" uid="uid://bixdo5w2pmdmu" path="res://ui/vignette.gdshader" id="7_b1px6"]
+[ext_resource type="Script" uid="uid://dvr7l7tthvcm3" path="res://ui/FpsLabel.cs" id="8_c3smh"]
+[ext_resource type="Script" uid="uid://djq31n3t4gjrm" path="res://ui/PurseDisplay.cs" id="9_5jwjf"]
+[ext_resource type="Texture2D" uid="uid://dhcferuf3nn3m" path="res://ui/textures/coin.tres" id="10_nso1x"]
+[ext_resource type="Texture2D" uid="uid://dril6gqctm2mb" path="res://ui/textures/crystal.tres" id="11_hyw70"]
+[ext_resource type="Texture2D" uid="uid://ldlfckl4ir5k" path="res://ui/textures/key.tres" id="12_cxdcy"]
+[ext_resource type="Script" uid="uid://drlgr7gmgmbuk" path="res://ui/Minimap.cs" id="13_6y3bq"]
+[ext_resource type="Texture2D" uid="uid://dipk4krxegcpp" path="res://ui/textures/minimap_pathway.tres" id="14_4sr2e"]
+[ext_resource type="Texture2D" uid="uid://c8byjn0x10u64" path="res://ui/textures/minimap_spawn.tres" id="15_vjpmv"]
+[ext_resource type="Texture2D" uid="uid://c343ocvsluku8" path="res://ui/textures/minimap_treasure.tres" id="16_o8st7"]
+[ext_resource type="Texture2D" uid="uid://cbvu8alql60w0" path="res://ui/textures/minimap_boss.tres" id="17_mgoxf"]
+[ext_resource type="Texture2D" uid="uid://dkcavwnhe4cnp" path="res://ui/textures/minimap_shop.tres" id="18_0f6tk"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_clops"]
-atlas = ExtResource("1_nco5p")
+atlas = ExtResource("6_3ju8l")
 region = Rect2(16, 0, 8, 8)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_m5wq6"]
-atlas = ExtResource("1_nco5p")
+atlas = ExtResource("6_3ju8l")
 region = Rect2(24, 0, 8, 8)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_ltgti"]
-atlas = ExtResource("1_nco5p")
+atlas = ExtResource("6_3ju8l")
 region = Rect2(16, 8, 8, 8)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_fxh8e"]
-atlas = ExtResource("1_nco5p")
+atlas = ExtResource("6_3ju8l")
 region = Rect2(24, 8, 8, 8)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_2uaof"]
-shader = ExtResource("3_dwg6y")
+shader = ExtResource("7_b1px6")
 shader_parameter/darkness_intensity = 1.0
 shader_parameter/darkness_out = 0.5
 shader_parameter/darkness_in = 1.5
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_gte7p"]
-atlas = ExtResource("1_nco5p")
+atlas = ExtResource("6_3ju8l")
 region = Rect2(0, 0, 8, 8)
 
 [node name="HUD" type="CanvasLayer" node_paths=PackedStringArray("ItemNameLabel", "ItemDescriptionLabel", "PurseDisplay", "_healthRectContainer", "Vignette", "Minimap")]
-script = ExtResource("1_sdgqe")
-HeartFull = ExtResource("2_rrwcl")
-Heart3Qt = ExtResource("3_b3eg3")
-HeartHalf = ExtResource("4_l6dvw")
-Heart1Qt = ExtResource("5_ebido")
+script = ExtResource("1_kc1f2")
+HeartEmpty = ExtResource("2_mlhsj")
+HeartFull = ExtResource("2_6mpex")
+Heart3Qt = ExtResource("3_mlhsj")
+HeartHalf = ExtResource("4_x3e77")
+Heart1Qt = ExtResource("5_exqf6")
 AbsorptionHeartFull = SubResource("AtlasTexture_clops")
 AbsorptionHeart3Qt = SubResource("AtlasTexture_m5wq6")
 AbsorptionHeartHalf = SubResource("AtlasTexture_ltgti")
@@ -156,7 +158,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 text = "FPS"
 horizontal_alignment = 2
-script = ExtResource("3_opnbn")
+script = ExtResource("8_c3smh")
 
 [node name="ItemUpName" type="Label" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
@@ -183,10 +185,10 @@ text = "Coins
 Crystals
 Keys"
 scroll_active = false
-script = ExtResource("9_5tmca")
-CoinIcon = ExtResource("10_cjltx")
-CrystalIcon = ExtResource("11_2inc7")
-KeyIcon = ExtResource("12_pood5")
+script = ExtResource("9_5jwjf")
+CoinIcon = ExtResource("10_nso1x")
+CrystalIcon = ExtResource("11_hyw70")
+KeyIcon = ExtResource("12_cxdcy")
 
 [node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/HBoxContainer2"]
 layout_mode = 2
@@ -198,9 +200,9 @@ size_flags_horizontal = 3
 theme_override_constants/h_separation = 0
 theme_override_constants/v_separation = 0
 columns = 16
-script = ExtResource("16_1adnu")
-PathwayTexture = ExtResource("18_cal8r")
-SpawnTexture = ExtResource("18_gljsg")
-TreasureTexture = ExtResource("19_0fmmc")
-BossTexture = ExtResource("20_gua6x")
-ShopTexture = ExtResource("21_kenvh")
+script = ExtResource("13_6y3bq")
+PathwayTexture = ExtResource("14_4sr2e")
+SpawnTexture = ExtResource("15_vjpmv")
+TreasureTexture = ExtResource("16_o8st7")
+BossTexture = ExtResource("17_mgoxf")
+ShopTexture = ExtResource("18_0f6tk")

@@ -1,6 +1,6 @@
 #region *.hpp
 // //----------------------------------------------------------------------------------------------------------------------
-// // Stats.cs
+// // Universal.cs
 // //
 // // <Explanation of the file's contents ...>
 // // <... may span multiple lines.>
@@ -10,21 +10,10 @@
 // //
 #endregion
 
-namespace Flamme.common.enums;
+namespace Flamme.common.constant;
 
-public enum StatType
+public static class Universal
 {
-  HealthContainer,
-  Speed,
-  Damage,
-  DamageMultiplier,
-  DamageFlat,
-  Range,
-  RangeMultiplier,
-  FireRate,
-  FireMultiplier,
-  ShotSpeed,
-  ShotSize,
-  Luck,
-  Mana // Don't know what for yet
+  public const int MaxPlayerHealth = 40;
+  public const int MaxPlayerHealthContainers = 10;
 }

@@ -22,7 +22,7 @@ AssetManager="*res://common/assets/AssetManager.cs"
 WorldGenerator="*res://world/generation/world_generator.tscn"
 Main="*res://Main.cs"
 LevelManager="*res://world/LevelManager.cs"
-Hud="*res://hud.tscn"
+Hud="*res://ui/hud.tscn"
 EscapeMenu="*res://ui/escape_menu.tscn"
 
 [display]

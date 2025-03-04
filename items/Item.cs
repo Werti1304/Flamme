@@ -1,22 +1,10 @@
-#region *.hpp
-// //----------------------------------------------------------------------------------------------------------------------
-// // Item.cs
-// //
-// // <Explanation of the file's contents ...>
-// // <... may span multiple lines.>
-// //
-// // Author: <name>, <name> ...
-// //----------------------------------------------------------------------------------------------------------------------
-// //
-#endregion
 
 using Flamme.common.assets;
 using Flamme.common.enums;
 using Flamme.common.eventArgs;
 using Godot;
-using Godot.Collections;
 using System;
-using System.Net.Mime;
+using System.Collections.Generic;
 
 namespace Flamme.items;
 
@@ -43,6 +31,7 @@ public class Item
   public event EventHandler ItemRemoved;
 
   public readonly Dictionary<StatType, int> StatsUpDict = new Dictionary<StatType, int>();
+  public readonly Dictionary<HealthType, int> HealingDict = new Dictionary<HealthType, int>();
 
   public Item(ItemId id, string name, string description, Tier tier)
   {
@@ -67,6 +56,12 @@ public class Item
   public Item AddStatUp(StatType statType, int count)
   {
     StatsUpDict.Add(statType, count);
+    return this;
+  }
+
+  public Item AddHealing(HealthType healthType, int health)
+  {
+    HealingDict.Add(healthType, health);
     return this;
   }
   
