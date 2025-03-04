@@ -1,8 +1,9 @@
-[gd_scene load_steps=9 format=4 uid="uid://c2eekwqrmvxjg"]
+[gd_scene load_steps=10 format=4 uid="uid://c2eekwqrmvxjg"]
 
 [ext_resource type="Script" uid="uid://cu3vdn0r1mer3" path="res://world/rooms/Room.cs" id="1_x6qr4"]
 [ext_resource type="TileSet" uid="uid://cgyo6mc240x5s" path="res://testing/placeholder_tileset.tres" id="2_usqwj"]
 [ext_resource type="PackedScene" uid="uid://bqlr8l7agsr6" path="res://entities/env/purse/Key.tscn" id="3_hqdvv"]
+[ext_resource type="PackedScene" uid="uid://cu2hrf4t2q3w0" path="res://entities/env/health/health_pickup.tscn" id="3_u6w3p"]
 [ext_resource type="PackedScene" uid="uid://bup66binra50f" path="res://entities/env/purse/Crystal.tscn" id="4_rxoj4"]
 [ext_resource type="PackedScene" uid="uid://b31xv74m5ykab" path="res://entities/env/purse/Coin.tscn" id="5_628fi"]
 [ext_resource type="PackedScene" uid="uid://bgqrp6nhkayrg" path="res://entities/env/shop/coin_buyable.tscn" id="6_sk61c"]
@@ -28,6 +29,43 @@ tile_set = ExtResource("2_usqwj")
 [node name="CollisionShape" type="CollisionShape2D" parent="."]
 position = Vector2(272, 176)
 shape = SubResource("RectangleShape2D_w6rau")
+
+[node name="heart pickups" type="Node2D" parent="."]
+position = Vector2(64, 224)
+
+[node name="HealthPickup" parent="heart pickups" instance=ExtResource("3_u6w3p")]
+position = Vector2(16, 15)
+
+[node name="HealthPickup2" parent="heart pickups" instance=ExtResource("3_u6w3p")]
+position = Vector2(48, 15)
+HealingAmount = 3
+
+[node name="HealthPickup3" parent="heart pickups" instance=ExtResource("3_u6w3p")]
+position = Vector2(79, 16)
+HealingAmount = 2
+
+[node name="HealthPickup4" parent="heart pickups" instance=ExtResource("3_u6w3p")]
+position = Vector2(112, 15)
+HealingAmount = 1
+
+[node name="HealthPickup5" parent="heart pickups" instance=ExtResource("3_u6w3p")]
+position = Vector2(16, 47)
+HealthType = 1
+
+[node name="HealthPickup6" parent="heart pickups" instance=ExtResource("3_u6w3p")]
+position = Vector2(48, 47)
+HealthType = 1
+HealingAmount = 3
+
+[node name="HealthPickup7" parent="heart pickups" instance=ExtResource("3_u6w3p")]
+position = Vector2(80, 47)
+HealthType = 1
+HealingAmount = 2
+
+[node name="HealthPickup8" parent="heart pickups" instance=ExtResource("3_u6w3p")]
+position = Vector2(112, 46)
+HealthType = 1
+HealingAmount = 1
 
 [node name="purse pickups" type="Node2D" parent="."]
 position = Vector2(64, 64)

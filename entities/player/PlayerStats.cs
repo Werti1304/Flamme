@@ -112,7 +112,7 @@ public partial class PlayerStats : Node2D
     switch (type)
     {
       case HealthType.Normal:
-        if (NormalHealth == HealthContainers)
+        if (NormalHealth == HealthContainers * Universal.HealthPerContainer)
         {
           return false;
         }

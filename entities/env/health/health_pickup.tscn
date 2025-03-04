@@ -1,0 +1,32 @@
+[gd_scene load_steps=11 format=3 uid="uid://cu2hrf4t2q3w0"]
+
+[ext_resource type="Script" uid="uid://d1mad0v0bxlfn" path="res://entities/env/health/HealthPickup.cs" id="1_gsb4a"]
+[ext_resource type="Texture2D" uid="uid://dvc802522cyjx" path="res://ui/textures/heart_full.tres" id="2_pdao2"]
+[ext_resource type="Texture2D" uid="uid://duth7gbgdil5t" path="res://ui/textures/heart_3qt.tres" id="3_xd628"]
+[ext_resource type="Texture2D" uid="uid://bae3a1vhywbt7" path="res://ui/textures/heart_half.tres" id="4_bnstc"]
+[ext_resource type="Texture2D" uid="uid://dwax5g2tt7bqn" path="res://ui/textures/heart_1qt.tres" id="5_3mfbi"]
+[ext_resource type="Texture2D" uid="uid://d0j430x4w1ulk" path="res://ui/textures/absorption_heart_full.tres" id="6_cyf3c"]
+[ext_resource type="Texture2D" uid="uid://cr63gwd56w7t0" path="res://ui/textures/absorption_heart_3qt.tres" id="7_6l1pw"]
+[ext_resource type="Texture2D" uid="uid://ceauq8jq1t2jn" path="res://ui/textures/absorption_heart_half.tres" id="8_tdri5"]
+[ext_resource type="Texture2D" uid="uid://cdfdk62qyajfw" path="res://ui/textures/absorption_heart_1qt.tres" id="9_7pha4"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_gsb4a"]
+radius = 5.0
+
+[node name="HealthPickup" type="Area2D" node_paths=PackedStringArray("Sprite")]
+script = ExtResource("1_gsb4a")
+HeartFull = ExtResource("2_pdao2")
+Heart3Qt = ExtResource("3_xd628")
+HeartHalf = ExtResource("4_bnstc")
+Heart1Qt = ExtResource("5_3mfbi")
+AbsorptionHeartFull = ExtResource("6_cyf3c")
+AbsorptionHeart3Qt = ExtResource("7_6l1pw")
+AbsorptionHeartHalf = ExtResource("8_tdri5")
+AbsorptionHeart1Qt = ExtResource("9_7pha4")
+Sprite = NodePath("Sprite2D")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_gsb4a")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_pdao2")

@@ -8,8 +8,8 @@ size = Vector2(544, 352)
 
 [node name="Shop0" type="Area2D" node_paths=PackedStringArray("TileMap", "CollisionShape")]
 modulate = Color(0.0666666, 1, 0, 1)
-collision_layer = 14
-collision_mask = 14
+collision_layer = 15
+collision_mask = 15
 script = ExtResource("1_4qxe8")
 Type = 3
 TileSet = ExtResource("2_4sby6")

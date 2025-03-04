@@ -7,9 +7,13 @@
 [ext_resource type="Texture2D" uid="uid://bae3a1vhywbt7" path="res://ui/textures/heart_half.tres" id="4_x3e77"]
 [ext_resource type="Texture2D" uid="uid://dwax5g2tt7bqn" path="res://ui/textures/heart_1qt.tres" id="5_exqf6"]
 [ext_resource type="Texture2D" uid="uid://bwiidp4kg2031" path="res://assets/ui/ui.png" id="6_3ju8l"]
+[ext_resource type="Texture2D" uid="uid://d0j430x4w1ulk" path="res://ui/textures/absorption_heart_full.tres" id="7_3ju8l"]
 [ext_resource type="Shader" uid="uid://bixdo5w2pmdmu" path="res://ui/vignette.gdshader" id="7_b1px6"]
+[ext_resource type="Texture2D" uid="uid://cr63gwd56w7t0" path="res://ui/textures/absorption_heart_3qt.tres" id="8_b1px6"]
 [ext_resource type="Script" uid="uid://dvr7l7tthvcm3" path="res://ui/FpsLabel.cs" id="8_c3smh"]
 [ext_resource type="Script" uid="uid://djq31n3t4gjrm" path="res://ui/PurseDisplay.cs" id="9_5jwjf"]
+[ext_resource type="Texture2D" uid="uid://ceauq8jq1t2jn" path="res://ui/textures/absorption_heart_half.tres" id="9_c3smh"]
+[ext_resource type="Texture2D" uid="uid://cdfdk62qyajfw" path="res://ui/textures/absorption_heart_1qt.tres" id="10_5jwjf"]
 [ext_resource type="Texture2D" uid="uid://dhcferuf3nn3m" path="res://ui/textures/coin.tres" id="10_nso1x"]
 [ext_resource type="Texture2D" uid="uid://dril6gqctm2mb" path="res://ui/textures/crystal.tres" id="11_hyw70"]
 [ext_resource type="Texture2D" uid="uid://ldlfckl4ir5k" path="res://ui/textures/key.tres" id="12_cxdcy"]
@@ -19,22 +23,6 @@
 [ext_resource type="Texture2D" uid="uid://c343ocvsluku8" path="res://ui/textures/minimap_treasure.tres" id="16_o8st7"]
 [ext_resource type="Texture2D" uid="uid://cbvu8alql60w0" path="res://ui/textures/minimap_boss.tres" id="17_mgoxf"]
 [ext_resource type="Texture2D" uid="uid://dkcavwnhe4cnp" path="res://ui/textures/minimap_shop.tres" id="18_0f6tk"]
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_clops"]
-atlas = ExtResource("6_3ju8l")
-region = Rect2(16, 0, 8, 8)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_m5wq6"]
-atlas = ExtResource("6_3ju8l")
-region = Rect2(24, 0, 8, 8)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_ltgti"]
-atlas = ExtResource("6_3ju8l")
-region = Rect2(16, 8, 8, 8)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_fxh8e"]
-atlas = ExtResource("6_3ju8l")
-region = Rect2(24, 8, 8, 8)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_2uaof"]
 shader = ExtResource("7_b1px6")
@@ -53,10 +41,10 @@ HeartFull = ExtResource("2_6mpex")
 Heart3Qt = ExtResource("3_mlhsj")
 HeartHalf = ExtResource("4_x3e77")
 Heart1Qt = ExtResource("5_exqf6")
-AbsorptionHeartFull = SubResource("AtlasTexture_clops")
-AbsorptionHeart3Qt = SubResource("AtlasTexture_m5wq6")
-AbsorptionHeartHalf = SubResource("AtlasTexture_ltgti")
-AbsorptionHeart1Qt = SubResource("AtlasTexture_fxh8e")
+AbsorptionHeartFull = ExtResource("7_3ju8l")
+AbsorptionHeart3Qt = ExtResource("8_b1px6")
+AbsorptionHeartHalf = ExtResource("9_c3smh")
+AbsorptionHeart1Qt = ExtResource("10_5jwjf")
 ItemNameLabel = NodePath("MarginContainer/VBoxContainer/ItemUpName")
 ItemDescriptionLabel = NodePath("MarginContainer/VBoxContainer/ItemUpDescription")
 PurseDisplay = NodePath("MarginContainer/VBoxContainer/HBoxContainer2/PurseDisplay")
