@@ -1,19 +1,20 @@
+using Flamme.common.constant;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using Flamme.common.enums;
 using Flamme.items;
 using Godot;
+using System.Collections.Generic;
 
 namespace Flamme.entities.player;
 
 public partial class PlayerStats : Node2D
 {
   // TODO Include Staff Stats in all calculations.. yaaay
-  [Export] public int BaseHealth = 12; // /4 = Hearts
-  [Export] public int StartingHealth = 12;
-  [Export] public int StartingAbsorption = 0;
+  [Export] public int BaseHealthContainers = 3;
+  [Export] public int StartingHealth = 12; // 1 health is 1/4 of a container
+  [Export] public int StartingAbsorption = 12;
+  
   [Export] public int BaseSpeed = 50; // px/sec?
   [Export] public float BaseDamage = 2; // Damage against enemies
   [Export] public float BaseDamageMultiplier = 1;
@@ -26,8 +27,8 @@ public partial class PlayerStats : Node2D
   [Export] public int BaseLuck = 3; // Chance for more loot / better items
   [Export] public int BaseMana = 100; // Idk yet
 
-  public int Health { get; private set; }
-  public int HealthContainerMax { get; private set; }
+  public int HealthContainers { get; private set; }
+  public int NormalHealth { get; private set; }
   public int AbsorptionHealth { get; private set; }
   public int Speed { get; private set; }
   public int Range { get; private set; }
@@ -38,14 +39,19 @@ public partial class PlayerStats : Node2D
   public int Luck { get; private set; }
   public int Mana { get; private set; }
 
-  private readonly Dictionary<StatType, int> _statSumDict = new Dictionary<StatType, int>();
+  private readonly Godot.Collections.Dictionary<StatType, int> _statSumDict = new Godot.Collections.Dictionary<StatType, int>();
 
   public override void _Ready()
   {
+    foreach (StatType statType in Enum.GetValues(typeof(StatType)))
+    {
+      _statSumDict[statType] = 0;
+    }
+    
     // Absorption Hearts have to be added manually
-    Health = StartingHealth;
-    HealthContainerMax = BaseHealth;
-    AbsorptionHealth = StartingAbsorption;
+    CalculateHealthContainers();
+    AddHealth(HealthType.Normal, StartingHealth);
+    AddHealth(HealthType.Absorption, StartingAbsorption);
   }
 
   /// <summary>
@@ -65,17 +71,7 @@ public partial class PlayerStats : Node2D
       _statSumDict[statUp.Key] += statUp.Value;
     }
     
-    var oldHealthMax = HealthContainerMax;
-    CalculateHealth();
-    // We got more health
-    if (oldHealthMax < HealthContainerMax)
-    {
-      Health += HealthContainerMax - oldHealthMax;
-    }
-    else if (oldHealthMax > HealthContainerMax)
-    {
-      Health = HealthContainerMax;
-    }
+    CalculateHealthContainers();
     
     // Damage has to be calculated before ShotSize!
     CalculateDamage();
@@ -88,20 +84,54 @@ public partial class PlayerStats : Node2D
     CalculateMana();
   }
 
+  public void AddHealth(Dictionary<HealthType, int> healthDict)
+  {
+    foreach (var health in healthDict)
+    {
+      AddHealth(health.Key, health.Value);
+    }
+  }
+
   /// <summary>
   /// Adds health points to heart containers
   /// </summary>
+  /// <param name="type">Type of added health</param>
   /// <param name="health">health points to be added</param>
   /// <returns>Whether or not it was at least partially able to add to health
   /// -> means normally if false, don't let player pick up</returns>
-  public bool AddHealth(int health)
+  public bool AddHealth(HealthType type, int health)
   {
-    if (Health == HealthContainerMax)
+    // Makes sure that we don't go over our max possible health
+    health = Math.Min(health, Universal.MaxPlayerHealth - GetTotalHealthPoints());
+
+    if (health == 0)
     {
       return false;
     }
-    Health = Mathf.Min(Health + health, HealthContainerMax);
-    return true;
+    
+    switch (type)
+    {
+      case HealthType.Normal:
+        if (NormalHealth == HealthContainers)
+        {
+          return false;
+        }
+        NormalHealth = Mathf.Min(NormalHealth + health, HealthContainers * Universal.HealthPerContainer);
+        LimitHealthToBounds();
+        return true;
+      case HealthType.Absorption:
+        health = Math.Min(health, Universal.MaxPlayerHealth - HealthContainers * Universal.HealthPerContainer);
+        AbsorptionHealth += health;
+        LimitHealthToBounds();
+        return true;
+      default:
+        throw new ArgumentOutOfRangeException(nameof(type), type, null);
+    }
+  }
+
+  private int GetTotalHealthPoints()
+  {
+    return NormalHealth + AbsorptionHealth;
   }
 
   /// <summary>
@@ -112,13 +142,18 @@ public partial class PlayerStats : Node2D
   /// -> means its false if player died</returns>
   public bool RemoveHealth(int health)
   {
+    if (health <= 0)
+    {
+      GD.PushWarning($"Tried to remove [{health}] health!");
+    }
     AbsorptionHealth -= health;
 
     if (AbsorptionHealth > 0)
       return true;
-    Health = Mathf.Max(Health + AbsorptionHealth, 0);
+    // Looks confusing but just calculates damage against normal health, with health = 0 as min
+    NormalHealth = Mathf.Max(NormalHealth + AbsorptionHealth, 0);
     AbsorptionHealth = 0;
-    return Health != 0;
+    return NormalHealth != 0;
   }
   
   private void CalculateSpeed()
@@ -127,14 +162,28 @@ public partial class PlayerStats : Node2D
     Speed = Mathf.Min(Speed, 1000);
   }
 
-  public void AddAbsorptionHealth(int absorption)
+  private void CalculateHealthContainers()
   {
-    AbsorptionHealth += absorption;
+    HealthContainers = BaseHealthContainers + _statSumDict[StatType.HealthContainer];
+    HealthContainers = Math.Min(HealthContainers, Universal.MaxPlayerHealthContainers);
+    LimitHealthToBounds();
   }
 
-  private void CalculateHealth()
+  private void LimitHealthToBounds()
   {
-    HealthContainerMax = BaseHealth + _statSumDict[StatType.Health];
+    var overLimitHealth = GetTotalHealthPoints() - Universal.MaxPlayerHealth;
+
+    if (overLimitHealth > 0)
+    {
+      // Total health points over limit
+      RemoveHealth(overLimitHealth);
+    }
+
+    var overLimitAbsorption = HealthContainers * 4 + AbsorptionHealth - Universal.MaxPlayerHealth;
+    if (overLimitAbsorption > 0)
+    {
+      RemoveHealth(overLimitAbsorption);
+    }
   }
 
   private void CalculateDamage()

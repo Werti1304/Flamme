@@ -58,7 +58,7 @@ public partial class Staff : RigidBody2D
   
   public override void _PhysicsProcess(double delta)
   {
-    if (_owner == null)
+    if (_owner == null || _owner.IsQueuedForDeletion())
       return;
     
     CheckSnap();

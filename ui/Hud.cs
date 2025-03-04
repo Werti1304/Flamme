@@ -1,3 +1,4 @@
+using Flamme.common.constant;
 using Flamme.entities.player;
 using Flamme.items;
 using Flamme.testing;
@@ -9,6 +10,7 @@ namespace Flamme.ui;
 public partial class Hud : CanvasLayer
 {
   [ExportGroup("Textures")] 
+  [Export] public Texture2D HeartEmpty;
   [Export] public Texture2D HeartFull;
   [Export] public Texture2D Heart3Qt;
   [Export] public Texture2D HeartHalf;
@@ -26,6 +28,7 @@ public partial class Hud : CanvasLayer
   private TextureRect[] _healthTextureRects = new TextureRect[10];
   [Export] public ColorRect Vignette;
   [Export] public Minimap Minimap;
+  [Export] private Timer _showCollectedItemtimer;
   
   public override void _Ready()
   {
@@ -39,6 +42,8 @@ public partial class Hud : CanvasLayer
     }
     
     ExportMetaNonNull.Check(this);
+
+    _showCollectedItemtimer.Timeout += HideCollectItem;
     
     HideCollectItem();
     Show();
@@ -56,96 +61,79 @@ public partial class Hud : CanvasLayer
     ItemDescriptionLabel.Text = item.Description;
     ItemNameLabel.Show();
     ItemDescriptionLabel.Show();
-    GetTree().CreateTimer(5).Timeout += HideCollectItem;
+    
+    // Also resets the  timer
+    _showCollectedItemtimer.Start();
   }
 
   public void UpdateStats(PlayerStats playerStats)
   {
-    UpdateHealth(playerStats.Health);
-    UpdateAbsorptionHealth(playerStats.Health, playerStats.AbsorptionHealth);
+    UpdateHealth(playerStats);
   }
-  
-  public void UpdateHealth(int health)
+
+  public void UpdateHealth(PlayerStats playerStats)
   {
-    // Max health
-    if (health > 40)
+    // Normal health / health containers
+    var fullContainers = playerStats.NormalHealth / 4;
+    var lastNonEmptyContainer = playerStats.NormalHealth % 4;
+    var textureRectIdx = 0;
+    for (; textureRectIdx < playerStats.HealthContainers; textureRectIdx++)
     {
-      health = 40;
-    }
-
-    var fullContainers = health / 4;
-
-    for (var i = 0; i < fullContainers; i++)
-    {
-      if (_healthTextureRects[i].Texture != HeartFull)
+      if (fullContainers > 0)
       {
-        _healthTextureRects[i].Texture = HeartFull;
+        // If full container
+        _healthTextureRects[textureRectIdx].Texture = HeartFull;
+        fullContainers--;
+      }
+      else if (lastNonEmptyContainer != 0)
+      {
+        _healthTextureRects[textureRectIdx].Texture = lastNonEmptyContainer switch
+        {
+          // If not full container
+          3 => Heart3Qt,
+          2 => HeartHalf,
+          1 => Heart1Qt,
+          _ => throw new ArgumentOutOfRangeException()
+        };
+        lastNonEmptyContainer = 0;
+      }
+      else
+      {
+        // Empty heart containers
+        _healthTextureRects[textureRectIdx].Texture = HeartEmpty;
       }
     }
     
-    var lastContainer = health % 4;
+    // Absorption hearts
+    // No need to check for overflow here, playerstats takes care of that
+    fullContainers = playerStats.AbsorptionHealth / 4;
+    lastNonEmptyContainer = playerStats.AbsorptionHealth % 4;
 
-    _healthTextureRects[fullContainers].Texture = lastContainer switch
+    var textureRectIdxOffset = textureRectIdx;
+    textureRectIdx = 0;
+    for (; textureRectIdx < fullContainers; textureRectIdx++)
     {
-      3 => Heart3Qt,
-      2 => HeartHalf,
-      1 => Heart1Qt,
-      0 => null,
-      _ => _healthTextureRects[fullContainers].Texture
-    };
-
-    for (int i = fullContainers + 1; i < (40 / 4); i++)
-    {
-      _healthTextureRects[i].Texture = null;
-    }
-  }
-  
-  public void UpdateAbsorptionHealth(int health, int absorptionHealth)
-  {
-    // Max health
-    // TODO Correct so that sum <=40
-    if (absorptionHealth > 40)
-    {
-      absorptionHealth = 40;
+      _healthTextureRects[textureRectIdx + textureRectIdxOffset].Texture = AbsorptionHeartFull;
     }
 
-    if (absorptionHealth == 0)
-    {
+    if (textureRectIdx + textureRectIdxOffset >= Universal.MaxPlayerHealthContainers)
       return;
-    }
-
-    var alreadyFullContainers = health / 4;
-    alreadyFullContainers += (int)Math.Ceiling((double)(health % 4));
     
-    var fullContainers = alreadyFullContainers + (absorptionHealth / 4);
-
-    for (var i = alreadyFullContainers; i < fullContainers; i++)
+    _healthTextureRects[textureRectIdx + textureRectIdxOffset].Texture = lastNonEmptyContainer switch
     {
-      if (_healthTextureRects[i].Texture != AbsorptionHeartFull)
-      {
-        _healthTextureRects[i].Texture = AbsorptionHeartFull;
-      }
-    }
-
-    if (_healthTextureRects[fullContainers] == null)
-    {
-      return;
-    }
-
-    var lastContainer = absorptionHealth % 4;
-
-    _healthTextureRects[fullContainers].Texture = lastContainer switch
-    {
+      // If not full container
       3 => AbsorptionHeart3Qt,
       2 => AbsorptionHeartHalf,
       1 => AbsorptionHeart1Qt,
       0 => null,
-      _ => _healthTextureRects[fullContainers].Texture
+      _ => throw new ArgumentOutOfRangeException()
     };
+    textureRectIdx++;
 
-    for (int i = fullContainers + 1; i < (40 / 4); i++)
+    // Make sure the rest of the rects are empty
+    for (; textureRectIdx + textureRectIdxOffset < Universal.MaxPlayerHealthContainers; textureRectIdx++)
     {
-      _healthTextureRects[i].Texture = null;
+      _healthTextureRects[textureRectIdx + textureRectIdxOffset].Texture = null;
     }
   }
   

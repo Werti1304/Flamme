@@ -15,21 +15,22 @@ public static class StatUpItems
     manager.SetDefaultItem(new Item(ItemId.HealthToken, "Token of Health", "+1 Heart", Item.Tier.Uncommon)
       .AddSpriteFull(AssetManager.Asset.SpriteItemStatup1, new Vector2I(0, 0))
       .AddSpriteInventory()
-      .AddStatUp(StatType.Health, 4));
+      .AddStatUp(StatType.HealthContainer, 4));
     
     manager.RegisterItem(
       new Item(ItemId.HealthToken, "Token of Health", "+1 Heart", Item.Tier.Uncommon)
         .AddSpriteFull(AssetManager.Asset.SpriteItemStatup1, new Vector2I(0, 0))
         .AddSpriteInventory()
-        .AddStatUp(StatType.Health, 4),
+        .AddStatUp(StatType.HealthContainer, 4)
+        .AddHealing(HealthType.Normal, 16),
       LootPool.Treasure, LootPool.Chest, LootPool.Boss, LootPool.Shop
     );
 
     manager.RegisterItem(
-      new Item(ItemId.AbsorptionToken,"Token of Absorption", "+3 Absorption Hearts", Item.Tier.Common)
-      .AddSpriteFull(AssetManager.Asset.SpriteItemStatup1, new Vector2I(1, 0))
-      .AddSpriteInventory()
-      .AddStatUp(StatType.Absorption, 12),
+      new Item(ItemId.AbsorptionToken, "Token of Absorption", "+3 Absorption Hearts", Item.Tier.Common)
+        .AddSpriteFull(AssetManager.Asset.SpriteItemStatup1, new Vector2I(1, 0))
+        .AddSpriteInventory()
+        .AddHealing(HealthType.Absorption, 12),
       LootPool.Treasure, LootPool.Chest, LootPool.Boss, LootPool.Shop
     );
     
@@ -93,7 +94,8 @@ public static class StatUpItems
       new Item(ItemId.AllStatsUpToken,"Lucky Wheel Token", "All Stats Up!", Item.Tier.Uncommon)
         .AddSpriteFull(AssetManager.Asset.SpriteItemStatup1, new Vector2I(1, 1))
         .AddSpriteInventory()
-        .AddStatUp(StatType.Health, 4).AddStatUp(StatType.Damage, 12).AddStatUp(StatType.Speed, 10),
+        .AddStatUp(StatType.HealthContainer, 4).AddStatUp(StatType.Damage, 12).AddStatUp(StatType.Speed, 10)
+        .AddHealing(HealthType.Absorption, 4).AddHealing(HealthType.Normal, 4),
       LootPool.Treasure, LootPool.Chest, LootPool.Boss, LootPool.Shop
     );
   }

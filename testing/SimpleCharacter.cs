@@ -124,7 +124,7 @@ public partial class SimpleCharacter : CharacterBody2D
       {
         switch (statUp.Key)
         {
-          case StatType.Health:
+          case StatType.HealthContainer:
             upgradeHealth += statUp.Value;
             break;
           case StatType.Damage:
@@ -141,7 +141,6 @@ public partial class SimpleCharacter : CharacterBody2D
     EffDamage = BulletBaseDmg + upgradeDamage;
     EffHealth = PlayerBaseHealth + upgradeHealth;
     
-    Hud.Instance.UpdateHealth(EffHealth);
   }
 
   private void OnBodyEntered(Node2D body)
@@ -288,7 +287,6 @@ public partial class SimpleCharacter : CharacterBody2D
       // Game over screen
       GetTree().Quit();
     }
-    Hud.Instance.UpdateHealth(PlayerBaseHealth);
   }
 
   public void OnInvincibilityOver()
