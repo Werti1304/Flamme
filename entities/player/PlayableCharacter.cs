@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using Flamme.common.enums;
 using Flamme.common.input;
 using Flamme.entities.common;
-using Flamme.entities.env.purse;
 using Flamme.entities.env.shop;
 using Flamme.entities.player;
 using Flamme.testing;
@@ -38,7 +37,7 @@ public partial class PlayableCharacter : CharacterBody2D, IEnemyDamagable
     InteractionArea.BodyEntered += BodyEntered;
     InteractionArea.AreaEntered += OnAreaEntered;
 
-    OnStatsChange();
+    OnInvChange();
     Hud.Instance.PurseDisplay.UpdatePurse(Purse);
   }
 
@@ -95,17 +94,17 @@ public partial class PlayableCharacter : CharacterBody2D, IEnemyDamagable
       }
       QueueFree(); 
     }
-    OnStatsChange();
+    OnInvChange();
   }
 
   private void PickupItem(Item item)
   {
     HeldItems.Add(item);
     Hud.Instance.CollectItem(item);
-    OnStatsChange(item);
+    OnInvChange(item);
   }
 
-  private void OnStatsChange(Item item = null)
+  private void OnInvChange(Item item = null)
   {
     Stats.Update(HeldItems);
     if (item != null)
@@ -114,6 +113,7 @@ public partial class PlayableCharacter : CharacterBody2D, IEnemyDamagable
     }
     EmitSignal(SignalName.StatsChanged, Stats);
     Hud.Instance.UpdateStats(Stats);
+    Hud.Instance.PurseDisplay.UpdatePurse(Purse);
     EscapeMenu.Instance.StatsDisplay.UpdateStats(Stats);
   }
   
@@ -145,7 +145,7 @@ public partial class PlayableCharacter : CharacterBody2D, IEnemyDamagable
     else if (area is PursePickup pursePickup)
     {
       Purse.Add(pursePickup.Pickup());
-      Hud.Instance.PurseDisplay.UpdatePurse(Purse);
+      OnInvChange();
     }
     else if (area is CoinBuyable coinBuyable)
     {
@@ -153,8 +153,8 @@ public partial class PlayableCharacter : CharacterBody2D, IEnemyDamagable
         return;
       
       Purse.Coins -= coinBuyable.Price;
-      Purse.Add(coinBuyable.Buy().Pickup());
-      Hud.Instance.PurseDisplay.UpdatePurse(Purse);
+      coinBuyable.Buy(this);
+      OnInvChange();
     }
     else if (area is HealthPickup healthPickup)
     {
@@ -162,7 +162,7 @@ public partial class PlayableCharacter : CharacterBody2D, IEnemyDamagable
       {
         healthPickup.Consumed();
       }
-      OnStatsChange();
+      OnInvChange();
     }
   }
 

@@ -1,0 +1,26 @@
+[gd_scene load_steps=8 format=3 uid="uid://ct41on4c43mde"]
+
+[ext_resource type="Script" uid="uid://bxjn5dgqiqnqb" path="res://entities/env/purse/PursePickup.cs" id="1_b4t0w"]
+[ext_resource type="Texture2D" uid="uid://bup7ovfbqhqs6" path="res://entities/env/purse/textures/Coin.tres" id="2_tnvo0"]
+[ext_resource type="Texture2D" uid="uid://yber1hh57viu" path="res://entities/env/purse/textures/Coin20.tres" id="3_20ih4"]
+[ext_resource type="Texture2D" uid="uid://cn11g44njtf76" path="res://entities/env/purse/textures/Coin30.tres" id="4_xl7aa"]
+[ext_resource type="Texture2D" uid="uid://brxtnow288kdh" path="res://entities/env/purse/textures/Crystal.tres" id="5_ytq64"]
+[ext_resource type="Texture2D" uid="uid://b8op45enc3lrs" path="res://entities/env/purse/textures/Key.tres" id="6_qo5mo"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_b4t0w"]
+radius = 5.0
+
+[node name="PursePickup" type="Area2D" node_paths=PackedStringArray("Sprite")]
+script = ExtResource("1_b4t0w")
+_coin1 = ExtResource("2_tnvo0")
+_coin20 = ExtResource("3_20ih4")
+_coin30 = ExtResource("4_xl7aa")
+_crystal1 = ExtResource("5_ytq64")
+_key = ExtResource("6_qo5mo")
+Sprite = NodePath("Sprite2D")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_b4t0w")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_tnvo0")
