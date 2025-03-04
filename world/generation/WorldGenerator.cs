@@ -1,3 +1,4 @@
+using System;
 using Flamme.common.constant;
 using Flamme.common.enums;
 using Flamme.entities.staff;
@@ -111,17 +112,11 @@ public partial class WorldGenerator : Node2D
     potNeighbours.Add((levelCenter, 0));  // add spawn to queue
     
     // generate paths
-    while (potNeighbours.Count > 0)
+    while (potNeighbours.Count > 0 && currRoomCount < roomCount)
     {
-      var index = GetRandomWeighted(potNeighbours, level, levelCenter);
-      var position = potNeighbours[index].position;
-      var weight = potNeighbours[index].weight;
+      var room = PopRandomRoomWeighted(ref potNeighbours, level, levelCenter);
       
-      // remove from queue
-      potNeighbours.RemoveAt(index);
-      weightGrid[position.X, position.Y] = weight;
-      currRoomCount++;
-      if (currRoomCount == roomCount) break;
+      weightGrid[room.position.X, room.position.Y] = room.weight;
       
       // remove invalid neighbours
       for (var i = 0; i < potNeighbours.Count; i++)
@@ -137,63 +132,72 @@ public partial class WorldGenerator : Node2D
       // add neighbours to queue
       foreach (var pos in Neighbours)
       {
-        var neighbour = position + pos;
-        if ((!level.IsPosValid(neighbour)) ||                // out of bounds
-            (weightGrid[neighbour.X, neighbour.Y] != -1) ||     // already filled
-            (level.CountNeighbours(weightGrid, neighbour) > 1)) // too many neighbours
+        var newNeighbour = room.position + pos;
+        if ((!level.IsPosValid(newNeighbour)) ||                // out of bounds
+            (weightGrid[newNeighbour.X, newNeighbour.Y] != -1) ||     // already filled
+            (level.CountNeighbours(weightGrid, newNeighbour) > 1)) // too many neighbours
         {
           continue;
         }
           
-        potNeighbours.Add((neighbour, weight+1));
+        potNeighbours.Add((newNeighbour, room.weight+1));
       }
+      
+      currRoomCount++;
     }
     
     // room types that can replace end rooms, except boss room
-    var endRoomTypes = new Array<RoomType>
+    var endRoomTypeCount = new List<(RoomType type, int count)>
     {
-      RoomType.Treasure,
-      RoomType.Shop,
-      RoomType.Smithy,
-      //RoomType.Secret,
+      (RoomType.Boss, 1),
+      (RoomType.Treasure, 1),
+      (RoomType.Shop, 1),
+      (RoomType.Smithy, 1),
+      (RoomType.Secret, 10),
     };
     
+    // TODO: globals.cs for tile size and room size
     var tileSize = new Vector2I(32, 32);
     var roomSize = new Vector2I(17, 11);
     
     // end rooms
-    var hasBossRoom = false;
-    var endRooms = GetEndRooms(ref weightGrid, levelCenter);
-    var rounds = 100; // pfusch
-    while (endRooms.Count > 0 && rounds-- > 0)
+    var endRoomsConst = GetEndRooms(ref weightGrid, levelCenter);
+    var endRooms = new List<Vector2I>(endRoomsConst);
+    var randomEndRoomIndex = -1;
+    var endRoomShuffled = Shuffle(endRooms.Count);
+    
+    while (randomEndRoomIndex < endRooms.Count-1 & endRoomTypeCount.Count > 0)
     {
-      var randomEndRoomIndex = GD.RandRange(0, endRooms.Count-1);
-      
-      //get random element from RoomDict
-      var roomType = hasBossRoom ? endRoomTypes[GD.RandRange(0, endRoomTypes.Count-1)] : RoomType.Boss; // choose boss room at first
-      if (RoomMeta.RoomDict[roomType].Count == 0)  // if no room of this type exists remove it from list
-      {
-        endRoomTypes.Remove(roomType); //remove and try again
-        continue;
-      }
-      var roomData = RoomMeta.RoomDict[roomType][GD.RandRange(0, RoomMeta.RoomDict[roomType].Count-1)]; // get random room of this type
-      
-      var exits = GetRoomExits(ref weightGrid, endRooms[randomEndRoomIndex]); // get exits for room
-      var actualExits = (RoomExit)((int)exits & (int)roomData.AllowedExits);
-      if (actualExits == 0) continue;
-      if (roomType == RoomType.Boss) hasBossRoom = true;
-      
-      weightGrid[endRooms[randomEndRoomIndex].X, endRooms[randomEndRoomIndex].Y] = -(int)roomType; // change weight to room type for debugging
-      
-      var room = roomData.RoomScene.Instantiate<Room>();
-      room.ActualExits = actualExits;
+      randomEndRoomIndex++;
+      var typeCountShuffled = Shuffle(endRoomTypeCount.Count);
+      var randomEndRoom = endRooms[endRoomShuffled[randomEndRoomIndex]];
 
-      var placeGlobalPos = (endRooms[randomEndRoomIndex] - levelCenter) * roomSize * tileSize;
-      GD.Print($"Placing down room {room.Name} at {placeGlobalPos}, index {endRooms[randomEndRoomIndex]}");
-      room.GlobalPosition = placeGlobalPos;
-      level.AddChild(room);
-      room.Owner = level;
-      level.Grid[endRooms[randomEndRoomIndex].X, endRooms[randomEndRoomIndex].Y] = room;
+      // try every room type for current end room
+      for (int i = 0; i < endRoomTypeCount.Count; i++)
+      {
+        var roomTypeCount = endRoomTypeCount[typeCountShuffled[i]];
+        var roomMeta = RoomMeta.GetRandomRoom(roomTypeCount.type, RoomSize.S1X1, GetRoomExits(ref weightGrid, randomEndRoom));
+        
+        if (roomMeta == null) continue;
+        
+        endRoomTypeCount[typeCountShuffled[i]] = (roomTypeCount.type, roomTypeCount.count-1); // decrease count
+        if (endRoomTypeCount[typeCountShuffled[i]].count == 0) // remove room from list if count is 0
+        {
+          endRoomTypeCount.RemoveAt(typeCountShuffled[i]);
+        }
+        
+        weightGrid[randomEndRoom.X, randomEndRoom.Y] = -(int)roomTypeCount.type; // change weight to room type for debugging
+        
+        var room = roomMeta.RoomScene.Instantiate<Room>();
+        var placeGlobalPos = (randomEndRoom - levelCenter) * roomSize * tileSize;
+        GD.Print($"Placing down room {room.Name} at {placeGlobalPos}, index {randomEndRoom}");
+        room.GlobalPosition = placeGlobalPos;
+        level.AddChild(room);
+        room.Owner = level;
+        level.Grid[randomEndRoom.X, randomEndRoom.Y] = room;
+        
+        break;
+      }
     }
     
     //load paths and spawn
@@ -201,13 +205,12 @@ public partial class WorldGenerator : Node2D
     {
       for (var x = 0; x < level.Grid.GetLength(0); x++)
       {
-        if (level.Grid[x, y] != null || weightGrid[x, y] == -1) 
+        if (level.Grid[x, y] != null || weightGrid[x, y] <= -1) 
           continue;
         
         if (y == levelCenter.Y && x == levelCenter.X)
           continue;
         
-        // var roomData = RoomMeta.RoomDict[RoomType.Pathway][0];
         var roomPos = new Vector2I(x, y);
         var actualExits = GetRoomExits(ref weightGrid, roomPos);
         var roomMeta = RoomMeta.GetRandomRoom(RoomType.Pathway, RoomSize.S1X1, actualExits);
@@ -239,7 +242,68 @@ public partial class WorldGenerator : Node2D
       }
       GD.Print(line);
     }
+  }
+
+  (int index, RoomExit exit) CheckRoomData(RoomType roomType, RoomSize roomSize, RoomExit exits)
+  {
+    var shuffled = Shuffle(RoomMeta.RoomDict[roomType].Count);
     
+    for (int i = 0; i < RoomMeta.RoomDict[roomType].Count; i++)
+    {
+      var roomData = RoomMeta.RoomDict[roomType][shuffled[i]];
+      if (roomData.Size == roomSize && (roomData.AllowedExits & exits) >= exits)
+      {
+        return (shuffled[i], (roomData.AllowedExits & exits));
+      }
+    }
+    
+    return (-1, 0);
+  }
+  
+  private List<int> Shuffle(int length)
+  {
+    var list = new List<int>();
+    for (var i = 0; i < length; i++)
+    {
+      list.Add(i);
+    }
+    
+    for (var i = 0; i < length; i++)
+    {
+      var randomIndex = GD.RandRange(0, length-1);
+      (list[i], list[randomIndex]) = (list[randomIndex], list[i]);
+    }
+    
+    return list;
+  }
+  
+  private (Vector2I position, int weight) PopRandomRoomWeighted(ref List<(Vector2I position, int weight)> array, Level level, Vector2I levelCenter)
+  {
+    var count = array.Count;
+    var index = count-1;
+    var totalWeight = 0.0f;
+    
+    for (var i = 0; i < count; i++)
+    {
+      totalWeight += level.WeightFunction(array[i].position, levelCenter, array[i].weight);
+    }
+    
+    var random = (float)GD.RandRange(0, totalWeight);
+
+    for (var i = 0; i < count; i++)
+    {
+      random -= level.WeightFunction(array[i].position, levelCenter, array[i].weight);
+      if (random <= 0)
+      {
+        index = i;
+        break;
+      }
+    }
+    
+    var room = array[index];
+    array.RemoveAt(index);
+
+    return room;
   }
   
   private static int GetRandomWeighted(List<(Vector2I position, int weight)> array, Level level, Vector2I levelCenter)
@@ -270,17 +334,9 @@ public partial class WorldGenerator : Node2D
   {
     var endRooms = new List<Vector2I>();
     
-    var neighbours = new Array<Vector2I>
-    {
-      new Vector2I(0, -1),
-      new Vector2I(1, 0),
-      new Vector2I(0, 1),
-      new Vector2I(-1, 0)
-    };
-    
     var hasNeighbour = false;
     
-    foreach (var pos in neighbours)
+    foreach (var pos in Neighbours)
     {
       var neighbour = position + pos;
       if (neighbour.X >= 0 && neighbour.X < weightGrid.GetLength(0) && neighbour.Y >= 0 && neighbour.Y < weightGrid.GetLength(1))
@@ -310,7 +366,7 @@ public partial class WorldGenerator : Node2D
       var neighbour = position + Neighbours[i];
       if (neighbour.X >= 0 && neighbour.X < weightGrid.GetLength(0) && neighbour.Y >= 0 && neighbour.Y < weightGrid.GetLength(1))
       {
-        if (weightGrid[position.X, position.Y] == weightGrid[neighbour.X, neighbour.Y]+1)
+        if (weightGrid[neighbour.X, neighbour.Y] != -1)
         {
           exits |= (RoomExit)(1 << i);
         }
