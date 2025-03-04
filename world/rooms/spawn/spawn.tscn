@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=4 uid="uid://c2eekwqrmvxjg"]
+[gd_scene load_steps=9 format=4 uid="uid://c2eekwqrmvxjg"]
 
 [ext_resource type="Script" uid="uid://cu3vdn0r1mer3" path="res://world/rooms/Room.cs" id="1_x6qr4"]
 [ext_resource type="TileSet" uid="uid://cgyo6mc240x5s" path="res://testing/placeholder_tileset.tres" id="2_usqwj"]
@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://bup66binra50f" path="res://entities/env/purse/Crystal.tscn" id="4_rxoj4"]
 [ext_resource type="PackedScene" uid="uid://b31xv74m5ykab" path="res://entities/env/purse/Coin.tscn" id="5_628fi"]
 [ext_resource type="PackedScene" uid="uid://bgqrp6nhkayrg" path="res://entities/env/shop/coin_buyable.tscn" id="6_sk61c"]
+[ext_resource type="PackedScene" uid="uid://bfulsjxd53ikv" path="res://entities/env/itemPickup.tscn" id="7_utxn0"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_w6rau"]
 size = Vector2(544, 352)
@@ -95,3 +96,15 @@ _count = 30
 
 [node name="CoinBuyable" parent="." instance=ExtResource("6_sk61c")]
 position = Vector2(368, 107)
+
+[node name="ItemPickup" parent="." instance=ExtResource("7_utxn0")]
+position = Vector2(369, 239)
+_itemId = 1
+
+[node name="ItemPickup2" parent="." instance=ExtResource("7_utxn0")]
+position = Vector2(433, 240)
+_itemId = 2
+
+[node name="ItemPickup3" parent="." instance=ExtResource("7_utxn0")]
+position = Vector2(369, 307)
+_itemId = 4

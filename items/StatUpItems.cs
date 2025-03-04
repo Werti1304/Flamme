@@ -21,7 +21,8 @@ public static class StatUpItems
       new Item(ItemId.HealthToken, "Token of Health", "+1 Heart", Item.Tier.Uncommon)
         .AddSpriteFull(AssetManager.Asset.SpriteItemStatup1, new Vector2I(0, 0))
         .AddSpriteInventory()
-        .AddStatUp(StatType.HealthContainer, 4),
+        .AddStatUp(StatType.HealthContainer, 4)
+        .AddHealing(HealthType.Normal, 16),
       LootPool.Treasure, LootPool.Chest, LootPool.Boss, LootPool.Shop
     );
 

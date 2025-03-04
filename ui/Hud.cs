@@ -28,6 +28,7 @@ public partial class Hud : CanvasLayer
   private TextureRect[] _healthTextureRects = new TextureRect[10];
   [Export] public ColorRect Vignette;
   [Export] public Minimap Minimap;
+  [Export] private Timer _showCollectedItemtimer;
   
   public override void _Ready()
   {
@@ -41,6 +42,8 @@ public partial class Hud : CanvasLayer
     }
     
     ExportMetaNonNull.Check(this);
+
+    _showCollectedItemtimer.Timeout += HideCollectItem;
     
     HideCollectItem();
     Show();
@@ -58,7 +61,9 @@ public partial class Hud : CanvasLayer
     ItemDescriptionLabel.Text = item.Description;
     ItemNameLabel.Show();
     ItemDescriptionLabel.Show();
-    GetTree().CreateTimer(5).Timeout += HideCollectItem;
+    
+    // Also resets the  timer
+    _showCollectedItemtimer.Start();
   }
 
   public void UpdateStats(PlayerStats playerStats)
@@ -110,6 +115,9 @@ public partial class Hud : CanvasLayer
     {
       _healthTextureRects[textureRectIdx + textureRectIdxOffset].Texture = AbsorptionHeartFull;
     }
+
+    if (textureRectIdx + textureRectIdxOffset >= Universal.MaxPlayerHealthContainers)
+      return;
     
     _healthTextureRects[textureRectIdx + textureRectIdxOffset].Texture = lastNonEmptyContainer switch
     {

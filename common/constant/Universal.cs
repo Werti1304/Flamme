@@ -16,4 +16,5 @@ public static class Universal
 {
   public const int MaxPlayerHealth = 40;
   public const int MaxPlayerHealthContainers = 10;
+  public const int HealthPerContainer = 4;
 }

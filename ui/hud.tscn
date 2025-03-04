@@ -46,7 +46,7 @@ shader_parameter/darkness_in = 1.5
 atlas = ExtResource("6_3ju8l")
 region = Rect2(0, 0, 8, 8)
 
-[node name="HUD" type="CanvasLayer" node_paths=PackedStringArray("ItemNameLabel", "ItemDescriptionLabel", "PurseDisplay", "_healthRectContainer", "Vignette", "Minimap")]
+[node name="HUD" type="CanvasLayer" node_paths=PackedStringArray("ItemNameLabel", "ItemDescriptionLabel", "PurseDisplay", "_healthRectContainer", "Vignette", "Minimap", "_showCollectedItemtimer")]
 script = ExtResource("1_kc1f2")
 HeartEmpty = ExtResource("2_mlhsj")
 HeartFull = ExtResource("2_6mpex")
@@ -63,6 +63,7 @@ PurseDisplay = NodePath("MarginContainer/VBoxContainer/HBoxContainer2/PurseDispl
 _healthRectContainer = NodePath("MarginContainer/VBoxContainer/HBoxContainer")
 Vignette = NodePath("Vignette")
 Minimap = NodePath("MarginContainer/VBoxContainer/HBoxContainer2/MarginContainer/Minimap")
+_showCollectedItemtimer = NodePath("ShowItemTimer")
 
 [node name="Vignette" type="ColorRect" parent="."]
 material = SubResource("ShaderMaterial_2uaof")
@@ -206,3 +207,7 @@ SpawnTexture = ExtResource("15_vjpmv")
 TreasureTexture = ExtResource("16_o8st7")
 BossTexture = ExtResource("17_mgoxf")
 ShopTexture = ExtResource("18_0f6tk")
+
+[node name="ShowItemTimer" type="Timer" parent="."]
+wait_time = 5.0
+one_shot = true

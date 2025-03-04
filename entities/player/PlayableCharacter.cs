@@ -105,13 +105,16 @@ public partial class PlayableCharacter : CharacterBody2D, IEnemyDamagable
   {
     HeldItems.Add(item);
     Hud.Instance.CollectItem(item);
-    Stats.AddHealth(item.HealingDict);
-    OnStatsChange();
+    OnStatsChange(item);
   }
 
-  private void OnStatsChange()
+  private void OnStatsChange(Item item = null)
   {
     Stats.Update(HeldItems);
+    if (item != null)
+    {
+      Stats.AddHealth(item.HealingDict);
+    }
     EmitSignal(SignalName.StatsChanged, Stats);
     Hud.Instance.UpdateStats(Stats);
     EscapeMenu.Instance.StatsDisplay.UpdateStats(Stats);
@@ -132,7 +135,7 @@ public partial class PlayableCharacter : CharacterBody2D, IEnemyDamagable
 
         PickupItem(item);
       }
-      SetDeferred(PropertyName.Velocity, Velocity += (chest.GlobalPosition.DirectionTo(GlobalPosition) * 1000.0f));
+      SetDeferred(CharacterBody2D.PropertyName.Velocity, Velocity += (chest.GlobalPosition.DirectionTo(GlobalPosition) * 1000.0f));
     }
   }
   
