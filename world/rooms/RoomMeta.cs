@@ -17,6 +17,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 
 namespace Flamme.world.rooms;
 
@@ -49,7 +50,7 @@ public class RoomMeta
     var validTickets = 0;
     var validRooms = list.FindAll(delegate(RoomMeta r)
     {
-      bool cond = r.Size == roomSize && r.AllowedExits.HasFlag(roomExits);
+      bool cond = r.Size == roomSize && (r.AllowedExits & roomExits) >= roomExits;
       if (cond)
       {
         validTickets += r.RoomGenerationTickets;
