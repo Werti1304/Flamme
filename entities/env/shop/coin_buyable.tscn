@@ -1,15 +1,19 @@
-[gd_scene load_steps=3 format=3 uid="uid://bgqrp6nhkayrg"]
+[gd_scene load_steps=4 format=3 uid="uid://bgqrp6nhkayrg"]
 
 [ext_resource type="Script" uid="uid://niklel1wqjtt" path="res://entities/env/shop/CoinBuyable.cs" id="1_ylpv5"]
+[ext_resource type="PackedScene" uid="uid://bqlr8l7agsr6" path="res://entities/env/purse/Key.tscn" id="2_hkgxa"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_ylpv5"]
 radius = 6.0
 
-[node name="CoinBuyable" type="Area2D"]
+[node name="CoinBuyable" type="Area2D" node_paths=PackedStringArray("PursePickup", "Label")]
 z_index = 3
 collision_layer = 2
 collision_mask = 2
 script = ExtResource("1_ylpv5")
+Price = 3
+PursePickup = NodePath("Key")
+Label = NodePath("Label")
 
 [node name="Label" type="Label" parent="."]
 offset_left = -20.0
@@ -21,3 +25,5 @@ horizontal_alignment = 1
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_ylpv5")
+
+[node name="Key" parent="." instance=ExtResource("2_hkgxa")]

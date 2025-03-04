@@ -2,8 +2,9 @@ using Godot;
 using System;
 using Flamme.common.enums;
 using Flamme.entities.env;
+using PursePickup = Flamme.entities.env.purse.PursePickup;
 
-public partial class Coin : Area2D, IPursePickup
+public partial class Coin : PursePickup
 {
   [Export] private int _count = 1;
   [ExportGroup("Textures")] [Export] private AtlasTexture _coin1;
@@ -17,7 +18,7 @@ public partial class Coin : Area2D, IPursePickup
     SetTexture();
   }
   
-  public Tuple<PurseContent, int> Pickup()
+  public override Tuple<PurseContent, int> Pickup()
   {
     QueueFree();
     return new Tuple<PurseContent, int>(PurseContent.Coin, _count);

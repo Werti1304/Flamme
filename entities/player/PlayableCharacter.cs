@@ -5,10 +5,12 @@ using Flamme.common.enums;
 using Flamme.common.input;
 using Flamme.entities.common;
 using Flamme.entities.env;
+using Flamme.entities.env.shop;
 using Flamme.entities.player;
 using Flamme.testing;
 using Flamme.ui;
 using Flamme.world;
+using PursePickup = Flamme.entities.env.purse.PursePickup;
 using Room = Flamme.world.rooms.Room;
 
 public partial class PlayableCharacter : CharacterBody2D, IEnemyDamagable
@@ -143,9 +145,18 @@ public partial class PlayableCharacter : CharacterBody2D, IEnemyDamagable
     {
       PickupItem(itemPickup.Pickup());
     }
-    else if (area is IPursePickup pursePickup)
+    else if (area is PursePickup pursePickup)
     {
       Purse.Add(pursePickup.Pickup());
+      Hud.Instance.PurseDisplay.UpdatePurse(Purse);
+    }
+    else if (area is CoinBuyable coinBuyable)
+    {
+      if (Purse.Coins < coinBuyable.Price) 
+        return;
+      
+      Purse.Coins -= coinBuyable.Price;
+      Purse.Add(coinBuyable.Buy().Pickup());
       Hud.Instance.PurseDisplay.UpdatePurse(Purse);
     }
   }

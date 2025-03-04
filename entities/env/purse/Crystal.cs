@@ -4,7 +4,7 @@ using Godot;
 
 namespace Flamme.entities.env.purse;
 
-public partial class Crystal : Area2D, IPursePickup
+public partial class Crystal : PursePickup
 {
   [Export] private int _count = 1;
   [ExportGroup("Textures")] [Export] private AtlasTexture _crystal1;
@@ -16,7 +16,7 @@ public partial class Crystal : Area2D, IPursePickup
     SetTexture();
   }
   
-  public Tuple<PurseContent, int> Pickup()
+  public override Tuple<PurseContent, int> Pickup()
   {
     QueueFree();
     return new Tuple<PurseContent, int>(PurseContent.Crystal, _count);

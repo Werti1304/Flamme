@@ -45,7 +45,7 @@ shader_parameter/darkness_in = 1.5
 atlas = ExtResource("1_nco5p")
 region = Rect2(0, 0, 8, 8)
 
-[node name="HUD" type="CanvasLayer" node_paths=PackedStringArray("ItemNameLabel", "ItemDescriptionLabel", "PurseDisplay", "_healthTextureRects", "Vignette", "Minimap")]
+[node name="HUD" type="CanvasLayer" node_paths=PackedStringArray("ItemNameLabel", "ItemDescriptionLabel", "PurseDisplay", "_healthRectContainer", "Vignette", "Minimap")]
 script = ExtResource("1_sdgqe")
 HeartFull = ExtResource("2_rrwcl")
 Heart3Qt = ExtResource("3_b3eg3")
@@ -58,7 +58,7 @@ AbsorptionHeart1Qt = SubResource("AtlasTexture_fxh8e")
 ItemNameLabel = NodePath("MarginContainer/VBoxContainer/ItemUpName")
 ItemDescriptionLabel = NodePath("MarginContainer/VBoxContainer/ItemUpDescription")
 PurseDisplay = NodePath("MarginContainer/VBoxContainer/HBoxContainer2/PurseDisplay")
-_healthTextureRects = [NodePath("MarginContainer/VBoxContainer/HBoxContainer/TextureRect"), NodePath("MarginContainer/VBoxContainer/HBoxContainer/TextureRect2"), NodePath("MarginContainer/VBoxContainer/HBoxContainer/TextureRect3"), NodePath("MarginContainer/VBoxContainer/HBoxContainer/TextureRect4"), NodePath("MarginContainer/VBoxContainer/HBoxContainer/TextureRect5"), NodePath("MarginContainer/VBoxContainer/HBoxContainer/TextureRect6"), NodePath("MarginContainer/VBoxContainer/HBoxContainer/TextureRect7"), NodePath("MarginContainer/VBoxContainer/HBoxContainer/TextureRect8"), NodePath("MarginContainer/VBoxContainer/HBoxContainer/TextureRect9"), NodePath("MarginContainer/VBoxContainer/HBoxContainer/TextureRect10")]
+_healthRectContainer = NodePath("MarginContainer/VBoxContainer/HBoxContainer")
 Vignette = NodePath("Vignette")
 Minimap = NodePath("MarginContainer/VBoxContainer/HBoxContainer2/MarginContainer/Minimap")
 

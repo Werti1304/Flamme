@@ -22,14 +22,24 @@ public partial class Hud : CanvasLayer
   [Export] public Label ItemNameLabel;
   [Export] public Label ItemDescriptionLabel;
   [Export] public PurseDisplay PurseDisplay;
-  [Export] private TextureRect[] _healthTextureRects = new TextureRect[10];
+  [Export] private Container _healthRectContainer;
+  private TextureRect[] _healthTextureRects = new TextureRect[10];
   [Export] public ColorRect Vignette;
   [Export] public Minimap Minimap;
-
+  
   public override void _Ready()
   {
+    var idx = 0;
+    foreach (var child in _healthRectContainer.GetChildren())
+    {
+      if (child is TextureRect rect)
+      {
+        _healthTextureRects[idx++] = rect;
+      }
+    }
+    
     ExportMetaNonNull.Check(this);
-
+    
     HideCollectItem();
     Show();
   }

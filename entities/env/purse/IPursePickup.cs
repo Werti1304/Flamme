@@ -1,9 +1,10 @@
 ﻿using System;
 using Flamme.common.enums;
+using Godot;
 
-namespace Flamme.entities.env;
+namespace Flamme.entities.env.purse;
 
-public interface IPursePickup
+public abstract partial class PursePickup : Area2D
 {
-  public Tuple<PurseContent, int> Pickup();
+  public abstract Tuple<PurseContent, int> Pickup();
 }
