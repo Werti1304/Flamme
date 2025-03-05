@@ -46,6 +46,8 @@ position = Vector2(0, -352)
 
 [node name="AllItems" parent="Rooms/Treasure0" instance=ExtResource("9_d4jkt")]
 position = Vector2(0, 704)
+collision_layer = 15
+collision_mask = 15
 
 [node name="Warper" parent="." instance=ExtResource("10_qu0v0")]
 position = Vector2(144, 239)

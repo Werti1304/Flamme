@@ -1,9 +1,7 @@
-using Flamme.entities.staff;
-using Flamme.ui;
 using Flamme.world;
-using Flamme.world.generation;
 using Godot;
-using System;
+
+namespace Flamme.entities.env;
 
 public partial class Warper : Area2D
 {

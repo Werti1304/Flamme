@@ -22,7 +22,7 @@ public partial class AllItems : Room
       if(itemid == ItemId.None)
         continue;
       
-      var itemPickup = ItemPickupScene.Instantiate<ItemPickup>();
+      var itemPickup = ItemPickupScene.Instantiate<Flamme.entities.env.ItemPickup>();
       AddChild(itemPickup);
       itemPickup.Owner = this;
       itemPickup.SetItem(ItemManager.Instance.GetFromId(itemid), true);

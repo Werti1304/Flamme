@@ -138,11 +138,11 @@ public partial class PlayableCharacter : CharacterBody2D, IEnemyDamagable
   
   private void OnAreaEntered(Area2D area)
   {
-    if (area is ItemPickup itemPickup)
+    if (area is Flamme.entities.env.ItemPickup itemPickup)
     {
       PickupItem(itemPickup.Pickup());
     }
-    else if (area is PursePickup pursePickup)
+    else if (area is Flamme.entities.env.purse.PursePickup pursePickup)
     {
       Purse.Add(pursePickup.Pickup());
       OnInvChange();
@@ -156,7 +156,7 @@ public partial class PlayableCharacter : CharacterBody2D, IEnemyDamagable
       coinBuyable.Buy(this);
       OnInvChange();
     }
-    else if (area is HealthPickup healthPickup)
+    else if (area is Flamme.entities.env.health.HealthPickup healthPickup)
     {
       if (Stats.AddHealth(healthPickup.HealthType, healthPickup.HealingAmount))
       {

@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Net.Http.Headers;
 using Flamme.common.constant;
+using Flamme.entities.env.Loot;
 using Environment = Godot.Environment;
 
 namespace Flamme.world.rooms;
@@ -76,13 +77,27 @@ public partial class Room : Area2D
   {
     return GlobalPosition + GetMidPoint() * 32.0f;
   }
+
+  public Vector2 GetFreeLootPosition()
+  {
+    // TODO 3 Remember spawned loot and set it on a grid from the middle going outwards
+    return GetGlobalMidPoint();
+  }
   
   private void OnBodyEntered(Node2D body)
   {
     switch (body)
     {
       case PlayableCharacter playableCharacter:
-        SetRoomActive(playableCharacter);
+        SetCurrentRoom(playableCharacter);
+        if (_enemies.Count > 0)
+        {
+          LockRoom(playableCharacter);
+        }
+        else
+        {
+          SetRoomCleared();
+        }
         break;
       case Enemy e:
         GD.Print($"Enemy found in room {Name}");
@@ -112,11 +127,22 @@ public partial class Room : Area2D
     }
   }
 
-  private void SetRoomActive(PlayableCharacter playableCharacter)
+  private void LockRoom(PlayableCharacter playableCharacter)
+  {
+    GD.Print($"Room {Name} Locked!");
+      
+    // Could replace with signals but idk
+    foreach (var enemy in _enemies)
+    {
+      enemy.SetActive(playableCharacter);
+    }
+  }
+
+  private void SetCurrentRoom(PlayableCharacter playableCharacter)
   {
     GD.Print($"Player entered Room {Name} with {_enemies.Count} enemies!");
     // Update player position on minimap
-    Hud.Instance.Minimap.SetActiveRoom(LevelManager.Instance.CurrentLevel, this);
+    Hud.Instance.Minimap.SetCurrentRoom(LevelManager.Instance.CurrentLevel, this);
     
     _playableCharacter = playableCharacter;
     if (GetViewport().GetCamera2D() is PlayerCamera camera)
@@ -134,17 +160,12 @@ public partial class Room : Area2D
           GD.Print($"Thought room {Name} is empty, but had enemy {e.Name} inside!");
         }
       }
-      
-      SetRoomCleared();
+
+      if (_enemies.Count != 0)
+      {
+        LockRoom(playableCharacter);
+      }
       return;
-    }
-    
-    GD.Print($"Room {Name} Locked!");
-      
-    // Could replace with signals but idk
-    foreach (var enemy in _enemies)
-    {
-      enemy.SetActive(playableCharacter);
     }
   }
 
@@ -160,10 +181,14 @@ public partial class Room : Area2D
       // TODO Preload all scenes?
       // Spawn warper to next level after clearing boss room
       var warperScene = GD.Load<PackedScene>(PathConstants.WarperScenePath);
-      var warperNode = warperScene.Instantiate<Warper>();
+      var warperNode = warperScene.Instantiate<entities.env.Warper>();
       warperNode.NewLevel = LevelManager.Instance.GetNextLevel();
       AddChild(warperNode);
       warperNode.Owner = this;
+    }
+    else if (Type == RoomType.Pathway)
+    {
+      LootGenerator.Instance.SpawnLoot(this, LootPool.Pathway);
     }
   }
 

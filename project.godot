@@ -24,6 +24,7 @@ Main="*res://Main.cs"
 LevelManager="*res://world/LevelManager.cs"
 Hud="*res://ui/hud.tscn"
 EscapeMenu="*res://ui/escape_menu.tscn"
+LootGenerator="*res://entities/env/Loot/loot_generator.tscn"
 
 [display]
 

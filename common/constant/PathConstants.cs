@@ -10,8 +10,9 @@ public static class PathConstants
   public const string PlayerCameraScenePath = "entities/player/player_camera.tscn";
   public const string StartingStaffScenePath = "entities/staff/staff.tscn";
   
-  public const string PursePickupScenePath = "entities/env/purse/purse_pickup.tscn";
-  public const string HealthPickupScenePath = "entities/env/health/health_pickup.tscn";
+  public const string ItemPickupScenePath = "res://entities/env/itemPickup.tscn";
+  public const string PursePickupScenePath = "res://entities/env/purse/purse_pickup.tscn";
+  public const string HealthPickupScenePath = "res://entities/env/health/health_pickup.tscn";
   
   public const string WarperScenePath = "res://entities/env/warper.tscn";
 }

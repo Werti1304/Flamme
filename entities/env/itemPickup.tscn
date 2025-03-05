@@ -6,7 +6,6 @@
 
 [node name="ItemPickup" type="Area2D" node_paths=PackedStringArray("_sprite", "_collisionShape")]
 z_index = 10
-position = Vector2(3, -2)
 script = ExtResource("1_rp6wu")
 _sprite = NodePath("Sprite2D")
 _collisionShape = NodePath("CollisionShape2D")

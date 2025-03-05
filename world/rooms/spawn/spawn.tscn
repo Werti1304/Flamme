@@ -179,5 +179,4 @@ position = Vector2(495, 110)
 Price = 15
 
 [node name="ItemPickup" parent="Buyable/CoinBuyable5" instance=ExtResource("7_utxn0")]
-position = Vector2(0, 0)
 _itemId = 4

@@ -23,7 +23,7 @@ public static class StatUpItems
         .AddSpriteInventory()
         .AddStatUp(StatType.HealthContainer, 4)
         .AddHealing(HealthType.Normal, 16),
-      LootPool.Treasure, LootPool.Chest, LootPool.Boss, LootPool.Shop
+      ItemLootPool.Treasure, ItemLootPool.Chest, ItemLootPool.Boss, ItemLootPool.Shop
     );
 
     manager.RegisterItem(
@@ -31,7 +31,7 @@ public static class StatUpItems
         .AddSpriteFull(AssetManager.Asset.SpriteItemStatup1, new Vector2I(1, 0))
         .AddSpriteInventory()
         .AddHealing(HealthType.Absorption, 12),
-      LootPool.Treasure, LootPool.Chest, LootPool.Boss, LootPool.Shop
+      ItemLootPool.Treasure, ItemLootPool.Chest, ItemLootPool.Boss, ItemLootPool.Shop
     );
     
     manager.RegisterItem(
@@ -39,7 +39,7 @@ public static class StatUpItems
         .AddSpriteFull(AssetManager.Asset.SpriteItemStatup1, new Vector2I(2, 0))
         .AddSpriteInventory()
         .AddStatUp(StatType.Damage, 1),
-      LootPool.Treasure, LootPool.Chest, LootPool.Boss, LootPool.Shop
+      ItemLootPool.Treasure, ItemLootPool.Chest, ItemLootPool.Boss, ItemLootPool.Shop
     );
     
     manager.RegisterItem(
@@ -47,7 +47,7 @@ public static class StatUpItems
         .AddSpriteFull(AssetManager.Asset.SpriteItemStatup1, new Vector2I(3, 0))
         .AddSpriteInventory()
         .AddStatUp(StatType.Speed, 50),
-      LootPool.Treasure, LootPool.Chest, LootPool.Boss, LootPool.Shop
+      ItemLootPool.Treasure, ItemLootPool.Chest, ItemLootPool.Boss, ItemLootPool.Shop
     );
     
     manager.RegisterItem(
@@ -55,7 +55,7 @@ public static class StatUpItems
         .AddSpriteFull(AssetManager.Asset.SpriteItemStatup1, new Vector2I(4, 0))
         .AddSpriteInventory()
         .AddStatUp(StatType.ShotSpeed, 1),
-      LootPool.Treasure, LootPool.Chest, LootPool.Boss, LootPool.Shop
+      ItemLootPool.Treasure, ItemLootPool.Chest, ItemLootPool.Boss, ItemLootPool.Shop
     );
     
     manager.RegisterItem(
@@ -63,7 +63,7 @@ public static class StatUpItems
         .AddSpriteFull(AssetManager.Asset.SpriteItemStatup1, new Vector2I(5, 0))
         .AddSpriteInventory()
         .AddStatUp(StatType.FireRate, 30),
-      LootPool.Treasure, LootPool.Chest, LootPool.Boss, LootPool.Shop
+      ItemLootPool.Treasure, ItemLootPool.Chest, ItemLootPool.Boss, ItemLootPool.Shop
     );
     
     manager.RegisterItem(
@@ -71,7 +71,7 @@ public static class StatUpItems
         .AddSpriteFull(AssetManager.Asset.SpriteItemStatup1, new Vector2I(6, 0))
         .AddSpriteInventory()
         .AddStatUp(StatType.ShotSize, 2),
-      LootPool.Treasure, LootPool.Chest, LootPool.Boss, LootPool.Shop
+      ItemLootPool.Treasure, ItemLootPool.Chest, ItemLootPool.Boss, ItemLootPool.Shop
     );
     
     manager.RegisterItem(
@@ -79,7 +79,7 @@ public static class StatUpItems
         .AddSpriteFull(AssetManager.Asset.SpriteItemStatup1, new Vector2I(7, 0))
         .AddSpriteInventory()
         .AddStatUp(StatType.Luck, 1),
-      LootPool.Treasure, LootPool.Chest, LootPool.Boss, LootPool.Shop
+      ItemLootPool.Treasure, ItemLootPool.Chest, ItemLootPool.Boss, ItemLootPool.Shop
     );
     
     manager.RegisterItem(
@@ -87,7 +87,7 @@ public static class StatUpItems
         .AddSpriteFull(AssetManager.Asset.SpriteItemStatup1, new Vector2I(0, 1))
         .AddSpriteInventory()
         .AddStatUp(StatType.Range, 4),
-      LootPool.Treasure, LootPool.Chest, LootPool.Boss, LootPool.Shop
+      ItemLootPool.Treasure, ItemLootPool.Chest, ItemLootPool.Boss, ItemLootPool.Shop
     );
     
     manager.RegisterItem(
@@ -96,7 +96,7 @@ public static class StatUpItems
         .AddSpriteInventory()
         .AddStatUp(StatType.HealthContainer, 4).AddStatUp(StatType.Damage, 12).AddStatUp(StatType.Speed, 10)
         .AddHealing(HealthType.Absorption, 4).AddHealing(HealthType.Normal, 4),
-      LootPool.Treasure, LootPool.Chest, LootPool.Boss, LootPool.Shop
+      ItemLootPool.Treasure, ItemLootPool.Chest, ItemLootPool.Boss, ItemLootPool.Shop
     );
   }
 }

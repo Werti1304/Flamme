@@ -36,7 +36,7 @@ public partial class Minimap : GridContainer
   private int _lowestX = int.MaxValue;
   private int _lowestY = int.MaxValue;
 
-  public void SetActiveRoom(Level level, Room playerRoom)
+  public void SetCurrentRoom(Level level, Room playerRoom)
   {
     for (var x = 0; x < level.Grid.GetLength(0); x++)
     {

@@ -1,8 +1,9 @@
+using Flamme.common.enums;
 using Flamme.items;
 using Flamme.testing;
 using Godot;
-using System;
-using System.Collections;
+
+namespace Flamme.entities.env;
 
 public partial class ItemPickup : Area2D
 {
@@ -29,6 +30,10 @@ public partial class ItemPickup : Area2D
         return;
       
       SetItem(item, true);
+    }
+    else
+    {
+      SetItem(ItemManager.Instance.GetRandomFromPool(ItemLootPool.Treasure, false), true);
     }
   }
 

@@ -1,9 +1,10 @@
+using System;
 using Flamme.common.constant;
 using Flamme.common.enums;
-using Flamme.entities.player;
 using Flamme.testing;
 using Godot;
-using System;
+
+namespace Flamme.entities.env.health;
 
 public partial class HealthPickup : Area2D
 {

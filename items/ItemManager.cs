@@ -14,12 +14,12 @@ public partial class ItemManager : Node
   
   // Stores list of item (ids) of every loot table
   // Gets smaller as items are less
-  private readonly Dictionary<LootPool, List<ItemId>> _lootPoolItemDict = new Dictionary<LootPool, List<ItemId>>();
+  private readonly Dictionary<ItemLootPool, List<ItemId>> _lootPoolItemDict = new Dictionary<ItemLootPool, List<ItemId>>();
 
   // When there is no other item in the loot pool, pick this
   private Item _defaultItem;
 
-  public void RegisterItem(Item item, params LootPool[] lootPools)
+  public void RegisterItem(Item item, params ItemLootPool[] lootPools)
   {
     _itemDict[item.Id] = item;
     foreach (var lootPool in lootPools)
@@ -33,7 +33,7 @@ public partial class ItemManager : Node
     _instance = this;
 
     // Adds dictionaries for every loot pool
-    foreach (LootPool lootPool in Enum.GetValues(typeof(LootPool)))
+    foreach (ItemLootPool lootPool in Enum.GetValues(typeof(ItemLootPool)))
     {
       _lootPoolItemDict[lootPool] = new List<ItemId>();
     }
@@ -44,9 +44,9 @@ public partial class ItemManager : Node
     _defaultItem = item;
   }
 
-  public Item GetRandomFromPool(LootPool lootPool, bool removeFromPools = true)
+  public Item GetRandomFromPool(ItemLootPool itemLootPool, bool removeFromPools = true)
   {
-    var lootPoolItemCount = _lootPoolItemDict[lootPool].Count;
+    var lootPoolItemCount = _lootPoolItemDict[itemLootPool].Count;
     if (lootPoolItemCount == 0)
     {
       return _defaultItem;
@@ -54,7 +54,7 @@ public partial class ItemManager : Node
     
     var randomIndex = GD.RandRange(0, lootPoolItemCount - 1);
     GD.Print($"Random index: {randomIndex}");
-    var itemId = _lootPoolItemDict[lootPool][randomIndex];
+    var itemId = _lootPoolItemDict[itemLootPool][randomIndex];
 
     // ReSharper disable once InvertIf
     if (removeFromPools)

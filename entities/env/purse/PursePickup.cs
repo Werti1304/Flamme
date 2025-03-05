@@ -1,6 +1,8 @@
+using System;
 using Flamme.common.enums;
 using Godot;
-using System;
+
+namespace Flamme.entities.env.purse;
 
 public partial class PursePickup : Area2D
 {
