@@ -5,6 +5,7 @@ using Godot;
 using System;
 using System.Collections.Generic;
 using System.Net.Http.Headers;
+using Flamme.common.constant;
 using Environment = Godot.Environment;
 
 namespace Flamme.world.rooms;
@@ -28,6 +29,8 @@ public partial class Room : Area2D
 
   public RoomExit ActualExits;
   public RoomLoot Loot;
+
+  private bool _cleared = false;
   
   [ExportGroup("Generation")]
   [Export]
@@ -147,7 +150,21 @@ public partial class Room : Area2D
 
   private void SetRoomCleared()
   {
+    if (_cleared)
+      return;
+    _cleared = true;
     GD.Print($"Room {Name} Cleared!");
+
+    if (Type == RoomType.Boss)
+    {
+      // TODO Preload all scenes?
+      // Spawn warper to next level after clearing boss room
+      var warperScene = GD.Load<PackedScene>(PathConstants.WarperScenePath);
+      var warperNode = warperScene.Instantiate<Warper>();
+      warperNode.NewLevel = LevelManager.Instance.GetNextLevel();
+      AddChild(warperNode);
+      warperNode.Owner = this;
+    }
   }
 
   private void SetRoomPassive()
