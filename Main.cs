@@ -1,4 +1,6 @@
+using Flamme.entities.env.Loot;
 using Flamme.items;
+using Flamme.world;
 using Flamme.world.generation;
 using Godot;
 
@@ -29,8 +31,19 @@ public partial class Main : Node
     GD.Seed(1234);
   }
 
+  public override void _Notification(int what)
+  {
+    if (what == NotificationWMCloseRequest)
+    {
+      GetTree().CurrentScene.ProcessMode = ProcessModeEnum.Disabled;
+      GetTree().Quit();
+    }
+  }
+
   public Main()
   {
     StatUpItems.RegisterStatUpItems();
+    
+    DefaultLoot.RegisterDefaultLoot();
   }
 }

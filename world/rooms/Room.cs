@@ -29,7 +29,8 @@ public partial class Room : Area2D
   [Export] public RoomExit AllowedExits;
 
   public RoomExit ActualExits;
-  public RoomLoot Loot;
+  
+  private List<Node2D> _lootList = new List<Node2D>();
 
   private bool _cleared = false;
   
@@ -78,10 +79,32 @@ public partial class Room : Area2D
     return GlobalPosition + GetMidPoint() * 32.0f;
   }
 
-  public Vector2 GetFreeLootPosition()
+  public void AddLoot(Node2D loot)
   {
-    // TODO 3 Remember spawned loot and set it on a grid from the middle going outwards
-    return GetGlobalMidPoint();
+    if (loot == null)
+    {
+      GD.PushError($"Tried to add null loot to room {Name}!");
+      return;
+    }
+    loot.SetProcessMode(ProcessModeEnum.Disabled);
+    loot.SetVisible(false);
+    AddChild(loot);
+    loot.Owner = this;
+    _lootList.Add(loot);
+    GD.Print($"Generated (not spawned) loot: {loot.Name} at {loot.GlobalPosition} in room {Name} that has position {GlobalPosition}.");
+  }
+
+  private void SpawnLoot()
+  {
+    foreach (var loot in _lootList)
+    {
+      // TODO 3 Calculate where to spawn loot
+      loot.Position = GetMidPoint() * 32.0f;
+      GD.Print($"Spawning loot: {loot.Name} at {loot.GlobalPosition} in room {Name} that has position {GlobalPosition}.");
+      GD.Print($"Current player position: {LevelManager.Instance.CurrentLevel.PlayableCharacter.GlobalPosition}.");
+      loot.SetProcessMode(ProcessModeEnum.Inherit);
+      loot.SetVisible(true);
+    }
   }
   
   private void OnBodyEntered(Node2D body)
@@ -188,7 +211,7 @@ public partial class Room : Area2D
     }
     else if (Type == RoomType.Pathway)
     {
-      LootGenerator.Instance.SpawnLoot(this, LootPool.Pathway);
+      SpawnLoot();
     }
   }
 

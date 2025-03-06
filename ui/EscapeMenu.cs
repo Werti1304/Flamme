@@ -46,6 +46,7 @@ public partial class EscapeMenu : CanvasLayer
 
   private void Quit()
   {
+    GetTree().CurrentScene.ProcessMode = ProcessModeEnum.Disabled;
     GetTree().Quit();
   }
   

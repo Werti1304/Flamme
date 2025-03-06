@@ -70,7 +70,7 @@ public class RoomMeta
     {
       var room = validRooms[idx];
       randomTicket -= room.RoomGenerationTickets;
-      if (randomTicket < 0)
+      if (randomTicket <= 0)
       {
         chosenRoom = room;
         break;

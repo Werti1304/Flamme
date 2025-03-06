@@ -1,0 +1,41 @@
+#region *.hpp
+// //----------------------------------------------------------------------------------------------------------------------
+// // DefaultLoot.cs
+// //
+// // <Explanation of the file's contents ...>
+// // <... may span multiple lines.>
+// //
+// // Author: <name>, <name> ...
+// //----------------------------------------------------------------------------------------------------------------------
+// //
+#endregion
+
+using Flamme.common.enums;
+using System.Collections.Generic;
+
+namespace Flamme.entities.env.Loot;
+
+public static class DefaultLoot
+{
+  public static void RegisterDefaultLoot()
+  {
+    RegisterPathwayLoot();
+  }
+
+  private static void RegisterPathwayLoot()
+  {
+    const LootPool lootPool = LootPool.Pathway;
+    // Chances should add up to 100, as it's already decided that it's gonna be one of these
+    var list = new List<LootGenerator.LootMeta>()
+    {
+      new LootGenerator.LootMeta(LootGenerator.LootType.NormalHealth, 20, 1, 2, 2),
+      new LootGenerator.LootMeta(LootGenerator.LootType.NormalHealth, 10, 1, 4, 4),
+      new LootGenerator.LootMeta(LootGenerator.LootType.Coin, 30, 1, 1, 5),
+      new LootGenerator.LootMeta(LootGenerator.LootType.AbsorptionHealth, 10, 1, 1, 4),
+      new LootGenerator.LootMeta(LootGenerator.LootType.Key, 20, 1, 1, 1),
+      new LootGenerator.LootMeta(LootGenerator.LootType.Chest, 10, 1, 1, 1),
+    };
+    
+    LootGenerator.Instance.RegisterLoot(lootPool, list);
+  }
+}

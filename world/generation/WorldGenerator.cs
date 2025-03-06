@@ -1,6 +1,7 @@
 using System;
 using Flamme.common.constant;
 using Flamme.common.enums;
+using Flamme.entities.env.Loot;
 using Flamme.entities.staff;
 using Flamme.ui;
 using Flamme.world.rooms;
@@ -60,6 +61,16 @@ public partial class WorldGenerator : Node2D
     GenerateRooms(level);
     GD.Print("Level generated!");
     
+    GD.Print("Generating loot...");
+
+    foreach (var room in level.Grid)
+    {
+      if(room == null)
+        continue;
+      LootGenerator.Instance.SpawnLoot(room, room.Type);
+    }
+    GD.Print("Loot generated!");
+    
     GD.Print("Placing down character, camera & staff");
     var globalSpawnPosition = spawn.GetGlobalMidPoint();
     
@@ -68,6 +79,7 @@ public partial class WorldGenerator : Node2D
     var player = playerScene.Instantiate<PlayableCharacter>();
     player.GlobalPosition = globalSpawnPosition;
     level.AddChild(player);
+    level.PlayableCharacter = player;
     player.Owner = level;
     
     // ...
@@ -75,6 +87,7 @@ public partial class WorldGenerator : Node2D
     var playerCamera = playerCameraScene.Instantiate<PlayerCamera>();
     playerCamera.GlobalPosition = globalSpawnPosition;
     level.AddChild(playerCamera);
+    level.PlayerCamera = playerCamera;
     playerCamera.Player = player;
     playerCamera.Owner = level;
     
