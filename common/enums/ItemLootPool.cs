@@ -15,7 +15,7 @@ namespace Flamme.common.enums;
 public enum ItemLootPool
 {
   Treasure,
-  Chest,
+  NormalChest,
   Boss,
   Shop
 }

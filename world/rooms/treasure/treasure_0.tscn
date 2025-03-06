@@ -28,3 +28,4 @@ shape = SubResource("RectangleShape2D_jc2a2")
 
 [node name="ItemPickup" parent="." instance=ExtResource("4_38tr6")]
 position = Vector2(271, 237)
+RetrievelMode = 1

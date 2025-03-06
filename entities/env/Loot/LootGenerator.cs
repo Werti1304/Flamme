@@ -4,6 +4,7 @@ using Flamme.common.constant;
 using Flamme.common.enums;
 using Flamme.entities.env.health;
 using Flamme.entities.env.purse;
+using Flamme.world;
 using Flamme.world.rooms;
 using Godot;
 using System.Diagnostics;
@@ -24,7 +25,9 @@ public partial class LootGenerator
     Coin,
     Key,
     Crystal,
-    Chest // Todo 4
+    NormalChest,
+    LockedChest,
+    MimicChest
   }
 
   // TODO 1 Add weights/distribution types? idk
@@ -71,6 +74,19 @@ public partial class LootGenerator
   /// </summary>
   private readonly Dictionary<LootPool, List<LootMeta>> _lootPoolDict
     = new Dictionary<LootPool, List<LootMeta>>();
+
+  public static void SpawnLootAt(List<Node2D> lootList, Vector2 globalPosition)
+  {
+    foreach (var loot in lootList)
+    {
+      // TODO 3 Calculate where to spawn loot
+      loot.GlobalPosition = globalPosition;
+      GD.Print($"Spawning loot: {loot.Name} at {loot.GlobalPosition}");
+      GD.Print($"Current player position: {LevelManager.Instance.CurrentLevel.PlayableCharacter.GlobalPosition}.");
+      loot.SetProcessMode(Node.ProcessModeEnum.Inherit);
+      loot.SetVisible(true);
+    }
+  }
   
   public void RegisterLoot(LootPool lootPool, LootMeta lootMeta)
   {
@@ -129,7 +145,7 @@ public partial class LootGenerator
         lootToSpawn.Add(SpawnSingleLoot(lootMeta.LootType, worth));
         
         // after that, 1/3 chance for every other try
-        for (var i = 0; i < lootMeta.GenerationTries; i++)
+        for (var i = 1; i < lootMeta.GenerationTries; i++)
         {
           if(GD.RandRange(0, 100) > 33)
             continue;
@@ -190,8 +206,30 @@ public partial class LootGenerator
         loot = crystalNode;
         break;
       }
-      case LootType.Chest:
-        break; // TODO 3
+      case LootType.NormalChest:
+      {
+        var normalChestNode = SceneLoader.Instance[SceneLoader.Scene.Chest].Instantiate<Chest>();
+        normalChestNode.Type = Chest.ChestType.Normal;
+        normalChestNode.SetItemPickupLoot(ItemLootPool.NormalChest);
+        loot = normalChestNode;
+        break;
+      }
+      case LootType.LockedChest:
+      {
+        var lockedChestNode = SceneLoader.Instance[SceneLoader.Scene.Chest].Instantiate<Chest>();
+        lockedChestNode.Type = Chest.ChestType.Locked;
+        lockedChestNode.SetItemPickupLoot(ItemLootPool.NormalChest);
+        loot = lockedChestNode;
+        break;
+      }
+      case LootType.MimicChest:
+      {
+        var mimicChestNode = SceneLoader.Instance[SceneLoader.Scene.Chest].Instantiate<Chest>();
+        mimicChestNode.Type = Chest.ChestType.Mimic;
+        mimicChestNode.SetItemPickupLoot(ItemLootPool.NormalChest);
+        loot = mimicChestNode;
+        break;
+      }
       default:
         throw new ArgumentOutOfRangeException(nameof(lootType), lootType, null);
     } 

@@ -119,18 +119,19 @@ public partial class PlayableCharacter : CharacterBody2D, IEnemyDamagable
   
   private void BodyEntered(Node2D body)
   {
-    if (body is SimpleChest chest)
+    if (body is Chest chest)
     {
-      if (!chest.TryInteract(this))
+      if (chest.IsOpen)
       {
-        var item = chest.PickupItem();
-
-        if (item == null)
+        // Simulate running against the item pickup
+        if (chest.ItemPickupLoot != null && IsInstanceValid(chest.ItemPickupLoot) && chest.ItemPickupLoot.Monitorable)
         {
-          return;
+          OnAreaEntered(chest.ItemPickupLoot);
         }
-
-        PickupItem(item);
+      }
+      else
+      {
+        chest.Open();
       }
       SetDeferred(CharacterBody2D.PropertyName.Velocity, Velocity += (chest.GlobalPosition.DirectionTo(GlobalPosition) * 1000.0f));
     }

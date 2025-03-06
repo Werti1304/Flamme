@@ -137,15 +137,12 @@ PurseContent = 2
 
 [node name="ItemPickup" parent="Itempickups" instance=ExtResource("7_utxn0")]
 position = Vector2(369, 239)
-_itemId = 1
 
 [node name="ItemPickup2" parent="Itempickups" instance=ExtResource("7_utxn0")]
 position = Vector2(433, 240)
-_itemId = 2
 
 [node name="ItemPickup3" parent="Itempickups" instance=ExtResource("7_utxn0")]
 position = Vector2(369, 307)
-_itemId = 4
 
 [node name="Buyable" type="Node2D" parent="."]
 
@@ -179,4 +176,3 @@ position = Vector2(495, 110)
 Price = 15
 
 [node name="ItemPickup" parent="Buyable/CoinBuyable5" instance=ExtResource("7_utxn0")]
-_itemId = 4

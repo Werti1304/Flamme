@@ -2,13 +2,22 @@ using Flamme.common.enums;
 using Flamme.items;
 using Flamme.testing;
 using Godot;
+using System;
 
 namespace Flamme.entities.env;
 
 public partial class ItemPickup : Area2D
 {
+  public enum ItemRetrievel
+  {
+    FromItemPool,
+    FromId
+  }
+  
+  [Export] public ItemRetrievel RetrievelMode = ItemRetrievel.FromItemPool;
   // TODO 3 Refactor from string to item id in one giant enum?
-  [Export] private ItemId _itemId;
+  [Export] public ItemId ItemId;
+  [Export] public ItemLootPool ItemLootPool = ItemLootPool.Treasure;
   
   [ExportGroup("Meta")] 
   [Export] private Sprite2D _sprite;
@@ -20,21 +29,53 @@ public partial class ItemPickup : Area2D
   {
     ExportMetaNonNull.Check(this);
     
+    Monitorable = false;
     _sprite.Hide();
 
-    if (_itemId != ItemId.None)
+    if (ItemId != ItemId.None)
     {
-      var item = ItemManager.Instance.GetFromId(_itemId);
+      SetFromId();
+      ShowItem();
+    }
+  }
 
-      if (item == null)
-        return;
-      
-      SetItem(item, true);
-    }
-    else
+  public void Set()
+  {
+    if (RetrievelMode == ItemRetrievel.FromId && ItemId == ItemId.None)
     {
-      SetItem(ItemManager.Instance.GetRandomFromPool(ItemLootPool.Treasure, false), true);
+      GD.PushError("Tried to set item to none when using ItemId");
+      return;
     }
+    
+    switch (RetrievelMode)
+    {
+      case ItemRetrievel.FromId:
+        SetFromId();
+        break;
+      case ItemRetrievel.FromItemPool:
+        SetFromPool();
+        break;
+      default:
+        throw new ArgumentOutOfRangeException();
+    }
+  }
+
+  private void SetFromId()
+  {
+    if (ItemId == ItemId.None)
+      return;
+    
+    var item = ItemManager.Instance.GetFromId(ItemId);
+
+    if (item == null)
+      return;
+      
+    SetItem(item);
+  }
+
+  private void SetFromPool()
+  {
+    SetItem(ItemManager.Instance.GetRandomFromPool(ItemLootPool));
   }
 
   public Item Pickup()
@@ -43,7 +84,7 @@ public partial class ItemPickup : Area2D
     return _item;
   }
 
-  public void SetItem(Item item, bool show)
+  public void SetItem(Item item)
   {
     _item = item;
 
@@ -54,16 +95,11 @@ public partial class ItemPickup : Area2D
     }
 
     _sprite.Texture = item.SpriteFull;
-
-    if (show)
-    {
-      ShowItem();
-    }
   }
 
   public void ShowItem()
   {
-    _collisionShape.Disabled = false;
+    SetDeferred(Area2D.PropertyName.Monitorable, true);
     _sprite.Show();
   }
 }

@@ -206,8 +206,8 @@ public partial class Room : Area2D
       var warperScene = GD.Load<PackedScene>(PathConstants.WarperScenePath);
       var warperNode = warperScene.Instantiate<entities.env.Warper>();
       warperNode.NewLevel = LevelManager.Instance.GetNextLevel();
-      AddChild(warperNode);
-      warperNode.Owner = this;
+      CallDeferred(Node.MethodName.AddChild, warperNode);
+      warperNode.Position = GetMidPoint() * 32.0f;
     }
     else if (Type == RoomType.Pathway)
     {

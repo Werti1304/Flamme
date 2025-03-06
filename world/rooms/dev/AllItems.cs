@@ -25,7 +25,8 @@ public partial class AllItems : Room
       var itemPickup = ItemPickupScene.Instantiate<Flamme.entities.env.ItemPickup>();
       AddChild(itemPickup);
       itemPickup.Owner = this;
-      itemPickup.SetItem(ItemManager.Instance.GetFromId(itemid), true);
+      itemPickup.SetItem(ItemManager.Instance.GetFromId(itemid));
+      itemPickup.ShowItem();
       itemPickup.Position = currentVec;
       currentVec += new Vector2(2 * 32, 0);
     }

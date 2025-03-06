@@ -15,10 +15,10 @@ public partial class PlayerStats : Node2D
   [Export] public int StartingHealth = 12; // 1 health is 1/4 of a container
   [Export] public int StartingAbsorption = 12;
   
-  [Export] public int BaseSpeed = 50; // px/sec?
-  [Export] public float BaseDamage = 2; // Damage against enemies
+  [Export] public int BaseSpeed = 100; // px/sec?
+  [Export] public float BaseDamage = 10; // Damage against enemies
   [Export] public float BaseDamageMultiplier = 1;
-  [Export] public int BaseFireRate = 60; // /min?
+  [Export] public int BaseFireRate = 300; // /min?
   [Export] public int BaseFireRateMultiplier = 1;
   [Export] public int BaseRange = 2; // In pixels
   [Export] public float BaseFireMultiplier = 1; // /min?

@@ -13,6 +13,7 @@ public static class PathConstants
   public const string ItemPickupScenePath = "res://entities/env/itemPickup.tscn";
   public const string PursePickupScenePath = "res://entities/env/purse/purse_pickup.tscn";
   public const string HealthPickupScenePath = "res://entities/env/health/health_pickup.tscn";
+  public const string ChestScenePath = "res://entities/env/chests/chest.tscn";
   
   public const string WarperScenePath = "res://entities/env/warper.tscn";
 }

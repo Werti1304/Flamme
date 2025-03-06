@@ -28,12 +28,17 @@ public static class DefaultLoot
     // Chances should add up to 100, as it's already decided that it's gonna be one of these
     var list = new List<LootGenerator.LootMeta>()
     {
-      new LootGenerator.LootMeta(LootGenerator.LootType.NormalHealth, 20, 1, 2, 2),
-      new LootGenerator.LootMeta(LootGenerator.LootType.NormalHealth, 10, 1, 4, 4),
-      new LootGenerator.LootMeta(LootGenerator.LootType.Coin, 30, 1, 1, 5),
-      new LootGenerator.LootMeta(LootGenerator.LootType.AbsorptionHealth, 10, 1, 1, 4),
-      new LootGenerator.LootMeta(LootGenerator.LootType.Key, 20, 1, 1, 1),
-      new LootGenerator.LootMeta(LootGenerator.LootType.Chest, 10, 1, 1, 1),
+      // new LootGenerator.LootMeta(LootGenerator.LootType.NormalHealth, 20, 1, 2, 2),
+      // new LootGenerator.LootMeta(LootGenerator.LootType.NormalHealth, 10, 1, 4, 4),
+      // new LootGenerator.LootMeta(LootGenerator.LootType.Coin, 25, 1, 1, 5),
+      // new LootGenerator.LootMeta(LootGenerator.LootType.AbsorptionHealth, 10, 1, 1, 4),
+      // new LootGenerator.LootMeta(LootGenerator.LootType.Key, 20, 1, 1, 1),
+      // new LootGenerator.LootMeta(LootGenerator.LootType.NormalChest, 10, 1, 1, 1),
+      // new LootGenerator.LootMeta(LootGenerator.LootType.LockedChest, 5, 1, 1, 1),
+      // new LootGenerator.LootMeta(LootGenerator.LootType.MimicChest, 5, 1, 1, 1),
+      new LootGenerator.LootMeta(LootGenerator.LootType.NormalChest, 50, 1, 1, 1),
+      new LootGenerator.LootMeta(LootGenerator.LootType.LockedChest, 30, 1, 1, 1),
+      new LootGenerator.LootMeta(LootGenerator.LootType.MimicChest, 20, 1, 1, 1),
     };
     
     LootGenerator.Instance.RegisterLoot(lootPool, list);

@@ -1,3 +1,45 @@
-[gd_scene format=3 uid="uid://cnwytmuhbr7f5"]
+[gd_scene load_steps=12 format=3 uid="uid://cnwytmuhbr7f5"]
 
-[node name="Chest" type="Node2D"]
+[ext_resource type="Script" uid="uid://gviqjbwluryr" path="res://entities/env/chests/Chest.cs" id="1_futoc"]
+[ext_resource type="Texture2D" uid="uid://bd2bae7mm8cmy" path="res://assets/sprites/entities/env/chests.png" id="1_w4bi2"]
+[ext_resource type="Texture2D" uid="uid://s5qx52mnjrfg" path="res://entities/env/chests/textures/normal_chest_closed.tres" id="2_enjaf"]
+[ext_resource type="Texture2D" uid="uid://bslyx53g2wmta" path="res://entities/env/chests/textures/normal_chest_open.tres" id="3_dpopj"]
+[ext_resource type="Texture2D" uid="uid://5lhkc824dj05" path="res://entities/env/chests/textures/locked_chest_closed.tres" id="4_x4dj8"]
+[ext_resource type="Texture2D" uid="uid://cu3ofyc73hlt2" path="res://entities/env/chests/textures/locked_chest_open.tres" id="5_67qll"]
+[ext_resource type="Texture2D" uid="uid://cljyrkpeo25la" path="res://entities/env/chests/textures/mimic_chest_closed.tres" id="6_dpopj"]
+[ext_resource type="PackedScene" uid="uid://bfulsjxd53ikv" path="res://entities/env/itemPickup.tscn" id="8_x4dj8"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dpopj"]
+atlas = ExtResource("1_w4bi2")
+region = Rect2(32, 32, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_futoc"]
+atlas = ExtResource("1_w4bi2")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_w4bi2"]
+radius = 9.0
+height = 24.0
+
+[node name="Chest" type="RigidBody2D" node_paths=PackedStringArray("Sprite", "CollisionShape", "ItemPickupLoot")]
+script = ExtResource("1_futoc")
+NormalChestClosedexture = ExtResource("2_enjaf")
+NormalChestOpenTexture = ExtResource("3_dpopj")
+LockedChestClosedexture = ExtResource("4_x4dj8")
+LockedChestOpenTexture = ExtResource("5_67qll")
+MimicChestClosedexture = ExtResource("6_dpopj")
+MimicChestOpenTexture = SubResource("AtlasTexture_dpopj")
+Sprite = NodePath("Sprite2D")
+CollisionShape = NodePath("CollisionShape2D")
+ItemPickupLoot = NodePath("ItemPickup")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(0, -4)
+texture = SubResource("AtlasTexture_futoc")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+rotation = 1.5708
+shape = SubResource("CapsuleShape2D_w4bi2")
+
+[node name="ItemPickup" parent="." instance=ExtResource("8_x4dj8")]
+position = Vector2(0, -11)
