@@ -6,7 +6,7 @@ namespace Flamme.testing;
 
 public partial class Bullet : Area2D
 {
-  [Export] public Vector2 Direction = Const.FacingNormVecDict[Const.Facing.Down];
+  [Export] public Vector2 Direction = Vector2.Down;
 
   [ExportGroup("Meta")] 
   [Export] public Sprite2D Sprite;

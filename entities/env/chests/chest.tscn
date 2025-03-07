@@ -14,7 +14,7 @@ region = Rect2(32, 32, 32, 32)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_futoc"]
 atlas = ExtResource("1_w4bi2")
-region = Rect2(32, 0, 32, 32)
+region = Rect2(0, 0, 32, 32)
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_w4bi2"]
 radius = 9.0
