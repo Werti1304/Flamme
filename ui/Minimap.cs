@@ -60,8 +60,10 @@ public partial class Minimap : GridContainer
   // TODO 1 Performance
   // Can be made more efficient with less updates to the whole thing
   // but for now its ok
-  public void Update(Level level)
+  public void UpdateLevel()
   {
+    var level = LevelManager.Instance.CurrentLevel;
+    
     _lowestX = int.MaxValue;
     _lowestY = int.MaxValue;
 

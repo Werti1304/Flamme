@@ -43,7 +43,7 @@ public partial class CoinBuyable : Area2D
 
   public void Buy(PlayableCharacter player)
   {
-    if (_selling == null || _selling.IsQueuedForDeletion())
+    if (_selling == null || !IsInstanceValid(_selling))
     {
       QueueFree();
       return;

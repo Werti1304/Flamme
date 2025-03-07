@@ -9,7 +9,20 @@ namespace Flamme.world;
 
 public partial class LevelManager : Node2D
 {
-  public Level CurrentLevel;
+  private Level _currentLevel;
+
+  public Level CurrentLevel
+  {
+    get => _currentLevel;
+    set
+    {
+      _currentLevel = value;
+      if (value != null)
+      {
+        Hud.Instance.Minimap.UpdateLevel();
+      }
+    }
+  }
   
   private Room _currentRoom;
   public Room CurrentRoom

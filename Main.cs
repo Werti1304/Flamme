@@ -18,8 +18,12 @@ public partial class Main : Node
   // TODO 2 make it so items are removed from loot pool when generating loot for the level and re-add everything the player...
   // TODO ...didn't pick up after leaving the level
   
-  // TODO Mimic chest dont work
+  // TODO 3 Chest loot generation per LootPool
   
+  // TODO Cleaning up
+  // TODO Clean rooms up
+  // TODO Clean testing stuff up
+  // TODO Clean general up to new standards
   
   // TODO OK we need to fix a few things
   // 1. Set Room Cleared MUST only happen while player inside and enemies not existing

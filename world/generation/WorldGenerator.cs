@@ -104,9 +104,6 @@ public partial class WorldGenerator : Node2D
     startingStaff.GlobalPosition = globalSpawnPosition - new Vector2(64, 64);
     level.AddChild(startingStaff);
     startingStaff.Owner = level;
-
-    // Update Minimap
-    Hud.Instance.Minimap.Update(level);
   }
 
   private void GenerateRooms(Level level)
