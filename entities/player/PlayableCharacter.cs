@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Flamme.common.enums;
 using Flamme.common.input;
 using Flamme.entities.common;
+using Flamme.entities.env.health;
 using Flamme.entities.env.shop;
 using Flamme.entities.player;
 using Flamme.testing;
@@ -119,6 +120,11 @@ public partial class PlayableCharacter : CharacterBody2D, IEnemyDamagable
   
   private void BodyEntered(Node2D body)
   {
+    if (body is RigidBody2D rigidBody2D)
+    {
+      rigidBody2D.ApplyCentralForce(GlobalPosition.DirectionTo(rigidBody2D.GlobalPosition) * 3000.0f);
+    }
+    
     if (body is Chest chest)
     {
       if (chest.IsOpen)
@@ -129,17 +135,20 @@ public partial class PlayableCharacter : CharacterBody2D, IEnemyDamagable
           OnAreaEntered(chest.ItemPickupLoot);
           SetDeferred(CharacterBody2D.PropertyName.Velocity, Velocity += (chest.GlobalPosition.DirectionTo(GlobalPosition) * 1000.0f));
         }
-        else
-        {
-          chest.ApplyCentralForce(GlobalPosition.DirectionTo(chest.GlobalPosition) * 4000.0f);
-        }
       }
       else
       {
         chest.Open();
         SetDeferred(CharacterBody2D.PropertyName.Velocity, Velocity += (chest.GlobalPosition.DirectionTo(GlobalPosition) * 1000.0f));
       }
-
+    }
+    else if (body is HealthPickup healthPickup)
+    {
+      if (Stats.AddHealth(healthPickup.HealthType, healthPickup.HealingAmount))
+      {
+        healthPickup.Consumed();
+      }
+      OnInvChange();
     }
   }
   
@@ -161,14 +170,6 @@ public partial class PlayableCharacter : CharacterBody2D, IEnemyDamagable
       
       Purse.Coins -= coinBuyable.Price;
       coinBuyable.Buy(this);
-      OnInvChange();
-    }
-    else if (area is Flamme.entities.env.health.HealthPickup healthPickup)
-    {
-      if (Stats.AddHealth(healthPickup.HealthType, healthPickup.HealingAmount))
-      {
-        healthPickup.Consumed();
-      }
       OnInvChange();
     }
   }

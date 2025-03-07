@@ -32,32 +32,24 @@ public partial class ItemPickup : Area2D
     Monitorable = false;
     _sprite.Hide();
 
-    if (ItemId != ItemId.None)
+    if (RetrievelMode == ItemRetrievel.FromId)
     {
-      SetFromId();
-      ShowItem();
+      if (ItemId == ItemId.None)
+      {
+        GD.PushError("Tried to spawn item that was not set, setting to default item!");
+        SetItem(ItemManager.Instance.DefaultItem);
+      }
+      else
+      {
+        SetFromId();
+      }
     }
-  }
-
-  public void Set()
-  {
-    if (RetrievelMode == ItemRetrievel.FromId && ItemId == ItemId.None)
+    else
     {
-      GD.PushError("Tried to set item to none when using ItemId");
-      return;
+      SetFromPool();
     }
     
-    switch (RetrievelMode)
-    {
-      case ItemRetrievel.FromId:
-        SetFromId();
-        break;
-      case ItemRetrievel.FromItemPool:
-        SetFromPool();
-        break;
-      default:
-        throw new ArgumentOutOfRangeException();
-    }
+    ShowItem();
   }
 
   private void SetFromId()
@@ -81,6 +73,12 @@ public partial class ItemPickup : Area2D
   public Item Pickup()
   {
     QueueFree();
+
+    if (_item == null)
+    {
+      
+      return ItemManager.Instance.DefaultItem;
+    }
     return _item;
   }
 
@@ -97,9 +95,18 @@ public partial class ItemPickup : Area2D
     _sprite.Texture = item.SpriteFull;
   }
 
-  public void ShowItem()
+  public void HideItem()
   {
-    SetDeferred(Area2D.PropertyName.Monitorable, true);
+    SetDeferred(Area2D.PropertyName.Monitorable, false);
+    _sprite.Hide();
+  }
+
+  public void ShowItem(bool enableMonitorable = true)
+  {
+    if (enableMonitorable)
+    {
+      SetDeferred(Area2D.PropertyName.Monitorable, true);
+    }
     _sprite.Show();
   }
 }

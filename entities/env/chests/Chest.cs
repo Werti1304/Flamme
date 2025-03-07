@@ -30,7 +30,7 @@ public partial class Chest : RigidBody2D
   [ExportGroup("Meta")] 
   [Export] public Sprite2D Sprite;
   [Export] public CollisionShape2D CollisionShape;
-  [Export] public ItemPickup ItemPickupLoot;
+  [Export] public ItemPickup ItemPickupLoot = null;
   
   private List<Node2D> _lootList = new();
   // private ItemPickup _itemPickupLoot;
@@ -44,6 +44,11 @@ public partial class Chest : RigidBody2D
       ChestType.Mimic => IsOpen ? MimicChestOpenTexture : MimicChestClosedexture,
       _ => throw new ArgumentOutOfRangeException()
     };
+
+    if (ItemPickupLoot != null)
+    {
+      ItemPickupLoot.HideItem();
+    }
   }
 
   public void Open()
@@ -63,33 +68,25 @@ public partial class Chest : RigidBody2D
 
   public void SetLoot(List<Node2D> lootList)
   {
-    ItemPickupLoot.ItemId = ItemId.None;
     _lootList = lootList;
-  }
-  
-  public void SetItemPickupLoot(ItemLootPool itemLootPool)
-  {
-    foreach (var loot in _lootList)
-    {
-      loot.QueueFree();
-    }
-    _lootList.Clear();
-    ItemPickupLoot.RetrievelMode = ItemPickup.ItemRetrievel.FromItemPool;
-    ItemPickupLoot.ItemLootPool = itemLootPool;
-    ItemPickupLoot.Set();
   }
 
   private void SpawnLoot()
   {
-    if (_lootList.Count > 0)
+    if (ItemPickupLoot != null)
     {
-      // TODO 3 get current room as owner
-      LootGenerator.SpawnLootAt(_lootList, GlobalPosition + new Vector2(0, 32));
-      _lootList.Clear();
+      // This should stay seperated, as the position of the itempickup should be differently calculated/set than the normal loot
+      CallDeferred(Node.MethodName.AddChild, ItemPickupLoot);
+      ItemPickupLoot.CallDeferred(Node.MethodName.SetOwner, LevelManager.Instance.CurrentLevel);
+      
+      ItemPickupLoot.Position = new Vector2(0, -14.0f);
+      ItemPickupLoot.ShowItem(false);
     }
     else
     {
-      ItemPickupLoot.ShowItem();
+      // TODO 3 Calculate where to spawn loot
+      LootGenerator.SpawnLootAt(_lootList, GlobalPosition + new Vector2(0, 32));
+      _lootList.Clear();
     }
   }
   
@@ -105,6 +102,11 @@ public partial class Chest : RigidBody2D
     foreach (var node in _lootList)
     {
       node.QueueFree();
+    }
+
+    if (ItemPickupLoot != null && IsInstanceValid(ItemPickupLoot))
+    {
+      ItemPickupLoot.QueueFree();
     }
   }
 }

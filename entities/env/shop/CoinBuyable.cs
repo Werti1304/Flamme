@@ -8,7 +8,7 @@ namespace Flamme.entities.env.shop;
 public partial class CoinBuyable : Area2D
 {
   [Export] public int Price = 0;
-  private Area2D _selling;
+  private Node2D _selling;
 
   [ExportGroup("Meta")] 
   [Export] public Label Label;
@@ -30,8 +30,15 @@ public partial class CoinBuyable : Area2D
     ExportMetaNonNull.Check(this);
     
     Label.Text = $"{Price},-";
-    
-    _selling.Monitorable = false;
+
+    if (_selling is Area2D _sellingArea2D)
+    {
+      _sellingArea2D.Monitorable = false;
+    }
+    else if (_selling is RigidBody2D rigidBody2D)
+    {
+      rigidBody2D.Freeze = true;
+    }
   }
 
   public void Buy(PlayableCharacter player)

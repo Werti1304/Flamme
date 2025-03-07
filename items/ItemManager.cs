@@ -17,7 +17,7 @@ public partial class ItemManager : Node
   private readonly Dictionary<ItemLootPool, List<ItemId>> _lootPoolItemDict = new Dictionary<ItemLootPool, List<ItemId>>();
 
   // When there is no other item in the loot pool, pick this
-  private Item _defaultItem;
+  public Item DefaultItem;
 
   public void RegisterItem(Item item, params ItemLootPool[] lootPools)
   {
@@ -41,7 +41,7 @@ public partial class ItemManager : Node
 
   public void SetDefaultItem(Item item)
   {
-    _defaultItem = item;
+    DefaultItem = item;
   }
 
   public Item GetRandomFromPool(ItemLootPool itemLootPool, bool removeFromPools = true)
@@ -49,7 +49,7 @@ public partial class ItemManager : Node
     var lootPoolItemCount = _lootPoolItemDict[itemLootPool].Count;
     if (lootPoolItemCount == 0)
     {
-      return _defaultItem;
+      return DefaultItem;
     }
     
     var randomIndex = GD.RandRange(0, lootPoolItemCount - 1);

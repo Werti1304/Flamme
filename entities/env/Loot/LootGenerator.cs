@@ -227,7 +227,10 @@ public partial class LootGenerator
       {
         var lockedChestNode = SceneLoader.Instance[SceneLoader.Scene.Chest].Instantiate<Chest>();
         lockedChestNode.Type = Chest.ChestType.Locked;
-        lockedChestNode.SetItemPickupLoot(ItemLootPool.NormalChest);
+        var itemPickup = SceneLoader.Instance[SceneLoader.Scene.ItemPickup].Instantiate<ItemPickup>();
+        itemPickup.RetrievelMode = ItemPickup.ItemRetrievel.FromItemPool;
+        itemPickup.ItemLootPool = ItemLootPool.LockedChest;
+        lockedChestNode.ItemPickupLoot = itemPickup;
         loot = lockedChestNode;
         break;
       }

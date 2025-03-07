@@ -36,9 +36,9 @@ public static class DefaultLoot
       // new LootGenerator.LootMeta(LootGenerator.LootType.NormalChest, 10, 1, 1, 1),
       // new LootGenerator.LootMeta(LootGenerator.LootType.LockedChest, 5, 1, 1, 1),
       // new LootGenerator.LootMeta(LootGenerator.LootType.MimicChest, 5, 1, 1, 1),
-      new LootGenerator.LootMeta(LootGenerator.LootType.NormalChest, 0, 1, 1, 1),
-      new LootGenerator.LootMeta(LootGenerator.LootType.LockedChest, 0, 1, 1, 1),
-      new LootGenerator.LootMeta(LootGenerator.LootType.MimicChest, 100, 1, 1, 1),
+      new LootGenerator.LootMeta(LootGenerator.LootType.NormalChest, 33, 1, 1, 1),
+      new LootGenerator.LootMeta(LootGenerator.LootType.LockedChest, 33, 1, 1, 1),
+      new LootGenerator.LootMeta(LootGenerator.LootType.MimicChest, 34, 1, 1, 1),
     };
     
     LootGenerator.Instance.RegisterLoot(lootPool, list);

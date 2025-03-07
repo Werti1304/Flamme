@@ -13,8 +13,9 @@
 [sub_resource type="CircleShape2D" id="CircleShape2D_gsb4a"]
 radius = 5.0
 
-[node name="HealthPickup" type="Area2D" node_paths=PackedStringArray("Sprite")]
+[node name="HealthPickup" type="RigidBody2D" node_paths=PackedStringArray("Sprite")]
 z_index = 5
+mass = 0.29
 script = ExtResource("1_gsb4a")
 HeartFull = ExtResource("2_pdao2")
 Heart3Qt = ExtResource("3_xd628")

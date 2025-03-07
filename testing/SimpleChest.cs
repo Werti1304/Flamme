@@ -36,7 +36,7 @@ public partial class SimpleChest : RigidBody2D, ITouchInteractable
     ExportMetaNonNull.Check(this);
     
     HeldItemSprite.Hide();
-    _heldItem = ItemManager.Instance.GetRandomFromPool(ItemLootPool.NormalChest);
+    _heldItem = ItemManager.Instance.GetRandomFromPool(ItemLootPool.LockedChest);
     HeldItemSprite.Texture = _heldItem.SpriteFull;
   }
   

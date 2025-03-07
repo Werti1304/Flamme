@@ -6,7 +6,7 @@ using Godot;
 
 namespace Flamme.entities.env.health;
 
-public partial class HealthPickup : Area2D
+public partial class HealthPickup : RigidBody2D
 {
   [Export] public HealthType HealthType = HealthType.Normal;
   [Export] public int HealingAmount = 4;
