@@ -41,12 +41,12 @@ public partial class WorldGenerator : Node2D
     // TODO Do this after pressing button in main menu instead of Main.cs
     GetTree().CallDeferred("change_scene_to_packed", levelScene);
   }
-  
+
   public void GenerateFirstLevel(Level level)
   {
     var levelSize = new Vector2I(level.Grid.GetLength(0), level.Grid.GetLength(1));
     var levelCenter = levelSize / 2;
-    
+
     GD.Print("Generating spawn...");
     // Good enough for now as theres only 1 spawn
     var spawnData = RoomMeta.RoomDict[RoomType.Spawn][0];
@@ -56,24 +56,31 @@ public partial class WorldGenerator : Node2D
     level.Spawn = spawn;
     level.Grid[levelCenter.X, levelCenter.Y] = spawn;
     GD.Print($"Placing down spawn {spawn.Name} at {spawn.GlobalPosition}");
-    
+
     GD.Print("Generating rooms...");
     GenerateRooms(level);
     GD.Print("Level generated!");
-    
+
+    GD.Print("Closing up sides...");
+    foreach (var room in level.Grid)
+    {
+      room?.CloseNotConnectedSides();
+    }
+    GD.Print("Sides closed!");
+
     GD.Print("Generating loot...");
 
     foreach (var room in level.Grid)
     {
-      if(room == null)
+      if (room == null)
         continue;
       LootGenerator.Instance.GenerateLoot(room, room.Type);
     }
     GD.Print("Loot generated!");
-    
+
     GD.Print("Placing down character, camera & staff");
     var globalSpawnPosition = spawn.GetGlobalMidPoint();
-    
+
     // TODO 1 Preload 
     var playerScene = GD.Load<PackedScene>(PathConstants.PlayerScenePath);
     var player = playerScene.Instantiate<PlayableCharacter>();
@@ -81,7 +88,7 @@ public partial class WorldGenerator : Node2D
     level.AddChild(player);
     level.PlayableCharacter = player;
     player.Owner = level;
-    
+
     // ...
     var playerCameraScene = GD.Load<PackedScene>(PathConstants.PlayerCameraScenePath);
     var playerCamera = playerCameraScene.Instantiate<PlayerCamera>();
@@ -90,14 +97,14 @@ public partial class WorldGenerator : Node2D
     level.PlayerCamera = playerCamera;
     playerCamera.Player = player;
     playerCamera.Owner = level;
-    
+
     // ...
     var startingStaffScene = GD.Load<PackedScene>(PathConstants.StartingStaffScenePath);
     var startingStaff = startingStaffScene.Instantiate<Staff>();
     startingStaff.GlobalPosition = globalSpawnPosition - new Vector2(64, 64);
     level.AddChild(startingStaff);
     startingStaff.Owner = level;
-    
+
     // Update Minimap
     Hud.Instance.Minimap.Update(level);
     Hud.Instance.Minimap.SetCurrentRoom(level, spawn);
@@ -202,6 +209,7 @@ public partial class WorldGenerator : Node2D
         weightGrid[randomEndRoom.X, randomEndRoom.Y] = -(int)roomTypeCount.type; // change weight to room type for debugging
         
         var room = roomMeta.RoomScene.Instantiate<Room>();
+        room.ActualExits = GetRoomExits(ref weightGrid, randomEndRoom);
         var placeGlobalPos = (randomEndRoom - levelCenter) * roomSize * tileSize;
         GD.Print($"Placing down room {room.Name} at {placeGlobalPos}, index {randomEndRoom}");
         room.GlobalPosition = placeGlobalPos;
@@ -213,7 +221,7 @@ public partial class WorldGenerator : Node2D
       }
     }
     
-    //load paths and spawn
+    // load paths and spawn
     for (var y = 0; y < level.Grid.GetLength(1); y++)
     {
       for (var x = 0; x < level.Grid.GetLength(0); x++)
@@ -228,6 +236,7 @@ public partial class WorldGenerator : Node2D
         var actualExits = GetRoomExits(ref weightGrid, roomPos);
         var roomMeta = RoomMeta.GetRandomRoom(RoomType.Pathway, RoomSize.S1X1, actualExits);
         var room = roomMeta.RoomScene.Instantiate<Room>();
+        room.ActualExits = actualExits;
         var placeGlobalPos = (roomPos - levelCenter) * roomSize * tileSize;
         GD.Print($"Placing down room at {placeGlobalPos}");
         room.GlobalPosition = placeGlobalPos;
@@ -238,6 +247,8 @@ public partial class WorldGenerator : Node2D
       }
     }
     
+    // Set actual exits of spawn
+    level.Spawn.ActualExits = GetRoomExits(ref weightGrid, levelCenter);
     
     // print in console
     for (var y = 0; y < level.Grid.GetLength(1); y++)
@@ -257,22 +268,6 @@ public partial class WorldGenerator : Node2D
     }
   }
 
-  (int index, RoomExit exit) CheckRoomData(RoomType roomType, RoomSize roomSize, RoomExit exits)
-  {
-    var shuffled = Shuffle(RoomMeta.RoomDict[roomType].Count);
-    
-    for (int i = 0; i < RoomMeta.RoomDict[roomType].Count; i++)
-    {
-      var roomData = RoomMeta.RoomDict[roomType][shuffled[i]];
-      if (roomData.Size == roomSize && (roomData.AllowedExits & exits) >= exits)
-      {
-        return (shuffled[i], (roomData.AllowedExits & exits));
-      }
-    }
-    
-    return (-1, 0);
-  }
-  
   private List<int> Shuffle(int length)
   {
     var list = new List<int>();

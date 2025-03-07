@@ -30,16 +30,16 @@ public class RoomMeta
   public string Name;
   public RoomSize Size;
   public RoomType Type;
-  public RoomExit AllowedExits;
+  public RoomExit ActualExits;
   public int RoomGenerationTickets;
 
-  public RoomMeta(PackedScene roomScene, string name, RoomSize size, RoomType type, RoomExit allowedExits, int roomGenerationTickets)
+  public RoomMeta(PackedScene roomScene, string name, RoomSize size, RoomType type, RoomExit actualExits, int roomGenerationTickets)
   {
     RoomScene = roomScene;
     Name = name;
     Size = size;
     Type = type;
-    AllowedExits = allowedExits;
+    ActualExits = actualExits;
     RoomGenerationTickets = roomGenerationTickets;
   }
 
@@ -50,7 +50,7 @@ public class RoomMeta
     var validTickets = 0;
     var validRooms = list.FindAll(delegate(RoomMeta r)
     {
-      bool cond = r.Size == roomSize && (r.AllowedExits & roomExits) >= roomExits;
+      bool cond = r.Size == roomSize && (r.ActualExits & roomExits) >= roomExits;
       if (cond)
       {
         validTickets += r.RoomGenerationTickets;

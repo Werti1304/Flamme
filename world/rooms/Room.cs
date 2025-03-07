@@ -69,6 +69,9 @@ public partial class Room : Area2D
 
     CollisionMask = 0b1111;
     CollisionLayer = 0b1111;
+
+    // Just to see stuff thats at 0
+    TileMap.ZIndex = -1;
   }
 
   private Vector2 GetMidPoint()
@@ -127,7 +130,7 @@ public partial class Room : Area2D
         }
         else
         {
-          SetRoomCleared();
+          SetRoomCleared(false);
         }
         break;
       case Enemy e:
@@ -157,7 +160,7 @@ public partial class Room : Area2D
 
         if (_enemies.Count == 0)
         {
-          SetRoomCleared();
+          SetRoomCleared(true);
         }
         break;
     }
@@ -205,7 +208,7 @@ public partial class Room : Area2D
     }
   }
 
-  private void SetRoomCleared()
+  private void SetRoomCleared(bool enemiesDefeated)
   {
     if (_cleared)
       return;
@@ -255,10 +258,75 @@ public partial class Room : Area2D
     }
   }
 
+  public void CloseNotConnectedSides()
+  {
+    for (var x = 0; x < RoomSizeDict[Size].X; x++)
+    {
+      for (var y = 0; y < RoomSizeDict[Size].Y; y++)
+      {
+        // --- Check if we are at one of the exits ---
+        if (x == 0)
+        {
+          switch (y)
+          {
+            case 5 when ActualExits.HasFlag(RoomExit.West):
+            case 14 when ActualExits.HasFlag(RoomExit.West2):
+            case 23 when ActualExits.HasFlag(RoomExit.West3):
+              break;
+            default:
+              TileMap.SetCell(new Vector2I(x, y), TemplateTileSourceId, TemplateWallAtlasCoords);
+              continue;
+          }
+        }
+
+        if (x == RoomSizeDict[Size].X - 1)
+        {
+          switch (y)
+          {
+            case 5 when ActualExits.HasFlag(RoomExit.East):
+            case 14 when ActualExits.HasFlag(RoomExit.East2):
+            case 23 when ActualExits.HasFlag(RoomExit.East3):
+              break;
+            default:
+              TileMap.SetCell(new Vector2I(x, y), TemplateTileSourceId, TemplateWallAtlasCoords);
+              continue;
+          }
+        }
+
+        if (y == 0)
+        {
+          switch (x)
+          {
+            case 8 when ActualExits.HasFlag(RoomExit.North):
+            case 23 when ActualExits.HasFlag(RoomExit.North2):
+            case 38 when ActualExits.HasFlag(RoomExit.North3):
+              break;
+            default:
+              TileMap.SetCell(new Vector2I(x, y), TemplateTileSourceId, TemplateWallAtlasCoords);
+              continue;
+          }
+        }
+
+        if (y == RoomSizeDict[Size].Y - 1)
+        {
+          switch (x)
+          {
+            case 8 when ActualExits.HasFlag(RoomExit.South):
+            case 23 when ActualExits.HasFlag(RoomExit.South2):
+            case 38 when ActualExits.HasFlag(RoomExit.South3):
+              break;
+            default:
+              TileMap.SetCell(new Vector2I(x, y), TemplateTileSourceId, TemplateWallAtlasCoords);
+              continue;
+          }
+        }
+      }
+    }
+  }
   
   // Defines how big the different room sizes are in pixels
   // This can't change anyways without changing every room, so no config neccessary
-  public static readonly Godot.Collections.Dictionary<RoomSize, Vector2I> RoomSizeDict = new Godot.Collections.Dictionary<RoomSize, Vector2I>( ){
+  private static readonly Godot.Collections.Dictionary<RoomSize, Vector2I> RoomSizeDict = new Godot.Collections.Dictionary<RoomSize, Vector2I>( ){
     { RoomSize.S1X1, new Vector2I(17, 11)},
     { RoomSize.S1X2, new Vector2I(17, 20)},
     { RoomSize.S2X1, new Vector2I(32, 11)},
