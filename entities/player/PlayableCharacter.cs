@@ -150,6 +150,11 @@ public partial class PlayableCharacter : CharacterBody2D, IEnemyDamagable
       }
       OnInvChange();
     }
+    else if (body is Flamme.entities.env.purse.PursePickup pursePickup)
+    {
+      Purse.Add(pursePickup.Pickup());
+      OnInvChange();
+    }
   }
   
   private void OnAreaEntered(Area2D area)
@@ -157,11 +162,6 @@ public partial class PlayableCharacter : CharacterBody2D, IEnemyDamagable
     if (area is Flamme.entities.env.ItemPickup itemPickup)
     {
       PickupItem(itemPickup.Pickup());
-    }
-    else if (area is Flamme.entities.env.purse.PursePickup pursePickup)
-    {
-      Purse.Add(pursePickup.Pickup());
-      OnInvChange();
     }
     else if (area is CoinBuyable coinBuyable)
     {

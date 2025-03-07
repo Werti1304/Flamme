@@ -20,6 +20,23 @@ public static class DefaultLoot
   public static void RegisterDefaultLoot()
   {
     RegisterPathwayLoot();
+    RegisterLockedChestLoot();
+  }
+
+  private static void RegisterLockedChestLoot()
+  {
+    const LootPool lootPool = LootPool.LockedChest;
+    // Chances should add up to 100, as it's already decided that it's gonna be one of these
+    var list = new List<LootGenerator.LootMeta>()
+    {
+      new LootGenerator.LootMeta(LootGenerator.LootType.NormalHealth, 10, 1, 2, 2),
+      new LootGenerator.LootMeta(LootGenerator.LootType.NormalHealth, 15, 1, 4, 4),
+      new LootGenerator.LootMeta(LootGenerator.LootType.Coin, 25, 1, 1, 10),
+      new LootGenerator.LootMeta(LootGenerator.LootType.AbsorptionHealth, 25, 1, 4, 4),
+      new LootGenerator.LootMeta(LootGenerator.LootType.Key, 25, 1, 1, 1),
+    };
+    
+    LootGenerator.Instance.RegisterLoot(lootPool, list);
   }
 
   private static void RegisterPathwayLoot()

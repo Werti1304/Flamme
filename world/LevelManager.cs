@@ -54,7 +54,7 @@ public partial class LevelManager : Node2D
   {
     if (room != _currentRoom)
     {
-      GD.PushError($"Tried to exit room [{room}] that wasn't the current room [{_currentRoom}]!");
+      // GD.PushError($"Tried to exit room [{room}] that wasn't the current room [{_currentRoom}]!");
       return;
     }
     CurrentRoom = _nextRoom;

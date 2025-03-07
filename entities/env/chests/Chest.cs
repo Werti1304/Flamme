@@ -51,6 +51,12 @@ public partial class Chest : RigidBody2D
     }
   }
 
+  public void GenerateLoot()
+  {
+    // TODO Switch case for different types of chest
+    _lootList = LootGenerator.Instance.GenerateChestLoot();
+  }
+
   public void Open()
   {
     if (IsOpen)

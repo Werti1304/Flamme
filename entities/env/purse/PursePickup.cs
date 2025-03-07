@@ -4,7 +4,7 @@ using Godot;
 
 namespace Flamme.entities.env.purse;
 
-public partial class PursePickup : Area2D
+public partial class PursePickup : RigidBody2D
 {
   [Export] public PurseContent PurseContent;
   [Export] public int Amount = 1;

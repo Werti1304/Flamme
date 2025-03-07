@@ -222,7 +222,7 @@ public partial class Room : Area2D
       CallDeferred(Node.MethodName.AddChild, warperNode);
       warperNode.Position = GetMidPoint() * 32.0f;
     }
-    else if (Type == RoomType.Pathway)
+    else if (Type == RoomType.Pathway && enemiesDefeated)
     {
       SpawnLoot();
     }

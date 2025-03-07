@@ -17,6 +17,7 @@ public class PlayerInputMap
   }
 
   public const string EscapeMenu = "open_escape_menu";
+  public const string MapKey = "toggle_map";
   
   public static readonly Godot.Collections.Dictionary<Action, string> Dict = new Godot.Collections.Dictionary<Action, string>()
   {

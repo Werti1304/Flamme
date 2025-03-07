@@ -1,4 +1,5 @@
 using Flamme.common.enums;
+using Flamme.common.input;
 using Flamme.testing;
 using Flamme.world;
 using Flamme.world.generation;
@@ -32,6 +33,20 @@ public partial class Minimap : GridContainer
         _grid[x, y] = textureRect;
       }
     }
+    
+    Modulate = Colors.Transparent;
+  }
+
+  public override void _Input(InputEvent @event)
+  {
+    if (@event.IsActionPressed(PlayerInputMap.MapKey))
+    {
+      Modulate = Colors.White;
+    }
+    else if (@event.IsActionReleased(PlayerInputMap.MapKey))
+    {
+      Modulate = Colors.Transparent;
+    }
   }
 
   private int _lowestX = int.MaxValue;
@@ -52,7 +67,7 @@ public partial class Minimap : GridContainer
         var gridX = x - _lowestX;
         var gridY = y - _lowestY;
         
-        _grid[gridX, gridY].Modulate = room == playerRoom ? Colors.White : Colors.LightGray;
+        _grid[gridX, gridY].Modulate = room == playerRoom ? Colors.White : Colors.Gray;
       }
     }
   }

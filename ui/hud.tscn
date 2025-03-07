@@ -183,8 +183,7 @@ layout_mode = 2
 [node name="PurseDisplay" type="RichTextLabel" parent="MarginContainer/VBoxContainer/HBoxContainer2"]
 custom_minimum_size = Vector2(92, 128)
 layout_mode = 2
-theme_override_colors/default_color = Color(0.779291, 0.779291, 0.779291, 1)
-theme_override_font_sizes/normal_font_size = 11
+theme_override_colors/default_color = Color(1, 1, 1, 1)
 bbcode_enabled = true
 text = "Coins
 Crystals

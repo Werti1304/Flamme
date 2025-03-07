@@ -33,7 +33,7 @@ public partial class PurseDisplay : RichTextLabel
   {
     if (icon != null)
     {
-      sb.Append($"[img=16]{icon.ResourcePath}[/img] {value}\n");
+      sb.Append($"[img=20]{icon.ResourcePath}[/img] {value}\n");
     }
   }
 }

@@ -10,8 +10,9 @@
 [sub_resource type="CircleShape2D" id="CircleShape2D_b4t0w"]
 radius = 5.0
 
-[node name="PursePickup" type="Area2D" node_paths=PackedStringArray("Sprite")]
+[node name="PursePickup" type="RigidBody2D" node_paths=PackedStringArray("Sprite")]
 z_index = 5
+mass = 0.1
 script = ExtResource("1_b4t0w")
 _coin1 = ExtResource("2_tnvo0")
 _coin20 = ExtResource("3_20ih4")

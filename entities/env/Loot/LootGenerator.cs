@@ -39,32 +39,6 @@ public partial class LootGenerator
     public readonly int WorthMin = worthMin;
     public readonly int WorthMax = worthMax;
   }
-  
-  public static LootPool GetDefaultLootPool(RoomType roomType)
-  {
-    // TODO 2 Everyone has pathway loot for now
-    switch (roomType)
-    {
-      case RoomType.Pathway:
-        return LootPool.Pathway;
-      case RoomType.Spawn:
-        return LootPool.Pathway;
-      case RoomType.Treasure:
-        return LootPool.Pathway;
-      case RoomType.Shop:
-        return LootPool.Pathway;
-      case RoomType.Smithy:
-        return LootPool.Pathway;
-      case RoomType.Boss:
-        return LootPool.Pathway;
-      case RoomType.Secret:
-        return LootPool.Pathway;
-      case RoomType.Dev:
-        return LootPool.Pathway;
-      default:
-        throw new ArgumentOutOfRangeException(nameof(roomType), roomType, null);
-    }
-  }
 
   /// <summary>
   /// Worth describes the metadata of the spawned item:
@@ -109,22 +83,36 @@ public partial class LootGenerator
     _lootPoolDict[lootPool].AddRange(lootList);
   }
 
-  public void GenerateLoot(Room room, RoomType roomType)
+  public void GenerateLootForRoom(Room room, RoomType roomType)
   {
-    GenerateLoot(room, GetDefaultLootPool(roomType));
-  }
-
-  public void GenerateLoot(Room room, LootPool lootPool)
-  {
-    List<Node2D> lootToSpawn = null;
-    switch (lootPool)
+    switch (roomType)
     {
-      case LootPool.Pathway:
-        lootToSpawn = GemeratePathwayLoot();
+      // TODO Add Boss with a handful of hearts, maybe others too
+      case RoomType.Pathway:
+        GenerateLootForRoom(room, LootPool.Pathway);
+        break;
+      case RoomType.Spawn:
+        break;
+      case RoomType.Treasure:
+        break;
+      case RoomType.Shop:
+        break;
+      case RoomType.Smithy:
+        break;
+      case RoomType.Boss:
+        break;
+      case RoomType.Secret:
+        break;
+      case RoomType.Dev:
         break;
       default:
-        throw new ArgumentOutOfRangeException(nameof(lootPool), lootPool, null);
+        throw new ArgumentOutOfRangeException(nameof(roomType), roomType, null);
     }
+  }
+
+  public void GenerateLootForRoom(Room room, LootPool lootPool)
+  {
+    List<Node2D> lootToSpawn = GeneratePathwayLoot();
     
     foreach (var loot in lootToSpawn)
     {
@@ -132,7 +120,50 @@ public partial class LootGenerator
     }
   }
 
-  private List<Node2D> GemeratePathwayLoot()
+  public List<Node2D> GenerateChestLoot()
+  {
+    // This should only be called if chest already decided that something from loot pool should be spawned
+    
+    List<Node2D> lootToSpawn = new();
+
+    // Max 5 things, with 1/3 chance that it stops (apart from first)
+    for (var i = 0; i < 5; i++)
+    {
+      var whatToSpawn = GD.RandRange(0, 100);
+      var chanceOffset = 0; // Offset so that we correctly cover the whole range
+      foreach (var lootMeta in _lootPoolDict[LootPool.LockedChest])
+      {
+        if (whatToSpawn <= lootMeta.GenerationChance + chanceOffset)
+        {
+          // generate and add loot to list
+          // 1 time guaranteed spawn
+          var worth = (int)(GD.Randi() % (lootMeta.WorthMax - lootMeta.WorthMin + 1) + lootMeta.WorthMin);
+          lootToSpawn.Add(GenerateSingleLoot(lootMeta.LootType, worth));
+        
+          // after that, 1/3 chance for every other try
+          for (var k = 1; k < lootMeta.GenerationTries; k++)
+          {
+            if(GD.RandRange(0, 100) > 33)
+              continue;
+          
+            worth = (int)(GD.Randi() % (lootMeta.WorthMax - lootMeta.WorthMin + 1) + lootMeta.WorthMin);
+            lootToSpawn.Add(GenerateSingleLoot(lootMeta.LootType, worth));
+          }
+          break;
+        }
+        chanceOffset += lootMeta.GenerationChance;
+      }
+
+      if (GD.RandRange(1, 4) == 4)
+      {
+        break; // 1/4 chance that it stops
+      }
+    }
+    
+    return lootToSpawn;
+  }
+
+  private List<Node2D> GeneratePathwayLoot()
   {
     List<Node2D> lootToSpawn = new();
 
@@ -219,7 +250,7 @@ public partial class LootGenerator
       {
         var normalChestNode = SceneLoader.Instance[SceneLoader.Scene.Chest].Instantiate<Chest>();
         normalChestNode.Type = Chest.ChestType.Normal;
-        normalChestNode.SetLoot([GenerateSingleLoot(LootType.Coin, 5)]);
+        normalChestNode.GenerateLoot();
         loot = normalChestNode;
         break;
       }

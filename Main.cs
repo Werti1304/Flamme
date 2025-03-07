@@ -20,6 +20,8 @@ public partial class Main : Node
   
   // TODO 3 Chest loot generation per LootPool
   
+  // TODO 3 Make bullet class [much work]
+  
   // TODO Cleaning up
   // TODO Clean rooms up
   // TODO Clean testing stuff up
