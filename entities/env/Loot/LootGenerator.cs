@@ -33,11 +33,11 @@ public partial class LootGenerator
   // TODO 1 Add weights/distribution types? idk
   public struct LootMeta(LootType lootType, int generationChance, int generationTries, int worthMin, int worthMax)
   {
-    public LootType LootType = lootType;
-    public int GenerationTries = generationTries;
-    public int GenerationChance = generationChance;
-    public int WorthMin = worthMin;
-    public int WorthMax = worthMax;
+    public readonly LootType LootType = lootType;
+    public readonly int GenerationTries = generationTries;
+    public readonly int GenerationChance = generationChance;
+    public readonly int WorthMin = worthMin;
+    public readonly int WorthMax = worthMax;
   }
   
   public static LootPool GetDefaultLootPool(RoomType roomType)
@@ -79,10 +79,20 @@ public partial class LootGenerator
   {
     foreach (var loot in lootList)
     {
+      // LevelManager.Instance.CurrentLevel.LootParent.AddChild(loot);
+      LevelManager.Instance.CurrentLevel.LootParent.CallDeferred(Node.MethodName.AddChild, loot);
+      loot.CallDeferred(Node.MethodName.SetOwner, LevelManager.Instance.CurrentLevel);
+      
       // TODO 3 Calculate where to spawn loot
       loot.GlobalPosition = globalPosition;
       GD.Print($"Spawning loot: {loot.Name} at {loot.GlobalPosition}");
       GD.Print($"Current player position: {LevelManager.Instance.CurrentLevel.PlayableCharacter.GlobalPosition}.");
+
+      if (loot is Enemy enemy)
+      {
+        enemy.SetActive(LevelManager.Instance.CurrentLevel.PlayableCharacter);
+      }
+      
       loot.SetProcessMode(Node.ProcessModeEnum.Inherit);
       loot.SetVisible(true);
     }
@@ -99,18 +109,18 @@ public partial class LootGenerator
     _lootPoolDict[lootPool].AddRange(lootList);
   }
 
-  public void SpawnLoot(Room room, RoomType roomType)
+  public void GenerateLoot(Room room, RoomType roomType)
   {
-    SpawnLoot(room, GetDefaultLootPool(roomType));
+    GenerateLoot(room, GetDefaultLootPool(roomType));
   }
 
-  public void SpawnLoot(Room room, LootPool lootPool)
+  public void GenerateLoot(Room room, LootPool lootPool)
   {
     List<Node2D> lootToSpawn = null;
     switch (lootPool)
     {
       case LootPool.Pathway:
-        lootToSpawn = SpawnPathwayLoot(room);
+        lootToSpawn = GemeratePathwayLoot();
         break;
       default:
         throw new ArgumentOutOfRangeException(nameof(lootPool), lootPool, null);
@@ -122,10 +132,10 @@ public partial class LootGenerator
     }
   }
 
-  private List<Node2D> SpawnPathwayLoot(Room room)
+  private List<Node2D> GemeratePathwayLoot()
   {
     List<Node2D> lootToSpawn = new();
-    
+
     // Decides if there will be any loot at all
     var shouldSpawnAnything = GD.RandRange(0, 100) <= 100; // TODO Change to 70% or sth
     
@@ -142,7 +152,7 @@ public partial class LootGenerator
         // generate and add loot to list
         // 1 time guaranteed spawn
         var worth = (int)(GD.Randi() % (lootMeta.WorthMax - lootMeta.WorthMin + 1) + lootMeta.WorthMin);
-        lootToSpawn.Add(SpawnSingleLoot(lootMeta.LootType, worth));
+        lootToSpawn.Add(GenerateSingleLoot(lootMeta.LootType, worth));
         
         // after that, 1/3 chance for every other try
         for (var i = 1; i < lootMeta.GenerationTries; i++)
@@ -151,17 +161,16 @@ public partial class LootGenerator
             continue;
           
           worth = (int)(GD.Randi() % (lootMeta.WorthMax - lootMeta.WorthMin + 1) + lootMeta.WorthMin);
-          lootToSpawn.Add(SpawnSingleLoot(lootMeta.LootType, worth));
+          lootToSpawn.Add(GenerateSingleLoot(lootMeta.LootType, worth));
         }
         break;
       }
       chanceOffset += lootMeta.GenerationChance;
     }
-    
     return lootToSpawn;
   }
 
-  private Node2D SpawnSingleLoot(LootType lootType, int worth)
+  private Node2D GenerateSingleLoot(LootType lootType, int worth)
   {
     Node2D loot = null;
     switch (lootType)
@@ -210,7 +219,7 @@ public partial class LootGenerator
       {
         var normalChestNode = SceneLoader.Instance[SceneLoader.Scene.Chest].Instantiate<Chest>();
         normalChestNode.Type = Chest.ChestType.Normal;
-        normalChestNode.SetItemPickupLoot(ItemLootPool.NormalChest);
+        normalChestNode.SetLoot([GenerateSingleLoot(LootType.Coin, 5)]);
         loot = normalChestNode;
         break;
       }
@@ -224,9 +233,11 @@ public partial class LootGenerator
       }
       case LootType.MimicChest:
       {
+        // Todo 1 replace with something better
         var mimicChestNode = SceneLoader.Instance[SceneLoader.Scene.Chest].Instantiate<Chest>();
         mimicChestNode.Type = Chest.ChestType.Mimic;
-        mimicChestNode.SetItemPickupLoot(ItemLootPool.NormalChest);
+        var enemy = SceneLoader.Instance[SceneLoader.Scene.Runner].Instantiate<Runner>();
+        mimicChestNode.SetLoot([enemy]);
         loot = mimicChestNode;
         break;
       }
@@ -234,6 +245,8 @@ public partial class LootGenerator
         throw new ArgumentOutOfRangeException(nameof(lootType), lootType, null);
     } 
     Debug.Assert(loot != null);
+    loot.SetProcessMode(Node.ProcessModeEnum.Disabled);
+    loot.SetVisible(false);
     return loot;
   }
 

@@ -2,5 +2,8 @@
 
 [ext_resource type="Script" uid="uid://c6g26aj7v1tnv" path="res://world/generation/Level.cs" id="1_46mwi"]
 
-[node name="Level" type="Node2D"]
+[node name="Level" type="Node2D" node_paths=PackedStringArray("LootParent")]
 script = ExtResource("1_46mwi")
+LootParent = NodePath("LootParent")
+
+[node name="LootParent" type="Node2D" parent="."]

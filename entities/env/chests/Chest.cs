@@ -2,6 +2,7 @@ using Flamme.common.enums;
 using Flamme.entities.env;
 using Flamme.entities.env.Loot;
 using Flamme.items;
+using Flamme.world;
 using Godot;
 using System;
 using System.Collections.Generic;
@@ -60,14 +61,18 @@ public partial class Chest : RigidBody2D
     SpawnLoot();
   }
 
-  public void SetLoot(List<Node2D> loot)
+  public void SetLoot(List<Node2D> lootList)
   {
     ItemPickupLoot.ItemId = ItemId.None;
-    _lootList = loot;
+    _lootList = lootList;
   }
   
   public void SetItemPickupLoot(ItemLootPool itemLootPool)
   {
+    foreach (var loot in _lootList)
+    {
+      loot.QueueFree();
+    }
     _lootList.Clear();
     ItemPickupLoot.RetrievelMode = ItemPickup.ItemRetrievel.FromItemPool;
     ItemPickupLoot.ItemLootPool = itemLootPool;
@@ -78,11 +83,28 @@ public partial class Chest : RigidBody2D
   {
     if (_lootList.Count > 0)
     {
+      // TODO 3 get current room as owner
       LootGenerator.SpawnLootAt(_lootList, GlobalPosition + new Vector2(0, 32));
+      _lootList.Clear();
     }
     else
     {
       ItemPickupLoot.ShowItem();
+    }
+  }
+  
+  public override void _Notification(int what)
+  {
+    // NOTIFICATION_PREDELETE, Destructor-Equivalent for Nodes
+    // https://docs.godotengine.org/en/stable/classes/class_object.html#class-object-constant-notification-predelete
+    if (what != NotificationPredelete)
+    {
+      return;
+    }
+
+    foreach (var node in _lootList)
+    {
+      node.QueueFree();
     }
   }
 }

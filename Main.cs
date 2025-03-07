@@ -18,6 +18,8 @@ public partial class Main : Node
   // TODO 2 make it so items are removed from loot pool when generating loot for the level and re-add everything the player...
   // TODO ...didn't pick up after leaving the level
   
+  // TODO Mimic chest dont work
+  
   
   // TODO OK we need to fix a few things
   // 1. Set Room Cleared MUST only happen while player inside and enemies not existing
@@ -33,19 +35,45 @@ public partial class Main : Node
     GD.Seed(1234);
   }
 
+  public bool ShuttingDown { get; private set; }= false;
+
   public override void _Notification(int what)
   {
-    if (what == NotificationWMCloseRequest)
+    if (what == NotificationWMCloseRequest || what == NotificationPredelete)
     {
-      GetTree().CurrentScene.ProcessMode = ProcessModeEnum.Disabled;
-      GetTree().Quit();
+      Shutdown();
     }
+  }
+
+  public void Shutdown()
+  {
+    if (ShuttingDown)
+      return;
+    GD.Print($"SHUTDOWN REQUESTED");
+    ShuttingDown = true;
+    GetTree().Quit();
   }
 
   public Main()
   {
+    _instance = this;
+    
     StatUpItems.RegisterStatUpItems();
     
     DefaultLoot.RegisterDefaultLoot();
   }
+
+  public static Main Instance
+  {
+    get
+    {
+      lock (Padlock)
+      {
+        return _instance;
+      }
+    }
+  }
+
+  private static Main _instance;
+  private static readonly object Padlock = new object();
 }

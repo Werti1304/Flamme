@@ -1,9 +1,10 @@
 using System;
 using Flamme.entities.staff;
-using Flamme.world.rooms;
+using Flamme.testing;
 using Godot;
 using System.Collections.Generic;
 using Godot.Collections;
+using Room = Flamme.world.rooms.Room;
 
 namespace Flamme.world.generation;
 
@@ -15,6 +16,9 @@ public partial class Level : Node2D
   [Export] public PlayerCamera PlayerCamera;
 
   public Room[,] Grid = new Room[16, 16];
+
+  [ExportGroup("Meta")] 
+  [Export] public Node2D LootParent;
 
   public override void _Ready()
   {

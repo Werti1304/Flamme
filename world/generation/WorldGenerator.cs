@@ -67,7 +67,7 @@ public partial class WorldGenerator : Node2D
     {
       if(room == null)
         continue;
-      LootGenerator.Instance.SpawnLoot(room, room.Type);
+      LootGenerator.Instance.GenerateLoot(room, room.Type);
     }
     GD.Print("Loot generated!");
     

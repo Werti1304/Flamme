@@ -127,13 +127,19 @@ public partial class PlayableCharacter : CharacterBody2D, IEnemyDamagable
         if (chest.ItemPickupLoot != null && IsInstanceValid(chest.ItemPickupLoot) && chest.ItemPickupLoot.Monitorable)
         {
           OnAreaEntered(chest.ItemPickupLoot);
+          SetDeferred(CharacterBody2D.PropertyName.Velocity, Velocity += (chest.GlobalPosition.DirectionTo(GlobalPosition) * 1000.0f));
+        }
+        else
+        {
+          chest.ApplyCentralForce(GlobalPosition.DirectionTo(chest.GlobalPosition) * 4000.0f);
         }
       }
       else
       {
         chest.Open();
+        SetDeferred(CharacterBody2D.PropertyName.Velocity, Velocity += (chest.GlobalPosition.DirectionTo(GlobalPosition) * 1000.0f));
       }
-      SetDeferred(CharacterBody2D.PropertyName.Velocity, Velocity += (chest.GlobalPosition.DirectionTo(GlobalPosition) * 1000.0f));
+
     }
   }
   
@@ -175,6 +181,4 @@ public partial class PlayableCharacter : CharacterBody2D, IEnemyDamagable
     
     MoveAndSlide();
   }
-
-
 }

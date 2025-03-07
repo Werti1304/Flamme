@@ -7,6 +7,8 @@ using System.Collections.Generic;
 using System.Net.Http.Headers;
 using Flamme.common.constant;
 using Flamme.entities.env.Loot;
+using Flamme.entities.env.purse;
+using System.Diagnostics;
 using Environment = Godot.Environment;
 
 namespace Flamme.world.rooms;
@@ -88,27 +90,33 @@ public partial class Room : Area2D
     }
     loot.SetProcessMode(ProcessModeEnum.Disabled);
     loot.SetVisible(false);
-    AddChild(loot);
-    loot.Owner = this;
     _lootList.Add(loot);
-    GD.Print($"Generated (not spawned) loot: {loot.Name} at {loot.GlobalPosition} in room {Name} that has position {GlobalPosition}.");
+    // GD.Print($"Generated (not spawned) loot: {loot.Name} at {loot.GlobalPosition} in room {Name} that has position {GlobalPosition}.");
   }
 
   private void SpawnLoot()
   {
-    foreach (var loot in _lootList)
-    {
-      // TODO 3 Calculate where to spawn loot
-      loot.Position = GetMidPoint() * 32.0f;
-      GD.Print($"Spawning loot: {loot.Name} at {loot.GlobalPosition} in room {Name} that has position {GlobalPosition}.");
-      GD.Print($"Current player position: {LevelManager.Instance.CurrentLevel.PlayableCharacter.GlobalPosition}.");
-      loot.SetProcessMode(ProcessModeEnum.Inherit);
-      loot.SetVisible(true);
-    }
+    LootGenerator.SpawnLootAt(_lootList, GetGlobalMidPoint());
+    // foreach (var loot in _lootList)
+    // {
+    //   LevelManager.Instance.CurrentLevel.LootParent.AddChild(loot);
+    //   // TODO 3 Calculate where to spawn loot
+    //   loot.GlobalPosition = ;
+    //   GD.Print($"Spawning loot: {loot.Name} at {loot.GlobalPosition} in room {Name} that has position {GlobalPosition}.");
+    //   GD.Print($"Current player position: {LevelManager.Instance.CurrentLevel.PlayableCharacter.GlobalPosition}.");
+    //   loot.SetProcessMode(ProcessModeEnum.Inherit);
+    //   loot.SetVisible(true);
+    // }
+    _lootList.Clear();
   }
   
   private void OnBodyEntered(Node2D body)
   {
+    if (Main.Instance.ShuttingDown)
+    {
+      return;
+    }
+    
     switch (body)
     {
       case PlayableCharacter playableCharacter:
@@ -123,7 +131,7 @@ public partial class Room : Area2D
         }
         break;
       case Enemy e:
-        GD.Print($"Enemy found in room {Name}");
+        // GD.Print($"Enemy found in room {Name}");
         // Only works if player goes into a room, not if it spawns there
         // -> No enemies in spawn room
         _enemies.Add(e);
@@ -133,6 +141,11 @@ public partial class Room : Area2D
   
   private void OnBodyExited(Node2D body)
   {
+    if (Main.Instance.ShuttingDown)
+    {
+      return;
+    }
+    
     switch (body)
     {
       case PlayableCharacter playableCharacter:
@@ -226,6 +239,22 @@ public partial class Room : Area2D
       enemy.SetPassive();
     }
   }
+
+  public override void _Notification(int what)
+  {
+    // NOTIFICATION_PREDELETE, Destructor-Equivalent for Nodes
+    // https://docs.godotengine.org/en/stable/classes/class_object.html#class-object-constant-notification-predelete
+    if (what != NotificationPredelete)
+    {
+      return;
+    }
+
+    foreach (var node in _lootList)
+    {
+      node.QueueFree();
+    }
+  }
+
   
   // Defines how big the different room sizes are in pixels
   // This can't change anyways without changing every room, so no config neccessary

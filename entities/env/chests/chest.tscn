@@ -22,6 +22,10 @@ radius = 9.0
 height = 24.0
 
 [node name="Chest" type="RigidBody2D" node_paths=PackedStringArray("Sprite", "CollisionShape", "ItemPickupLoot")]
+z_index = 10
+sleeping = true
+lock_rotation = true
+linear_damp = 1.0
 script = ExtResource("1_futoc")
 NormalChestClosedexture = ExtResource("2_enjaf")
 NormalChestOpenTexture = ExtResource("3_dpopj")

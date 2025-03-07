@@ -1,4 +1,4 @@
-[gd_scene load_steps=26 format=3 uid="uid://dykd30fkfcn81"]
+[gd_scene load_steps=27 format=3 uid="uid://dykd30fkfcn81"]
 
 [ext_resource type="Script" uid="uid://c4i51i2wltxdo" path="res://ui/Hud.cs" id="1_kc1f2"]
 [ext_resource type="Texture2D" uid="uid://dvc802522cyjx" path="res://ui/textures/heart_full.tres" id="2_6mpex"]
@@ -18,6 +18,7 @@
 [ext_resource type="Texture2D" uid="uid://dril6gqctm2mb" path="res://ui/textures/crystal.tres" id="11_hyw70"]
 [ext_resource type="Texture2D" uid="uid://ldlfckl4ir5k" path="res://ui/textures/key.tres" id="12_cxdcy"]
 [ext_resource type="Script" uid="uid://drlgr7gmgmbuk" path="res://ui/Minimap.cs" id="13_6y3bq"]
+[ext_resource type="Script" uid="uid://clup3vjo4j6bp" path="res://ui/PlayerPosLabel.cs" id="13_b1px6"]
 [ext_resource type="Texture2D" uid="uid://dipk4krxegcpp" path="res://ui/textures/minimap_pathway.tres" id="14_4sr2e"]
 [ext_resource type="Texture2D" uid="uid://c8byjn0x10u64" path="res://ui/textures/minimap_spawn.tres" id="15_vjpmv"]
 [ext_resource type="Texture2D" uid="uid://c343ocvsluku8" path="res://ui/textures/minimap_treasure.tres" id="16_o8st7"]
@@ -141,6 +142,13 @@ layout_mode = 2
 texture = SubResource("AtlasTexture_gte7p")
 expand_mode = 2
 stretch_mode = 4
+
+[node name="PlayerPosLabel" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Player position"
+horizontal_alignment = 2
+script = ExtResource("13_b1px6")
 
 [node name="FPSLabel" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
