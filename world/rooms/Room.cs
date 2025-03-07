@@ -154,6 +154,8 @@ public partial class Room : Area2D
       case PlayableCharacter playableCharacter:
         GD.Print($"Player exited room {Name}");
         SetRoomPassive();
+        _playableCharacter = null;
+        LevelManager.Instance.ExitedRoom(this);
         break;
       case Enemy e:
         _enemies.Remove(e);
@@ -180,15 +182,10 @@ public partial class Room : Area2D
   private void SetCurrentRoom(PlayableCharacter playableCharacter)
   {
     GD.Print($"Player entered Room {Name} with {_enemies.Count} enemies!");
-    // Update player position on minimap
-    Hud.Instance.Minimap.SetCurrentRoom(LevelManager.Instance.CurrentLevel, this);
+    LevelManager.Instance.EnteredRoom(this);
     
     _playableCharacter = playableCharacter;
-    if (GetViewport().GetCamera2D() is PlayerCamera camera)
-    {
-      camera.SetRoom(this);
-    }
-
+    
     if (_enemies.Count == 0)
     {
       foreach (var body in GetOverlappingBodies())

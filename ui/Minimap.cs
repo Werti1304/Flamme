@@ -1,5 +1,6 @@
 using Flamme.common.enums;
 using Flamme.testing;
+using Flamme.world;
 using Flamme.world.generation;
 using Godot;
 using Room = Flamme.world.rooms.Room;
@@ -36,8 +37,10 @@ public partial class Minimap : GridContainer
   private int _lowestX = int.MaxValue;
   private int _lowestY = int.MaxValue;
 
-  public void SetCurrentRoom(Level level, Room playerRoom)
+  public void UpdateCurrentRoom()
   {
+    var level = LevelManager.Instance.CurrentLevel;
+    var playerRoom = LevelManager.Instance.CurrentRoom;
     for (var x = 0; x < level.Grid.GetLength(0); x++)
     {
       for (var y = 0; y < level.Grid.GetLength(0); y++)

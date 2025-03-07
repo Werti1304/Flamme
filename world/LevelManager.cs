@@ -1,6 +1,7 @@
 using Flamme.entities.staff;
 using Flamme.ui;
 using Flamme.world.generation;
+using Flamme.world.rooms;
 using Godot;
 using System.Diagnostics;
 
@@ -9,7 +10,44 @@ namespace Flamme.world;
 public partial class LevelManager : Node2D
 {
   public Level CurrentLevel;
+  
+  private Room _currentRoom;
+  public Room CurrentRoom
+  {
+    get => _currentRoom;
+    private set
+    {
+      _currentRoom = value;
+      if (value != null)
+      {
+        Hud.Instance.Minimap.UpdateCurrentRoom();
+        CurrentLevel.PlayerCamera.UpdateRoom();
+      }
+    }
+  }
 
+  private Room _nextRoom;
+  public void EnteredRoom(Room room)
+  {
+    _nextRoom = room;
+
+    if (_currentRoom == null)
+    {
+      CurrentRoom = room;
+    }
+  }
+
+  public void ExitedRoom(Room room)
+  {
+    if (room != _currentRoom)
+    {
+      GD.PushError($"Tried to exit room [{room}] that wasn't the current room [{_currentRoom}]!");
+      return;
+    }
+    CurrentRoom = _nextRoom;
+    _nextRoom = null;
+}
+  
   private struct TransferableStuff
   {
     public PlayableCharacter Character;

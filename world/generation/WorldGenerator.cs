@@ -107,7 +107,6 @@ public partial class WorldGenerator : Node2D
 
     // Update Minimap
     Hud.Instance.Minimap.Update(level);
-    Hud.Instance.Minimap.SetCurrentRoom(level, spawn);
   }
 
   private void GenerateRooms(Level level)

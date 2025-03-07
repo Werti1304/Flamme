@@ -14,13 +14,20 @@ public partial class PlayerCamera : Camera2D
   private float _weight;
   private Room _activeRoom;
 
-  public void SetRoom(Room room)
+  public Room GetActiveRoom()
   {
+    return _activeRoom;
+  }
+
+  public void UpdateRoom()
+  {
+    var room = LevelManager.Instance.CurrentRoom;
     var roomRect = room.CollisionShape.Shape.GetRect();
     LimitLeft = (int)room.GlobalPosition.X;
     LimitTop = (int)room.GlobalPosition.Y;
     LimitRight = LimitLeft + (int)roomRect.Size.X;
     LimitBottom = LimitTop + (int)roomRect.Size.Y;
+    _activeRoom = room;
   }
 
   public override void _Ready()
