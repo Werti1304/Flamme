@@ -8,6 +8,9 @@ namespace Flamme;
 
 public partial class Main : Node
 {
+  // Non-Seeded Random Generator!
+  public RandomNumberGenerator Rnd = new RandomNumberGenerator();
+  
   // TODO 2 Item Inventory
   // TODO 2 Item List ingame
   // TODO 3 Main Menu

@@ -1,0 +1,83 @@
+[gd_scene load_steps=12 format=3 uid="uid://dgdtpsov1pvy"]
+
+[ext_resource type="Script" uid="uid://e0or87jtdxgc" path="res://projectiles/player/trailing/Trailing.cs" id="1_0q7qc"]
+[ext_resource type="Texture2D" uid="uid://limrgrfk4qiu" path="res://assets/sprites/projectiles/player/trailing.png" id="1_yuy2c"]
+[ext_resource type="Texture2D" uid="uid://bfvlf5e6fljub" path="res://assets/sprites/projectiles/player/trail_texture.png" id="3_rvkfn"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_yuy2c"]
+radius = 4.0
+
+[sub_resource type="Curve" id="Curve_0q7qc"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="Gradient" id="Gradient_0q7qc"]
+interpolation_mode = 2
+colors = PackedColorArray(1, 1, 1, 0, 0.584314, 0.807843, 0.909804, 0.588235)
+
+[sub_resource type="Gradient" id="Gradient_rvkfn"]
+colors = PackedColorArray(0.239216, 0.501961, 0.686275, 1, 1, 1, 1, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_igskw"]
+gradient = SubResource("Gradient_rvkfn")
+
+[sub_resource type="Gradient" id="Gradient_fjbo7"]
+offsets = PackedFloat32Array(0, 0.690141, 1)
+colors = PackedColorArray(0.68661, 0.835466, 0.951864, 1, 0.0944197, 0.244802, 0.348659, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_i23el"]
+gradient = SubResource("Gradient_fjbo7")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_rvkfn"]
+lifetime_randomness = 0.3
+emission_shape = 1
+emission_sphere_radius = 3.0
+gravity = Vector3(0, 0, 0)
+radial_accel_min = -2.23517e-06
+radial_accel_max = 4.99
+color_ramp = SubResource("GradientTexture1D_i23el")
+color_initial_ramp = SubResource("GradientTexture1D_igskw")
+
+[node name="Trailing" type="Area2D" node_paths=PackedStringArray("Sprite", "TrailLine", "DestructionParticles")]
+z_index = 15
+collision_layer = 5
+collision_mask = 5
+script = ExtResource("1_0q7qc")
+Sprite = NodePath("Sprite2D")
+TrailLine = NodePath("Line2D")
+DestructionParticles = NodePath("GPUParticles2D")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_yuy2c")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_yuy2c")
+
+[node name="Line2D" type="Line2D" parent="."]
+top_level = true
+z_index = 14
+points = PackedVector2Array(0, 0, -30, 0)
+width = 3.0
+width_curve = SubResource("Curve_0q7qc")
+gradient = SubResource("Gradient_0q7qc")
+begin_cap_mode = 2
+end_cap_mode = 2
+antialiased = true
+
+[node name="Line2D2" type="Line2D" parent="."]
+visible = false
+top_level = true
+z_index = 14
+position = Vector2(0, 16)
+points = PackedVector2Array(0, 0, -30, 0)
+texture = ExtResource("3_rvkfn")
+texture_mode = 1
+
+[node name="GPUParticles2D" type="GPUParticles2D" parent="."]
+emitting = false
+amount = 128
+one_shot = true
+explosiveness = 1.0
+randomness = 1.0
+visibility_rect = Rect2(0, 0, 0, 0)
+process_material = SubResource("ParticleProcessMaterial_rvkfn")

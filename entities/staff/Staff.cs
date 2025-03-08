@@ -163,26 +163,26 @@ public partial class Staff : RigidBody2D
       .SetTrans(Tween.TransitionType.Sine);
   }
 
-  [Export] private PackedScene _bullet;
+  [Export] private PackedScene _projectile;
   
   private void Shoot()
   {
     // TODO In the works
-    var bullet = _bullet.Instantiate<Bullet>();
-    GetTree().Root.AddChild(bullet);
-    bullet.GlobalPosition = GlobalPosition + (_owner.ShootingVector * ShootDistanceFromStaff);
+    var projectile = _projectile.Instantiate<Trailing>();
+    projectile.GlobalPosition = GlobalPosition + (_owner.ShootingVector * ShootDistanceFromStaff);
     // bullet.Direction = (_owner.ShootingVector + (_owner.Velocity / _owner.Stats.Speed)).Normalized();
     if (_owner.Velocity.Length() > 10)
     {
-      bullet.Direction = 0.8f * _owner.ShootingVector + 0.4f * _owner.Velocity.Normalized();
+      projectile.Direction = 0.8f * _owner.ShootingVector + 0.4f * _owner.Velocity.Normalized();
     }
     else
     {
-      bullet.Direction = _owner.ShootingVector;
+      projectile.Direction = _owner.ShootingVector;
     }
-    var targetRotation = bullet.Direction.Angle();
-    bullet.Rotation = targetRotation;
-    bullet.Fire(_owner.Stats);
+    var targetRotation = projectile.Direction.Angle();
+    projectile.Rotation = targetRotation;
+    GetTree().Root.AddChild(projectile);
+    projectile.Fire(_owner.Stats);
   }
 
   private void AreaOnBodyEntered(Node2D body)

@@ -1,8 +1,8 @@
 [gd_scene load_steps=8 format=3 uid="uid://d3h1ghlubga01"]
 
 [ext_resource type="Script" uid="uid://bg065hjhmf00t" path="res://entities/staff/Staff.cs" id="1_w1xtw"]
-[ext_resource type="PackedScene" uid="uid://by7dwhb651c2j" path="res://testing/bullet.tscn" id="2_3mf0t"]
 [ext_resource type="Texture2D" uid="uid://bkwmrh02f1rsj" path="res://assets/sprites/entities/staff/Staff.png" id="2_7uusl"]
+[ext_resource type="PackedScene" uid="uid://dgdtpsov1pvy" path="res://projectiles/player/trailing/trailing.tscn" id="2_kwyuc"]
 [ext_resource type="Texture2D" uid="uid://bq66ymwa7kyyw" path="res://assets/sprites/entities/staff/StaffCore.png" id="3_662pr"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_i6gfb"]
@@ -26,7 +26,7 @@ Area = NodePath("StaffArea")
 PinJoint = NodePath("PinJoint2D")
 CollisionShape = NodePath("CollisionShape2D")
 ShootingTimer = NodePath("Timer")
-_bullet = ExtResource("2_3mf0t")
+_projectile = ExtResource("2_kwyuc")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_i6gfb")

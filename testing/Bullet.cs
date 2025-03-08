@@ -19,6 +19,8 @@ public partial class Bullet : Area2D
   public override void _Ready()
   {
     ExportMetaNonNull.Check(this);
+    
+    Sprite.Visible = false;
   }
 
   public void Fire(PlayerStats playerStats)
@@ -29,6 +31,7 @@ public partial class Bullet : Area2D
     var timeTillDisappear = _playerStats.Range / _playerStats.ShotSpeed;
     GetTree().CreateTimer(timeTillDisappear).Timeout += InitBulletDestruction;
     _fired = true;
+    Sprite.Visible = true;
   }
 
   public override void _PhysicsProcess(double delta)

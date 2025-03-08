@@ -16,11 +16,11 @@ public partial class PlayerStats : Node2D
   [Export] public int StartingAbsorption = 12;
   
   [Export] public int BaseSpeed = 100; // px/sec?
-  [Export] public float BaseDamage = 10; // Damage against enemies
+  [Export] public float BaseDamage = 3; // Damage against enemies
   [Export] public float BaseDamageMultiplier = 1;
   [Export] public int BaseFireRate = 300; // /min?
   [Export] public int BaseFireRateMultiplier = 1;
-  [Export] public int BaseRange = 2; // In pixels
+  [Export] public int BaseRange = 5; // In tiles
   [Export] public float BaseFireMultiplier = 1; // /min?
   [Export] public int BaseShotSpeed = 1; // px/sec
   [Export] public int BaseShotSize = 6; // px radius? Different bullets for different sizes // TODO 2 Implement using muliple sprites
