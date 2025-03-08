@@ -5,6 +5,7 @@ using Flamme.common.enums;
 using Flamme.entities.env.health;
 using Flamme.entities.env.purse;
 using Flamme.world;
+using Flamme.world.generation;
 using Flamme.world.rooms;
 using Godot;
 using System.Diagnostics;
@@ -13,6 +14,8 @@ namespace Flamme.entities.env.Loot;
 
 public partial class LootGenerator
 {
+  public static RandomNumberGenerator NotSeedRng = new RandomNumberGenerator();
+  
   // public readonly Dictionary<LootPool, List<(int, PackedScene, Area2D)>> LootPoolDict = new();
   // public readonly Dictionary<LootPool, List<(int, LootType)>> LootPoolDict = new();
   //
@@ -51,14 +54,25 @@ public partial class LootGenerator
 
   public static void SpawnLootAt(List<Node2D> lootList, Vector2 globalPosition)
   {
+    bool firstSpawn = true;
     foreach (var loot in lootList)
     {
       // LevelManager.Instance.CurrentLevel.LootParent.AddChild(loot);
       LevelManager.Instance.CurrentLevel.LootParent.CallDeferred(Node.MethodName.AddChild, loot);
       loot.CallDeferred(Node.MethodName.SetOwner, LevelManager.Instance.CurrentLevel);
       
-      // TODO 3 Calculate where to spawn loot
-      loot.GlobalPosition = globalPosition;
+      if (firstSpawn)
+      {
+        // Randomize position by a little bit
+        loot.GlobalPosition = globalPosition;
+        firstSpawn = false;
+      }
+      else
+      {
+        var randomOffset = new Vector2(NotSeedRng.RandiRange(-16, 16), NotSeedRng.RandiRange(-16, 16));
+        loot.GlobalPosition = globalPosition + randomOffset;
+      }
+      
       GD.Print($"Spawning loot: {loot.Name} at {loot.GlobalPosition}");
       GD.Print($"Current player position: {LevelManager.Instance.CurrentLevel.PlayableCharacter.GlobalPosition}.");
 

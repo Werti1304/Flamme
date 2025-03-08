@@ -14,8 +14,6 @@ namespace Flamme.world.generation;
 
 public partial class WorldGenerator : Node2D
 {
-  public RandomNumberGenerator NotSeedRng = new RandomNumberGenerator();
-
   private static readonly Array<Vector2I> Neighbours = new Array<Vector2I>
   { // needs same order as RoomExit
     new Vector2I(0, -1), // north
