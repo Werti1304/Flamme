@@ -15,14 +15,15 @@ public static class StatUpItems
     manager.SetDefaultItem(new Item(ItemId.HealthToken, "Token of Health", "+1 Heart", Item.Tier.Uncommon)
       .AddSpriteFull(AssetManager.Asset.SpriteItemStatup1, new Vector2I(0, 0))
       .AddSpriteInventory()
-      .AddStatUp(StatType.HealthContainer, 4));
+      .AddStatUp(StatType.HealthContainer, 1)
+      .AddHealing(HealthType.Normal, 8));
     
     manager.RegisterItem(
       new Item(ItemId.HealthToken, "Token of Health", "+1 Heart", Item.Tier.Uncommon)
         .AddSpriteFull(AssetManager.Asset.SpriteItemStatup1, new Vector2I(0, 0))
         .AddSpriteInventory()
-        .AddStatUp(StatType.HealthContainer, 4)
-        .AddHealing(HealthType.Normal, 16),
+        .AddStatUp(StatType.HealthContainer, 1)
+        .AddHealing(HealthType.Normal, 8),
       ItemLootPool.Treasure, ItemLootPool.LockedChest, ItemLootPool.Boss, ItemLootPool.Shop
     );
 

@@ -39,14 +39,26 @@ public partial class Minimap : GridContainer
     Modulate = Colors.Transparent;
   }
 
+  private const ulong MaxTimeMsec = 200;
+  private ulong _timeMsec = 0;
   public override void _Input(InputEvent @event)
   {
     if (@event.IsActionPressed(PlayerInputMap.MapKey))
     {
+      if (Modulate != Colors.White)
+      {
+        // To let the map on screen when pressing Tab for < MaxTimeMsec
+        // If pressed rapidly again, vanish it
+        _timeMsec = Time.Singleton.GetTicksMsec();
+      }
       Modulate = Colors.White;
     }
     else if (@event.IsActionReleased(PlayerInputMap.MapKey))
     {
+      if (Time.Singleton.GetTicksMsec() - _timeMsec < MaxTimeMsec)
+      {
+        return;
+      }
       Modulate = Colors.Transparent;
     }
   }

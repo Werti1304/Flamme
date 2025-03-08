@@ -14,7 +14,9 @@ public partial class PlayerPosLabel : Label
     if (timer > TIMER_LIMIT)
     {
       timer = 0.0;
-      if (LevelManager.Instance.CurrentLevel != null && LevelManager.Instance.CurrentLevel.PlayableCharacter != null)
+      var player = LevelManager.Instance.CurrentLevel.PlayableCharacter;
+      if (LevelManager.Instance.CurrentLevel != null && player != null
+          && IsInstanceValid(player))
       {
         var pos = LevelManager.Instance.CurrentLevel.PlayableCharacter.GlobalPosition;
         Text = $"{pos.X:0.00}, {pos.Y:0.00}";
