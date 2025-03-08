@@ -3,6 +3,7 @@ using Flamme.testing;
 using Flamme.world;
 using Flamme.world.generation;
 using Godot;
+using System;
 
 namespace Flamme.entities.staff;
 
@@ -29,7 +30,6 @@ public partial class Staff : RigidBody2D
   [Export] public Area2D Area;
   [Export] public PinJoint2D PinJoint;
   [Export] public CollisionShape2D CollisionShape;
-  [Export] public Timer ShootingTimer;
 
   private PlayableCharacter _owner;
   private bool _staffOverlappingWithPlayer = false;
@@ -52,10 +52,10 @@ public partial class Staff : RigidBody2D
     
     Area.BodyEntered += AreaOnBodyEntered;
     Area.BodyExited += AreaOnBodyExited;
-    
-    ShootingTimer.Timeout += ShootingTimerOnTimeout;
   }
-  
+
+  private double _shootTimer = 0.0f;
+  private double _shootTimerMax = 100.0f;
   public override void _PhysicsProcess(double delta)
   {
     if (_owner == null || !IsInstanceValid(_owner))
@@ -67,9 +67,14 @@ public partial class Staff : RigidBody2D
     
     if (_owner.IsShooting)
     {
-      if (ShootingTimer.IsStopped())
+      if (_shootTimer >= _shootTimerMax)
       {
-        ShootingTimer.Start();
+        ShootingTimerOnTimeout();
+        _shootTimer = 0.0f;
+      }
+      else
+      {
+        _shootTimer += delta;
       }
       
       // When shooting, remove all collision from staff
@@ -143,15 +148,13 @@ public partial class Staff : RigidBody2D
 
   public void UpdateFireRate()
   {
-    ShootingTimer.Stop();
-    ShootingTimer.WaitTime = 60.0f / _owner.Stats.FireRate;
+    _shootTimerMax = _owner.Stats.FireRate / 10.0f;
   }
 
   private void ShootingTimerOnTimeout()
   {
     if (!_owner.IsShooting)
     {
-      ShootingTimer.Stop();
       return;
     }
     _tween?.Kill();
@@ -159,7 +162,7 @@ public partial class Staff : RigidBody2D
 
     _tween.TweenProperty(StaffCore, "modulate:a", 1, 0.2f).SetTrans(Tween.TransitionType.Sine)
       .Finished += Shoot;
-    _tween.TweenProperty(StaffCore, "modulate:a", 0, ShootingTimer.WaitTime / 2.0f)
+    _tween.TweenProperty(StaffCore, "modulate:a", 0, _shootTimerMax / 2.0f)
       .SetTrans(Tween.TransitionType.Sine);
   }
 
@@ -171,14 +174,15 @@ public partial class Staff : RigidBody2D
     var projectile = _projectile.Instantiate<Trailing>();
     projectile.GlobalPosition = GlobalPosition + (_owner.ShootingVector * ShootDistanceFromStaff);
     // bullet.Direction = (_owner.ShootingVector + (_owner.Velocity / _owner.Stats.Speed)).Normalized();
-    if (_owner.Velocity.Length() > 10)
-    {
-      projectile.Direction = 0.8f * _owner.ShootingVector + 0.4f * _owner.Velocity.Normalized();
-    }
-    else
-    {
-      projectile.Direction = _owner.ShootingVector;
-    }
+    // if (_owner.Velocity.Length() > 10)
+    // {
+    //   projectile.Direction = 0.8f * _owner.ShootingVector + 0.4f * _owner.Velocity.Normalized();
+    // }
+    // else
+    // {
+    //   projectile.Direction = _owner.ShootingVector;
+    // }
+    projectile.Direction = _owner.ShootingVector;
     var targetRotation = projectile.Direction.Angle();
     projectile.Rotation = targetRotation;
     GetTree().Root.AddChild(projectile);

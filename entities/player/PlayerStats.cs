@@ -18,7 +18,7 @@ public partial class PlayerStats : Node2D
   [Export] public int BaseSpeed = 100; // px/sec?
   [Export] public float BaseDamage = 3; // Damage against enemies
   [Export] public float BaseDamageMultiplier = 1;
-  [Export] public int BaseFireRate = 300; // /min?
+  [Export] public int BaseFireRate = 5; // *10/sec?
   [Export] public int BaseFireRateMultiplier = 1;
   [Export] public int BaseRange = 5; // In tiles
   [Export] public float BaseFireMultiplier = 1; // /min?
