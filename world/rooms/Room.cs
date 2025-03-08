@@ -4,6 +4,8 @@ using Godot;
 using System.Collections.Generic;
 using Flamme.common.constant;
 using Flamme.entities.env.Loot;
+using System;
+using Vector2I = Godot.Vector2I;
 
 namespace Flamme.world.rooms;
 
@@ -25,6 +27,9 @@ public partial class Room : Area2D
   [Export] public RoomExit AllowedExits;
 
   public RoomExit ActualExits;
+
+  // Doors of the room. Shared with the neighbouring room!
+  public Dictionary<RoomExit, Door> Doors = new Dictionary<RoomExit, Door>();
   
   private List<Node2D> _lootList = [];
 
@@ -79,7 +84,7 @@ public partial class Room : Area2D
 
   private Vector2 GetMidPoint()
   {
-    return new Vector2(RoomSizeDict[Size].X / 2.0f, RoomSizeDict[Size].Y / 2.0f);
+    return new Vector2(Dimensions.RoomSizeDict[Size].X / 2.0f, Dimensions.RoomSizeDict[Size].Y / 2.0f);
   }
 
   public Vector2 GetGlobalMidPoint()
@@ -175,6 +180,11 @@ public partial class Room : Area2D
   private void LockRoom(PlayableCharacter playableCharacter)
   {
     GD.Print($"Room {Name} Locked!");
+
+    foreach (var door in Doors.Values)
+    {
+      door.Close();
+    }
       
     // Could replace with signals but idk
     foreach (var enemy in _enemies)
@@ -213,6 +223,12 @@ public partial class Room : Area2D
     if (_cleared)
       return;
     _cleared = true;
+
+    foreach (var door in Doors.Values)
+    {
+      door.OpenByClearingRoom();
+    }
+    
     GD.Print($"Room {Name} Cleared!");
 
     if (Type == RoomType.Boss)
@@ -268,9 +284,9 @@ public partial class Room : Area2D
 
   public void CloseNotConnectedSides()
   {
-    for (var x = 0; x < RoomSizeDict[Size].X; x++)
+    for (var x = 0; x < Dimensions.RoomSizeDict[Size].X; x++)
     {
-      for (var y = 0; y < RoomSizeDict[Size].Y; y++)
+      for (var y = 0; y < Dimensions.RoomSizeDict[Size].Y; y++)
       {
         // --- Check if we are at one of the exits ---
         if (x == 0)
@@ -287,7 +303,7 @@ public partial class Room : Area2D
           }
         }
 
-        if (x == RoomSizeDict[Size].X - 1)
+        if (x == Dimensions.RoomSizeDict[Size].X - 1)
         {
           switch (y)
           {
@@ -315,7 +331,7 @@ public partial class Room : Area2D
           }
         }
 
-        if (y == RoomSizeDict[Size].Y - 1)
+        if (y == Dimensions.RoomSizeDict[Size].Y - 1)
         {
           switch (x)
           {
@@ -331,18 +347,6 @@ public partial class Room : Area2D
       }
     }
   }
-  
-  // Defines how big the different room sizes are in pixels
-  // This can't change anyways without changing every room, so no config neccessary
-  private static readonly Godot.Collections.Dictionary<RoomSize, Vector2I> RoomSizeDict = new Godot.Collections.Dictionary<RoomSize, Vector2I>( ){
-    { RoomSize.S1X1, new Vector2I(17, 11)},
-    { RoomSize.S1X2, new Vector2I(17, 20)},
-    { RoomSize.S2X1, new Vector2I(32, 11)},
-    { RoomSize.S2X2, new Vector2I(32, 20)},
-    { RoomSize.S3X1, new Vector2I(47, 20)},
-    { RoomSize.S1X3, new Vector2I(17, 29)},
-    { RoomSize.S3X3, new Vector2I(47, 29)}
-  };
 
   private const int TemplateTileSourceId = 0;
   private static readonly Vector2I TemplateTileAtlasCoords = new Vector2I(1, 0);
@@ -376,9 +380,9 @@ public partial class Room : Area2D
     var errorAtlasCoords = new Vector2I(-1, -1);
 
     // Check if map is empty or only filled with template stuff
-    for (var x = 0; x < RoomSizeDict[RoomSize.S3X3].X; x++)
+    for (var x = 0; x < Dimensions.RoomSizeDict[RoomSize.S3X3].X; x++)
     {
-      for (var y = 0; y < RoomSizeDict[RoomSize.S3X3].Y; y++)
+      for (var y = 0; y < Dimensions.RoomSizeDict[RoomSize.S3X3].Y; y++)
       {
         var cellCoords = new Vector2I(x, y);
         var cellSourceId = TileMap.GetCellSourceId(cellCoords);
@@ -404,13 +408,13 @@ public partial class Room : Area2D
     TileMap.Clear();
     
     var shape = new RectangleShape2D();
-    shape.Size = new Vector2(RoomSizeDict[Size].X * 32, RoomSizeDict[Size].Y * 32);
+    shape.Size = new Vector2(Dimensions.RoomSizeDict[Size].X * 32, Dimensions.RoomSizeDict[Size].Y * 32);
     CollisionShape.Shape = shape;
     CollisionShape.SetPosition(GetMidPoint() * 32);
 
-    for (var x = 0; x < RoomSizeDict[Size].X; x++)
+    for (var x = 0; x < Dimensions.RoomSizeDict[Size].X; x++)
     {
-      for (var y = 0; y < RoomSizeDict[Size].Y; y++)
+      for (var y = 0; y < Dimensions.RoomSizeDict[Size].Y; y++)
       {
         // --- Check if we are at one of the exits ---
         if (x == 0)
@@ -427,7 +431,7 @@ public partial class Room : Area2D
           }
         }
 
-        if (x == RoomSizeDict[Size].X - 1)
+        if (x == Dimensions.RoomSizeDict[Size].X - 1)
         {
           switch (y)
           {
@@ -455,7 +459,7 @@ public partial class Room : Area2D
           }
         }
 
-        if (y == RoomSizeDict[Size].Y - 1)
+        if (y == Dimensions.RoomSizeDict[Size].Y - 1)
         {
           switch (x)
           {

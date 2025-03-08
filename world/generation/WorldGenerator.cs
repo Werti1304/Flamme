@@ -80,6 +80,10 @@ public partial class WorldGenerator : Node2D
       room?.CloseNotConnectedSides();
     }
     GD.Print("Sides closed!");
+    
+    GD.Print("Placing down doors...");
+    level.FillRoomTransitionList();
+    GD.Print("Doors placed!");
 
     GD.Print("Generating loot...");
 

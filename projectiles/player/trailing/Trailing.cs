@@ -140,11 +140,6 @@ public partial class Trailing : Area2D
       return;
     }
     _hitSomething = true;
-      
-    if (body is Door door)
-    {
-      door.Open();
-    }
 
     if (body is IPlayerDamageable enemy)
     {

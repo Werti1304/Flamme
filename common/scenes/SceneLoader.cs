@@ -16,7 +16,8 @@ public partial class SceneLoader : Node2D
     PursePickup,
     HealthPickup,
     Chest, // TODO 3
-    Runner
+    Runner,
+    Door
   }
 
   public readonly Dictionary<Scene, PackedScene> Scenes = new Dictionary<Scene, PackedScene>()
@@ -31,7 +32,7 @@ public partial class SceneLoader : Node2D
     { Scene.HealthPickup, GD.Load<PackedScene>(PathConstants.HealthPickupScenePath) },
     { Scene.Chest, GD.Load<PackedScene>(PathConstants.ChestScenePath) },
     { Scene.Runner, GD.Load<PackedScene>(PathConstants.RunnerScenePath) },
-    
+    { Scene.Door, GD.Load<PackedScene>(PathConstants.DoorScenePath) },
 
   };
   
