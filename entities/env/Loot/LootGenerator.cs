@@ -96,44 +96,7 @@ public partial class LootGenerator
   {
     _lootPoolDict[lootPool].AddRange(lootList);
   }
-
-  public void GenerateLootForRoom(Room room, RoomType roomType)
-  {
-    switch (roomType)
-    {
-      // TODO Add Boss with a handful of hearts, maybe others too
-      case RoomType.Pathway:
-        GenerateLootForRoom(room, LootPool.Pathway);
-        break;
-      case RoomType.Spawn:
-        break;
-      case RoomType.Treasure:
-        break;
-      case RoomType.Shop:
-        break;
-      case RoomType.Smithy:
-        break;
-      case RoomType.Boss:
-        break;
-      case RoomType.Secret:
-        break;
-      case RoomType.Dev:
-        break;
-      default:
-        throw new ArgumentOutOfRangeException(nameof(roomType), roomType, null);
-    }
-  }
-
-  public void GenerateLootForRoom(Room room, LootPool lootPool)
-  {
-    List<Node2D> lootToSpawn = GeneratePathwayLoot();
-    
-    foreach (var loot in lootToSpawn)
-    {
-      room.AddLoot(loot);
-    }
-  }
-
+  
   public List<Node2D> GenerateChestLoot()
   {
     // This should only be called if chest already decided that something from loot pool should be spawned
@@ -177,7 +140,7 @@ public partial class LootGenerator
     return lootToSpawn;
   }
 
-  private List<Node2D> GeneratePathwayLoot()
+  public List<Node2D> GeneratePathwayLoot()
   {
     List<Node2D> lootToSpawn = new();
 
@@ -215,7 +178,7 @@ public partial class LootGenerator
     return lootToSpawn;
   }
 
-  private Node2D GenerateSingleLoot(LootType lootType, int worth)
+  private static Node2D GenerateSingleLoot(LootType lootType, int worth)
   {
     Node2D loot = null;
     switch (lootType)

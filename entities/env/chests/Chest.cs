@@ -109,7 +109,7 @@ public partial class Chest : RigidBody2D
     else
     {
       // TODO 3 Calculate where to spawn loot
-      LootGenerator.SpawnLootAt(_lootList, GlobalPosition + new Vector2(0, 32));
+      LootGenerator.SpawnLootAt(_lootList, GlobalPosition + new Vector2(0, 24));
       _lootList.Clear();
     }
   }

@@ -26,7 +26,7 @@ public partial class Room : Area2D
 
   public RoomExit ActualExits;
   
-  private readonly List<Node2D> _lootList = [];
+  private List<Node2D> _lootList = [];
 
   private bool _cleared;
   public bool WasVisited;
@@ -240,6 +240,14 @@ public partial class Room : Area2D
     foreach (var enemy in _enemies)
     {
       enemy.SetPassive();
+    }
+  }
+  
+  public void GenerateLoot()
+  {
+    if (Type == RoomType.Pathway)
+    {
+      _lootList = LootGenerator.Instance.GeneratePathwayLoot();
     }
   }
 
