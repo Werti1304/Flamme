@@ -69,7 +69,7 @@ public partial class LootGenerator
       }
       else
       {
-        var randomOffset = new Vector2(NotSeedRng.RandiRange(-16, 16), NotSeedRng.RandiRange(-16, 16));
+        var randomOffset = new Vector2(NotSeedRng.RandiRange(-8, 8), NotSeedRng.RandiRange(-8, 8));
         loot.GlobalPosition = globalPosition + randomOffset;
       }
       
@@ -272,10 +272,7 @@ public partial class LootGenerator
       {
         var lockedChestNode = SceneLoader.Instance[SceneLoader.Scene.Chest].Instantiate<Chest>();
         lockedChestNode.Type = Chest.ChestType.Locked;
-        var itemPickup = SceneLoader.Instance[SceneLoader.Scene.ItemPickup].Instantiate<ItemPickup>();
-        itemPickup.RetrievelMode = ItemPickup.ItemRetrievel.FromItemPool;
-        itemPickup.ItemLootPool = ItemLootPool.LockedChest;
-        lockedChestNode.ItemPickupLoot = itemPickup;
+        lockedChestNode.GenerateLoot();
         loot = lockedChestNode;
         break;
       }
@@ -284,8 +281,7 @@ public partial class LootGenerator
         // Todo 1 replace with something better
         var mimicChestNode = SceneLoader.Instance[SceneLoader.Scene.Chest].Instantiate<Chest>();
         mimicChestNode.Type = Chest.ChestType.Mimic;
-        var enemy = SceneLoader.Instance[SceneLoader.Scene.Runner].Instantiate<Runner>();
-        mimicChestNode.SetLoot([enemy]);
+        mimicChestNode.GenerateLoot();
         loot = mimicChestNode;
         break;
       }
@@ -297,30 +293,6 @@ public partial class LootGenerator
     loot.SetVisible(false);
     return loot;
   }
-
-  // private List<Node2D> SpawnPathwayLoot(Room room)
-  // {
-  //   List<Node2D> lootToSpawn = new();
-  //   
-  //   // TODO 1 Change into a system where one can register loot with loot type, amount, random weights, etc.
-  //
-  //   // 2 tries to spawn a normal heart, so that sometimes 2 spawn
-  //   for (int i = 0; i < 2; i++)
-  //   {
-  //     var heartSpawn = GD.RandRange(0, 100);
-  //
-  //     if (heartSpawn < 100)
-  //     {
-  //       var healthScene = GD.Load<PackedScene>(PathConstants.HealthPickupScenePath);
-  //       var healthNode = healthScene.Instantiate<HealthPickup>();
-  //       healthNode.HealthType = GD.RandRange(0, 4) <= 0 ? HealthType.Absorption : HealthType.Normal;
-  //       healthNode.HealingAmount = GD.RandRange(1, 4);
-  //       lootToSpawn.Add(healthNode);
-  //     }
-  //   }
-  //
-  //   return lootToSpawn;
-  // }
   
   private LootGenerator()
   {

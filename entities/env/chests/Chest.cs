@@ -50,11 +50,34 @@ public partial class Chest : RigidBody2D
       ItemPickupLoot.HideItem();
     }
   }
-
+  
   public void GenerateLoot()
   {
     // TODO Switch case for different types of chest
-    _lootList = LootGenerator.Instance.GenerateChestLoot();
+    switch (Type)
+    {
+      case ChestType.Normal:
+        if (_lootList.Count == 0)
+        {
+          _lootList = LootGenerator.Instance.GenerateChestLoot();
+        }
+        break;
+      case ChestType.Locked:
+        if (ItemPickupLoot == null)
+        {
+          var itemPickup = SceneLoader.Instance[SceneLoader.Scene.ItemPickup].Instantiate<ItemPickup>();
+          itemPickup.RetrievelMode = ItemPickup.ItemRetrievel.FromItemPool;
+          itemPickup.ItemLootPool = ItemLootPool.LockedChest;
+          ItemPickupLoot = itemPickup;
+        }
+        break;
+      case ChestType.Mimic:
+        var enemy = SceneLoader.Instance[SceneLoader.Scene.Runner].Instantiate<Runner>();
+        _lootList.Add(enemy);
+        break;
+      default:
+        throw new ArgumentOutOfRangeException();
+    }
   }
 
   public void Open()
@@ -71,12 +94,7 @@ public partial class Chest : RigidBody2D
     };
     SpawnLoot();
   }
-
-  public void SetLoot(List<Node2D> lootList)
-  {
-    _lootList = lootList;
-  }
-
+  
   private void SpawnLoot()
   {
     if (ItemPickupLoot != null)

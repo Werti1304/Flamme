@@ -1,15 +1,9 @@
 using Flamme.common.enums;
 using Flamme.testing;
-using Flamme.ui;
 using Godot;
-using System;
 using System.Collections.Generic;
-using System.Net.Http.Headers;
 using Flamme.common.constant;
 using Flamme.entities.env.Loot;
-using Flamme.entities.env.purse;
-using System.Diagnostics;
-using Environment = Godot.Environment;
 
 namespace Flamme.world.rooms;
 
@@ -32,10 +26,10 @@ public partial class Room : Area2D
 
   public RoomExit ActualExits;
   
-  private List<Node2D> _lootList = new List<Node2D>();
+  private readonly List<Node2D> _lootList = [];
 
-  private bool _cleared = false;
-  public bool WasVisited = false;
+  private bool _cleared;
+  public bool WasVisited;
   
   [ExportGroup("Generation")]
   [Export]
@@ -57,7 +51,7 @@ public partial class Room : Area2D
   [Signal] public delegate void PlayerEnteredEventHandler(PlayableCharacter playableCharacter);
   [Signal] public delegate void PlayerExitedEventHandler(PlayableCharacter playableCharacter);
 
-  private List<Enemy> _enemies = new List<Enemy>();
+  private List<Enemy> _enemies = [];
   // TODO List of entities, chests, etc.
   private PlayableCharacter _playableCharacter;
   
@@ -73,6 +67,14 @@ public partial class Room : Area2D
 
     // Just to see stuff thats at 0
     TileMap.ZIndex = -1;
+
+    foreach (var childNode in GetChildren())
+    {
+      if (childNode is Chest chest)
+      {
+        chest.GenerateLoot();
+      }
+    }
   }
 
   private Vector2 GetMidPoint()
@@ -153,7 +155,7 @@ public partial class Room : Area2D
     
     switch (body)
     {
-      case PlayableCharacter playableCharacter:
+      case PlayableCharacter:
         GD.Print($"Player exited room {Name}");
         SetRoomPassive();
         _playableCharacter = null;
@@ -203,7 +205,6 @@ public partial class Room : Area2D
       {
         LockRoom(playableCharacter);
       }
-      return;
     }
   }
 
