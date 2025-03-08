@@ -6,9 +6,12 @@ using System;
 
 public partial class MainMenu : CanvasLayer
 {
+  [ExportGroup("Meta")] 
+  [Export] private SpinBox _spinBox;
+  
   public void OnNewGame()
   {
-    WorldGenerator.Instance.GenerateLevels();
+    WorldGenerator.Instance.GenerateLevels((ulong)_spinBox.Value);
   }
 
   public void OnDev()

@@ -36,14 +36,7 @@ public partial class Main : Node
   // 2. Make Loot generation in a streamlined process (have fun lol)
   // 3. Make actual loot spawning correct
   // 4. Make loot spawn in level generation
-  public override void _Ready()
-  {
-    // Use GD.[...] for seeded stuff -> level Layout, Room Layout, Items, Enemies, Chest Contents, etc.
-    // GD.Seet() For when we want to use seed
-    //GD.Randomize();
-    GD.Seed(1234);
-  }
-
+  
   public bool ShuttingDown { get; private set; }= false;
 
   public override void _Notification(int what)

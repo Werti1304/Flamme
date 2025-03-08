@@ -53,7 +53,7 @@ PurseDisplay = NodePath("MarginContainer/VBoxContainer/HBoxContainer2/PurseDispl
 _healthRectContainer = NodePath("MarginContainer/VBoxContainer/HBoxContainer")
 Vignette = NodePath("Vignette")
 MainContainer = NodePath("MarginContainer")
-Minimap = NodePath("MarginContainer/VBoxContainer/HBoxContainer2/MarginContainer/Minimap")
+Minimap = NodePath("Minimap")
 _showCollectedItemtimer = NodePath("ShowItemTimer")
 
 [node name="Vignette" type="ColorRect" parent="."]
@@ -64,6 +64,22 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0, 0, 0)
+
+[node name="Minimap" type="GridContainer" parent="."]
+offset_left = 475.0
+offset_top = 31.0
+offset_right = 475.0
+offset_bottom = 159.0
+size_flags_horizontal = 3
+theme_override_constants/h_separation = 0
+theme_override_constants/v_separation = 0
+columns = 16
+script = ExtResource("13_6y3bq")
+PathwayTexture = ExtResource("14_4sr2e")
+SpawnTexture = ExtResource("15_vjpmv")
+TreasureTexture = ExtResource("16_o8st7")
+BossTexture = ExtResource("17_mgoxf")
+ShopTexture = ExtResource("18_0f6tk")
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 anchors_preset = 15
@@ -198,19 +214,6 @@ KeyIcon = ExtResource("12_cxdcy")
 [node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/HBoxContainer2"]
 layout_mode = 2
 theme_override_constants/margin_left = 360
-
-[node name="Minimap" type="GridContainer" parent="MarginContainer/VBoxContainer/HBoxContainer2/MarginContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-theme_override_constants/h_separation = 0
-theme_override_constants/v_separation = 0
-columns = 16
-script = ExtResource("13_6y3bq")
-PathwayTexture = ExtResource("14_4sr2e")
-SpawnTexture = ExtResource("15_vjpmv")
-TreasureTexture = ExtResource("16_o8st7")
-BossTexture = ExtResource("17_mgoxf")
-ShopTexture = ExtResource("18_0f6tk")
 
 [node name="ShowItemTimer" type="Timer" parent="."]
 wait_time = 5.0

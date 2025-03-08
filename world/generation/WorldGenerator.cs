@@ -31,8 +31,9 @@ public partial class WorldGenerator : Node2D
   public bool WaitingForSceneChangeToNewLevel = false;
   public bool GenerateNewLevel = true;
 
-  public void GenerateLevels()
+  public void GenerateLevels(ulong seed)
   {
+    GD.Seed(seed);
     var levelScene = GD.Load<PackedScene>(PathConstants.LevelScenePath);
     WaitingForSceneChangeToNewLevel = true;
     

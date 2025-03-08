@@ -31,8 +31,9 @@ region = Rect2(0, 32, 64, 16)
 atlas = ExtResource("9_iyrh0")
 region = Rect2(0, 48, 64, 16)
 
-[node name="MainMenu" type="CanvasLayer"]
+[node name="MainMenu" type="CanvasLayer" node_paths=PackedStringArray("_spinBox")]
 script = ExtResource("1_fdjbh")
+_spinBox = NodePath("SpinBox")
 
 [node name="Label" type="Label" parent="."]
 offset_right = 40.0
@@ -82,6 +83,17 @@ layout_mode = 2
 texture_normal = SubResource("AtlasTexture_sb7pk")
 texture_hover = SubResource("AtlasTexture_s1050")
 stretch_mode = 5
+
+[node name="SpinBox" type="SpinBox" parent="."]
+custom_minimum_size = Vector2(128, 0)
+offset_left = 458.0
+offset_top = 96.0
+offset_right = 586.0
+offset_bottom = 123.0
+max_value = 1e+07
+value = 1304.0
+rounded = true
+prefix = "Seed:"
 
 [connection signal="button_up" from="Control/MarginContainer/VBoxContainer/NewGameButton" to="." method="OnNewGame"]
 [connection signal="button_up" from="Control/MarginContainer/VBoxContainer/DevButton" to="." method="OnDev"]
