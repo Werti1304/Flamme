@@ -1,6 +1,7 @@
 using System;
 using Flamme.entities.staff;
 using Flamme.testing;
+using Flamme.ui;
 using Godot;
 using System.Collections.Generic;
 using Godot.Collections;
@@ -19,20 +20,24 @@ public partial class Level : Node2D
 
   [ExportGroup("Meta")] 
   [Export] public Node2D LootParent;
-
+  
   public override void _Ready()
   {
-    if (WorldGenerator.Instance.GeneratingFirstLevel)
+    WorldGenerator.Instance.OnLevelReady(level: this);
+    LevelManager.Instance.CurrentLevel = this;
+
+    if (Hud.Instance.Visible == false)
     {
-      WorldGenerator.Instance.GenerateFirstLevel(this);
-      WorldGenerator.Instance.GeneratingFirstLevel = false;
+      var tween = GetTree().CreateTween();
+      
+      Hud.Instance.MainContainer.Modulate = Colors.Transparent;
+      Hud.Instance.Vignette.Modulate = Colors.Transparent;
+      Hud.Instance.Show();
+      tween.TweenProperty(Hud.Instance.MainContainer, CanvasItem.PropertyName.Modulate.ToString(), Colors.White, 3.0f);
+      tween.Parallel().TweenProperty(Hud.Instance.Vignette, CanvasItem.PropertyName.Modulate.ToString(), Colors.White, 3.0f);
     }
-    LevelManager.Instance.SetLevelActive(this);
   }
 
-  // TODO: Add grid and everything about a level here
-  // Do all of the generation part in WorldGenerator
-  
   public bool IsPosValid(Vector2 position)
   {
     return position.X >= 0 && position.X < Grid.GetLength(0) && position.Y >= 0 && position.Y < Grid.GetLength(1);

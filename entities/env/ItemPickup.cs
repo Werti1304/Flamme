@@ -28,9 +28,6 @@ public partial class ItemPickup : Area2D
   public override void _Ready()
   {
     ExportMetaNonNull.Check(this);
-    
-    Monitorable = false;
-    _sprite.Hide();
 
     if (RetrievelMode == ItemRetrievel.FromId)
     {
@@ -48,8 +45,6 @@ public partial class ItemPickup : Area2D
     {
       SetFromPool();
     }
-    
-    ShowItem();
   }
 
   private void SetFromId()

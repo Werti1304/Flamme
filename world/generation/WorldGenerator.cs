@@ -28,19 +28,34 @@ public partial class WorldGenerator : Node2D
   }
 
   public System.Collections.Generic.Dictionary<LevelFloor, Level> Levels = new System.Collections.Generic.Dictionary<LevelFloor, Level>();
-
-  public bool GeneratingFirstLevel = true;
+  public bool WaitingForSceneChangeToNewLevel = false;
+  public bool GenerateNewLevel = true;
 
   public void GenerateLevels()
   {
     var levelScene = GD.Load<PackedScene>(PathConstants.LevelScenePath);
+    WaitingForSceneChangeToNewLevel = true;
     
     // Transition to level 0
-    // TODO Do this after pressing button in main menu instead of Main.cs
-    GetTree().CallDeferred("change_scene_to_packed", levelScene);
+    // GetTree().CallDeferred("change_scene_to_packed", levelScene);
+    GetTree().ChangeSceneToPacked(levelScene);
   }
 
-  public void GenerateFirstLevel(Level level)
+  public void OnLevelReady(Level level)
+  {
+    if(!GenerateNewLevel)
+      return;
+    GenerateNewLevel = true;
+    
+    Debug.Assert(WaitingForSceneChangeToNewLevel);
+    Debug.Assert(GetTree().CurrentScene == level);
+    WaitingForSceneChangeToNewLevel = false;
+    GenerateLevel(level, LevelFloor.Prison1);
+    Levels[LevelFloor.Prison1] = level;
+    LevelManager.Instance.CurrentLevel = level;
+  }
+
+  public void GenerateLevel(Level level, LevelFloor floor)
   {
     var levelSize = new Vector2I(level.Grid.GetLength(0), level.Grid.GetLength(1));
     var levelCenter = levelSize / 2;
@@ -48,7 +63,6 @@ public partial class WorldGenerator : Node2D
     GD.Print("Generating spawn...");
     // Good enough for now as theres only 1 spawn
     var spawnData = RoomMeta.RoomDict[RoomType.Spawn][0];
-    Debug.Assert(level == GetTree().CurrentScene);
     var spawn = spawnData.RoomScene.Instantiate<Room>();
     level.AddChild(spawn);
     level.Spawn = spawn;

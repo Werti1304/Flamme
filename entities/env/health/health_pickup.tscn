@@ -13,7 +13,7 @@
 [sub_resource type="CircleShape2D" id="CircleShape2D_gsb4a"]
 radius = 5.0
 
-[node name="HealthPickup" type="RigidBody2D" node_paths=PackedStringArray("Sprite")]
+[node name="HealthPickup" type="RigidBody2D" node_paths=PackedStringArray("Sprite", "CollisionShape")]
 z_index = 5
 collision_layer = 10
 collision_mask = 11
@@ -28,6 +28,7 @@ AbsorptionHeart3Qt = ExtResource("7_6l1pw")
 AbsorptionHeartHalf = ExtResource("8_tdri5")
 AbsorptionHeart1Qt = ExtResource("9_7pha4")
 Sprite = NodePath("Sprite2D")
+CollisionShape = NodePath("CollisionShape2D")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_gsb4a")

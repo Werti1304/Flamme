@@ -36,7 +36,7 @@ shader_parameter/darkness_in = 1.5
 atlas = ExtResource("6_3ju8l")
 region = Rect2(0, 0, 8, 8)
 
-[node name="HUD" type="CanvasLayer" node_paths=PackedStringArray("ItemNameLabel", "ItemDescriptionLabel", "PurseDisplay", "_healthRectContainer", "Vignette", "Minimap", "_showCollectedItemtimer")]
+[node name="HUD" type="CanvasLayer" node_paths=PackedStringArray("ItemNameLabel", "ItemDescriptionLabel", "PurseDisplay", "_healthRectContainer", "Vignette", "MainContainer", "Minimap", "_showCollectedItemtimer")]
 script = ExtResource("1_kc1f2")
 HeartEmpty = ExtResource("2_mlhsj")
 HeartFull = ExtResource("2_6mpex")
@@ -52,6 +52,7 @@ ItemDescriptionLabel = NodePath("MarginContainer/VBoxContainer/ItemUpDescription
 PurseDisplay = NodePath("MarginContainer/VBoxContainer/HBoxContainer2/PurseDisplay")
 _healthRectContainer = NodePath("MarginContainer/VBoxContainer/HBoxContainer")
 Vignette = NodePath("Vignette")
+MainContainer = NodePath("MarginContainer")
 Minimap = NodePath("MarginContainer/VBoxContainer/HBoxContainer2/MarginContainer/Minimap")
 _showCollectedItemtimer = NodePath("ShowItemTimer")
 

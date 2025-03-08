@@ -18,4 +18,6 @@ public static class PathConstants
   public const string RunnerScenePath = "res://entities/enemies/floor_0/Runner.tscn";
   
   public const string WarperScenePath = "res://entities/env/warper.tscn";
+
+  public const string ExampleLevelPath = "res://world/generation/Example_Level.tscn";
 }

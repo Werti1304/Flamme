@@ -1,4 +1,6 @@
 using Flamme.common.constant;
+using Flamme.entities.env.health;
+using Flamme.entities.env.purse;
 using Flamme.testing;
 using Godot;
 using System;
@@ -20,10 +22,29 @@ public partial class CoinBuyable : Area2D
     {
       foreach (var childNodes in GetChildren())
       {
-        if (childNodes is not Area2D area2D)
-          continue;
-        _selling = area2D;
-        break;
+        if (childNodes is Area2D area2D)
+        {
+          area2D.Monitorable = false;
+          _selling = area2D;
+          break;
+        }
+        if (childNodes is RigidBody2D rigidBody2D)
+        {
+          _selling = rigidBody2D;
+          switch (_selling)
+          {
+            case HealthPickup healthPickup:
+              healthPickup.CollisionShape.SetDeferred(CollisionShape2D.PropertyName.Disabled, true);
+              break;
+            case PursePickup pursePickup:
+              pursePickup.CollisionShape.SetDeferred(CollisionShape2D.PropertyName.Disabled, true);
+              break;
+            default:
+              GD.PushError($"Tried to spawn a coin buyable with {_selling.GetType().Name} as sellable node!");
+              break;
+          }
+          break;
+        }
       }
     }
     
@@ -31,13 +52,9 @@ public partial class CoinBuyable : Area2D
     
     Label.Text = $"{Price},-";
 
-    if (_selling is Area2D _sellingArea2D)
+    if (_selling == null)
     {
-      _sellingArea2D.Monitorable = false;
-    }
-    else if (_selling is RigidBody2D rigidBody2D)
-    {
-      rigidBody2D.Freeze = true;
+      GD.PushError($"No sellable node found in {Name}!");
     }
   }
 
@@ -48,10 +65,20 @@ public partial class CoinBuyable : Area2D
       QueueFree();
       return;
     }
-    
-    _selling.SetDeferred(Area2D.PropertyName.Monitorable, true);
-    // Slightly cursed but best way to instantly trigger event
-    player.InteractionArea.EmitSignal(Area2D.SignalName.AreaEntered, _selling);
+
+    if (_selling is Area2D)
+    {
+      _selling.SetDeferred(Area2D.PropertyName.Monitorable, true);
+      // Slightly cursed but best way to instantly trigger event
+      player.InteractionArea.EmitSignal(Area2D.SignalName.AreaEntered, _selling);
+    }
+    else if (_selling is RigidBody2D)
+    {
+      // Slightly cursed but best way to instantly trigger event
+      player.InteractionArea.EmitSignal(Area2D.SignalName.BodyEntered, _selling);
+    }
+
     Label.Text = "";
+    QueueFree();
   }
 }

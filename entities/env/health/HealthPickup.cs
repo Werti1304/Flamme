@@ -23,6 +23,7 @@ public partial class HealthPickup : RigidBody2D
 
   [ExportGroup("Meta")] 
   [Export] public Sprite2D Sprite;
+  [Export] public CollisionShape2D CollisionShape;
 
   public override void _Ready()
   {

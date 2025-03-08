@@ -7,7 +7,7 @@ namespace Flamme.entities.player;
 
 public partial class PlayerPurse : Node2D
 {
-  [Export] public int BaseCoins = 12; // /4 = Hearts
+  [Export] public int BaseCoins = 5; // /4 = Hearts
   [Export] public int BaseCrystals = 3;
   [Export] public int BaseKeys = 1;
 

@@ -1,18 +1,88 @@
-[gd_scene load_steps=2 format=3 uid="uid://x30cfw2oh84c"]
+[gd_scene load_steps=10 format=3 uid="uid://x30cfw2oh84c"]
 
 [ext_resource type="Script" uid="uid://g4g0jxxysykv" path="res://ui/MainMenu.cs" id="1_fdjbh"]
+[ext_resource type="Texture2D" uid="uid://djyibtpo5ch1m" path="res://assets/sprites/EscapeMenu.png" id="9_iyrh0"]
 
-[node name="MainMenu" type="Control"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_8jgmr"]
+atlas = ExtResource("9_iyrh0")
+region = Rect2(0, 96, 64, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_q75kt"]
+atlas = ExtResource("9_iyrh0")
+region = Rect2(0, 112, 64, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0i0gl"]
+atlas = ExtResource("9_iyrh0")
+region = Rect2(0, 112, 64, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jqly5"]
+atlas = ExtResource("9_iyrh0")
+region = Rect2(0, 128, 64, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_pbm0j"]
+atlas = ExtResource("9_iyrh0")
+region = Rect2(0, 144, 64, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_sb7pk"]
+atlas = ExtResource("9_iyrh0")
+region = Rect2(0, 32, 64, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_s1050"]
+atlas = ExtResource("9_iyrh0")
+region = Rect2(0, 48, 64, 16)
+
+[node name="MainMenu" type="CanvasLayer"]
+script = ExtResource("1_fdjbh")
+
+[node name="Label" type="Label" parent="."]
+offset_right = 40.0
+offset_bottom = 21.0
+text = "This is main menu"
+
+[node name="Control" type="Control" parent="."]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("1_fdjbh")
 
-[node name="Label" type="Label" parent="."]
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 21.0
-text = "This is main menu"
+[node name="MarginContainer" type="MarginContainer" parent="Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 192
+theme_override_constants/margin_right = 192
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Control/MarginContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="NewGameButton" type="TextureButton" parent="Control/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 64)
+layout_mode = 2
+texture_normal = SubResource("AtlasTexture_8jgmr")
+texture_pressed = SubResource("AtlasTexture_q75kt")
+texture_hover = SubResource("AtlasTexture_0i0gl")
+stretch_mode = 5
+
+[node name="DevButton" type="TextureButton" parent="Control/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 64)
+layout_mode = 2
+texture_normal = SubResource("AtlasTexture_jqly5")
+texture_hover = SubResource("AtlasTexture_pbm0j")
+stretch_mode = 5
+
+[node name="QuitButton" type="TextureButton" parent="Control/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 64)
+layout_mode = 2
+texture_normal = SubResource("AtlasTexture_sb7pk")
+texture_hover = SubResource("AtlasTexture_s1050")
+stretch_mode = 5
+
+[connection signal="button_up" from="Control/MarginContainer/VBoxContainer/NewGameButton" to="." method="OnNewGame"]
+[connection signal="button_up" from="Control/MarginContainer/VBoxContainer/DevButton" to="." method="OnDev"]
+[connection signal="button_up" from="Control/MarginContainer/VBoxContainer/QuitButton" to="." method="OnQuit"]

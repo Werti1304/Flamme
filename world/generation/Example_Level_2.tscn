@@ -14,7 +14,6 @@ Spawn = NodePath("Rooms/Spawn")
 
 [node name="ItemPickup" parent="." instance=ExtResource("5_32ohh")]
 position = Vector2(351, 114)
-_itemId = 8
 
 [node name="Rooms" type="Node2D" parent="."]
 position = Vector2(0, -1)
@@ -32,8 +31,6 @@ position = Vector2(0, -352)
 
 [node name="AllItems" parent="Rooms/Treasure0" instance=ExtResource("9_dkdvi")]
 position = Vector2(0, 704)
-collision_layer = 15
-collision_mask = 15
 
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2(122, -16)

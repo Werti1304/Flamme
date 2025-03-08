@@ -27,6 +27,7 @@ public partial class Hud : CanvasLayer
   [Export] private Container _healthRectContainer;
   private TextureRect[] _healthTextureRects = new TextureRect[10];
   [Export] public ColorRect Vignette;
+  [Export] public MarginContainer MainContainer;
   [Export] public Minimap Minimap;
   [Export] private Timer _showCollectedItemtimer;
   
@@ -46,7 +47,7 @@ public partial class Hud : CanvasLayer
     _showCollectedItemtimer.Timeout += HideCollectItem;
     
     HideCollectItem();
-    Show();
+    Hide();
   }
 
   public void HideCollectItem()
