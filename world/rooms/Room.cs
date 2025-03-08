@@ -35,6 +35,7 @@ public partial class Room : Area2D
   private List<Node2D> _lootList = new List<Node2D>();
 
   private bool _cleared = false;
+  public bool WasVisited = false;
   
   [ExportGroup("Generation")]
   [Export]
@@ -123,6 +124,7 @@ public partial class Room : Area2D
     switch (body)
     {
       case PlayableCharacter playableCharacter:
+        WasVisited = true;
         SetCurrentRoom(playableCharacter);
         if (_enemies.Count > 0)
         {

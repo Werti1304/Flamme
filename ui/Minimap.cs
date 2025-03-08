@@ -1,9 +1,11 @@
+using Flamme.common.constant;
 using Flamme.common.enums;
 using Flamme.common.input;
 using Flamme.testing;
 using Flamme.world;
 using Flamme.world.generation;
 using Godot;
+using System.Diagnostics;
 using Room = Flamme.world.rooms.Room;
 
 namespace Flamme.ui;
@@ -67,7 +69,32 @@ public partial class Minimap : GridContainer
         var gridX = x - _lowestX;
         var gridY = y - _lowestY;
         
-        _grid[gridX, gridY].Modulate = room == playerRoom ? Colors.White : Colors.Gray;
+        var currentRoomColor = new Color(1.0f, 1.0f, 1.0f, 0.7f);
+        var visitedRoomColor = new Color(0.6f, 0.6f, 0.6f, 0.7f);
+        var unvisitedRoomColor = new Color(0.2f, 0.2f, 0.2f, 0.7f);
+        var hiddenRoomColor = new Color(0.0f, 0.0f, 0.0f, 0.0f);
+
+        if (room == playerRoom)
+        {
+          _grid[gridX, gridY].Modulate = currentRoomColor;
+        }
+        else if(room.WasVisited || DebugToggles.MinimapSeeAll)
+        {
+          _grid[gridX, gridY].Modulate = visitedRoomColor;
+        }
+        else
+        {
+          // Check 4-neighbourhood
+          if (level.Grid[x + 1, y] != null && level.Grid[x + 1, y].WasVisited
+              || level.Grid[x, y + 1] != null && level.Grid[x, y + 1].WasVisited
+              || level.Grid[x - 1, y] != null && level.Grid[x - 1, y].WasVisited
+              || level.Grid[x, y - 1] != null && level.Grid[x, y - 1].WasVisited)
+          {
+            _grid[gridX, gridY].Modulate = unvisitedRoomColor;
+            continue;
+          }
+          _grid[gridX, gridY].Modulate = hiddenRoomColor;
+        }
       }
     }
   }
