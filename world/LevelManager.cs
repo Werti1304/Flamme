@@ -76,12 +76,6 @@ public partial class LevelManager : Node2D
   }
 
   private TransferableStuff? _stuffToTransfer = null;
-
-  public PackedScene GetNextLevel()
-  {
-    // TODO 4 Replace with next generated level
-    return GD.Load<PackedScene>("res://world/generation/Example_Level.tscn");
-  }
   
   public void StartlevelChange(PackedScene levelScene)
   {

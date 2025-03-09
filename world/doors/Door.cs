@@ -1,3 +1,4 @@
+using Flamme.common.constant;
 using Flamme.common.enums;
 using Flamme.entities.player;
 using Godot;
@@ -33,7 +34,6 @@ public partial class Door : StaticBody2D
   private bool _isOpen = false;
   private bool _isLocked = false;
   private bool _isLockedByKey = false;
-  private readonly object _padlock = new object();
   
   private AtlasTexture _openTexture;
   private AtlasTexture _closedTexture;
@@ -89,19 +89,13 @@ public partial class Door : StaticBody2D
 
   public virtual void Lock()
   {
-    lock (_padlock)
-    {
-      _isLocked = true;
-    }
+    _isLocked = true;
     Close();
   }
 
   public void Unlock()
   {
-    lock (_padlock)
-    {
-      _isLocked = false;
-    }
+    _isLocked = false;
   }
 
   public void OpenByClearingRoom()
@@ -137,26 +131,25 @@ public partial class Door : StaticBody2D
 
   protected virtual void Open()
   {
-    if( _isLocked)
+    if (_isLocked)
       return;
 
-    lock (_padlock)
-    {
-      _isOpen = true;
-      Sprite.Texture = _openTexture;
-      SpriteMirrored.Texture = _openTexture;
-      CollisionShape.SetDeferred(CollisionShape2D.PropertyName.Disabled, true);
-    }
+    _isOpen = true;
+    Sprite.Texture = _openTexture;
+    SpriteMirrored.Texture = _openTexture;
+    CollisionShape.SetDeferred(CollisionShape2D.PropertyName.Disabled, true);
   }
 
   public virtual void Close()
   {
-    lock (_padlock)
+    if (DebugToggles.DoorsAlwaysOpen)
     {
-      _isOpen = false;
-      Sprite.Texture = _closedTexture;
-      SpriteMirrored.Texture = _closedTexture;
-      CollisionShape.SetDeferred(CollisionShape2D.PropertyName.Disabled, false);
+      Open();
+      return;
     }
+    _isOpen = false;
+    Sprite.Texture = _closedTexture;
+    SpriteMirrored.Texture = _closedTexture;
+    CollisionShape.SetDeferred(CollisionShape2D.PropertyName.Disabled, false);
   }
 }

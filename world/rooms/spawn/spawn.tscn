@@ -1,10 +1,11 @@
-[gd_scene load_steps=8 format=4 uid="uid://c2eekwqrmvxjg"]
+[gd_scene load_steps=9 format=4 uid="uid://c2eekwqrmvxjg"]
 
 [ext_resource type="Script" uid="uid://cu3vdn0r1mer3" path="res://world/rooms/Room.cs" id="1_x6qr4"]
 [ext_resource type="TileSet" uid="uid://cgyo6mc240x5s" path="res://testing/placeholder_tileset.tres" id="2_usqwj"]
 [ext_resource type="PackedScene" uid="uid://cu2hrf4t2q3w0" path="res://entities/env/health/health_pickup.tscn" id="3_u6w3p"]
 [ext_resource type="PackedScene" uid="uid://ct41on4c43mde" path="res://entities/env/purse/purse_pickup.tscn" id="4_sk61c"]
 [ext_resource type="PackedScene" uid="uid://bgqrp6nhkayrg" path="res://entities/env/shop/coin_buyable.tscn" id="6_sk61c"]
+[ext_resource type="PackedScene" uid="uid://dqvcpot6wxnyt" path="res://entities/env/warper.tscn" id="7_u6w3p"]
 [ext_resource type="PackedScene" uid="uid://bfulsjxd53ikv" path="res://entities/env/itemPickup.tscn" id="7_utxn0"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_w6rau"]
@@ -202,3 +203,6 @@ position = Vector2(333, 272)
 [node name="HealthPickup10" parent="Rigidbodyfun" instance=ExtResource("3_u6w3p")]
 
 [node name="HealthPickup11" parent="Rigidbodyfun" instance=ExtResource("3_u6w3p")]
+
+[node name="Warper" parent="." instance=ExtResource("7_u6w3p")]
+position = Vector2(401, 77)

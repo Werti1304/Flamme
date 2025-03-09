@@ -21,5 +21,7 @@ public static class PathConstants
 
   public const string ExampleLevelPath = "res://world/generation/Example_Level.tscn";
   
+  public const string WinRoomPath = "res://world/rooms/dev/WinRoom.tscn";
+  
   public const string DoorScenePath = "res://world/doors/door.tscn";
 }

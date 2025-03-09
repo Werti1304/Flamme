@@ -116,6 +116,11 @@ public partial class Minimap : GridContainer
   // but for now its ok
   public void UpdateLevel()
   {
+    foreach (var textureRect in _grid)
+    {
+      textureRect.Texture = null;
+    }
+    
     var level = LevelManager.Instance.CurrentLevel;
     
     _lowestX = int.MaxValue;

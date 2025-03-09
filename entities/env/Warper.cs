@@ -1,4 +1,5 @@
 using Flamme.world;
+using Flamme.world.generation;
 using Godot;
 
 namespace Flamme.entities.env;
@@ -28,10 +29,20 @@ public partial class Warper : Area2D
 
   private void OnBodyEntered(Node2D body)
   {
-    if (body is PlayableCharacter playableCharacter)
+    if (body is not PlayableCharacter playableCharacter)
+      return;
+
+    WorldGenerator.Instance.WaitingForSceneChangeToNewLevel = true;
+    
+    // Fade player out
+    if (NewLevel != null)
     {
-      // Fade player out
       LevelManager.Instance.StartlevelChange(NewLevel);
+    }
+    else
+    {
+      // This is used for normal progression
+      LevelManager.Instance.StartlevelChange(SceneLoader.Instance[SceneLoader.Scene.Level]);
     }
   }
 }

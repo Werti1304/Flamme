@@ -51,13 +51,42 @@ public partial class WorldGenerator : Node2D
     Debug.Assert(WaitingForSceneChangeToNewLevel);
     Debug.Assert(GetTree().CurrentScene == level);
     WaitingForSceneChangeToNewLevel = false;
-    GenerateLevel(level, LevelFloor.Prison1);
-    Levels[LevelFloor.Prison1] = level;
+
+    // Generate next level
+    var levelGenerated = false;
+    foreach (var levelFloor in Enum.GetValues<LevelFloor>())
+    {
+      if(Levels.ContainsKey(levelFloor))
+        continue;
+      GenerateLevel(level, levelFloor);
+      Levels[levelFloor] = level;
+      levelGenerated = true;
+      break;
+    }
+
+    if (!levelGenerated)
+    {
+      // We're on the last level
+      var winRoom = GD.Load<PackedScene>(PathConstants.WinRoomPath).Instantiate<Room>();
+      level.AddChild(winRoom);
+      level.Spawn = winRoom;
+      var levelSize = new Vector2I(level.Grid.GetLength(0), level.Grid.GetLength(1));
+      var levelCenter = levelSize / 2;
+      level.Grid[levelCenter.X, levelCenter.Y] = winRoom;
+      PlaceUser(level);
+    }
+    
     LevelManager.Instance.CurrentLevel = level;
   }
 
   public void GenerateLevel(Level level, LevelFloor floor)
   {
+    if (Levels.ContainsKey(floor))
+    {
+      GD.PushError($"Level {floor} already exists!");
+      return;
+    }
+    
     var levelSize = new Vector2I(level.Grid.GetLength(0), level.Grid.GetLength(1));
     var levelCenter = levelSize / 2;
 
@@ -94,11 +123,18 @@ public partial class WorldGenerator : Node2D
       room.GenerateLoot();
     }
     GD.Print("Loot generated!");
+    
+    GD.Print("Level fully generated!");
 
     GD.Print("Placing down character, camera & staff");
-    var globalSpawnPosition = spawn.GetGlobalMidPoint();
+    PlaceUser(level);
+    GD.Print("Character, camera & staff placed!");
+  }
 
+  private void PlaceUser(Level level)
+  {
     // TODO 1 Preload 
+    var globalSpawnPosition = level.Spawn.GetGlobalMidPoint();
     var playerScene = GD.Load<PackedScene>(PathConstants.PlayerScenePath);
     var player = playerScene.Instantiate<PlayableCharacter>();
     player.GlobalPosition = globalSpawnPosition;
