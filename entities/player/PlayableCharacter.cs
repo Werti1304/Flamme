@@ -155,6 +155,10 @@ public partial class PlayableCharacter : CharacterBody2D, IEnemyDamagable
       Purse.Add(pursePickup.Pickup());
       OnInvChange();
     }
+    else if (body is Door door)
+    {
+      door.TryOpen(this);
+    }
   }
   
   private void OnAreaEntered(Area2D area)

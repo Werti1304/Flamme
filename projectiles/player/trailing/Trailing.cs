@@ -35,6 +35,9 @@ public partial class Trailing : Area2D
     Sprite.Visible = false;
   }
 
+  // Counts how often shot (while shooting active)
+  public static int Counter = 0;
+
   public void Fire(PlayerStats playerStats)
   {
     BodyEntered += OnBulletEntered;
@@ -59,17 +62,20 @@ public partial class Trailing : Area2D
     
     // Determine magnitude of swing
     // In this case this means it's +- 16 to 32 pixels
-    var magnitude = Main.Instance.Rnd.RandfRange(-16.0f, 16.0f);
+    var magnitude = Main.Instance.Rnd.RandfRange(-4.0f, 4.0f);;
     _startPointP0 = GlobalPosition + normalToDirection * magnitude / 4.0f;
-    
-    if (magnitude < 0)
+
+    if (Counter % 3 == 0)
     {
-      magnitude -= 16.0f;
+      magnitude -= 16.0f ;
     }
-    else
+    else if (Counter % 3 == 1)
     {
       magnitude += 16.0f;
     }
+    // else no magnitude
+
+    Counter++;
     
     _endPointP2 = GlobalPosition + Direction * rangeInPx;
     _controlPointP1 = GlobalPosition + Direction * rangeInPx / 2 + normalToDirection * magnitude;
@@ -85,6 +91,7 @@ public partial class Trailing : Area2D
   }
 
   private Queue<(double, Vector2)> _points = new Queue<(double, Vector2)>();
+  
 
   double t = 0;
   public override void _Process(double delta)

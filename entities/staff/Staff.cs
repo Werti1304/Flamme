@@ -91,6 +91,7 @@ public partial class Staff : RigidBody2D
       // ApplyCentralForce(direction * Mathf.Clamp(distance, 0, 200) * SnapForce);
       return;
     }
+    Trailing.Counter = 0;
     
     // Not snapping anymore, enable collision again for staff
     if (_collisionDisabled && Area.GetOverlappingBodies().Count == 0)

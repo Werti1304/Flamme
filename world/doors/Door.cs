@@ -32,6 +32,7 @@ public partial class Door : StaticBody2D
   
   private bool _isOpen = false;
   private bool _isLocked = false;
+  private bool _isLockedByKey = false;
   private readonly object _padlock = new object();
   
   private AtlasTexture _openTexture;
@@ -72,11 +73,13 @@ public partial class Door : StaticBody2D
       case DoorType.Gold:
         _openTexture = GoldOpenTexture;
         _closedTexture = GoldClosedTexture;
-        break;
+        _isLockedByKey = true;
+        return;
       case DoorType.Shop:
         _openTexture = ShopOpenTexture;
         _closedTexture = ShopClosedTexture;
-        break;
+        _isLockedByKey = true;
+        return;
       default:
         throw new ArgumentOutOfRangeException();
     }
@@ -103,7 +106,8 @@ public partial class Door : StaticBody2D
 
   public void OpenByClearingRoom()
   {
-    if (_isLocked || _type != DoorType.Bars)
+    Unlock();
+    if (_isLockedByKey)
     {
       return;
     }
@@ -112,8 +116,21 @@ public partial class Door : StaticBody2D
 
   public virtual bool TryOpen(PlayableCharacter player)
   {
-    if( _isLocked)
+    if (_isLocked)
       return false;
+    
+    if (_isLockedByKey)
+    {
+      if (player.Purse.Keys >= 1)
+      {
+        player.Purse.Keys--;
+        Unlock();
+      }
+      else
+      {
+        return false;
+      }
+    }
     Open();
     return true;
   }

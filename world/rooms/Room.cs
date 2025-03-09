@@ -180,10 +180,13 @@ public partial class Room : Area2D
   private void LockRoom(PlayableCharacter playableCharacter)
   {
     GD.Print($"Room {Name} Locked!");
+    
+    playableCharacter.GlobalPosition += 
+      playableCharacter.GlobalPosition.DirectionTo(GetGlobalMidPoint()) * 32.0f;
 
     foreach (var door in Doors.Values)
     {
-      door.Close();
+      door.Lock();
     }
       
     // Could replace with signals but idk
