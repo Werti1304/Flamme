@@ -73,10 +73,9 @@ public partial class WorldGenerator : Node2D
       var levelSize = new Vector2I(level.Grid.GetLength(0), level.Grid.GetLength(1));
       var levelCenter = levelSize / 2;
       level.Grid[levelCenter.X, levelCenter.Y] = winRoom;
-      PlaceUser(level);
     }
     
-    LevelManager.Instance.CurrentLevel = level;
+    LevelManager.Instance.SetLevelActive(level);
   }
 
   public void GenerateLevel(Level level, LevelFloor floor)
@@ -126,37 +125,6 @@ public partial class WorldGenerator : Node2D
     
     GD.Print("Level fully generated!");
 
-    GD.Print("Placing down character, camera & staff");
-    PlaceUser(level);
-    GD.Print("Character, camera & staff placed!");
-  }
-
-  private void PlaceUser(Level level)
-  {
-    // TODO 1 Preload 
-    var globalSpawnPosition = level.Spawn.GetGlobalMidPoint();
-    var playerScene = GD.Load<PackedScene>(PathConstants.PlayerScenePath);
-    var player = playerScene.Instantiate<PlayableCharacter>();
-    player.GlobalPosition = globalSpawnPosition;
-    level.AddChild(player);
-    level.PlayableCharacter = player;
-    player.Owner = level;
-
-    // ...
-    var playerCameraScene = GD.Load<PackedScene>(PathConstants.PlayerCameraScenePath);
-    var playerCamera = playerCameraScene.Instantiate<PlayerCamera>();
-    playerCamera.GlobalPosition = globalSpawnPosition;
-    level.AddChild(playerCamera);
-    level.PlayerCamera = playerCamera;
-    playerCamera.Player = player;
-    playerCamera.Owner = level;
-
-    // ...
-    var startingStaffScene = GD.Load<PackedScene>(PathConstants.StartingStaffScenePath);
-    var startingStaff = startingStaffScene.Instantiate<Staff>();
-    startingStaff.GlobalPosition = globalSpawnPosition - new Vector2(64, 64);
-    level.AddChild(startingStaff);
-    startingStaff.Owner = level;
   }
 
   private void GenerateRooms(Level level, LevelFloor levelFloor)

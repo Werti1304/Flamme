@@ -1,3 +1,4 @@
+using Flamme.common.constant;
 using Flamme.entities.staff;
 using Flamme.ui;
 using Flamme.world.generation;
@@ -75,7 +76,7 @@ public partial class LevelManager : Node2D
     }
   }
 
-  private TransferableStuff? _stuffToTransfer = null;
+  private TransferableStuff? _stuffToTransfer;
   
   public void StartlevelChange(PackedScene levelScene)
   {
@@ -154,34 +155,78 @@ public partial class LevelManager : Node2D
   public void SetLevelActive(Level level)
   {
     CurrentLevel = level;
-
-    if (_stuffToTransfer == null)
-      return;
-
-    var stuff = (TransferableStuff)_stuffToTransfer;
     
     // Actually insert stuff to transfer into new level
     var newScene = GetTree().CurrentScene;
     Debug.Assert(newScene is Level);
-    var newLevel = (Level)newScene;
-    Debug.Assert(newLevel.Spawn != null);
+    Debug.Assert(newScene == level);
+    Debug.Assert(level.Spawn != null);
+
+    if (_stuffToTransfer == null)
+    {
+      SpawnUser(level);
+    }
+    else
+    {
+      TransferUser(level);
+    }
+    CurrentLevel = level;
+  }
+  
+  private void SpawnUser(Level level)
+  {
+    // TODO 1 Preload 
+    var globalSpawnPosition = level.Spawn.GetGlobalMidPoint();
+    var playerScene = GD.Load<PackedScene>(PathConstants.PlayerScenePath);
+    var player = playerScene.Instantiate<PlayableCharacter>();
+    player.GlobalPosition = globalSpawnPosition;
+    level.AddChild(player);
+    level.PlayableCharacter = player;
+    player.Owner = level;
+
+    // ...
+    var playerCameraScene = GD.Load<PackedScene>(PathConstants.PlayerCameraScenePath);
+    var playerCamera = playerCameraScene.Instantiate<PlayerCamera>();
+    playerCamera.GlobalPosition = globalSpawnPosition;
+    level.AddChild(playerCamera);
+    level.PlayerCamera = playerCamera;
+    playerCamera.Player = player;
+    playerCamera.Owner = level;
+
+    // ...
+    var startingStaffScene = GD.Load<PackedScene>(PathConstants.StartingStaffScenePath);
+    var startingStaff = startingStaffScene.Instantiate<Staff>();
+    startingStaff.GlobalPosition = globalSpawnPosition - new Vector2(64, 64);
+    level.AddChild(startingStaff);
+    startingStaff.Owner = level;
+  }
+
+  private void TransferUser(Level level)
+  {
+    if (_stuffToTransfer == null)
+    {
+      GD.PushError("Tried to transfer user to level, but no user to transfer!");
+      return;
+    }
+    
+    var stuff = (TransferableStuff)_stuffToTransfer;
     
     // Bring stuff into new level
-    newLevel.PlayableCharacter = stuff.Character;
-    newLevel.PlayableCharacter.GlobalPosition = newLevel.Spawn.GetGlobalMidPoint();
-    newLevel.AddChild(newLevel.PlayableCharacter);
+    level.PlayableCharacter = stuff.Character;
+    level.PlayableCharacter.GlobalPosition = level.Spawn.GetGlobalMidPoint();
+    level.AddChild(level.PlayableCharacter);
     
     if (stuff.Staff != null)
     {
-      newLevel.ActiveStaff = stuff.Staff;
-      newLevel.ActiveStaff.GlobalPosition = newLevel.PlayableCharacter.GlobalPosition - new Vector2(64, 64);
-      newLevel.AddChild(newLevel.ActiveStaff);
-      newLevel.ActiveStaff.ClearOwner();
+      level.ActiveStaff = stuff.Staff;
+      level.ActiveStaff.GlobalPosition = level.PlayableCharacter.GlobalPosition - new Vector2(64, 64);
+      level.AddChild(level.ActiveStaff);
+      level.ActiveStaff.ClearOwner();
     }
     
-    newLevel.PlayerCamera = stuff.Camera;
-    newLevel.PlayerCamera.GlobalPosition = newLevel.PlayableCharacter.GlobalPosition;
-    newLevel.AddChild(newLevel.PlayerCamera);
+    level.PlayerCamera = stuff.Camera;
+    level.PlayerCamera.GlobalPosition = level.PlayableCharacter.GlobalPosition;
+    level.AddChild(level.PlayerCamera);
   }
   
   public LevelManager()
