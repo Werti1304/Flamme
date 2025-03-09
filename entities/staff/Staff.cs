@@ -149,7 +149,7 @@ public partial class Staff : RigidBody2D
 
   public void UpdateFireRate()
   {
-    _shootTimerMax = _owner.Stats.FireRate / 10.0f;
+    _shootTimerMax = 1 / _owner.Stats.FireRate;
   }
 
   private void ShootingTimerOnTimeout()

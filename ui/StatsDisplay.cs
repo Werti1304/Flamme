@@ -27,7 +27,7 @@ public partial class StatsDisplay : RichTextLabel
   {
     var sb = new StringBuilder();
     AppendStat(sb, DamageIcon, (float)Math.Round(stats.Damage, 2));
-    AppendStat(sb, FireRateIcon, stats.FireRate);
+    AppendStat(sb, FireRateIcon, (float)Math.Round(stats.FireRate,2));
     AppendStat(sb, SpeedIcon, stats.Speed);
     AppendStat(sb, RangeIcon, stats.Range);
     AppendStat(sb, ShotSpeedIcon, stats.ShotSpeed);

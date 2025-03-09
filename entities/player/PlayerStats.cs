@@ -18,7 +18,7 @@ public partial class PlayerStats : Node2D
   [Export] public int BaseSpeed = 100; // px/sec?
   [Export] public float BaseDamage = 3; // Damage against enemies
   [Export] public float BaseDamageMultiplier = 1;
-  [Export] public int BaseFireRate = 5; // *10/sec?
+  [Export] public int BaseFireRate = 5; // /sec?
   [Export] public int BaseFireRateMultiplier = 1;
   [Export] public int BaseRange = 5; // In tiles
   [Export] public float BaseFireMultiplier = 1; // /min?
@@ -33,7 +33,7 @@ public partial class PlayerStats : Node2D
   public int Speed { get; private set; }
   public int Range { get; private set; }
   public float Damage { get; private set; }
-  public int FireRate { get; private set; }
+  public float FireRate { get; private set; } // [1-...]
   public int ShotSpeed { get; private set; }
   public int ShotSize { get; private set; }
   public int Luck { get; private set; }
@@ -196,8 +196,7 @@ public partial class PlayerStats : Node2D
   private void CalculateFireRate()
   {
     var fireRateMultiplier = BaseFireMultiplier + _statSumDict[StatType.FireMultiplier];
-    FireRate =  (int)(fireRateMultiplier * (BaseFireRate + _statSumDict[StatType.FireRate]));
-    FireRate = Mathf.Min(1000, FireRate);
+    FireRate =  fireRateMultiplier * Mathf.Log(BaseFireRate + _statSumDict[StatType.FireRate]);
   }
   
   private void CalculateRange()

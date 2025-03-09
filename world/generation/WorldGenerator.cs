@@ -71,7 +71,7 @@ public partial class WorldGenerator : Node2D
     GD.Print($"Placing down spawn {spawn.Name} at {spawn.GlobalPosition}");
 
     GD.Print("Generating rooms...");
-    GenerateRooms(level);
+    GenerateRooms(level, floor);
     GD.Print("Level generated!");
 
     GD.Print("Closing up sides...");
@@ -123,9 +123,15 @@ public partial class WorldGenerator : Node2D
     startingStaff.Owner = level;
   }
 
-  private void GenerateRooms(Level level)
+  private void GenerateRooms(Level level, LevelFloor levelFloor)
   {
-    const int roomCount = 32;
+    var roomCount = levelFloor switch
+    {
+      LevelFloor.Prison1 => 16,
+      LevelFloor.Prison2 => 32,
+      _ => throw new ArgumentOutOfRangeException(nameof(levelFloor), levelFloor, null)
+    };
+    
     var levelSize = new Vector2I(level.Grid.GetLength(0), level.Grid.GetLength(1));
     var levelCenter = levelSize / 2;
     
@@ -186,7 +192,7 @@ public partial class WorldGenerator : Node2D
       (RoomType.Treasure, 1),
       (RoomType.Shop, 1),
       (RoomType.Smithy, 1),
-      (RoomType.Secret, 10),
+      (RoomType.Secret, 1),
     };
     
     // TODO: globals.cs for tile size and room size

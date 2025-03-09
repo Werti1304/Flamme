@@ -63,7 +63,7 @@ public static class StatUpItems
       new Item(ItemId.FireRateToken,"Token of Fire Rate", "Fire Rate up!", Item.Tier.Uncommon)
         .AddSpriteFull(AssetManager.Asset.SpriteItemStatup1, new Vector2I(5, 0))
         .AddSpriteInventory()
-        .AddStatUp(StatType.FireRate, -3),
+        .AddStatUp(StatType.FireRate, 5),
       ItemLootPool.Treasure, ItemLootPool.LockedChest, ItemLootPool.Boss, ItemLootPool.Shop
     );
     
