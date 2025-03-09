@@ -56,7 +56,7 @@ public partial class Room : Area2D
   [Signal] public delegate void PlayerEnteredEventHandler(PlayableCharacter playableCharacter);
   [Signal] public delegate void PlayerExitedEventHandler(PlayableCharacter playableCharacter);
 
-  private List<Enemy> _enemies = [];
+  public readonly List<Enemy> Enemies = [];
   // TODO List of entities, chests, etc.
   private PlayableCharacter _playableCharacter;
   
@@ -133,7 +133,7 @@ public partial class Room : Area2D
       case PlayableCharacter playableCharacter:
         WasVisited = true;
         SetCurrentRoom(playableCharacter);
-        if (_enemies.Count > 0)
+        if (Enemies.Count > 0)
         {
           LockRoom(playableCharacter);
         }
@@ -146,7 +146,7 @@ public partial class Room : Area2D
         // GD.Print($"Enemy found in room {Name}");
         // Only works if player goes into a room, not if it spawns there
         // -> No enemies in spawn room
-        _enemies.Add(e);
+        Enemies.Add(e);
         break;
     }
   }
@@ -167,9 +167,9 @@ public partial class Room : Area2D
         LevelManager.Instance.ExitedRoom(this);
         break;
       case Enemy e:
-        _enemies.Remove(e);
+        Enemies.Remove(e);
 
-        if (_enemies.Count == 0)
+        if (Enemies.Count == 0)
         {
           SetRoomCleared(true);
         }
@@ -190,7 +190,7 @@ public partial class Room : Area2D
     }
       
     // Could replace with signals but idk
-    foreach (var enemy in _enemies)
+    foreach (var enemy in Enemies)
     {
       enemy.SetActive(playableCharacter);
     }
@@ -198,23 +198,23 @@ public partial class Room : Area2D
 
   private void SetCurrentRoom(PlayableCharacter playableCharacter)
   {
-    GD.Print($"Player entered Room {Name} with {_enemies.Count} enemies!");
+    GD.Print($"Player entered Room {Name} with {Enemies.Count} enemies!");
     LevelManager.Instance.EnteredRoom(this);
     
     _playableCharacter = playableCharacter;
     
-    if (_enemies.Count == 0)
+    if (Enemies.Count == 0)
     {
       foreach (var body in GetOverlappingBodies())
       {
         if (body is Enemy e)
         {
-          _enemies.Add(e);
+          Enemies.Add(e);
           GD.Print($"Thought room {Name} is empty, but had enemy {e.Name} inside!");
         }
       }
 
-      if (_enemies.Count != 0)
+      if (Enemies.Count != 0)
       {
         LockRoom(playableCharacter);
       }
@@ -255,7 +255,7 @@ public partial class Room : Area2D
     
     _playableCharacter = null;
     
-    foreach (var enemy in _enemies)
+    foreach (var enemy in Enemies)
     {
       enemy.SetPassive();
     }

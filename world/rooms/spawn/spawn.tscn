@@ -146,6 +146,11 @@ position = Vector2(433, 240)
 [node name="ItemPickup3" parent="Itempickups" instance=ExtResource("7_utxn0")]
 position = Vector2(369, 307)
 
+[node name="ItemPickup4" parent="Itempickups" instance=ExtResource("7_utxn0")]
+position = Vector2(430, 306)
+RetrievelMode = 1
+ItemId = 11
+
 [node name="Buyable" type="Node2D" parent="."]
 
 [node name="CoinBuyable" parent="Buyable" instance=ExtResource("6_sk61c")]

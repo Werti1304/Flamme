@@ -24,5 +24,6 @@ public enum ItemId
   ShotSizeToken,
   LuckToken,
   RangeToken,
-  AllStatsUpToken
+  AllStatsUpToken,
+  Homing
 }

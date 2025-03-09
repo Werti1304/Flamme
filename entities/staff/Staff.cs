@@ -91,7 +91,7 @@ public partial class Staff : RigidBody2D
       // ApplyCentralForce(direction * Mathf.Clamp(distance, 0, 200) * SnapForce);
       return;
     }
-    Trailing.Counter = 0;
+    projectiles.player.trailing.Trailing.Counter = 0;
     
     // Not snapping anymore, enable collision again for staff
     if (_collisionDisabled && Area.GetOverlappingBodies().Count == 0)
@@ -172,7 +172,7 @@ public partial class Staff : RigidBody2D
   private void Shoot()
   {
     // TODO In the works
-    var projectile = _projectile.Instantiate<Trailing>();
+    var projectile = _projectile.Instantiate<projectiles.player.trailing.Trailing>();
     projectile.GlobalPosition = GlobalPosition + (_owner.ShootingVector * ShootDistanceFromStaff);
     // bullet.Direction = (_owner.ShootingVector + (_owner.Velocity / _owner.Stats.Speed)).Normalized();
     // if (_owner.Velocity.Length() > 10)
@@ -187,7 +187,7 @@ public partial class Staff : RigidBody2D
     var targetRotation = projectile.Direction.Angle();
     projectile.Rotation = targetRotation;
     GetTree().Root.AddChild(projectile);
-    projectile.Fire(_owner.Stats);
+    projectile.Fire(_owner, LevelManager.Instance.CurrentRoom);
   }
 
   private void AreaOnBodyEntered(Node2D body)

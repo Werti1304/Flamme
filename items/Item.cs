@@ -2,6 +2,7 @@
 using Flamme.common.assets;
 using Flamme.common.enums;
 using Flamme.common.eventArgs;
+using Flamme.entities.player;
 using Godot;
 using System;
 using System.Collections.Generic;
@@ -32,6 +33,8 @@ public class Item
 
   public readonly Dictionary<StatType, int> StatsUpDict = new Dictionary<StatType, int>();
   public readonly Dictionary<HealthType, int> HealingDict = new Dictionary<HealthType, int>();
+  
+  public readonly List<ProjectileModifiers.Modifier> ProjectileModifiers = []; 
 
   public Item(ItemId id, string name, string description, Tier tier)
   {
@@ -39,6 +42,12 @@ public class Item
     Name = name;
     Description = description;
     ItemTier = tier;
+  }
+
+  public Item AddSpriteFull(Texture2D spriteFull)
+  {
+    SpriteFull = spriteFull;
+    return this;
   }
   
   public Item AddSpriteFull(AssetManager.Asset asset, Vector2I atlasCoords)
@@ -62,6 +71,12 @@ public class Item
   public Item AddHealing(HealthType healthType, int health)
   {
     HealingDict.Add(healthType, health);
+    return this;
+  }
+
+  public Item AddModifier(ProjectileModifiers.Modifier modifier)
+  {
+    ProjectileModifiers.Add(modifier);
     return this;
   }
   

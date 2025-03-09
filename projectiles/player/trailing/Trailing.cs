@@ -1,14 +1,19 @@
-using Flamme;
 using Flamme.entities;
 using Flamme.entities.player;
 using Flamme.testing;
+using Flamme.world.rooms;
 using Godot;
-using System;
 using System.Collections.Generic;
+
+namespace Flamme.projectiles.player.trailing;
 
 public partial class Trailing : Area2D
 {
   [Export] public Vector2 Direction = Vector2.Up;
+  
+  [ExportGroup("Textures")]
+  [Export] public Texture2D TrailingTexture;
+  [Export] public Texture2D HomingTexture;
 
   [ExportGroup("Meta")] 
   [Export] public Sprite2D Sprite;
@@ -27,6 +32,9 @@ public partial class Trailing : Area2D
   private Vector2 _endPointP2;
   
   private Vector2 normalToDirection = Vector2.Left;
+  
+  private Enemy _homingTarget = null;
+  private bool _homing = false;
 
   public override void _Ready()
   {
@@ -38,25 +46,19 @@ public partial class Trailing : Area2D
   // Counts how often shot (while shooting active)
   public static int Counter = 0;
 
-  public void Fire(PlayerStats playerStats)
+  public void Fire(PlayableCharacter player, Room room)
   {
     BodyEntered += OnBulletEntered;
 
     Sprite.Modulate = Colors.Transparent;
     TrailLine.Modulate = Colors.Transparent;
 
-    _playerStats = playerStats;
+    _playerStats = player.Stats;
 
     var rangeInPx = _playerStats.Range * 32;
     
     Direction = Direction.Normalized(); // Just to make sure
     normalToDirection = new Vector2(-Direction.Y, Direction.X).Normalized();
-    
-    // var timeTillDisappear = _playerStats.Range / _playerStats.ShotSpeed;
-    // GetTree().CreateTimer(timeTillDisappear).Timeout += InitBulletDestruction;
-    
-    
-    // Calculate points for bezier curve
     
     TrailLine.ClearPoints();
     
@@ -81,8 +83,30 @@ public partial class Trailing : Area2D
     _controlPointP1 = GlobalPosition + Direction * rangeInPx / 2 + normalToDirection * magnitude;
     
     TrailLine.AddPoint(_startPointP0);
-    // TrailLine.AddPoint(_controlPointP1);
-    // TrailLine.AddPoint(_endPointP2);
+    
+    // homing
+    // TODO 2 Seperate into it's own scene? idk
+    if (player.Modifiers.IsHoming)
+    {
+      if (room.Enemies.Count > 0)
+      {
+        // Select nearest enemy
+        float nearestDistance = float.MaxValue;
+        Enemy nearestEnemy = null;
+        foreach (var enemy in room.Enemies)
+        {
+          var distance = enemy.GlobalPosition.DistanceTo(_startPointP0);
+          if (distance < nearestDistance)
+          {
+            nearestDistance = distance;
+            nearestEnemy = enemy;
+          }
+        }
+        _homingTarget = nearestEnemy;
+        _homing = true;
+      }
+      Sprite.Texture = HomingTexture;
+    }
     
     var tween = GetTree().CreateTween();
     tween.TweenProperty(Sprite, CanvasItem.PropertyName.Modulate.ToString(), Colors.White, 0.1f);
@@ -98,6 +122,11 @@ public partial class Trailing : Area2D
   {
     if (!_fired || _hitSomething)
       return;
+
+    if (_homing && IsInstanceValid(_homingTarget))
+    {
+      _endPointP2 = _homingTarget.GlobalPosition;
+    }
     
     t += delta;
     GlobalPosition = QuadraticBezier((float)t);

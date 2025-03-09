@@ -61,6 +61,7 @@ public partial class Main : Node
     _instance = this;
     
     StatUpItems.RegisterStatUpItems();
+    ModifierItems.RegisterItems();
     DefaultLoot.RegisterDefaultLoot();
   }
 

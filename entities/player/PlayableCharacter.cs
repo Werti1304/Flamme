@@ -23,6 +23,8 @@ public partial class PlayableCharacter : CharacterBody2D, IEnemyDamagable
   [Export] public PlayerPurse Purse;
   [Export] public PlayerSprite Sprite;
   [Export] public Area2D InteractionArea;
+  
+  public ProjectileModifiers Modifiers = new ProjectileModifiers();
 
   [Signal]
   public delegate void StatsChangedEventHandler(PlayerStats stats);
@@ -108,6 +110,7 @@ public partial class PlayableCharacter : CharacterBody2D, IEnemyDamagable
   private void OnInvChange(Item item = null)
   {
     Stats.Update(HeldItems);
+    Modifiers.Update(HeldItems);
     if (item != null)
     {
       Stats.AddHealth(item.HealingDict);
