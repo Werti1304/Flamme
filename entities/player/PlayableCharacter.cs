@@ -130,7 +130,7 @@ public partial class PlayableCharacter : CharacterBody2D, IEnemyDamagable
       if (chest.IsOpen)
       {
         // Simulate running against the item pickup
-        if (chest.ItemPickupLoot != null && IsInstanceValid(chest.ItemPickupLoot) && chest.ItemPickupLoot.Monitorable)
+        if (chest.ItemPickupLoot != null && IsInstanceValid(chest.ItemPickupLoot))
         {
           OnAreaEntered(chest.ItemPickupLoot);
           SetDeferred(CharacterBody2D.PropertyName.Velocity, Velocity += (chest.GlobalPosition.DirectionTo(GlobalPosition) * 1000.0f));
@@ -138,8 +138,11 @@ public partial class PlayableCharacter : CharacterBody2D, IEnemyDamagable
       }
       else
       {
-        chest.Open();
-        SetDeferred(CharacterBody2D.PropertyName.Velocity, Velocity += (chest.GlobalPosition.DirectionTo(GlobalPosition) * 1000.0f));
+        if (chest.TryOpen(Purse))
+        {
+          SetDeferred(CharacterBody2D.PropertyName.Velocity, Velocity += (chest.GlobalPosition.DirectionTo(GlobalPosition) * 1000.0f));
+          OnInvChange();
+        }
       }
     }
     else if (body is HealthPickup healthPickup)

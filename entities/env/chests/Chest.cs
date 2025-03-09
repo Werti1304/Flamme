@@ -1,6 +1,7 @@
 using Flamme.common.enums;
 using Flamme.entities.env;
 using Flamme.entities.env.Loot;
+using Flamme.entities.player;
 using Flamme.items;
 using Flamme.world;
 using Godot;
@@ -80,10 +81,19 @@ public partial class Chest : RigidBody2D
     }
   }
 
-  public void Open()
+  public bool TryOpen(PlayerPurse purse)
   {
     if (IsOpen)
-      return;
+      return false;
+
+    if (Type == ChestType.Locked)
+    {
+      if (purse.Keys < 1)
+      {
+        return false;
+      } 
+      purse.Keys--;
+    }
     IsOpen = true;
     Sprite.Texture = Type switch
     {
@@ -93,6 +103,7 @@ public partial class Chest : RigidBody2D
       _ => throw new ArgumentOutOfRangeException()
     };
     SpawnLoot();
+    return true;
   }
   
   private void SpawnLoot()
