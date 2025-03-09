@@ -1,16 +1,15 @@
-using Flamme.entities;
-using Flamme.entities.player;
-using Flamme.testing;
+using Flamme;
+using Flamme.projectiles;
+using Flamme.projectiles.player;
 using Flamme.world.rooms;
 using Godot;
+using System;
 using System.Collections.Generic;
 
-namespace Flamme.projectiles.player.trailing;
-
-public partial class Trailing : PlayerProjectile
+public partial class Fireball : PlayerProjectile
 {
   [ExportGroup("Textures")]
-  [Export] public Texture2D TrailingTexture;
+  [Export] public Texture2D FireballTexture;
   [Export] public Texture2D HomingTexture;
   
   private Vector2 _startPointP0;
@@ -21,7 +20,7 @@ public partial class Trailing : PlayerProjectile
   
   private Enemy _homingTarget = null;
   private bool _homing = false;
-
+  
   protected override void CustomFireExec(PlayableCharacter player, Room room)
   {
     Sprite.Modulate = Colors.Transparent;
@@ -38,17 +37,6 @@ public partial class Trailing : PlayerProjectile
     // In this case this means it's +- 16 to 32 pixels
     var magnitude = Main.Instance.Rnd.RandfRange(-4.0f, 4.0f);;
     _startPointP0 = GlobalPosition + _normalToDirection * magnitude / 4.0f;
-
-    if (Counter % 3 == 0)
-    {
-      magnitude -= 16.0f ;
-    }
-    else if (Counter % 3 == 1)
-    {
-      magnitude += 16.0f;
-    }
-    // else no magnitude
-
     
     _endPointP2 = GlobalPosition + Direction * rangeInPx;
     _controlPointP1 = GlobalPosition + Direction * rangeInPx / 2 + _normalToDirection * magnitude;
@@ -85,7 +73,6 @@ public partial class Trailing : PlayerProjectile
 
   private readonly Queue<(double, Vector2)> _points = new Queue<(double, Vector2)>();
   private double _t = 0;
-  
   public override void _Process(double delta)
   {
     if (!Fired || HitSomething)
@@ -96,7 +83,7 @@ public partial class Trailing : PlayerProjectile
       _endPointP2 = _homingTarget.GlobalPosition;
     }
     
-    _t += delta;
+    _t += delta / 2.0;
     GlobalPosition = ProjectileHelper.QuadraticBezier(_startPointP0, _controlPointP1, _endPointP2, (float)_t);
 
     if (Sprite.Visible == false)
@@ -112,7 +99,7 @@ public partial class Trailing : PlayerProjectile
       for (;;)
       {
         var point = _points.Peek();
-        if (_t > point.Item1 + 0.3f)
+        if (_t > point.Item1 + 0.2f)
         {
           TrailLine.RemovePoint(0);
           _points.Dequeue();

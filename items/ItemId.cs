@@ -25,5 +25,6 @@ public enum ItemId
   LuckToken,
   RangeToken,
   AllStatsUpToken,
-  Homing
+  Homing,
+  Fireball
 }

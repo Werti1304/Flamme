@@ -164,6 +164,7 @@ public partial class PlayableCharacter : CharacterBody2D, IEnemyDamagable
     else if (body is Door door)
     {
       door.TryOpen(this);
+      OnInvChange();
     }
   }
   

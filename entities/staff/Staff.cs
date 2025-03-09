@@ -1,4 +1,5 @@
 using Flamme.entities.player;
+using Flamme.projectiles.player;
 using Flamme.testing;
 using Flamme.world;
 using Flamme.world.generation;
@@ -91,7 +92,7 @@ public partial class Staff : RigidBody2D
       // ApplyCentralForce(direction * Mathf.Clamp(distance, 0, 200) * SnapForce);
       return;
     }
-    projectiles.player.trailing.Trailing.Counter = 0;
+    PlayerProjectile.ResetCounter();
     
     // Not snapping anymore, enable collision again for staff
     if (_collisionDisabled && Area.GetOverlappingBodies().Count == 0)
@@ -166,23 +167,21 @@ public partial class Staff : RigidBody2D
     _tween.TweenProperty(StaffCore, "modulate:a", 0, _shootTimerMax / 2.0f)
       .SetTrans(Tween.TransitionType.Sine);
   }
-
-  [Export] private PackedScene _projectile;
   
   private void Shoot()
   {
     // TODO In the works
-    var projectile = _projectile.Instantiate<projectiles.player.trailing.Trailing>();
+    PackedScene projectileScene;
+    if (_owner.Modifiers.IsFireball)
+    {
+      projectileScene = SceneLoader.Instance[SceneLoader.Scene.Fireball];
+    }
+    else
+    {
+      projectileScene = SceneLoader.Instance[SceneLoader.Scene.Trailing];
+    }
+    var projectile = projectileScene.Instantiate<PlayerProjectile>();
     projectile.GlobalPosition = GlobalPosition + (_owner.ShootingVector * ShootDistanceFromStaff);
-    // bullet.Direction = (_owner.ShootingVector + (_owner.Velocity / _owner.Stats.Speed)).Normalized();
-    // if (_owner.Velocity.Length() > 10)
-    // {
-    //   projectile.Direction = 0.8f * _owner.ShootingVector + 0.4f * _owner.Velocity.Normalized();
-    // }
-    // else
-    // {
-    //   projectile.Direction = _owner.ShootingVector;
-    // }
     projectile.Direction = _owner.ShootingVector;
     var targetRotation = projectile.Direction.Angle();
     projectile.Rotation = targetRotation;
