@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://cu3vdn0r1mer3" path="res://world/rooms/Room.cs" id="1_6cnbx"]
 [ext_resource type="TileSet" uid="uid://cgyo6mc240x5s" path="res://testing/placeholder_tileset.tres" id="2_mjjly"]
-[ext_resource type="PackedScene" uid="uid://bh5tvnrt4tk45" path="res://entities/enemies/floor_0/Runner.tscn" id="3_hn0y2"]
+[ext_resource type="PackedScene" uid="uid://bh5tvnrt4tk45" path="res://entities/enemies/prison/runner/Runner.tscn" id="3_hn0y2"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_24tvo"]
 size = Vector2(544, 352)

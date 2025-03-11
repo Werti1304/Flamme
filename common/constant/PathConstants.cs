@@ -15,7 +15,7 @@ public static class PathConstants
   public const string HealthPickupScenePath = "res://entities/env/health/health_pickup.tscn";
   public const string ChestScenePath = "res://entities/env/chests/chest.tscn";
   
-  public const string RunnerScenePath = "res://entities/enemies/floor_0/Runner.tscn";
+  public const string RunnerScenePath = "res://entities/enemies/prison/runner/Runner.tscn";
   
   public const string WarperScenePath = "res://entities/env/warper.tscn";
 

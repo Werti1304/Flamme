@@ -1,6 +1,6 @@
 [gd_scene load_steps=6 format=3 uid="uid://bh5tvnrt4tk45"]
 
-[ext_resource type="Script" uid="uid://nxlk2sekg4ia" path="res://entities/enemies/floor_0/Runner.cs" id="1_mluks"]
+[ext_resource type="Script" uid="uid://nxlk2sekg4ia" path="res://entities/enemies/prison/runner/Runner.cs" id="1_mluks"]
 [ext_resource type="Texture2D" uid="uid://bbubwm0w5w3am" path="res://assets/sprites/placeholders.png" id="2_k8mqi"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_0jywm"]
