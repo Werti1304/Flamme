@@ -1,12 +1,14 @@
-using Flamme.entities;
+using Flamme.entities.common;
 using Flamme.testing;
 using Flamme.world.rooms;
 using Godot;
+using System;
 
-namespace Flamme.projectiles.player;
-
-public abstract partial class PlayerProjectile : Area2D
+public abstract partial class EnemyProjectile : Area2D
 {
+  [Export] public int Damage = 1;
+  [Export] public float ShotSpeed = 10.0f;
+  
   [ExportGroup("Meta")] 
   [Export] public Sprite2D Sprite;
   [Export] public Line2D TrailLine;
@@ -14,53 +16,46 @@ public abstract partial class PlayerProjectile : Area2D
   
   public Vector2 Direction = Vector2.Up;
   
-  protected bool Fired = false;
-  protected bool Destructing = false;
-  protected bool Dissipating = false;
-  protected bool HitSomething = false;
-
-  // 1:1 stats from the player, can be interpreted however
-  protected float StatDamage = 0;
-  protected float StatShotSpeed = 0;
-  protected float StatRange = 0;
+  protected bool Fired;
+  protected bool Destructing;
+  protected bool Dissipating;
+  protected bool HitSomething;
   
   public override void _Ready()
   {
     ExportMetaNonNull.Check(this);
-    
+      
+    SetPhysicsProcess(false);
     Direction = Direction.Normalized();
     Sprite.Visible = false;
   }
 
   // Counts how often shot (while shooting active)
-  protected static int Counter = 0;
+  protected static int Counter;
   public static void ResetCounter()
   {
     Counter = 0;
   }
 
-  public virtual void Fire(PlayableCharacter player, Room room)
+  public virtual void Fire(Enemy enemy, Room room)
   {
     // TODO 3 Make range how far or how much time a bullet has?
     
-    FireInit(player);
-    CustomFireExec(player, room);
+    FireInit(enemy);
+    CustomFireExec(enemy, room);
     FireReady();
   }
 
-  private void FireInit(PlayableCharacter player)
-  {
-    StatDamage = player.Stats.Damage;
-    StatShotSpeed = player.Stats.ShotSpeed;
-    StatRange = player.Stats.Range;
-  }
+  private void FireInit(Enemy enemy)
+  { }
 
-  protected abstract void CustomFireExec(PlayableCharacter player, Room room);
+  protected abstract void CustomFireExec(Enemy enemy, Room room);
 
   private void FireReady()
   {
     Counter++;
     BodyEntered += OnBulletEntered;
+    SetPhysicsProcess(true);
     Fired = true;
   }
   
@@ -73,16 +68,16 @@ public abstract partial class PlayerProjectile : Area2D
     }
     HitSomething = true;
 
-    if (body is IPlayerDamageable enemy)
+    if (body is IEnemyDamagable player)
     {
-      OnBulletHit(body, enemy);
+      OnBulletHit(body, player);
     }
     DestructBullet();
   }
 
-  protected virtual void OnBulletHit(Node2D body, IPlayerDamageable enemy)
+  protected virtual void OnBulletHit(Node2D body, IEnemyDamagable player)
   {
-    enemy.Hit(StatDamage, StatDamage * StatShotSpeed * 100, (body.GlobalPosition - GlobalPosition).Normalized());
+    player.TakeDamage(Damage);
   }
   
   public override void _PhysicsProcess(double delta)
@@ -91,7 +86,7 @@ public abstract partial class PlayerProjectile : Area2D
       return;
     
     // Does more or less the trick
-    Position += Direction * StatShotSpeed;
+    Position += Direction * ShotSpeed;
   }
   
   private void DestructBulletInit()

@@ -8,10 +8,6 @@ public partial class Runner : Enemy
   
   [ExportGroup("Meta")] 
   [Export] public Sprite2D Sprite;
-
-  private bool _stunned = false;
-  private double _stunnedTime = 0;
-  private double _stunnedTimeCounter = 0;
   
   public override void OnDeath()
   {
@@ -26,41 +22,18 @@ public partial class Runner : Enemy
     // Not yet tho cuz else Im gonna miss something and get funny bugs
     if (Target == null)
       return;
-
-    if (_stunned)
+    
+    var direction = GlobalPosition.DirectionTo(Target.GlobalPosition);
+    if (direction.X < 0 && Sprite.FlipH)
     {
-      // If stunned, runner got knocked back and now only has friction
-      Velocity = Velocity.Lerp(Vector2.Zero, .1f);
-      _stunnedTimeCounter += delta;
-
-      if (_stunnedTimeCounter > _stunnedTime)
-      {
-        _stunned = false;
-      }
+      Sprite.FlipH = false;
     }
-    else
+    else if (direction.X > 0 && !Sprite.FlipH)
     {
-      var direction = GlobalPosition.DirectionTo(Target.GlobalPosition);
-      if (direction.X < 0 && !Sprite.FlipH)
-      {
-        Sprite.FlipH = true;
-      }
-      else if (direction.X > 0 && Sprite.FlipH)
-      {
-        Sprite.FlipH = false;
-      }
-      Velocity = direction * Speed;
+      Sprite.FlipH = true;
     }
+    Velocity = Velocity.Lerp(direction * Speed, 0.1f);
         
     MoveAndSlide();
-  }
-
-  public override void Hit(float attackDamage, float knockBackStrength, Vector2 attackDirection)
-  {
-    base.Hit(attackDamage, knockBackStrength, attackDirection);
-
-    Velocity = knockBackStrength * attackDirection;
-    _stunned = true;
-    _stunnedTime = knockBackStrength / 100.0f;
   }
 }

@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://cktctdc4vcnhj"]
+
+[node name="Navigator" type="NavigationAgent2D"]
+path_max_distance = 16.0
+path_postprocessing = 1
+debug_enabled = true

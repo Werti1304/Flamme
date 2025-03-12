@@ -1,39 +1,40 @@
-[gd_scene load_steps=6 format=3 uid="uid://bh5tvnrt4tk45"]
+[gd_scene load_steps=7 format=3 uid="uid://bh5tvnrt4tk45"]
 
 [ext_resource type="Script" uid="uid://nxlk2sekg4ia" path="res://entities/enemies/prison/runner/Runner.cs" id="1_mluks"]
-[ext_resource type="Texture2D" uid="uid://bbubwm0w5w3am" path="res://assets/sprites/placeholders.png" id="2_k8mqi"]
+[ext_resource type="Texture2D" uid="uid://qvr7q8gl84rq" path="res://assets/sprites/entities/enemy/enemy_placeholders.png" id="2_vi6n5"]
+[ext_resource type="PackedScene" uid="uid://dok621wlg1nam" path="res://entities/enemies/components/melee_area/melee_area.tscn" id="3_rt3c2"]
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_0jywm"]
-atlas = ExtResource("2_k8mqi")
-region = Rect2(32, 32, 32, 32)
+[sub_resource type="AtlasTexture" id="AtlasTexture_rt3c2"]
+atlas = ExtResource("2_vi6n5")
+region = Rect2(0, 0, 32, 32)
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_51umw"]
-radius = 4.0
-height = 12.0
-
-[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_5r16c"]
 radius = 5.0
-height = 14.0
+height = 16.0
 
-[node name="Runner" type="CharacterBody2D" node_paths=PackedStringArray("Sprite", "EnemyArea")]
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_rt3c2"]
+radius = 6.0
+height = 18.0
+
+[node name="Runner" type="CharacterBody2D" node_paths=PackedStringArray("Sprite")]
 z_index = 20
 collision_layer = 15
 collision_mask = 15
 motion_mode = 1
 script = ExtResource("1_mluks")
+Speed = 60.0
 Sprite = NodePath("Sprite2D")
-EnemyArea = NodePath("Area2D")
+Weight = 5.0
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-texture = SubResource("AtlasTexture_0jywm")
+texture = SubResource("AtlasTexture_rt3c2")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 1)
 shape = SubResource("CapsuleShape2D_51umw")
 
-[node name="Area2D" type="Area2D" parent="."]
-collision_layer = 0
-collision_mask = 2
-monitorable = false
+[node name="MeleeArea" parent="." instance=ExtResource("3_rt3c2")]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
-shape = SubResource("CapsuleShape2D_5r16c")
+[node name="CollisionShape2D" type="CollisionShape2D" parent="MeleeArea"]
+position = Vector2(0, 1)
+shape = SubResource("CapsuleShape2D_rt3c2")

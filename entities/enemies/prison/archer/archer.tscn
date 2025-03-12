@@ -1,0 +1,31 @@
+[gd_scene load_steps=6 format=3 uid="uid://de8mys0x2un4k"]
+
+[ext_resource type="Script" uid="uid://boiuqkeo4uokp" path="res://entities/enemies/prison/archer/Archer.cs" id="1_nb03y"]
+[ext_resource type="Texture2D" uid="uid://qvr7q8gl84rq" path="res://assets/sprites/entities/enemy/enemy_placeholders.png" id="2_ks7xl"]
+[ext_resource type="PackedScene" uid="uid://cktctdc4vcnhj" path="res://entities/enemies/components/navigation/navigator.tscn" id="3_rjqvq"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rjqvq"]
+atlas = ExtResource("2_ks7xl")
+region = Rect2(64, 32, 32, 32)
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_r8boy"]
+radius = 6.0
+height = 22.0
+
+[node name="Archer" type="CharacterBody2D" node_paths=PackedStringArray("Sprite", "RayCast", "NavigationAgent")]
+script = ExtResource("1_nb03y")
+Sprite = NodePath("Sprite2D")
+RayCast = NodePath("RayCast2D")
+NavigationAgent = NodePath("NavigationAgent2D")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(0, -1)
+texture = SubResource("AtlasTexture_rjqvq")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CapsuleShape2D_r8boy")
+
+[node name="NavigationAgent2D" parent="." instance=ExtResource("3_rjqvq")]
+
+[node name="RayCast2D" type="RayCast2D" parent="."]
+collision_mask = 15

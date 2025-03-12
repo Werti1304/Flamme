@@ -1,0 +1,43 @@
+[gd_scene load_steps=7 format=3 uid="uid://derajnc63qagj"]
+
+[ext_resource type="Script" uid="uid://hxrft6ko0vtc" path="res://entities/enemies/prison/runner_smart/RunnerSmart.cs" id="1_tmgqv"]
+[ext_resource type="Texture2D" uid="uid://qvr7q8gl84rq" path="res://assets/sprites/entities/enemy/enemy_placeholders.png" id="2_omcy7"]
+[ext_resource type="PackedScene" uid="uid://dok621wlg1nam" path="res://entities/enemies/components/melee_area/melee_area.tscn" id="3_omcy7"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bt0tj"]
+atlas = ExtResource("2_omcy7")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_f2soh"]
+radius = 6.0
+height = 22.0
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_omcy7"]
+radius = 7.0
+height = 24.0
+
+[node name="RunnerSmart" type="CharacterBody2D" node_paths=PackedStringArray("NavigationAgent", "Sprite")]
+motion_mode = 1
+script = ExtResource("1_tmgqv")
+Speed = 40.0
+NavigationAgent = NodePath("NavigationAgent2D")
+Sprite = NodePath("Sprite2D")
+Weight = 20.0
+
+[node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
+path_max_distance = 16.0
+path_postprocessing = 1
+debug_enabled = true
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = SubResource("AtlasTexture_bt0tj")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 1)
+shape = SubResource("CapsuleShape2D_f2soh")
+
+[node name="MeleeArea" parent="." instance=ExtResource("3_omcy7")]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="MeleeArea"]
+position = Vector2(0, 1)
+shape = SubResource("CapsuleShape2D_omcy7")
