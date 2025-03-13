@@ -68,11 +68,10 @@ public partial class WorldGenerator : Node2D
     {
       // We're on the last level
       var winRoom = GD.Load<PackedScene>(PathConstants.WinRoomPath).Instantiate<Room>();
-      level.AddChild(winRoom);
       level.Spawn = winRoom;
       var levelSize = new Vector2I(level.Grid.GetLength(0), level.Grid.GetLength(1));
       var levelCenter = levelSize / 2;
-      level.Grid[levelCenter.X, levelCenter.Y] = winRoom;
+      level.AddRoom(winRoom, levelCenter.X, levelCenter.Y);
     }
     
     LevelManager.Instance.SetLevelActive(level);
@@ -236,9 +235,7 @@ public partial class WorldGenerator : Node2D
         var placeGlobalPos = (randomEndRoom - levelCenter) * roomSize * tileSize;
         GD.Print($"Placing down room {room.Name} at {placeGlobalPos}, index {randomEndRoom}");
         room.GlobalPosition = placeGlobalPos;
-        level.AddChild(room);
-        room.Owner = level;
-        level.Grid[randomEndRoom.X, randomEndRoom.Y] = room;
+        level.AddRoom(room, randomEndRoom.X, randomEndRoom.Y);
         
         break;
       }
@@ -264,9 +261,7 @@ public partial class WorldGenerator : Node2D
         GD.Print($"Placing down room at {placeGlobalPos}");
         room.GlobalPosition = placeGlobalPos;
         room.ActualExits = actualExits; // get exits for room
-        level.AddChild(room);
-        room.Owner = level;
-        level.Grid[x, y] = room;
+        level.AddRoom(room, x, y);
       }
     }
     

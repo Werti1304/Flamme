@@ -12,15 +12,15 @@ namespace Flamme.world.rooms;
 [Tool]
 public partial class Room : Area2D
 {
-  // Room size, must match tilemap, when in doubt press Generate Template
-  [Export] public RoomSize Size;
+  [Export] public LevelType LevelType;
   // Room type, affects generation
   [Export] public RoomType Type;
+  // Room size, must match tilemap, when in doubt press Generate Template
+  [Export] public RoomSize Size;
   // How likely this specific room is generated in comparison to others
   // To make a room super rare for example, make it 10
   // 0.999 is the workaround, cuz 1 will give you no slider at all in the editor :/
   [Export(PropertyHint.Range, "1,100,0.999")] public int RoomGenerationTickets = 100;
-  [Export] public TileSet TileSet;
   
   [ExportSubgroup("Exits")]
   // All positions where the room may be entered/exited. Important for generation
@@ -50,6 +50,7 @@ public partial class Room : Area2D
   }
   
   [ExportGroup("Meta")] 
+  [Export] public TileMapLayer FloorTileMap;
   [Export] public TileMapLayer TileMap;
   [Export] public CollisionShape2D CollisionShape;
 
@@ -62,7 +63,8 @@ public partial class Room : Area2D
   
   public override void _Ready()
   {
-    ExportMetaNonNull.Check(this);
+    // TODO Uncomment once tilemaps fixed
+    // ExportMetaNonNull.Check(this);
     
     BodyEntered += OnBodyEntered;
     BodyExited += OnBodyExited;
@@ -298,9 +300,13 @@ public partial class Room : Area2D
             case 5 when ActualExits.HasFlag(RoomExit.West):
             case 14 when ActualExits.HasFlag(RoomExit.West2):
             case 23 when ActualExits.HasFlag(RoomExit.West3):
-              break;
-            default:
+              continue;
+            case 5:
+            case 14:
+            case 23:
               TileMap.SetCell(new Vector2I(x, y), TemplateTileSourceId, TemplateWallAtlasCoords);
+              continue;
+            default:
               continue;
           }
         }
@@ -312,9 +318,13 @@ public partial class Room : Area2D
             case 5 when ActualExits.HasFlag(RoomExit.East):
             case 14 when ActualExits.HasFlag(RoomExit.East2):
             case 23 when ActualExits.HasFlag(RoomExit.East3):
-              break;
-            default:
+              continue;
+            case 5:
+            case 14:
+            case 23:
               TileMap.SetCell(new Vector2I(x, y), TemplateTileSourceId, TemplateWallAtlasCoords);
+              continue;
+            default:
               continue;
           }
         }
@@ -326,9 +336,13 @@ public partial class Room : Area2D
             case 8 when ActualExits.HasFlag(RoomExit.North):
             case 23 when ActualExits.HasFlag(RoomExit.North2):
             case 38 when ActualExits.HasFlag(RoomExit.North3):
-              break;
-            default:
+              continue;
+            case 8:
+            case 23:
+            case 38:
               TileMap.SetCell(new Vector2I(x, y), TemplateTileSourceId, TemplateWallAtlasCoords);
+              continue;
+            default:
               continue;
           }
         }
@@ -340,9 +354,13 @@ public partial class Room : Area2D
             case 8 when ActualExits.HasFlag(RoomExit.South):
             case 23 when ActualExits.HasFlag(RoomExit.South2):
             case 38 when ActualExits.HasFlag(RoomExit.South3):
-              break;
-            default:
+              continue;
+            case 8:
+            case 23:
+            case 38:
               TileMap.SetCell(new Vector2I(x, y), TemplateTileSourceId, TemplateWallAtlasCoords);
+              continue;
+            default:
               continue;
           }
         }
@@ -356,19 +374,29 @@ public partial class Room : Area2D
   
   private void GenerateTemplate()
   {
-    if (TileSet == null)
+    var tileset = LevelType switch
     {
-      GD.PushError("TileSet not set!");
-      return;
+      LevelType.Prison => GD.Load<TileSet>(PathConstants.PrisonTileSetPath),
+      _ => throw new ArgumentOutOfRangeException()
+    };
+
+    if (FloorTileMap == null)
+    {
+      FloorTileMap = new TileMapLayer();
+      AddChild(FloorTileMap);
+      FloorTileMap.TileSet = tileset;
+      FloorTileMap.Name = "Floor";
+      FloorTileMap.Owner = this;
+      FloorTileMap.ZIndex = -1;
     }
-    
     if (TileMap == null)
     {
       TileMap = new TileMapLayer();
       AddChild(TileMap);
-      TileMap.Name = "TileMap";
-      TileMap.TileSet = TileSet;
+      TileMap.TileSet = tileset;
+      TileMap.Name = "Tiles";
       TileMap.Owner = this;
+      TileMap.ZIndex = -1;
     }
 
     if (CollisionShape == null)
