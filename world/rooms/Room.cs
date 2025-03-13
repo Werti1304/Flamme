@@ -405,6 +405,22 @@ public partial class Room : Area2D
       AddChild(CollisionShape);
       CollisionShape.Name = "CollisionShape";
       CollisionShape.Owner = this;
+      
+      var shape = new RectangleShape2D();
+      shape.Size = new Vector2(Dimensions.RoomSizeDict[Size].X * 32, Dimensions.RoomSizeDict[Size].Y * 32);
+      CollisionShape.Shape = shape;
+      CollisionShape.SetPosition(GetMidPoint() * 32);
+      CollisionShape.Hide();
+      
+      var node = new Node2D();
+      AddChild(node);
+      node.Name = "Loot";
+      node.Owner = this;
+      
+      node = new Node2D();
+      AddChild(node);
+      node.Name = "Enemies";
+      node.Owner = this;
     }
 
     var errorAtlasCoords = new Vector2I(-1, -1);
@@ -436,11 +452,6 @@ public partial class Room : Area2D
     }
 
     TileMap.Clear();
-    
-    var shape = new RectangleShape2D();
-    shape.Size = new Vector2(Dimensions.RoomSizeDict[Size].X * 32, Dimensions.RoomSizeDict[Size].Y * 32);
-    CollisionShape.Shape = shape;
-    CollisionShape.SetPosition(GetMidPoint() * 32);
 
     for (var x = 0; x < Dimensions.RoomSizeDict[Size].X; x++)
     {
@@ -505,7 +516,7 @@ public partial class Room : Area2D
         // --- Check Over ---
 
         // Replace with template
-        TileMap.SetCell(new Vector2I(x, y), TemplateTileSourceId, TemplateTileAtlasCoords);
+        FloorTileMap.SetCell(new Vector2I(x, y), TemplateTileSourceId, TemplateTileAtlasCoords);
       }
     }
   }

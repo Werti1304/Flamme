@@ -1,7 +1,6 @@
-[gd_scene load_steps=8 format=4 uid="uid://1dj3mmyifuji"]
+[gd_scene load_steps=7 format=4 uid="uid://1dj3mmyifuji"]
 
 [ext_resource type="Script" uid="uid://cu3vdn0r1mer3" path="res://world/rooms/Room.cs" id="1_2j7g8"]
-[ext_resource type="TileSet" uid="uid://cgyo6mc240x5s" path="res://testing/placeholder_tileset.tres" id="2_jr0br"]
 [ext_resource type="Texture2D" uid="uid://b1jtondatcpt5" path="res://assets/sprites/levels/Prison.png" id="3_pbsrl"]
 [ext_resource type="PackedScene" uid="uid://ct41on4c43mde" path="res://entities/env/purse/purse_pickup.tscn" id="4_plfaa"]
 
@@ -91,7 +90,6 @@ collision_layer = 15
 collision_mask = 15
 script = ExtResource("1_2j7g8")
 Type = 7
-TileSet = ExtResource("2_jr0br")
 TileMap = NodePath("TileMap")
 CollisionShape = NodePath("CollisionShape")
 

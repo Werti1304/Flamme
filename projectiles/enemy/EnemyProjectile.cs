@@ -11,6 +11,7 @@ public abstract partial class EnemyProjectile : Area2D
 
   [ExportGroup("Effects")] 
   [Export] public float WindupTime;
+  [Export] public float DissipateTime = 0.1f;
   
   [ExportGroup("Meta")] 
   [Export] public Sprite2D Sprite;
@@ -23,8 +24,8 @@ public abstract partial class EnemyProjectile : Area2D
   protected bool Dissipating;
   protected bool HitSomething;
 
-  private Enemy _shooter;
-  private float _range;
+  protected Enemy Shooter;
+  protected float Range;
   // TODO Make ShootingEnemy class?
   
   public override void _Ready()
@@ -67,8 +68,8 @@ public abstract partial class EnemyProjectile : Area2D
 
   private void FireInit(Enemy enemy, float range)
   {
-    _shooter = enemy;
-    _range = range;
+    Shooter = enemy;
+    Range = range;
   }
 
   protected abstract void CustomFireExec(Enemy enemy, Room room);
@@ -79,6 +80,7 @@ public abstract partial class EnemyProjectile : Area2D
     BodyEntered += OnBulletEntered;
     SetPhysicsProcess(true);
     Sprite.Visible = true;
+    _lastPosition = GlobalPosition;
     Fired = true;
   }
   
@@ -102,16 +104,21 @@ public abstract partial class EnemyProjectile : Area2D
   {
     player.TakeDamage(Damage);
   }
-  
+
+  private double _distanceTraveled;
+  private Vector2 _lastPosition;
   public override void _PhysicsProcess(double delta)
   {
     if (!Fired || HitSomething)
       return;
     
     // Does more or less the trick
+    
     Position += Direction * ShotSpeed;
-
-    if (GlobalPosition.DistanceTo(_shooter.GlobalPosition) > _range)
+    
+    _distanceTraveled += GlobalPosition.DistanceTo(_lastPosition);
+    _lastPosition = GlobalPosition;
+    if (_distanceTraveled > Range)
     {
       DissipateBulletInit(); 
     }
@@ -151,7 +158,7 @@ public abstract partial class EnemyProjectile : Area2D
   protected virtual void DissipateBullet()
   {
     var tween = GetTree().CreateTween();
-    tween.TweenProperty(Sprite, CanvasItem.PropertyName.Modulate.ToString(), Colors.Transparent, 0.1f);
+    tween.TweenProperty(Sprite, CanvasItem.PropertyName.Modulate.ToString(), Colors.Transparent, DissipateTime);
     tween.TweenCallback(Callable.From(QueueFree));
   }
 }

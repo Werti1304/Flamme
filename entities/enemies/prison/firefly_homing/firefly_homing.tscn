@@ -1,0 +1,37 @@
+[gd_scene load_steps=8 format=3 uid="uid://copi3yylq7fvi"]
+
+[ext_resource type="PackedScene" uid="uid://b12b2lsur5mmn" path="res://entities/enemies/prison/firefly_neutral/firefly_neutral.tscn" id="1_he1i6"]
+[ext_resource type="Script" uid="uid://bty1rqvh8lp3u" path="res://entities/enemies/prison/firefly_homing/FireflyHoming.cs" id="2_wh2wh"]
+[ext_resource type="PackedScene" uid="uid://ejoowujhpma3" path="res://entities/enemies/components/shooter/shooter.tscn" id="3_0tutc"]
+[ext_resource type="Texture2D" uid="uid://72yp6g3veus" path="res://assets/sprites/entities/enemy/fly_placeholders/fly_homing_1.png" id="3_s1mmd"]
+[ext_resource type="Texture2D" uid="uid://bwhg23s8tr5lh" path="res://assets/sprites/entities/enemy/fly_placeholders/fly_homing_2.png" id="4_4fhci"]
+[ext_resource type="PackedScene" uid="uid://crjd5jqq2vgxa" path="res://projectiles/enemy/firefly_homer/firefly_homer.tscn" id="6_4fhci"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_b1t66"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_s1mmd")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_4fhci")
+}],
+"loop": true,
+"name": &"default",
+"speed": 10.0
+}]
+
+[node name="FireflyHoming" node_paths=PackedStringArray("Shooter") instance=ExtResource("1_he1i6")]
+script = ExtResource("2_wh2wh")
+Range = 96.0
+ShootTimerSec = 3.0
+Shooter = NodePath("Shooter")
+Health = 10.0
+
+[node name="AnimatedSprite2D" parent="." index="0"]
+sprite_frames = SubResource("SpriteFrames_b1t66")
+frame_progress = 0.296057
+
+[node name="Shooter" parent="." index="3" instance=ExtResource("3_0tutc")]
+ProjectileScene = ExtResource("6_4fhci")
+Range = 124.0

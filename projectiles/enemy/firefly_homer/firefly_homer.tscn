@@ -1,0 +1,45 @@
+[gd_scene load_steps=7 format=3 uid="uid://crjd5jqq2vgxa"]
+
+[ext_resource type="Script" uid="uid://dy3xvfx15f2at" path="res://projectiles/enemy/firefly_homer/FireflyHomer.cs" id="1_8cgdi"]
+[ext_resource type="Texture2D" uid="uid://c6ty4kicag4s" path="res://assets/sprites/projectiles/enemies/firefly_homing/firefly_homing.png" id="2_ww3es"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_ww3es"]
+radius = 2.0
+
+[sub_resource type="Gradient" id="Gradient_ww3es"]
+offsets = PackedFloat32Array(0, 0.460432, 1)
+colors = PackedColorArray(1, 1, 1, 1, 0.803922, 0.396078, 0.662745, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_emfrv"]
+gradient = SubResource("Gradient_ww3es")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_i4s2r"]
+lifetime_randomness = 0.3
+emission_shape = 1
+emission_sphere_radius = 2.0
+gravity = Vector3(0, 0, 0)
+radial_accel_min = -2.23517e-06
+radial_accel_max = 5.0
+color_ramp = SubResource("GradientTexture1D_emfrv")
+
+[node name="FireflyHomer" type="Area2D" node_paths=PackedStringArray("Sprite", "DestructionParticles")]
+collision_layer = 3
+collision_mask = 3
+script = ExtResource("1_8cgdi")
+ShotSpeed = 1.5
+Sprite = NodePath("Sprite2D")
+DestructionParticles = NodePath("GPUParticles2D")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_ww3es")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_ww3es")
+
+[node name="GPUParticles2D" type="GPUParticles2D" parent="."]
+emitting = false
+amount = 16
+lifetime = 0.5
+one_shot = true
+explosiveness = 1.0
+process_material = SubResource("ParticleProcessMaterial_i4s2r")

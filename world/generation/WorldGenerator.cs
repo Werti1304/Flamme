@@ -258,7 +258,7 @@ public partial class WorldGenerator : Node2D
         var room = roomMeta.RoomScene.Instantiate<Room>();
         room.ActualExits = actualExits;
         var placeGlobalPos = (roomPos - levelCenter) * roomSize * tileSize;
-        GD.Print($"Placing down room at {placeGlobalPos}");
+        GD.Print($"Placing down room {room.Name} at {placeGlobalPos}");
         room.GlobalPosition = placeGlobalPos;
         room.ActualExits = actualExits; // get exits for room
         level.AddRoom(room, x, y);

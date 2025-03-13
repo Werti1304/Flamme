@@ -45,6 +45,12 @@ public partial class Shooter : Node2D
   private void Shoot()
   {
     var directionVec = _target.GlobalPosition - _shooter.GlobalPosition;
+
+    // Don't shoot if out of range
+    if (directionVec.Length() > Range)
+    {
+      return;
+    }
     
     var offset = ProjectileCount % 2 == 1 ? 0.0f : SpreadDegree / 2;
     

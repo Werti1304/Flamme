@@ -1,0 +1,39 @@
+[gd_scene load_steps=8 format=3 uid="uid://cxavn5gxsjjnh"]
+
+[ext_resource type="PackedScene" uid="uid://b12b2lsur5mmn" path="res://entities/enemies/prison/firefly_neutral/firefly_neutral.tscn" id="1_pa6sn"]
+[ext_resource type="Script" uid="uid://cy4q2yenb6xb6" path="res://entities/enemies/prison/firefly_raging_light/FireflyRagingLight.cs" id="2_oqwk7"]
+[ext_resource type="Texture2D" uid="uid://cuifam3vn7d0a" path="res://assets/sprites/entities/enemy/fly_placeholders/fly_angry_1.png" id="3_6e8oi"]
+[ext_resource type="Texture2D" uid="uid://0mdrcio6fi3b" path="res://assets/sprites/entities/enemy/fly_placeholders/fly_angry_2.png" id="4_7dgdc"]
+[ext_resource type="PackedScene" uid="uid://dok621wlg1nam" path="res://entities/enemies/components/melee_area/melee_area.tscn" id="5_7dgdc"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_d1nfh"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_6e8oi")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_7dgdc")
+}],
+"loop": true,
+"name": &"default",
+"speed": 16.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_7dgdc"]
+radius = 5.0
+
+[node name="FireflyRagingLight" instance=ExtResource("1_pa6sn")]
+script = ExtResource("2_oqwk7")
+Speed = 80.0
+NewDirectionTimeMax = 0.3
+Health = 6.0
+
+[node name="AnimatedSprite2D" parent="." index="0"]
+sprite_frames = SubResource("SpriteFrames_d1nfh")
+frame_progress = 0.522574
+
+[node name="MeleeArea" parent="." index="3" instance=ExtResource("5_7dgdc")]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="MeleeArea" index="0"]
+shape = SubResource("CircleShape2D_7dgdc")
