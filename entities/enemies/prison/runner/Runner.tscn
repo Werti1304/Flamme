@@ -1,7 +1,7 @@
 [gd_scene load_steps=7 format=3 uid="uid://bh5tvnrt4tk45"]
 
 [ext_resource type="Script" uid="uid://nxlk2sekg4ia" path="res://entities/enemies/prison/runner/Runner.cs" id="1_mluks"]
-[ext_resource type="Texture2D" uid="uid://qvr7q8gl84rq" path="res://assets/sprites/entities/enemy/enemy_placeholders.png" id="2_vi6n5"]
+[ext_resource type="Texture2D" uid="uid://cmdroei4ronrq" path="res://assets/sprites/entities/enemy/enemy_placeholders.png" id="2_vi6n5"]
 [ext_resource type="PackedScene" uid="uid://dok621wlg1nam" path="res://entities/enemies/components/melee_area/melee_area.tscn" id="3_rt3c2"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_rt3c2"]
@@ -24,7 +24,6 @@ motion_mode = 1
 script = ExtResource("1_mluks")
 Speed = 60.0
 Sprite = NodePath("Sprite2D")
-Weight = 5.0
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = SubResource("AtlasTexture_rt3c2")

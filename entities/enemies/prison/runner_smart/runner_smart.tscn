@@ -1,7 +1,7 @@
 [gd_scene load_steps=7 format=3 uid="uid://derajnc63qagj"]
 
 [ext_resource type="Script" uid="uid://hxrft6ko0vtc" path="res://entities/enemies/prison/runner_smart/RunnerSmart.cs" id="1_tmgqv"]
-[ext_resource type="Texture2D" uid="uid://qvr7q8gl84rq" path="res://assets/sprites/entities/enemy/enemy_placeholders.png" id="2_omcy7"]
+[ext_resource type="Texture2D" uid="uid://cmdroei4ronrq" path="res://assets/sprites/entities/enemy/enemy_placeholders.png" id="2_omcy7"]
 [ext_resource type="PackedScene" uid="uid://dok621wlg1nam" path="res://entities/enemies/components/melee_area/melee_area.tscn" id="3_omcy7"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_bt0tj"]

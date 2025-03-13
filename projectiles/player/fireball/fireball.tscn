@@ -1,8 +1,8 @@
 [gd_scene load_steps=12 format=3 uid="uid://bfoh72uujixnq"]
 
 [ext_resource type="Script" uid="uid://cw6lwttcq7kxs" path="res://projectiles/player/fireball/Fireball.cs" id="1_b7gwv"]
-[ext_resource type="Texture2D" uid="uid://yx2ios53adoq" path="res://assets/sprites/projectiles/player/fireball.png" id="2_tsqf6"]
-[ext_resource type="Texture2D" uid="uid://d088joy1oh77y" path="res://assets/sprites/projectiles/player/fireball_homing.png" id="3_uug5p"]
+[ext_resource type="Texture2D" uid="uid://ck35x8smk13c4" path="res://assets/sprites/projectiles/player/fireball.png" id="2_tsqf6"]
+[ext_resource type="Texture2D" uid="uid://bjiaka7emitwk" path="res://assets/sprites/projectiles/player/fireball_homing.png" id="3_uug5p"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_tsqf6"]
 radius = 5.0

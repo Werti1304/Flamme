@@ -1,0 +1,33 @@
+[gd_scene load_steps=7 format=3 uid="uid://cy646ln75o03g"]
+
+[ext_resource type="Script" uid="uid://chn4vuqqy2dbf" path="res://entities/enemies/prison/mage_weak/MageWeak.cs" id="1_nn7sk"]
+[ext_resource type="PackedScene" uid="uid://bphl4845eyvn0" path="res://projectiles/enemy/magic_ball/magic_ball.tscn" id="2_uim24"]
+[ext_resource type="Texture2D" uid="uid://cmdroei4ronrq" path="res://assets/sprites/entities/enemy/enemy_placeholders.png" id="3_uim24"]
+[ext_resource type="PackedScene" uid="uid://cktctdc4vcnhj" path="res://entities/enemies/components/navigation/navigator.tscn" id="4_od6a1"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_od6a1"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2ed0b"]
+atlas = ExtResource("3_uim24")
+region = Rect2(32, 32, 32, 32)
+
+[node name="MageWeak" type="CharacterBody2D" node_paths=PackedStringArray("Sprite", "RayCast", "NavigationAgent")]
+script = ExtResource("1_nn7sk")
+Speed = 15.0
+ShootTimerSec = 1.0
+ProjectileScene = ExtResource("2_uim24")
+Range = 224.0
+Sprite = NodePath("Sprite2D")
+RayCast = NodePath("RayCast2D")
+NavigationAgent = NodePath("NavigationAgent2D")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_od6a1")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = SubResource("AtlasTexture_2ed0b")
+
+[node name="NavigationAgent2D" parent="." instance=ExtResource("4_od6a1")]
+
+[node name="RayCast2D" type="RayCast2D" parent="."]
+collision_mask = 15

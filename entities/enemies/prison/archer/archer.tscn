@@ -1,7 +1,8 @@
-[gd_scene load_steps=6 format=3 uid="uid://de8mys0x2un4k"]
+[gd_scene load_steps=7 format=3 uid="uid://de8mys0x2un4k"]
 
 [ext_resource type="Script" uid="uid://boiuqkeo4uokp" path="res://entities/enemies/prison/archer/Archer.cs" id="1_nb03y"]
-[ext_resource type="Texture2D" uid="uid://qvr7q8gl84rq" path="res://assets/sprites/entities/enemy/enemy_placeholders.png" id="2_ks7xl"]
+[ext_resource type="Texture2D" uid="uid://cmdroei4ronrq" path="res://assets/sprites/entities/enemy/enemy_placeholders.png" id="2_ks7xl"]
+[ext_resource type="PackedScene" uid="uid://d2mote5fie6cl" path="res://projectiles/enemy/arrow/arrow.tscn" id="2_r8boy"]
 [ext_resource type="PackedScene" uid="uid://cktctdc4vcnhj" path="res://entities/enemies/components/navigation/navigator.tscn" id="3_rjqvq"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_rjqvq"]
@@ -14,6 +15,8 @@ height = 22.0
 
 [node name="Archer" type="CharacterBody2D" node_paths=PackedStringArray("Sprite", "RayCast", "NavigationAgent")]
 script = ExtResource("1_nb03y")
+ShootTimerSec = 0.1
+ProjectileScene = ExtResource("2_r8boy")
 Sprite = NodePath("Sprite2D")
 RayCast = NodePath("RayCast2D")
 NavigationAgent = NodePath("NavigationAgent2D")

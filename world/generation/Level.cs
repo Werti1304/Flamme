@@ -25,6 +25,14 @@ public partial class Level : Node2D
 
   private List<(Vector2I v1, Room r1, Vector2I v2, Room r2)> _roomTransitions = [];
 
+  public void AddRoom(Room room, int x, int y)
+  {
+    room.Name = $"{room.Name} {x}, {y}";
+    Grid[x, y] = room;
+    AddChild(room);
+    room.Owner = this;
+  }
+
   public void FillRoomTransitionList()
   {
     for (var y = 0; y < Grid.GetLength(1); y++)

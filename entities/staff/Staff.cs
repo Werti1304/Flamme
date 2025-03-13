@@ -170,7 +170,6 @@ public partial class Staff : RigidBody2D
   
   private void Shoot()
   {
-    // TODO In the works
     PackedScene projectileScene;
     if (_owner.Modifiers.IsFireball)
     {

@@ -1,0 +1,45 @@
+[gd_scene load_steps=7 format=3 uid="uid://bphl4845eyvn0"]
+
+[ext_resource type="Script" uid="uid://d2p6hambanr51" path="res://projectiles/enemy/magic_ball/MagicBall.cs" id="1_llejq"]
+[ext_resource type="Texture2D" uid="uid://wt4s0afhdg8w" path="res://assets/sprites/projectiles/enemies/mage/magic_ball.png" id="2_oovqd"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_oovqd"]
+radius = 3.0
+
+[sub_resource type="Gradient" id="Gradient_llejq"]
+offsets = PackedFloat32Array(0, 0.460432, 1)
+colors = PackedColorArray(1, 1, 1, 1, 0.803922, 0.396078, 0.662745, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_oovqd"]
+gradient = SubResource("Gradient_llejq")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_7fxdp"]
+lifetime_randomness = 0.3
+emission_shape = 1
+emission_sphere_radius = 4.0
+gravity = Vector3(0, 0, 0)
+radial_accel_min = -2.23517e-06
+radial_accel_max = 5.0
+color_ramp = SubResource("GradientTexture1D_oovqd")
+
+[node name="MagicBall" type="Area2D" node_paths=PackedStringArray("Sprite", "DestructionParticles")]
+collision_layer = 3
+collision_mask = 3
+script = ExtResource("1_llejq")
+ShotSpeed = 3.0
+Sprite = NodePath("Sprite2D")
+DestructionParticles = NodePath("GPUParticles2D")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_oovqd")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_oovqd")
+
+[node name="GPUParticles2D" type="GPUParticles2D" parent="."]
+emitting = false
+amount = 32
+lifetime = 0.5
+one_shot = true
+explosiveness = 1.0
+process_material = SubResource("ParticleProcessMaterial_7fxdp")

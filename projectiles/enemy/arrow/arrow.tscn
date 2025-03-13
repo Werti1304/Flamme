@@ -1,0 +1,49 @@
+[gd_scene load_steps=7 format=3 uid="uid://d2mote5fie6cl"]
+
+[ext_resource type="Script" uid="uid://cd6rfobkd1sg" path="res://projectiles/enemy/arrow/Arrow.cs" id="1_ip0m6"]
+[ext_resource type="Texture2D" uid="uid://cfoedbxe467d6" path="res://assets/sprites/projectiles/enemies/archer/arrow.png" id="2_x5bca"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_ip0m6"]
+radius = 2.5
+height = 14.0
+
+[sub_resource type="Gradient" id="Gradient_ip0m6"]
+offsets = PackedFloat32Array(0, 0.460432, 1)
+colors = PackedColorArray(1, 1, 1, 1, 0.779291, 0.779291, 0.779291, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_ip0m6"]
+gradient = SubResource("Gradient_ip0m6")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_f4sy6"]
+lifetime_randomness = 0.3
+emission_shape = 1
+emission_sphere_radius = 2.0
+gravity = Vector3(0, 0, 0)
+radial_accel_min = -2.23517e-06
+radial_accel_max = 5.0
+color_ramp = SubResource("GradientTexture1D_ip0m6")
+
+[node name="Arrow" type="Area2D" node_paths=PackedStringArray("Sprite", "DestructionParticles")]
+z_index = 10
+collision_layer = 3
+collision_mask = 3
+script = ExtResource("1_ip0m6")
+Damage = 4
+Sprite = NodePath("Sprite2D")
+DestructionParticles = NodePath("GPUParticles2D")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_x5bca")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+rotation = 1.57079
+shape = SubResource("CapsuleShape2D_ip0m6")
+
+[node name="GPUParticles2D" type="GPUParticles2D" parent="."]
+position = Vector2(6, 0)
+emitting = false
+amount = 16
+lifetime = 0.5
+one_shot = true
+explosiveness = 1.0
+process_material = SubResource("ParticleProcessMaterial_f4sy6")

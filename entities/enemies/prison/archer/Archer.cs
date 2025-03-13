@@ -1,14 +1,21 @@
 using Godot;
 using System;
+using Flamme.world;
 
 public partial class Archer : Enemy
 {
   [Export] public float Speed = 10.0f;
+  [Export] public float ShootTimerSec = 3.0f;
+
+  [Export] public float ShootStartDistance = 24.0f;
+  [Export] public PackedScene ProjectileScene;
   
   [ExportGroup("Meta")]
   [Export] public Sprite2D Sprite;
   [Export] public RayCast2D RayCast;
   [Export] public NavigationAgent2D NavigationAgent;
+
+  private double _shootTimer;
 
   public override void _PhysicsProcess(double delta)
   {
@@ -31,6 +38,15 @@ public partial class Archer : Enemy
       }
       
       // Shoot here
+      if (_shootTimer >= ShootTimerSec)
+      {
+        ShootingTimerOnTimeout();
+        _shootTimer = 0.0f;
+      }
+      else
+      {
+        _shootTimer += delta;
+      }
     }
     else
     {
@@ -51,5 +67,17 @@ public partial class Archer : Enemy
     }
     
     MoveAndSlide();
+  }
+
+  private void ShootingTimerOnTimeout()
+  {
+    var projectile = ProjectileScene.Instantiate<EnemyProjectile>();
+    var direction = (Target.GlobalPosition - GlobalPosition).Normalized();
+    projectile.GlobalPosition = GlobalPosition + (direction * ShootStartDistance);
+    projectile.Direction = direction;
+    var targetRotation = projectile.Direction.Angle();
+    projectile.Rotation = targetRotation;
+    GetTree().Root.AddChild(projectile);
+    projectile.Fire(this, LevelManager.Instance.CurrentRoom, 1000.0f);
   }
 }

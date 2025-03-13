@@ -1,7 +1,7 @@
 [gd_scene load_steps=9 format=3 uid="uid://lgaf0ao8rsb4"]
 
 [ext_resource type="Script" uid="uid://cm33sm8xnrp78" path="res://entities/enemies/prison/runner_angry/RunnerAngry.cs" id="1_4l60g"]
-[ext_resource type="Texture2D" uid="uid://qvr7q8gl84rq" path="res://assets/sprites/entities/enemy/enemy_placeholders.png" id="2_sihnh"]
+[ext_resource type="Texture2D" uid="uid://cmdroei4ronrq" path="res://assets/sprites/entities/enemy/enemy_placeholders.png" id="2_sihnh"]
 [ext_resource type="PackedScene" uid="uid://dok621wlg1nam" path="res://entities/enemies/components/melee_area/melee_area.tscn" id="3_sihnh"]
 [ext_resource type="PackedScene" uid="uid://cktctdc4vcnhj" path="res://entities/enemies/components/navigation/navigator.tscn" id="4_kwoa1"]
 

@@ -11,7 +11,6 @@ public abstract partial class EnemyProjectile : Area2D
   
   [ExportGroup("Meta")] 
   [Export] public Sprite2D Sprite;
-  [Export] public Line2D TrailLine;
   [Export] public GpuParticles2D DestructionParticles;
   
   public Vector2 Direction = Vector2.Up;
@@ -20,11 +19,17 @@ public abstract partial class EnemyProjectile : Area2D
   protected bool Destructing;
   protected bool Dissipating;
   protected bool HitSomething;
+
+  private Enemy _shooter;
+  private float _range;
+  // TODO Make ShootingEnemy class?
   
   public override void _Ready()
   {
     ExportMetaNonNull.Check(this);
-      
+
+    Sprite.ZIndex = 10;
+    DestructionParticles.ZIndex = 2000;
     SetPhysicsProcess(false);
     Direction = Direction.Normalized();
     Sprite.Visible = false;
@@ -37,17 +42,20 @@ public abstract partial class EnemyProjectile : Area2D
     Counter = 0;
   }
 
-  public virtual void Fire(Enemy enemy, Room room)
+  public virtual void Fire(Enemy enemy, Room room, float range)
   {
     // TODO 3 Make range how far or how much time a bullet has?
     
-    FireInit(enemy);
+    FireInit(enemy, range);
     CustomFireExec(enemy, room);
     FireReady();
   }
 
-  private void FireInit(Enemy enemy)
-  { }
+  private void FireInit(Enemy enemy, float range)
+  {
+    _shooter = enemy;
+    _range = range;
+  }
 
   protected abstract void CustomFireExec(Enemy enemy, Room room);
 
@@ -56,6 +64,7 @@ public abstract partial class EnemyProjectile : Area2D
     Counter++;
     BodyEntered += OnBulletEntered;
     SetPhysicsProcess(true);
+    Sprite.Visible = true;
     Fired = true;
   }
   
@@ -82,11 +91,16 @@ public abstract partial class EnemyProjectile : Area2D
   
   public override void _PhysicsProcess(double delta)
   {
-    if (!Fired)
+    if (!Fired || HitSomething)
       return;
     
     // Does more or less the trick
     Position += Direction * ShotSpeed;
+
+    if (Position.DistanceTo(_shooter.GlobalPosition) > _range)
+    {
+      DissipateBulletInit(); 
+    }
   }
   
   private void DestructBulletInit()
@@ -103,7 +117,6 @@ public abstract partial class EnemyProjectile : Area2D
   protected virtual void DestructBullet()
   {
     Sprite.Visible = false;
-    TrailLine.Visible = false;
     DestructionParticles.Emitting = true;
     DestructionParticles.Finished += QueueFree;
   }
@@ -124,8 +137,7 @@ public abstract partial class EnemyProjectile : Area2D
   protected virtual void DissipateBullet()
   {
     var tween = GetTree().CreateTween();
-    tween.TweenProperty(Sprite, CanvasItem.PropertyName.Modulate.ToString(), Colors.Transparent, 0.2f);
-    tween.Parallel().TweenProperty(TrailLine, CanvasItem.PropertyName.Modulate.ToString(), Colors.Transparent, 0.2f);
+    tween.TweenProperty(Sprite, CanvasItem.PropertyName.Modulate.ToString(), Colors.Transparent, 0.1f);
     tween.TweenCallback(Callable.From(QueueFree));
   }
 }

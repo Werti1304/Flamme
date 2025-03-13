@@ -15,10 +15,10 @@ atlas = ExtResource("2_ubm3h")
 region = Rect2(0, 96, 32, 32)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_3pk4b"]
-radius = 6.0
+radius = 8.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_7g7to"]
-radius = 8.0
+radius = 9.0
 
 [node name="PlayableCharacter" type="CharacterBody2D" node_paths=PackedStringArray("Stats", "Purse", "Sprite", "InteractionArea")]
 z_index = 100
