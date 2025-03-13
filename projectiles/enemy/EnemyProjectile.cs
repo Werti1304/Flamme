@@ -8,6 +8,9 @@ public abstract partial class EnemyProjectile : Area2D
 {
   [Export] public int Damage = 1;
   [Export] public float ShotSpeed = 10.0f;
+
+  [ExportGroup("Effects")] 
+  [Export] public float WindupTime;
   
   [ExportGroup("Meta")] 
   [Export] public Sprite2D Sprite;
@@ -48,7 +51,18 @@ public abstract partial class EnemyProjectile : Area2D
     
     FireInit(enemy, range);
     CustomFireExec(enemy, room);
-    FireReady();
+    if (WindupTime > 0.01f)
+    {
+      var tween = GetTree().CreateTween();
+      Sprite.Modulate = Colors.Transparent;
+      Sprite.Show();
+      tween.TweenProperty(Sprite, CanvasItem.PropertyName.Modulate.ToString(), Colors.White, WindupTime);
+      tween.TweenCallback(Callable.From(FireReady));
+    }
+    else
+    {
+      FireReady();
+    }
   }
 
   private void FireInit(Enemy enemy, float range)
@@ -81,7 +95,7 @@ public abstract partial class EnemyProjectile : Area2D
     {
       OnBulletHit(body, player);
     }
-    DestructBullet();
+    DestructBulletInit();
   }
 
   protected virtual void OnBulletHit(Node2D body, IEnemyDamagable player)
@@ -97,7 +111,7 @@ public abstract partial class EnemyProjectile : Area2D
     // Does more or less the trick
     Position += Direction * ShotSpeed;
 
-    if (Position.DistanceTo(_shooter.GlobalPosition) > _range)
+    if (GlobalPosition.DistanceTo(_shooter.GlobalPosition) > _range)
     {
       DissipateBulletInit(); 
     }

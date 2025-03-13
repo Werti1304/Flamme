@@ -26,6 +26,7 @@ color_ramp = SubResource("GradientTexture1D_oovqd")
 collision_layer = 3
 collision_mask = 3
 script = ExtResource("1_llejq")
+Damage = 2
 ShotSpeed = 3.0
 Sprite = NodePath("Sprite2D")
 DestructionParticles = NodePath("GPUParticles2D")

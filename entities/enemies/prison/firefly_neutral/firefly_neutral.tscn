@@ -1,0 +1,52 @@
+[gd_scene load_steps=8 format=3 uid="uid://b12b2lsur5mmn"]
+
+[ext_resource type="Texture2D" uid="uid://hmuip5oltmqq" path="res://assets/sprites/entities/enemy/fly_placeholders/fly_neutral_1.png" id="1_f7xv7"]
+[ext_resource type="Script" uid="uid://djfk2ui85dmln" path="res://entities/enemies/prison/firefly_neutral/FireflyNeutral.cs" id="1_n8acw"]
+[ext_resource type="Texture2D" uid="uid://dryhpdivj16h3" path="res://assets/sprites/entities/enemy/fly_placeholders/fly_neutral_2.png" id="2_n8acw"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_2s5rg"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_f7xv7")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_n8acw")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="Gradient" id="Gradient_f7xv7"]
+colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_n8acw"]
+gradient = SubResource("Gradient_f7xv7")
+fill = 1
+fill_from = Vector2(0.495726, 0.491453)
+fill_to = Vector2(0.794872, 0.837607)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_f7xv7"]
+radius = 4.0
+
+[node name="FireflyNeutral" type="CharacterBody2D" node_paths=PackedStringArray("Sprite")]
+collision_layer = 4
+collision_mask = 7
+motion_mode = 1
+script = ExtResource("1_n8acw")
+Sprite = NodePath("AnimatedSprite2D")
+Health = 5.0
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_2s5rg")
+autoplay = "default"
+
+[node name="PointLight2D" type="PointLight2D" parent="."]
+position = Vector2(0, 3)
+energy = 0.2
+texture = SubResource("GradientTexture2D_n8acw")
+texture_scale = 0.5
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_f7xv7")

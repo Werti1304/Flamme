@@ -1,13 +1,12 @@
 using Godot;
 using System;
-using Flamme.world;
 
-public partial class MageWeak : Enemy
+public partial class MageStrong : Enemy
 {
   [Export] public float Speed = 10.0f;
   [Export] public float ShootTimerSec = 3.0f;
 
-  [Export] public float Range = 96.0f;
+  [Export] public float Range = 256.0f;
   
   [ExportGroup("Meta")]
   [Export] public Sprite2D Sprite;
@@ -24,7 +23,7 @@ public partial class MageWeak : Enemy
     
     RayCast.TargetPosition = RayCast.ToLocal(Target.GlobalPosition);
     if (Target.GlobalPosition.DistanceTo(GlobalPosition) < Range 
-      && RayCast.IsColliding() && RayCast.GetCollider() is PlayableCharacter)
+        && RayCast.IsColliding() && RayCast.GetCollider() is PlayableCharacter)
     {
       Velocity = Velocity.Lerp(Vector2.Zero, 0.05f);
       
@@ -69,15 +68,9 @@ public partial class MageWeak : Enemy
     
     MoveAndSlide();
   }
-
-  private int _shootingCounter = 0;
+  
   private void ShootingTimerOnTimeout()
   {
-    Shooter.ProjectileCount = _shootingCounter + 1;
     Shooter.Shoot(this, Target);
-    if (_shootingCounter == 1)
-      _shootingCounter = 0;
-    else
-      _shootingCounter++;
   }
 }

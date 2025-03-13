@@ -14,7 +14,8 @@ public partial class Archer : Enemy
   [Export] public Sprite2D Sprite;
   [Export] public RayCast2D RayCast;
   [Export] public NavigationAgent2D NavigationAgent;
-
+  [Export] public Shooter Shooter;
+  
   private double _shootTimer;
 
   public override void _PhysicsProcess(double delta)
@@ -71,13 +72,6 @@ public partial class Archer : Enemy
 
   private void ShootingTimerOnTimeout()
   {
-    var projectile = ProjectileScene.Instantiate<EnemyProjectile>();
-    var direction = (Target.GlobalPosition - GlobalPosition).Normalized();
-    projectile.GlobalPosition = GlobalPosition + (direction * ShootStartDistance);
-    projectile.Direction = direction;
-    var targetRotation = projectile.Direction.Angle();
-    projectile.Rotation = targetRotation;
-    GetTree().Root.AddChild(projectile);
-    projectile.Fire(this, LevelManager.Instance.CurrentRoom, 1000.0f);
+    Shooter.Shoot(this, Target);
   }
 }
