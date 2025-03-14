@@ -7,15 +7,12 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_npw0q"]
 size = Vector2(1024, 352)
 
-[node name="AllItems" type="Area2D" node_paths=PackedStringArray("TileMap", "CollisionShape")]
+[node name="AllItems" type="Area2D" node_paths=PackedStringArray("CollisionShape")]
 collision_layer = 15
 collision_mask = 15
 script = ExtResource("1_ekd31")
 ItemPickupScene = ExtResource("2_8x46l")
 Type = 7
-Size = 2
-AllowedExits = 17
-TileMap = NodePath("TileMap")
 CollisionShape = NodePath("CollisionShape")
 
 [node name="TileMap" type="TileMapLayer" parent="."]

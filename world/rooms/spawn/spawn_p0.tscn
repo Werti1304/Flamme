@@ -1,0 +1,263 @@
+[gd_scene load_steps=9 format=4 uid="uid://pfhymug74cbs"]
+
+[ext_resource type="Script" uid="uid://cu3vdn0r1mer3" path="res://world/rooms/Room.cs" id="1_rabtc"]
+[ext_resource type="TileSet" uid="uid://dmr1qa35nssvg" path="res://assets/tilesets/prison.tres" id="2_sooby"]
+[ext_resource type="PackedScene" uid="uid://cu2hrf4t2q3w0" path="res://entities/env/health/health_pickup.tscn" id="3_x642v"]
+[ext_resource type="PackedScene" uid="uid://ct41on4c43mde" path="res://entities/env/purse/purse_pickup.tscn" id="4_1i1kx"]
+[ext_resource type="PackedScene" uid="uid://bfulsjxd53ikv" path="res://entities/env/itemPickup.tscn" id="5_q01ak"]
+[ext_resource type="PackedScene" uid="uid://bgqrp6nhkayrg" path="res://entities/env/shop/coin_buyable.tscn" id="6_ogn66"]
+[ext_resource type="PackedScene" uid="uid://bnx0j5b2ekjat" path="res://world/doors/DoorMarker.tscn" id="7_sooby"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_rabtc"]
+size = Vector2(608, 416)
+
+[node name="Spawn" type="Area2D" node_paths=PackedStringArray("TheoreticalDoorMarkers", "FloorTileMap", "PropsTileMap", "OuterWallTileMap", "CollisionShape", "DoorMarkerParent", "MidPoint")]
+collision_layer = 15
+collision_mask = 15
+script = ExtResource("1_rabtc")
+Type = 1
+TheoreticalDoorMarkers = {
+0: NodePath("DoorMarkerParent/DoorMarker3"),
+1: NodePath("DoorMarkerParent/DoorMarker2"),
+2: NodePath("DoorMarkerParent/DoorMarker"),
+3: NodePath("DoorMarkerParent/DoorMarker4")
+}
+FloorTileMap = NodePath("Floor")
+PropsTileMap = NodePath("Props")
+OuterWallTileMap = NodePath("Outer Wall")
+CollisionShape = NodePath("CollisionShape")
+DoorMarkerParent = NodePath("DoorMarkerParent")
+MidPoint = NodePath("MidPoint")
+
+[node name="heart pickups" type="Node2D" parent="."]
+position = Vector2(64, 224)
+
+[node name="HealthPickup" parent="heart pickups" instance=ExtResource("3_x642v")]
+position = Vector2(16, 15)
+
+[node name="HealthPickup2" parent="heart pickups" instance=ExtResource("3_x642v")]
+position = Vector2(48, 15)
+HealingAmount = 3
+
+[node name="HealthPickup3" parent="heart pickups" instance=ExtResource("3_x642v")]
+position = Vector2(79, 16)
+HealingAmount = 2
+
+[node name="HealthPickup4" parent="heart pickups" instance=ExtResource("3_x642v")]
+position = Vector2(112, 15)
+HealingAmount = 1
+
+[node name="HealthPickup5" parent="heart pickups" instance=ExtResource("3_x642v")]
+position = Vector2(16, 47)
+HealthType = 1
+
+[node name="HealthPickup6" parent="heart pickups" instance=ExtResource("3_x642v")]
+position = Vector2(48, 47)
+HealthType = 1
+HealingAmount = 3
+
+[node name="HealthPickup7" parent="heart pickups" instance=ExtResource("3_x642v")]
+position = Vector2(80, 47)
+HealthType = 1
+HealingAmount = 2
+
+[node name="HealthPickup8" parent="heart pickups" instance=ExtResource("3_x642v")]
+position = Vector2(112, 46)
+HealthType = 1
+HealingAmount = 1
+
+[node name="purse pickups" type="Node2D" parent="."]
+position = Vector2(64, 64)
+
+[node name="PursePickup" parent="purse pickups" instance=ExtResource("4_1i1kx")]
+position = Vector2(17, 15)
+
+[node name="PursePickup2" parent="purse pickups" instance=ExtResource("4_1i1kx")]
+position = Vector2(47, 14)
+Amount = 2
+
+[node name="PursePickup3" parent="purse pickups" instance=ExtResource("4_1i1kx")]
+position = Vector2(80, 16)
+Amount = 3
+
+[node name="PursePickup4" parent="purse pickups" instance=ExtResource("4_1i1kx")]
+position = Vector2(113, 15)
+Amount = 4
+
+[node name="PursePickup5" parent="purse pickups" instance=ExtResource("4_1i1kx")]
+position = Vector2(144, 16)
+Amount = 5
+
+[node name="PursePickup6" parent="purse pickups" instance=ExtResource("4_1i1kx")]
+position = Vector2(15, 47)
+Amount = 6
+
+[node name="PursePickup7" parent="purse pickups" instance=ExtResource("4_1i1kx")]
+position = Vector2(48, 47)
+Amount = 7
+
+[node name="PursePickup8" parent="purse pickups" instance=ExtResource("4_1i1kx")]
+position = Vector2(80, 48)
+Amount = 8
+
+[node name="PursePickup9" parent="purse pickups" instance=ExtResource("4_1i1kx")]
+position = Vector2(114, 46)
+Amount = 9
+
+[node name="PursePickup10" parent="purse pickups" instance=ExtResource("4_1i1kx")]
+position = Vector2(144, 47)
+Amount = 10
+
+[node name="PursePickup11" parent="purse pickups" instance=ExtResource("4_1i1kx")]
+position = Vector2(16, 80)
+Amount = 20
+
+[node name="PursePickup12" parent="purse pickups" instance=ExtResource("4_1i1kx")]
+position = Vector2(49, 80)
+Amount = 30
+
+[node name="PursePickup13" parent="purse pickups" instance=ExtResource("4_1i1kx")]
+position = Vector2(80, 79)
+PurseContent = 1
+
+[node name="PursePickup14" parent="purse pickups" instance=ExtResource("4_1i1kx")]
+position = Vector2(112, 79)
+PurseContent = 1
+Amount = 2
+
+[node name="PursePickup15" parent="purse pickups" instance=ExtResource("4_1i1kx")]
+position = Vector2(143, 80)
+PurseContent = 1
+Amount = 3
+
+[node name="PursePickup16" parent="purse pickups" instance=ExtResource("4_1i1kx")]
+position = Vector2(173, 15)
+PurseContent = 2
+
+[node name="Itempickups" type="Node2D" parent="."]
+
+[node name="ItemPickup" parent="Itempickups" instance=ExtResource("5_q01ak")]
+position = Vector2(369, 239)
+RetrievelMode = 1
+ItemId = 1
+
+[node name="ItemPickup2" parent="Itempickups" instance=ExtResource("5_q01ak")]
+position = Vector2(433, 240)
+RetrievelMode = 1
+ItemId = 3
+
+[node name="ItemPickup3" parent="Itempickups" instance=ExtResource("5_q01ak")]
+position = Vector2(369, 307)
+RetrievelMode = 1
+ItemId = 6
+
+[node name="ItemPickup4" parent="Itempickups" instance=ExtResource("5_q01ak")]
+position = Vector2(430, 306)
+RetrievelMode = 1
+ItemId = 11
+
+[node name="ItemPickup5" parent="Itempickups" instance=ExtResource("5_q01ak")]
+position = Vector2(496, 304)
+RetrievelMode = 1
+ItemId = 12
+
+[node name="Buyable" type="Node2D" parent="."]
+
+[node name="CoinBuyable" parent="Buyable" instance=ExtResource("6_ogn66")]
+position = Vector2(368, 107)
+
+[node name="PursePickup" parent="Buyable/CoinBuyable" instance=ExtResource("4_1i1kx")]
+Amount = 5
+
+[node name="CoinBuyable2" parent="Buyable" instance=ExtResource("6_ogn66")]
+position = Vector2(400, 107)
+Price = 5
+
+[node name="PursePickup" parent="Buyable/CoinBuyable2" instance=ExtResource("4_1i1kx")]
+PurseContent = 2
+
+[node name="CoinBuyable3" parent="Buyable" instance=ExtResource("6_ogn66")]
+position = Vector2(429, 108)
+
+[node name="HealthPickup" parent="Buyable/CoinBuyable3" instance=ExtResource("3_x642v")]
+
+[node name="CoinBuyable4" parent="Buyable" instance=ExtResource("6_ogn66")]
+position = Vector2(463, 109)
+Price = 5
+
+[node name="HealthPickup" parent="Buyable/CoinBuyable4" instance=ExtResource("3_x642v")]
+HealthType = 1
+
+[node name="CoinBuyable5" parent="Buyable" instance=ExtResource("6_ogn66")]
+position = Vector2(495, 110)
+Price = 15
+
+[node name="ItemPickup" parent="Buyable/CoinBuyable5" instance=ExtResource("5_q01ak")]
+
+[node name="Rigidbodyfun" type="Node2D" parent="."]
+position = Vector2(333, 272)
+
+[node name="HealthPickup" parent="Rigidbodyfun" instance=ExtResource("3_x642v")]
+
+[node name="HealthPickup2" parent="Rigidbodyfun" instance=ExtResource("3_x642v")]
+
+[node name="HealthPickup3" parent="Rigidbodyfun" instance=ExtResource("3_x642v")]
+
+[node name="HealthPickup4" parent="Rigidbodyfun" instance=ExtResource("3_x642v")]
+
+[node name="HealthPickup5" parent="Rigidbodyfun" instance=ExtResource("3_x642v")]
+
+[node name="HealthPickup6" parent="Rigidbodyfun" instance=ExtResource("3_x642v")]
+
+[node name="HealthPickup7" parent="Rigidbodyfun" instance=ExtResource("3_x642v")]
+
+[node name="HealthPickup8" parent="Rigidbodyfun" instance=ExtResource("3_x642v")]
+
+[node name="HealthPickup9" parent="Rigidbodyfun" instance=ExtResource("3_x642v")]
+
+[node name="HealthPickup10" parent="Rigidbodyfun" instance=ExtResource("3_x642v")]
+
+[node name="HealthPickup11" parent="Rigidbodyfun" instance=ExtResource("3_x642v")]
+
+[node name="Floor" type="TileMapLayer" parent="."]
+z_index = -1
+tile_map_data = PackedByteArray("AAACAAIAFAAAAAAAAAACAAMAFAAAAAAAAAACAAQAFAABAAAAAAACAAUAFAAAAAAAAAACAAYAFAAAAAAAAAACAAcAFAAAAAAAAAACAAgAFAAAAAAAAAACAAkAFAAEAAAAAAACAAoAFAAAAAAAAAADAAIAFAAAAAAAAAADAAMAFAAAAAAAAAADAAQAFAAAAAAAAAADAAUAFAABAAAAAAADAAYAFAAAAAAAAAADAAcAFAADAAAAAAADAAgAFAAAAAAAAAADAAkAFAAAAAAAAAADAAoAFAAAAAAAAAAEAAIAFAAAAAAAAAAEAAMAFAAAAAAAAAAEAAQAFAAAAAAAAAAEAAUAFAAAAAEAAAAEAAYAFAAAAAAAAAAEAAcAFAAFAAAAAAAEAAgAFAAAAAAAAAAEAAkAFAAAAAAAAAAEAAoAFAAAAAAAAAAFAAIAFAAHAAAAAAAFAAMAFAAAAAAAAAAFAAQAFAAAAAAAAAAFAAUAFAAAAAAAAAAFAAYAFAAFAAEAAAAFAAcAFAAEAAAAAAAFAAgAFAAAAAAAAAAFAAkAFAAAAAAAAAAFAAoAFAAAAAAAAAAGAAIAFAAAAAAAAAAGAAMAFAAAAAAAAAAGAAQAFAAAAAAAAAAGAAUAFAAAAAAAAAAGAAYAFAAAAAAAAAAGAAcAFAAAAAAAAAAGAAgAFAAAAAAAAAAGAAkAFAAAAAAAAAAGAAoAFAAAAAAAAAAHAAIAFAAAAAAAAAAHAAMAFAAAAAEAAAAHAAQAFAAAAAAAAAAHAAUAFAAAAAAAAAAHAAYAFAAAAAAAAAAHAAcAFAAAAAAAAAAHAAgAFAAAAAAAAAAHAAkAFAAAAAAAAAAHAAoAFAAAAAAAAAAIAAIAFAAAAAAAAAAIAAMAFAAAAAAAAAAIAAQAFAAAAAAAAAAIAAUAFAAAAAAAAAAIAAYAFAAAAAAAAAAIAAcAFAAAAAAAAAAIAAgAFAAAAAAAAAAIAAkAFAAFAAEAAAAIAAoAFAAAAAAAAAAJAAEAFAAAAAAAAAAJAAIAFAAAAAEAAAAJAAMAFAAAAAAAAAAJAAQAFAAAAAAAAAAJAAUAFAAAAAAAAAAJAAYAFAAAAAAAAAAJAAcAFAAAAAAAAAAJAAgAFAAAAAAAAAAJAAkAFAAAAAAAAAAJAAoAFAAAAAAAAAAJAAsAFAAAAAAAAAAKAAIAFAAAAAAAAAAKAAMAFAAAAAAAAAAKAAQAFAAAAAAAAAAKAAUAFAAAAAAAAAAKAAYAFAAAAAAAAAAKAAcAFAAAAAAAAAAKAAgAFAAAAAAAAAAKAAkAFAAAAAAAAAAKAAoAFAAAAAAAAAALAAIAFAAGAAAAAAALAAMAFAAAAAAAAAALAAQAFAAAAAAAAAALAAUAFAAAAAAAAAALAAYAFAAAAAAAAAALAAcAFAAAAAAAAAALAAgAFAAAAAAAAAALAAkAFAAAAAAAAAALAAoAFAAAAAAAAAAMAAIAFAAAAAAAAAAMAAMAFAAAAAAAAAAMAAQAFAAAAAAAAAAMAAUAFAAAAAAAAAAMAAYAFAAGAAAAAAAMAAcAFAAAAAAAAAAMAAgAFAAAAAAAAAAMAAkAFAAAAAAAAAAMAAoAFAAAAAAAAAANAAIAFAAAAAAAAAANAAMAFAAAAAAAAAANAAQAFAAAAAAAAAANAAUAFAAAAAAAAAANAAYAFAAAAAAAAAANAAcAFAABAAEAAAANAAgAFAADAAAAAAANAAkAFAAAAAAAAAANAAoAFAAAAAAAAAAOAAIAFAAAAAAAAAAOAAMAFAAAAAAAAAAOAAQAFAAAAAAAAAAOAAUAFAAAAAAAAAAOAAYAFAAAAAAAAAAOAAcAFAAAAAAAAAAOAAgAFAAAAAAAAAAOAAkAFAAAAAAAAAAOAAoAFAAAAAAAAAAPAAIAFAAAAAAAAAAPAAMAFAAGAAAAAAAPAAQAFAABAAAAAAAPAAUAFAAAAAAAAAAPAAYAFAAAAAAAAAAPAAcAFAAAAAAAAAAPAAgAFAAAAAAAAAAPAAkAFAAAAAAAAAAPAAoAFAAAAAAAAAAQAAIAFAAAAAAAAAAQAAMAFAAAAAAAAAAQAAQAFAAAAAAAAAAQAAUAFAAAAAAAAAAQAAYAFAAAAAAAAAAQAAcAFAAAAAAAAAAQAAgAFAABAAEAAAAQAAkAFAAFAAAAAAAQAAoAFAABAAEAAAABAAYAFAAAAAAAAAARAAYAFAAAAAAAAAA=")
+tile_set = ExtResource("2_sooby")
+
+[node name="Props" type="TileMapLayer" parent="."]
+tile_set = ExtResource("2_sooby")
+
+[node name="Outer Wall" type="TileMapLayer" parent="."]
+tile_map_data = PackedByteArray("AAACAAEACgACAAAAAAADAAEACgABAAAAAAAEAAEACgAAAAAAAAAFAAEACgABAAAAAAAGAAEACgAAAAAAAAAHAAEACgABAAAAAAAIAAEACgABAAAAAAAKAAEACgABAAAAAAALAAEACgAAAAAAAAAMAAEACgABAAAAAAANAAEACgACAAAAAAAOAAEACgAAAAAAAAAPAAEACgAAAAEAAAAQAAEACgACAAAAAAARAAIACgABAAEAAFARAAMACgABAAAAAFARAAQACgABAAAAAFARAAUACgAEAAAAAFARAAgACgAAAAAAAFARAAkACgAAAAAAAFARAAoACgACAAAAAFAQAAsACgAEAAAAADAPAAsACgACAAAAADAOAAsACgABAAAAADANAAsACgABAAAAADAMAAsACgAAAAAAADALAAsACgAFAAAAADAKAAsACgAEAAAAADAIAAsACgADAAEAADAHAAsACgABAAAAADAGAAsACgACAAAAADAFAAsACgACAAAAADAEAAsACgACAAAAADADAAsACgACAAAAADACAAsACgABAAAAADABAAoACgACAAEAAGABAAkACgACAAAAAGABAAgACgABAAAAAGABAAUACgAAAAAAAGABAAQACgAAAAAAAGABAAMACgABAAAAAGABAAIACgABAAAAAGABAAcACgACAAAAAGARAAcACgAAAAAAAFABAAEACgADAAAAAAARAAEACgADAAAAAFARAAsACgADAAAAADABAAsACgADAAAAAGABAAAAMgAAAAIAAAACAAAAMgAAAAIAAAADAAAAMgAAAAIAAAAEAAAAMgAAAAIAAAAFAAAAMgAAAAIAAAAGAAAAMgAAAAIAAAAHAAAAMgAAAAIAAAAIAAAAMgAAAAIAAAAJAAAAMgAAAAIAAAAKAAAAMgAAAAIAAAALAAAAMgAAAAIAAAAMAAAAMgAAAAIAAAANAAAAMgAAAAIAAAAOAAAAMgAAAAIAAAAPAAAAMgAAAAIAAAAQAAAAMgAAAAIAAAARAAAAMgAAAAIAAAASAAEAMgAAAAIAAFASAAIAMgAAAAIAAFASAAMAMgAAAAIAAFASAAQAMgAAAAIAAFASAAUAMgAAAAIAAFASAAYAMgAAAAIAAFASAAcAMgAAAAIAAFASAAgAMgAAAAIAAFASAAkAMgAAAAIAAFASAAoAMgAAAAIAAFASAAsAMgAAAAIAAFARAAwAMgAAAAIAADAQAAwAMgAAAAIAADAPAAwAMgAAAAIAADAOAAwAMgAAAAIAADANAAwAMgAAAAIAADAMAAwAMgAAAAIAADALAAwAMgAAAAIAADAKAAwAMgAAAAIAADAJAAwAMgAAAAIAADAIAAwAMgAAAAIAADAHAAwAMgAAAAIAADAGAAwAMgAAAAIAADAFAAwAMgAAAAIAADAEAAwAMgAAAAIAADADAAwAMgAAAAIAADACAAwAMgAAAAIAADABAAwAMgAAAAIAADAAAAoAMgAAAAIAAGAAAAkAMgAAAAIAAGAAAAgAMgAAAAIAAGAAAAcAMgAAAAIAAGAAAAYAMgAAAAIAAGAAAAUAMgAAAAIAAGAAAAQAMgAAAAIAAGAAAAMAMgAAAAIAAGAAAAIAMgAAAAIAAGAAAAEAMgAAAAIAAGAAAAAAMgAAAAEAAAASAAAAMgAAAAEAAFASAAwAMgAAAAEAADAAAAwAMgAAAAEAAGAAAAsAMgAAAAIAAGA=")
+tile_set = ExtResource("2_sooby")
+
+[node name="MidPoint" type="Node2D" parent="."]
+position = Vector2(304, 208)
+
+[node name="DoorMarkerParent" type="Node2D" parent="."]
+
+[node name="DoorMarker" parent="DoorMarkerParent" instance=ExtResource("7_sooby")]
+position = Vector2(288, 32)
+
+[node name="DoorMarker2" parent="DoorMarkerParent" instance=ExtResource("7_sooby")]
+position = Vector2(576, 192)
+rotation = 1.5708
+FacingDirection = 1
+
+[node name="DoorMarker3" parent="DoorMarkerParent" instance=ExtResource("7_sooby")]
+position = Vector2(320, 384)
+rotation = 3.14159
+FacingDirection = 0
+
+[node name="DoorMarker4" parent="DoorMarkerParent" instance=ExtResource("7_sooby")]
+position = Vector2(32, 224)
+rotation = -1.5708
+FacingDirection = 3
+
+[node name="CollisionShape" type="CollisionShape2D" parent="."]
+position = Vector2(304, 208)
+shape = SubResource("RectangleShape2D_rabtc")
+
+[node name="Loot" type="Node2D" parent="."]
+
+[node name="Enemies" type="Node2D" parent="."]

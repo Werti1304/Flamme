@@ -59,19 +59,20 @@ position = Vector2(544, 1)
 position = Vector2(1152, 352)
 
 [node name="PathwayP3" parent="Rooms" instance=ExtResource("12_avogb")]
-position = Vector2(1856, 353)
+position = Vector2(896, 929)
 
 [node name="DoorMarker" parent="Rooms/PathwayP3" instance=ExtResource("13_g40kj")]
-position = Vector2(-288, 192)
+position = Vector2(768, -416)
+rotation = 1.5708
+FacingDirection = 1
 
 [node name="DoorMarker2" parent="Rooms/PathwayP3" instance=ExtResource("13_g40kj")]
-position = Vector2(128, 96)
-rotation = -3.14159
+position = Vector2(0, 192)
+rotation = -1.5708
+FacingDirection = 3
 
-[node name="Door" parent="Rooms/PathwayP3" node_paths=PackedStringArray("_doorMarker1", "_doorMarker2", "Room1", "Room2") instance=ExtResource("14_g40kj")]
+[node name="Door" parent="Rooms/PathwayP3" node_paths=PackedStringArray("Room1", "Room2") instance=ExtResource("14_g40kj")]
 position = Vector2(-64, 0)
-_doorMarker1 = NodePath("../DoorMarker")
-_doorMarker2 = NodePath("../DoorMarker2")
 Room1 = NodePath("../../PathwayP2")
 Room2 = NodePath("..")
 

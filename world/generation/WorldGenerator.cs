@@ -100,18 +100,10 @@ public partial class WorldGenerator : Node2D
     GD.Print("Generating rooms...");
     GenerateRooms(level, floor);
     GD.Print("Level generated!");
-
-    GD.Print("Closing up sides...");
-    foreach (var room in level.Grid)
-    {
-      room?.CloseNotConnectedSides();
-    }
-    GD.Print("Sides closed!");
-
-    // TODO
-    // GD.Print("Placing down doors...");
-    // level.FillRoomTransitionList();
-    // GD.Print("Doors placed!");
+    
+    GD.Print("Placing down doors and closing sides...");
+    level.FillRoomTransitionList();
+    GD.Print("Doors placed!");
 
     GD.Print("Generating loot...");
 
@@ -201,7 +193,7 @@ public partial class WorldGenerator : Node2D
     
     // TODO: globals.cs for tile size and room size
     var tileSize = new Vector2I(32, 32);
-    var roomSize = new Vector2I(17, 11);
+    var roomSize = new Vector2I(64, 32);
     
     // end rooms
     var endRoomsConst = GetEndRooms(ref weightGrid, levelCenter);

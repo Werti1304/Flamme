@@ -6,12 +6,10 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_rhw0v"]
 size = Vector2(544, 352)
 
-[node name="Pathway1" type="Area2D" node_paths=PackedStringArray("TileMap", "CollisionShape")]
+[node name="Pathway1" type="Area2D" node_paths=PackedStringArray("CollisionShape")]
 collision_layer = 15
 collision_mask = 15
 script = ExtResource("1_kll6j")
-AllowedExits = 15
-TileMap = NodePath("TileMap")
 CollisionShape = NodePath("CollisionShape")
 
 [node name="TileMap" type="TileMapLayer" parent="."]

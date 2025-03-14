@@ -8,6 +8,8 @@ using Flamme.world.doors;
 using Flamme.world.generation;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 using Vector2I = Godot.Vector2I;
 
 namespace Flamme.world.rooms;
@@ -15,29 +17,46 @@ namespace Flamme.world.rooms;
 [Tool]
 public partial class Room : Area2D
 {
+  public static Room Current { get; private set; } = null;
+  
+  [Export] private bool SanityCheckTool // Button to create current RoomSize/Exits configuration on tilemap
+  {
+    get => false;
+    // ReSharper disable once ValueParameterNotUsed
+    set
+    {
+      if(value)
+        SanityCheck();
+    }
+  }
+  
   [Export] public LevelType LevelType;
   // Room type, affects generation
   [Export] public RoomType Type;
+  [Export] public bool CameraFixed = false;
   
   // How likely this specific room is generated in comparison to others
   // To make a room super rare for example, make it 10
   // 0.999 is the workaround, cuz 1 will give you no slider at all in the editor :/
   [Export(PropertyHint.Range, "1,100,0.999")] public int RoomGenerationTickets = 100;
   
+  [Export] private bool UpdateDoorMarkersTool // Button to create current RoomSize/Exits configuration on tilemap
+  {
+    get => false;
+    // ReSharper disable once ValueParameterNotUsed
+    set
+    {
+      if(value)
+        UpdateDoorMarkers();
+    }
+  }
   // Gets automatically filled by pressing button, has to be done beforehand
   // Should NOT BE USED after world generation
   // All used ones get removed from here and added to Doors dictionary
   [Export] public Godot.Collections.Dictionary<Cardinal, DoorMarker> TheoreticalDoorMarkers = [];
   
   // Gets filled during world generation
-  public Dictionary<Cardinal, Door> Doors = [];
-  
-  public static Room Current { get; private set; } = null;
-  
-  private List<Node2D> _lootList = [];
-
-  private bool _cleared;
-  public bool WasVisited;
+  public readonly Dictionary<Cardinal, Door> Doors = [];
   
   [ExportGroup("Generation")]
   [Export]
@@ -51,10 +70,11 @@ public partial class Room : Area2D
         GenerateTemplate();
     }
   }
-  
+
   [ExportGroup("Meta")] 
   [Export] public TileMapLayer FloorTileMap;
-  [Export] public TileMapLayer TileMap;
+  [Export] public TileMapLayer PropsTileMap;
+  [Export] public TileMapLayer OuterWallTileMap;
   [Export] public CollisionShape2D CollisionShape;
   [Export] public Node2D DoorMarkerParent;
   [Export] public Node2D MidPoint;
@@ -62,9 +82,12 @@ public partial class Room : Area2D
   [Signal] public delegate void PlayerEnteredEventHandler(PlayableCharacter playableCharacter);
   [Signal] public delegate void PlayerExitedEventHandler(PlayableCharacter playableCharacter);
 
+  public bool WasVisited;
   public readonly List<Enemy> Enemies = [];
-  // TODO List of entities, chests, etc.
+
   private PlayableCharacter _playableCharacter;
+  private List<Node2D> _lootList = [];
+  private bool _cleared;
   
   public override void _Ready()
   {
@@ -76,9 +99,6 @@ public partial class Room : Area2D
 
     CollisionMask = 0b1111;
     CollisionLayer = 0b1111;
-
-    // Just to see stuff thats at 0
-    TileMap.ZIndex = -1;
 
     foreach (var childNode in GetChildren())
     {
@@ -265,15 +285,29 @@ public partial class Room : Area2D
       node.QueueFree();
     }
   }
-
-  public void CloseNotConnectedSides()
+  
+  // Context: Editor Tool
+  private void UpdateDoorMarkers()
   {
-    foreach (var door in TheoreticalDoorMarkers)
+    TheoreticalDoorMarkers.Clear();
+    foreach (var doorMarker in DoorMarkerParent.GetChildren())
     {
-      door.Value.Disguise();
+      if (doorMarker is DoorMarker marker)
+      {
+        if (TheoreticalDoorMarkers.TryAdd(marker.FacingDirection, marker))
+        {
+          continue;
+        }
+        GD.PushWarning($"Found duplicate DoorMarker {doorMarker.Name} in DoorMarkerParent of room {Name}!");
+      }
+      else
+      {
+        GD.PushWarning($"Found non-DoorMarker child {doorMarker.Name} in DoorMarkerParent of room {Name}!");
+      }
     }
   }
   
+  // Context: Editor Tool
   private void GenerateTemplate()
   {
     var tileset = LevelType switch
@@ -282,7 +316,7 @@ public partial class Room : Area2D
       _ => throw new ArgumentOutOfRangeException()
     };
 
-    if (FloorTileMap == null)
+    if (FloorTileMap == null || !IsInstanceValid(FloorTileMap))
     {
       FloorTileMap = new TileMapLayer();
       AddChild(FloorTileMap);
@@ -291,14 +325,23 @@ public partial class Room : Area2D
       FloorTileMap.Owner = this;
       FloorTileMap.ZIndex = -1;
     }
-    if (TileMap == null)
+    
+    if (PropsTileMap == null)
     {
-      TileMap = new TileMapLayer();
-      AddChild(TileMap);
-      TileMap.TileSet = tileset;
-      TileMap.Name = "Tiles";
-      TileMap.Owner = this;
-      TileMap.ZIndex = -1;
+      PropsTileMap = new TileMapLayer();
+      AddChild(PropsTileMap);
+      PropsTileMap.TileSet = tileset;
+      PropsTileMap.Name = "Props";
+      PropsTileMap.Owner = this;
+    }
+
+    if (OuterWallTileMap == null)
+    {
+      OuterWallTileMap = new TileMapLayer();
+      AddChild(OuterWallTileMap);
+      OuterWallTileMap.TileSet = tileset;
+      OuterWallTileMap.Name = "Outer Wall";
+      OuterWallTileMap.Owner = this;
     }
     
     if (MidPoint == null)
@@ -339,7 +382,27 @@ public partial class Room : Area2D
       AddChild(node);
       node.Name = "Enemies";
       node.Owner = this;
-      
     }
+  }
+  
+  private static readonly Vector2I MaxRoomSize = new Vector2I(64 * 32, 32 * 32);
+  private static readonly Vector2I MinRoomSize = new Vector2I(17 * 32, 10 * 32);
+  
+  private void SanityCheck()
+  {
+    ExportMetaNonNull.Check(this);
+    
+    Debug.Assert(TheoreticalDoorMarkers.Count > 0, "No door markers in room!");
+    UpdateDoorMarkers();
+    
+    var shape = CollisionShape.Shape as RectangleShape2D;
+    Debug.Assert(shape != null, "CollisionShape is not a rectangle!");
+    Debug.Assert(shape.Size.X >= MinRoomSize.X && shape.Size.Y >= MinRoomSize.Y, 
+      $"Room size is of {shape.Size} too small, must at least be {MinRoomSize} tiles!");
+    Debug.Assert(shape.Size.X <= MaxRoomSize.X && shape.Size.Y <= MaxRoomSize.Y,
+      $"Room size of {shape.Size} is too big, must at most be {MaxRoomSize} tiles!");
+    
+    Debug.Assert(!FloorTileMap.TileMapData.IsEmpty(), "FloorTileMap is empty!");
+    Debug.Assert(!OuterWallTileMap.TileMapData.IsEmpty(), "OuterWallTileMap is empty!");
   }
 }

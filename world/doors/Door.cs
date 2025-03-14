@@ -19,8 +19,8 @@ public partial class Door : Node2D
   }
   
   [Export] private DoorType _type = DoorType.Bars;
-  [Export] private DoorMarker _doorMarker1;
-  [Export] private DoorMarker _doorMarker2;
+  [Export] public DoorMarker DoorMarker1;
+  [Export] public DoorMarker DoorMarker2;
   [Export] public Room Room1;
   [Export] public Room Room2;
   
@@ -63,7 +63,7 @@ public partial class Door : Node2D
 
   public override void _Ready()
   {
-    if (_doorMarker1 == null || _doorMarker2 == null)
+    if (DoorMarker1 == null || DoorMarker2 == null)
     {
       GD.PushWarning("Did you forget to set the door markers?");
       return;
@@ -77,35 +77,35 @@ public partial class Door : Node2D
     
     ExportMetaNonNull.Check(this);
 
-    _doorMarker1.Door = this;
-    _doorMarker2.Door = this;
+    DoorMarker1.Door = this;
+    DoorMarker2.Door = this;
     
     switch (_type)
     {
       case DoorType.Bars:
-        _doorMarker1.TextureOpen = BarOpenTexture;        
-        _doorMarker2.TextureOpen = BarOpenTexture;
-        _doorMarker1.TextureClosed = BarClosedTexture;
-        _doorMarker2.TextureClosed = BarClosedTexture;
+        DoorMarker1.TextureOpen = BarOpenTexture;        
+        DoorMarker2.TextureOpen = BarOpenTexture;
+        DoorMarker1.TextureClosed = BarClosedTexture;
+        DoorMarker2.TextureClosed = BarClosedTexture;
         break;
       case DoorType.Boss:
-        _doorMarker1.TextureOpen = BossOpenTexture;        
-        _doorMarker2.TextureOpen = BossOpenTexture;
-        _doorMarker1.TextureClosed = BossClosedTexture;
-        _doorMarker2.TextureClosed = BossClosedTexture;
+        DoorMarker1.TextureOpen = BossOpenTexture;        
+        DoorMarker2.TextureOpen = BossOpenTexture;
+        DoorMarker1.TextureClosed = BossClosedTexture;
+        DoorMarker2.TextureClosed = BossClosedTexture;
         break;
       case DoorType.Gold:
-        _doorMarker1.TextureOpen = GoldOpenTexture;        
-        _doorMarker2.TextureOpen = GoldOpenTexture;
-        _doorMarker1.TextureClosed = GoldClosedTexture;
-        _doorMarker2.TextureClosed = GoldClosedTexture;
+        DoorMarker1.TextureOpen = GoldOpenTexture;        
+        DoorMarker2.TextureOpen = GoldOpenTexture;
+        DoorMarker1.TextureClosed = GoldClosedTexture;
+        DoorMarker2.TextureClosed = GoldClosedTexture;
         _isLockedByKey = true;
         break;
       case DoorType.Shop:
-        _doorMarker1.TextureOpen = ShopOpenTexture;        
-        _doorMarker2.TextureOpen = ShopOpenTexture;
-        _doorMarker1.TextureClosed = ShopClosedTexture;
-        _doorMarker2.TextureClosed = ShopClosedTexture;
+        DoorMarker1.TextureOpen = ShopOpenTexture;        
+        DoorMarker2.TextureOpen = ShopOpenTexture;
+        DoorMarker1.TextureClosed = ShopClosedTexture;
+        DoorMarker2.TextureClosed = ShopClosedTexture;
         _isLockedByKey = true;
         break;
       default:
@@ -114,18 +114,18 @@ public partial class Door : Node2D
     
     Open();
     
-    _doorMarker1.Teleport += OnTeleportDoorMarker1;
-    _doorMarker2.Teleport += OnTeleportDoorMarker2;
+    DoorMarker1.Teleport += OnTeleportDoorMarker1;
+    DoorMarker2.Teleport += OnTeleportDoorMarker2;
   }
   
   private void OnTeleportDoorMarker1(PlayableCharacter character)
   {
-    Level.Current.Teleport(Room1, Room2, _doorMarker2.TeleportPoint.GlobalPosition);
+    Level.Current.Teleport(Room1, Room2, DoorMarker2.TeleportPoint.GlobalPosition);
   }
   
   private void OnTeleportDoorMarker2(PlayableCharacter character)
   {
-    Level.Current.Teleport(Room2, Room1, _doorMarker1.TeleportPoint.GlobalPosition); 
+    Level.Current.Teleport(Room2, Room1, DoorMarker1.TeleportPoint.GlobalPosition); 
   }
 
   public virtual void Lock()
@@ -177,8 +177,8 @@ public partial class Door : Node2D
 
     _isOpen = true;
     
-    _doorMarker1.Open();
-    _doorMarker2.Open();
+    DoorMarker1.Open();
+    DoorMarker2.Open();
   }
 
   public virtual void Close()
@@ -194,7 +194,7 @@ public partial class Door : Node2D
     
     _isOpen = false;
     
-    _doorMarker1.Close();
-    _doorMarker2.Close();
+    DoorMarker1.Close();
+    DoorMarker2.Close();
   }
 }

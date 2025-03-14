@@ -6,13 +6,12 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_yrqa6"]
 size = Vector2(544, 352)
 
-[node name="PathwayP2" type="Area2D" node_paths=PackedStringArray("FloorTileMap", "TileMap", "CollisionShape", "DoorMarkerParent", "MidPoint")]
+[node name="PathwayP2" type="Area2D" node_paths=PackedStringArray("FloorTileMap", "CollisionShape", "DoorMarkerParent", "MidPoint")]
 collision_layer = 15
 collision_mask = 15
 script = ExtResource("1_jvydq")
 RoomGenerationTickets = 1
 FloorTileMap = NodePath("Floor")
-TileMap = NodePath("Tiles")
 CollisionShape = NodePath("CollisionShape")
 DoorMarkerParent = NodePath("DoorMarkerParent")
 MidPoint = NodePath("MidPoint")

@@ -1,11 +1,31 @@
 using Flamme.common.enums;
 using Flamme.testing;
 using Godot;
+using System;
 
 namespace Flamme.world.doors;
 
+[Tool]
 public partial class DoorMarker : StaticBody2D
 {
+  [Export] public Cardinal FacingDirection
+  {
+    get => _facingDirection;
+    set
+    {
+      RotationDegrees = value switch
+      {
+        Cardinal.North => 180,
+        Cardinal.East => 90,
+        Cardinal.South => 0,
+        Cardinal.West => -90,
+        _ => throw new ArgumentOutOfRangeException(nameof(value), value, null)
+      };
+      _facingDirection = value;
+    }
+  }
+  private Cardinal _facingDirection = Cardinal.South;
+  
   [ExportGroup("Textures")]
   [Export] public Texture2D DisguiseTexture;
   
@@ -14,18 +34,19 @@ public partial class DoorMarker : StaticBody2D
   [Export] public CollisionShape2D CollisionShape;
   [Export] public Area2D TeleportZone;
   [Export] public Node2D TeleportPoint;
-  
+
   [Signal] public delegate void TeleportEventHandler(PlayableCharacter character);
   
   public Door Door { get; set; }
-  
-  public Cardinal FacingDirection = Cardinal.South;
 
   public Texture2D TextureOpen = null;
   public Texture2D TextureClosed = null;
   
   public override void _Ready()
   {
+    if(Engine.IsEditorHint())
+      return;
+    
     ExportMetaNonNull.Check(this);
 
     TeleportZone.BodyEntered += TeleportZoneOnBodyEntered;
@@ -37,12 +58,6 @@ public partial class DoorMarker : StaticBody2D
     {
       EmitSignal(SignalName.Teleport, playableCharacter);
     }
-  }
-
-  public void SetFacingDirection(Cardinal cardinal)
-  {
-    RotationDegrees = FacingDirection.GetRotationTo(cardinal);
-    FacingDirection = cardinal;
   }
 
   // This class has no concept of states, just does as told

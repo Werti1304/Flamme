@@ -13,12 +13,13 @@ public partial class PlayerCamera : Camera2D
 
   private float _weight;
   private Room _activeRoom;
-
+  
   public Room GetActiveRoom()
   {
     return _activeRoom;
   }
 
+  private bool _roomChange = false;
   public void UpdateRoom()
   {
     var room = Room.Current;
@@ -28,6 +29,21 @@ public partial class PlayerCamera : Camera2D
     LimitRight = LimitLeft + (int)roomRect.Size.X;
     LimitBottom = LimitTop + (int)roomRect.Size.Y;
     _activeRoom = room;
+    _roomChange = true;
+
+    if (room.CameraFixed)
+    {
+      LimitLeft = -10000000;
+      LimitTop = -10000000;
+      LimitRight = 10000000;
+      LimitBottom = 10000000;
+      GlobalPosition = room.MidPoint.GlobalPosition;
+      SetProcess(false);
+    }
+    else
+    {
+      SetProcess(true);
+    }
   }
 
   public override void _Ready()
@@ -36,8 +52,13 @@ public partial class PlayerCamera : Camera2D
     _weight = (11 - SmoothingDistance) / 100.0f;
   }
 
-  public override void _PhysicsProcess(double delta)
+  public override void _Process(double delta)
   {
+    if (_roomChange)
+    {
+      _roomChange = false;
+      GlobalPosition = Player.GlobalPosition;
+    }
     if (SmoothingEnabled)
     {
       GlobalPosition = GlobalPosition.Lerp(Player.GlobalPosition, _weight);
@@ -46,6 +67,5 @@ public partial class PlayerCamera : Camera2D
     {
       GlobalPosition = Player.GlobalPosition;
     }
-    // GlobalPosition = GlobalPosition.Floor();
   }
 }

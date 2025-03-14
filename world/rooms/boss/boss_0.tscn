@@ -7,13 +7,11 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_tgtm2"]
 size = Vector2(544, 352)
 
-[node name="Boss0" type="Area2D" node_paths=PackedStringArray("TileMap", "CollisionShape")]
+[node name="Boss0" type="Area2D" node_paths=PackedStringArray("CollisionShape")]
 collision_layer = 15
 collision_mask = 15
 script = ExtResource("1_g5e5g")
 Type = 5
-AllowedExits = 15
-TileMap = NodePath("TileMap")
 CollisionShape = NodePath("CollisionShape")
 
 [node name="TileMap" type="TileMapLayer" parent="."]

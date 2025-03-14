@@ -25,6 +25,7 @@ public partial class Level : Node2D
 
   [ExportGroup("Meta")] 
   [Export] public Node2D LootParent;
+  [Export] public Node2D DoorParent;
 
   private List<(Vector2I v1, Room r1, Vector2I v2, Room r2)> _roomTransitions = [];
 
@@ -41,7 +42,7 @@ public partial class Level : Node2D
     var positionDiff = newPlayerPosition - PlayableCharacter.GlobalPosition;
     PlayableCharacter.SetDeferred(Node2D.PropertyName.GlobalPosition, newPlayerPosition);
     // Teleport staff to new room but don't change relative distance to player 
-    ActiveStaff.SetDeferred(Node2D.PropertyName.GlobalPosition, ActiveStaff.GlobalPosition + positionDiff);
+    ActiveStaff?.SetDeferred(Node2D.PropertyName.GlobalPosition, ActiveStaff.GlobalPosition + positionDiff);
   }
 
   public void AddRoom(Room room, int x, int y)
@@ -52,111 +53,69 @@ public partial class Level : Node2D
     room.Owner = this;
   }
   
-  // public void FillRoomTransitionList()
-  // {
-  //   for (var y = 0; y < Grid.GetLength(1); y++)
-  //   {
-  //     for (var x = 0; x < Grid.GetLength(0); x++)
-  //     {
-  //       var room = Grid[x, y];
-  //       if(room == null)
-  //         continue;
-  //       
-  //       foreach (var roomExit in Enum.GetValues<RoomExit>())
-  //       {
-  //         // Continue if there is no exit or door is already placed
-  //         if (!room.ActualExits.HasFlag(roomExit) || room.Doors.ContainsKey(roomExit))
-  //           continue;
-  //       
-  //         // Have to place doors
-  //         var neighbour = GetRoomNeighbour(x, y, roomExit);
-  //         var exitPosition = Dimensions.GetExitPosition(room.Size, roomExit);
-  //
-  //         var door = SceneLoader.Instance[SceneLoader.Scene.Door].Instantiate<Door>();
-  //         door.SetPerRoomTypes(room.Type, neighbour.Type);
-  //         
-  //         room.AddChild(door);
-  //         
-  //         var doorPos = exitPosition * 32;
-  //         switch (roomExit)
-  //         {
-  //           case RoomExit.North:
-  //           case RoomExit.North2:
-  //           case RoomExit.North3:
-  //           case RoomExit.South:
-  //           case RoomExit.South2:
-  //           case RoomExit.South3:
-  //             doorPos.X += 16;
-  //             doorPos.Y += 32;
-  //             break;
-  //           case RoomExit.West:
-  //           case RoomExit.West2:
-  //           case RoomExit.West3:
-  //           case RoomExit.East:
-  //           case RoomExit.East2:
-  //           case RoomExit.East3:
-  //             doorPos.X += 32;
-  //             doorPos.Y += 16;
-  //             door.RotationDegrees = 90;
-  //             break;
-  //           default:
-  //             throw new ArgumentOutOfRangeException();
-  //         }
-  //         door.Position = doorPos;
-  //         
-  //         GD.Print($"Placed door from {room.Name} to {neighbour.Name} at {doorPos}");
-  //         
-  //         room.Doors[roomExit] = door;
-  //         neighbour.Doors[Dimensions.OppositeExits[roomExit]] = door;
-  //       }
-  //     }
-  //   }
-  // }
-  //
-  // private Room GetRoomNeighbour(int startX, int startY, RoomExit roomExit)
-  // {
-  //   int gridX;
-  //   int gridY;
-  //   
-  //   switch (roomExit)
-  //   {
-  //     case RoomExit.North:
-  //       gridX = 0;
-  //       gridY = -1;
-  //       break;
-  //     case RoomExit.South:
-  //       gridX = 0;
-  //       gridY = 1;
-  //       break;
-  //     case RoomExit.West:
-  //       gridX = -1;
-  //       gridY = 0;
-  //       break;
-  //     case RoomExit.East:
-  //       gridX = 1;
-  //       gridY = 0;
-  //       break;
-  //     // TODO
-  //     case RoomExit.North2:
-  //     case RoomExit.South2:
-  //     case RoomExit.West2:
-  //     case RoomExit.East2:
-  //     case RoomExit.North3:
-  //     case RoomExit.South3:
-  //     case RoomExit.West3:
-  //     case RoomExit.East3:
-  //     default:
-  //       throw new ArgumentOutOfRangeException(nameof(roomExit), roomExit, null);
-  //   }
-  //   
-  //   gridX += startX;
-  //   gridY += startY;
-  //   
-  //   if(gridX >= 0 && gridX < Grid.GetLength(0) && gridY >= 0 && gridY < Grid.GetLength(1))
-  //     return Grid[gridX, gridY];
-  //   GD.PushError($"Tried to get room neighbour of {startX}, {startY} with exit {roomExit} but got out of bounds!");
-  //   return null;
-  // }
+  public void FillRoomTransitionList()
+  {
+    for (var y = 0; y < Grid.GetLength(1); y++)
+    {
+      for (var x = 0; x < Grid.GetLength(0); x++)
+      {
+        var room = Grid[x, y];
+        if(room == null)
+          continue;
+        
+        foreach (var roomExit in room.TheoreticalDoorMarkers)
+        {
+          var neighbour = GetRoomNeighbour(x, y, roomExit.Key);
+
+          if (neighbour == null)
+          {
+            // If there's no neighbour in that direction, hide
+            roomExit.Value.Disguise();
+            continue;
+          }
+          
+          var neighbourDoorDirection = roomExit.Key.Opposite();
+          if (!neighbour.TheoreticalDoorMarkers.ContainsKey(neighbourDoorDirection))
+          {
+            GD.PushError($"Room {neighbour.Name} has no door marker for {neighbourDoorDirection}, can't place down door!");
+            continue;
+          }
+          
+          var door = SceneLoader.Instance[SceneLoader.Scene.Door].Instantiate<Door>();
+          
+          // Setup door
+          door.DoorMarker1 = roomExit.Value;
+          door.Room1 = room;
+          room.Doors[roomExit.Key] = door;
+          
+          door.DoorMarker2 = neighbour.TheoreticalDoorMarkers[neighbourDoorDirection];
+          door.Room2 = neighbour;
+          neighbour.Doors[neighbourDoorDirection] = door;
+          neighbour.TheoreticalDoorMarkers.Remove(neighbourDoorDirection);
+  
+          door.SetPerRoomTypes(room.Type, neighbour.Type);
+          room.AddChild(door);
+          
+          GD.Print($"Placed door from {room.Name} {roomExit.Key} to {neighbour.Name} {neighbourDoorDirection}.");
+        }
+        // Delete everything from here so we can't do dumb stuff even if we try to
+        room.TheoreticalDoorMarkers.Clear();
+      }
+    }
+  }
+  
+  private Room GetRoomNeighbour(int startX, int startY, Cardinal direction)
+  {
+    var directionVector = direction.ToVector();
+    
+    var gridX = startX + directionVector.X;
+    var gridY = startY + directionVector.Y;
+
+    if (gridX < 0 || gridX >= Grid.GetLength(0) || gridY < 0 || gridY >= Grid.GetLength(1))
+      return null;
+    
+    return Grid[gridX, gridY];
+  }
 
   public override void _Ready()
   {
