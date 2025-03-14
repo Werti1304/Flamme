@@ -2,6 +2,7 @@ using Godot;
 using System;
 using Flamme.testing;
 using Flamme.world;
+using Flamme.world.rooms;
 
 public partial class Shooter : Node2D
 { 
@@ -97,6 +98,6 @@ public partial class Shooter : Node2D
     var targetRotation = projectile.Direction.Angle();
     projectile.Rotation = targetRotation;
     GetTree().Root.AddChild(projectile);
-    projectile.Fire(_shooter, LevelManager.Instance.CurrentRoom, Range);
+    projectile.Fire(_shooter, Room.Current, Range);
   }
 }

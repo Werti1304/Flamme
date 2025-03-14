@@ -21,7 +21,7 @@ public partial class PlayerCamera : Camera2D
 
   public void UpdateRoom()
   {
-    var room = LevelManager.Instance.CurrentRoom;
+    var room = Room.Current;
     var roomRect = room.CollisionShape.Shape.GetRect();
     LimitLeft = (int)room.GlobalPosition.X;
     LimitTop = (int)room.GlobalPosition.Y;

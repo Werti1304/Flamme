@@ -1,0 +1,36 @@
+[gd_scene load_steps=5 format=3 uid="uid://bnx0j5b2ekjat"]
+
+[ext_resource type="Script" uid="uid://lxis3ashrpf4" path="res://world/doors/DoorMarker.cs" id="1_4qrfw"]
+[ext_resource type="Texture2D" uid="uid://bdt2boo38aq4o" path="res://world/doors/textures/door_bar_closed.tres" id="2_7b18w"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_4qrfw"]
+size = Vector2(32, 32)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_7b18w"]
+size = Vector2(32, 11)
+
+[node name="DoorMarker" type="StaticBody2D" node_paths=PackedStringArray("Sprite", "CollisionShape", "TeleportZone", "TeleportPoint")]
+script = ExtResource("1_4qrfw")
+Sprite = NodePath("Sprite2D")
+CollisionShape = NodePath("CollisionShape2D")
+TeleportZone = NodePath("Area2D")
+TeleportPoint = NodePath("TeleportPoint")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_7b18w")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_4qrfw")
+
+[node name="Area2D" type="Area2D" parent="."]
+collision_layer = 2
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+z_index = 4000
+position = Vector2(0, -10.5)
+shape = SubResource("RectangleShape2D_7b18w")
+debug_color = Color(0.925543, 4.25476e-05, 0.675834, 0.42)
+
+[node name="TeleportPoint" type="Node2D" parent="."]
+position = Vector2(0, 12)

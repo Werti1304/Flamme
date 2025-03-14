@@ -9,6 +9,7 @@ using Flamme.entities.env.shop;
 using Flamme.entities.player;
 using Flamme.testing;
 using Flamme.ui;
+using Flamme.world.rooms;
 
 public partial class PlayableCharacter : CharacterBody2D, IEnemyDamagable
 {

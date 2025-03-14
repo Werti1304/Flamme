@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://cs66mytyvgfwr"]
+[gd_scene load_steps=17 format=3 uid="uid://cs66mytyvgfwr"]
 
 [ext_resource type="Script" uid="uid://c6g26aj7v1tnv" path="res://world/generation/Level.cs" id="1_y0xvm"]
 [ext_resource type="PackedScene" uid="uid://bna3ai6fvr4er" path="res://entities/player/PlayableCharacter.tscn" id="2_qox26"]
@@ -14,6 +14,8 @@
 [ext_resource type="PackedScene" uid="uid://crtnskko55g5u" path="res://world/generation/Example_Level_2.tscn" id="11_hm2ft"]
 [ext_resource type="PackedScene" uid="uid://tsbef88yayoq" path="res://world/rooms/pathway/pathway_P2.tscn" id="11_u0ini"]
 [ext_resource type="PackedScene" uid="uid://cxnvb4kujlx21" path="res://world/rooms/pathway/pathway_P3.tscn" id="12_avogb"]
+[ext_resource type="PackedScene" uid="uid://bnx0j5b2ekjat" path="res://world/doors/DoorMarker.tscn" id="13_g40kj"]
+[ext_resource type="PackedScene" uid="uid://ba5fp1aq2fdep" path="res://world/doors/door.tscn" id="14_g40kj"]
 
 [node name="ExampleLevel" type="Node2D" node_paths=PackedStringArray("Spawn", "PlayableCharacter", "ActiveStaff", "PlayerCamera")]
 script = ExtResource("1_y0xvm")
@@ -57,7 +59,21 @@ position = Vector2(544, 1)
 position = Vector2(1152, 352)
 
 [node name="PathwayP3" parent="Rooms" instance=ExtResource("12_avogb")]
-position = Vector2(1696, 352)
+position = Vector2(1856, 353)
+
+[node name="DoorMarker" parent="Rooms/PathwayP3" instance=ExtResource("13_g40kj")]
+position = Vector2(-288, 192)
+
+[node name="DoorMarker2" parent="Rooms/PathwayP3" instance=ExtResource("13_g40kj")]
+position = Vector2(128, 96)
+rotation = -3.14159
+
+[node name="Door" parent="Rooms/PathwayP3" node_paths=PackedStringArray("_doorMarker1", "_doorMarker2", "Room1", "Room2") instance=ExtResource("14_g40kj")]
+position = Vector2(-64, 0)
+_doorMarker1 = NodePath("../DoorMarker")
+_doorMarker2 = NodePath("../DoorMarker2")
+Room1 = NodePath("../../PathwayP2")
+Room2 = NodePath("..")
 
 [node name="Warper" parent="." instance=ExtResource("10_qu0v0")]
 position = Vector2(145, 239)

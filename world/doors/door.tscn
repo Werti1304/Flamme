@@ -1,19 +1,16 @@
-[gd_scene load_steps=11 format=3 uid="uid://ba5fp1aq2fdep"]
+[gd_scene load_steps=10 format=3 uid="uid://ba5fp1aq2fdep"]
 
 [ext_resource type="Script" uid="uid://cgl8qbhfa3lec" path="res://world/doors/Door.cs" id="1_hg41a"]
-[ext_resource type="Texture2D" uid="uid://bdt2boo38aq4o" path="res://world/doors/door_bar_closed.tres" id="2_pn1n0"]
-[ext_resource type="Texture2D" uid="uid://s7bttma77pe5" path="res://world/doors/door_bar_open.tres" id="3_pn1n0"]
-[ext_resource type="Texture2D" uid="uid://nv0rdu2pf68e" path="res://world/doors/door_boss_open.tres" id="4_bkp00"]
-[ext_resource type="Texture2D" uid="uid://crieftj51fyyi" path="res://world/doors/door_boss_closed.tres" id="4_t7wlw"]
-[ext_resource type="Texture2D" uid="uid://6dvyiymj48nn" path="res://world/doors/door_gold_closed.tres" id="4_w6mg2"]
-[ext_resource type="Texture2D" uid="uid://do5hkb3t8hspx" path="res://world/doors/door_gold_open.tres" id="5_bkp00"]
-[ext_resource type="Texture2D" uid="uid://baijjaya1yism" path="res://world/doors/door_shop_closed.tres" id="6_t7wlw"]
-[ext_resource type="Texture2D" uid="uid://4mjhfsvqba8" path="res://world/doors/door_shop_open.tres" id="7_pn1n0"]
+[ext_resource type="Texture2D" uid="uid://bdt2boo38aq4o" path="res://world/doors/textures/door_bar_closed.tres" id="2_pn1n0"]
+[ext_resource type="Texture2D" uid="uid://s7bttma77pe5" path="res://world/doors/textures/door_bar_open.tres" id="3_pn1n0"]
+[ext_resource type="Texture2D" uid="uid://nv0rdu2pf68e" path="res://world/doors/textures/door_boss_open.tres" id="4_bkp00"]
+[ext_resource type="Texture2D" uid="uid://crieftj51fyyi" path="res://world/doors/textures/door_boss_closed.tres" id="4_t7wlw"]
+[ext_resource type="Texture2D" uid="uid://6dvyiymj48nn" path="res://world/doors/textures/door_gold_closed.tres" id="4_w6mg2"]
+[ext_resource type="Texture2D" uid="uid://do5hkb3t8hspx" path="res://world/doors/textures/door_gold_open.tres" id="5_bkp00"]
+[ext_resource type="Texture2D" uid="uid://baijjaya1yism" path="res://world/doors/textures/door_shop_closed.tres" id="6_t7wlw"]
+[ext_resource type="Texture2D" uid="uid://4mjhfsvqba8" path="res://world/doors/textures/door_shop_open.tres" id="7_pn1n0"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_4r4fh"]
-size = Vector2(32, 64)
-
-[node name="Door" type="StaticBody2D" node_paths=PackedStringArray("Sprite", "SpriteMirrored", "CollisionShape")]
+[node name="Door" type="Node2D"]
 script = ExtResource("1_hg41a")
 BarClosedTexture = ExtResource("2_pn1n0")
 BarOpenTexture = ExtResource("3_pn1n0")
@@ -23,17 +20,3 @@ GoldClosedTexture = ExtResource("4_w6mg2")
 GoldOpenTexture = ExtResource("5_bkp00")
 ShopClosedTexture = ExtResource("6_t7wlw")
 ShopOpenTexture = ExtResource("7_pn1n0")
-Sprite = NodePath("Sprite2D")
-SpriteMirrored = NodePath("Sprite2D2")
-CollisionShape = NodePath("CollisionShape2D")
-
-[node name="Sprite2D" type="Sprite2D" parent="."]
-position = Vector2(1.90735e-06, 16)
-
-[node name="Sprite2D2" type="Sprite2D" parent="."]
-position = Vector2(1.90735e-06, -16)
-rotation = 3.14159
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(1.90735e-06, 0)
-shape = SubResource("RectangleShape2D_4r4fh")

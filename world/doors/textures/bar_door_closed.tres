@@ -1,7 +1,0 @@
-[gd_resource type="AtlasTexture" load_steps=2 format=3 uid="uid://4mhlx1xhg2wb"]
-
-[ext_resource type="Texture2D" uid="uid://b1jtondatcpt5" path="res://assets/sprites/levels/Prison.png" id="1_bbny2"]
-
-[resource]
-atlas = ExtResource("1_bbny2")
-region = Rect2(32, 128, 32, 32)

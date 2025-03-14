@@ -1,10 +1,14 @@
 using Flamme.common.constant;
 using Flamme.common.enums;
-using Flamme.entities.player;
+using Flamme.testing;
+using Flamme.world.doors;
+using Flamme.world.generation;
+using Flamme.world.rooms;
 using Godot;
 using System;
+// ReSharper disable HeuristicUnreachableCode
 
-public partial class Door : StaticBody2D
+public partial class Door : Node2D
 {
   public enum DoorType
   {
@@ -15,6 +19,10 @@ public partial class Door : StaticBody2D
   }
   
   [Export] private DoorType _type = DoorType.Bars;
+  [Export] private DoorMarker _doorMarker1;
+  [Export] private DoorMarker _doorMarker2;
+  [Export] public Room Room1;
+  [Export] public Room Room2;
   
   [ExportGroup("Textures")]
   [Export] public AtlasTexture BarClosedTexture;
@@ -25,11 +33,6 @@ public partial class Door : StaticBody2D
   [Export] public AtlasTexture GoldOpenTexture;
   [Export] public AtlasTexture ShopClosedTexture;
   [Export] public AtlasTexture ShopOpenTexture;
-  
-  [ExportGroup("Meta")] 
-  [Export] public Sprite2D Sprite;
-  [Export] public Sprite2D SpriteMirrored;
-  [Export] public CollisionShape2D CollisionShape;
   
   private bool _isOpen = false;
   private bool _isLocked = false;
@@ -60,31 +63,66 @@ public partial class Door : StaticBody2D
 
   public override void _Ready()
   {
+    if (_doorMarker1 == null || _doorMarker2 == null)
+    {
+      GD.PushWarning("Did you forget to set the door markers?");
+      return;
+    }
+
+    if (Room1 == null || Room2 == null)
+    {
+      GD.PushWarning("Door has at least one room not set!");
+      return;
+    }
+    
+    ExportMetaNonNull.Check(this);
+    
     switch (_type)
     {
       case DoorType.Bars:
-        _openTexture = BarOpenTexture;
-        _closedTexture = BarClosedTexture;
+        _doorMarker1.TextureOpen = BarOpenTexture;        
+        _doorMarker2.TextureOpen = BarOpenTexture;
+        _doorMarker1.TextureClosed = BarClosedTexture;
+        _doorMarker2.TextureClosed = BarClosedTexture;
         break;
       case DoorType.Boss:
-        _openTexture = BossOpenTexture;
-        _closedTexture = BossClosedTexture;
+        _doorMarker1.TextureOpen = BossOpenTexture;        
+        _doorMarker2.TextureOpen = BossOpenTexture;
+        _doorMarker1.TextureClosed = BossClosedTexture;
+        _doorMarker2.TextureClosed = BossClosedTexture;
         break;
       case DoorType.Gold:
-        _openTexture = GoldOpenTexture;
-        _closedTexture = GoldClosedTexture;
+        _doorMarker1.TextureOpen = GoldOpenTexture;        
+        _doorMarker2.TextureOpen = GoldOpenTexture;
+        _doorMarker1.TextureClosed = GoldClosedTexture;
+        _doorMarker2.TextureClosed = GoldClosedTexture;
         _isLockedByKey = true;
-        return;
+        break;
       case DoorType.Shop:
-        _openTexture = ShopOpenTexture;
-        _closedTexture = ShopClosedTexture;
+        _doorMarker1.TextureOpen = ShopOpenTexture;        
+        _doorMarker2.TextureOpen = ShopOpenTexture;
+        _doorMarker1.TextureClosed = ShopClosedTexture;
+        _doorMarker2.TextureClosed = ShopClosedTexture;
         _isLockedByKey = true;
-        return;
+        break;
       default:
         throw new ArgumentOutOfRangeException();
     }
     
-    Close();
+    Open();
+    
+    _doorMarker1.Teleport += OnTeleportDoorMarker1;
+    _doorMarker2.Teleport += OnTeleportDoorMarker2;
+  }
+  
+  private void OnTeleportDoorMarker1(PlayableCharacter character)
+  {
+    Level.Current.Teleport(Room1, Room2, _doorMarker2.TeleportPoint.GlobalPosition);
+  }
+  
+  private void OnTeleportDoorMarker2(PlayableCharacter character)
+  {
+    Level.Current.Teleport(Room2, Room1, _doorMarker1.TeleportPoint.GlobalPosition); 
   }
 
   public virtual void Lock()
@@ -135,21 +173,25 @@ public partial class Door : StaticBody2D
       return;
 
     _isOpen = true;
-    Sprite.Texture = _openTexture;
-    SpriteMirrored.Texture = _openTexture;
-    CollisionShape.SetDeferred(CollisionShape2D.PropertyName.Disabled, true);
+    
+    _doorMarker1.Open();
+    _doorMarker2.Open();
   }
 
   public virtual void Close()
   {
     if (DebugToggles.DoorsAlwaysOpen)
+      
+    #pragma warning disable CS0162 // Unreachable code detected
     {
       Open();
       return;
     }
+    #pragma warning restore CS0162 // Unreachable code detected
+    
     _isOpen = false;
-    Sprite.Texture = _closedTexture;
-    SpriteMirrored.Texture = _closedTexture;
-    CollisionShape.SetDeferred(CollisionShape2D.PropertyName.Disabled, false);
+    
+    _doorMarker1.Close();
+    _doorMarker2.Close();
   }
 }

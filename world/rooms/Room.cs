@@ -4,6 +4,8 @@ using Godot;
 using System.Collections.Generic;
 using Flamme.common.constant;
 using Flamme.entities.env.Loot;
+using Flamme.ui;
+using Flamme.world.generation;
 using System;
 using Vector2I = Godot.Vector2I;
 
@@ -30,6 +32,8 @@ public partial class Room : Area2D
 
   // Doors of the room. Shared with the neighbouring room!
   public Dictionary<RoomExit, Door> Doors = new Dictionary<RoomExit, Door>();
+
+  public static Room Current { get; private set; } = null;
   
   private List<Node2D> _lootList = [];
 
@@ -110,16 +114,6 @@ public partial class Room : Area2D
   private void SpawnLoot()
   {
     LootGenerator.SpawnLootAt(_lootList, GetGlobalMidPoint());
-    // foreach (var loot in _lootList)
-    // {
-    //   LevelManager.Instance.CurrentLevel.LootParent.AddChild(loot);
-    //   // TODO 3 Calculate where to spawn loot
-    //   loot.GlobalPosition = ;
-    //   GD.Print($"Spawning loot: {loot.Name} at {loot.GlobalPosition} in room {Name} that has position {GlobalPosition}.");
-    //   GD.Print($"Current player position: {LevelManager.Instance.CurrentLevel.PlayableCharacter.GlobalPosition}.");
-    //   loot.SetProcessMode(ProcessModeEnum.Inherit);
-    //   loot.SetVisible(true);
-    // }
     _lootList.Clear();
   }
   
@@ -132,16 +126,12 @@ public partial class Room : Area2D
     
     switch (body)
     {
-      case PlayableCharacter playableCharacter:
-        WasVisited = true;
-        SetCurrentRoom(playableCharacter);
-        if (Enemies.Count > 0)
+      case PlayableCharacter p:
+        if (Current == null)
         {
-          LockRoom(playableCharacter);
-        }
-        else
-        {
-          SetRoomCleared(false);
+          // Only a fallback for dev worlds and spawns
+          GD.Print($"Player entered room {Name} for on failsafe! (This should only happen on non-generated worlds)");
+          EnterRoom(p);
         }
         break;
       case Enemy e:
@@ -162,12 +152,6 @@ public partial class Room : Area2D
     
     switch (body)
     {
-      case PlayableCharacter:
-        GD.Print($"Player exited room {Name}");
-        SetRoomPassive();
-        _playableCharacter = null;
-        LevelManager.Instance.ExitedRoom(this);
-        break;
       case Enemy e:
         Enemies.Remove(e);
 
@@ -198,11 +182,13 @@ public partial class Room : Area2D
     }
   }
 
-  private void SetCurrentRoom(PlayableCharacter playableCharacter)
+  public void EnterRoom(PlayableCharacter playableCharacter)
   {
     GD.Print($"Player entered Room {Name} with {Enemies.Count} enemies!");
-    LevelManager.Instance.EnteredRoom(this);
+    Current = this;
     
+    Hud.Instance.Minimap.UpdateCurrentRoom();
+    Level.Current.PlayerCamera.UpdateRoom();
     _playableCharacter = playableCharacter;
     
     if (Enemies.Count == 0)
@@ -215,11 +201,26 @@ public partial class Room : Area2D
           GD.Print($"Thought room {Name} is empty, but had enemy {e.Name} inside!");
         }
       }
-
-      if (Enemies.Count != 0)
-      {
-        LockRoom(playableCharacter);
-      }
+    }
+    
+    WasVisited = true;
+    if (Enemies.Count > 0)
+    {
+      LockRoom(playableCharacter);
+    }
+    else
+    {
+      SetRoomCleared(false);
+    }
+  }
+  
+  public void LeaveRoom()
+  {
+    _playableCharacter = null;
+    
+    foreach (var enemy in Enemies)
+    {
+      enemy.SetPassive();
     }
   }
 
@@ -248,18 +249,6 @@ public partial class Room : Area2D
     else if (Type == RoomType.Pathway && enemiesDefeated)
     {
       SpawnLoot();
-    }
-  }
-
-  private void SetRoomPassive()
-  {
-    GD.Print($"Door opened around Room {Name}");
-    
-    _playableCharacter = null;
-    
-    foreach (var enemy in Enemies)
-    {
-      enemy.SetPassive();
     }
   }
   

@@ -69,7 +69,7 @@ public partial class Minimap : GridContainer
   public void UpdateCurrentRoom()
   {
     var level = LevelManager.Instance.CurrentLevel;
-    var playerRoom = LevelManager.Instance.CurrentRoom;
+    var playerRoom = Room.Current;
     for (var x = 0; x < level.Grid.GetLength(0); x++)
     {
       for (var y = 0; y < level.Grid.GetLength(0); y++)

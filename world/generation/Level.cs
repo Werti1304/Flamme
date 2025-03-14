@@ -4,9 +4,11 @@ using System;
 using Flamme.entities.staff;
 using Flamme.testing;
 using Flamme.ui;
+using Flamme.world.doors;
 using Godot;
 using System.Collections.Generic;
 using Godot.Collections;
+using System.Diagnostics;
 using Room = Flamme.world.rooms.Room;
 
 namespace Flamme.world.generation;
@@ -19,11 +21,28 @@ public partial class Level : Node2D
   [Export] public PlayerCamera PlayerCamera;
 
   public Room[,] Grid = new Room[16, 16];
+  public static Level Current => LevelManager.Instance.CurrentLevel;
 
   [ExportGroup("Meta")] 
   [Export] public Node2D LootParent;
 
   private List<(Vector2I v1, Room r1, Vector2I v2, Room r2)> _roomTransitions = [];
+
+  public void Teleport(Room fromRoom, Room toRoom, Vector2 newPlayerPosition)
+  {
+    if (fromRoom != Room.Current)
+    {
+      GD.PushWarning("Tried to teleport from room that is not current room!");
+    }
+    
+    fromRoom.LeaveRoom();
+    toRoom.EnterRoom(PlayableCharacter);
+    
+    var positionDiff = newPlayerPosition - PlayableCharacter.GlobalPosition;
+    PlayableCharacter.SetDeferred(Node2D.PropertyName.GlobalPosition, newPlayerPosition);
+    // Teleport staff to new room but don't change relative distance to player 
+    ActiveStaff.SetDeferred(Node2D.PropertyName.GlobalPosition, ActiveStaff.GlobalPosition + positionDiff);
+  }
 
   public void AddRoom(Room room, int x, int y)
   {
@@ -32,7 +51,7 @@ public partial class Level : Node2D
     AddChild(room);
     room.Owner = this;
   }
-
+  
   public void FillRoomTransitionList()
   {
     for (var y = 0; y < Grid.GetLength(1); y++)

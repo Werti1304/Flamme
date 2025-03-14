@@ -3,6 +3,7 @@ using Flamme.projectiles.player;
 using Flamme.testing;
 using Flamme.world;
 using Flamme.world.generation;
+using Flamme.world.rooms;
 using Godot;
 using System;
 
@@ -185,7 +186,7 @@ public partial class Staff : RigidBody2D
     var targetRotation = projectile.Direction.Angle();
     projectile.Rotation = targetRotation;
     GetTree().Root.AddChild(projectile);
-    projectile.Fire(_owner, LevelManager.Instance.CurrentRoom);
+    projectile.Fire(_owner, Room.Current);
   }
 
   private void AreaOnBodyEntered(Node2D body)
