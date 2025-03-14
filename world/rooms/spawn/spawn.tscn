@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=4 uid="uid://c2eekwqrmvxjg"]
+[gd_scene load_steps=8 format=4 uid="uid://cd2rytm0jk7bg"]
 
 [ext_resource type="Script" uid="uid://cu3vdn0r1mer3" path="res://world/rooms/Room.cs" id="1_x6qr4"]
 [ext_resource type="TileSet" uid="uid://dmr1qa35nssvg" path="res://assets/tilesets/prison.tres" id="2_sk61c"]
