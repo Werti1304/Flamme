@@ -17,9 +17,9 @@ public partial class WorldGenerator : Node2D
   private static readonly Array<Vector2I> Neighbours = new Array<Vector2I>
   { // needs same order as RoomExit
     new Vector2I(0, -1), // north
+    new Vector2I(1, 0),  // east
     new Vector2I(0, 1),  // south
     new Vector2I(-1, 0), // west
-    new Vector2I(1, 0),  // east
   };
 
   public override void _Ready()
@@ -107,10 +107,11 @@ public partial class WorldGenerator : Node2D
       room?.CloseNotConnectedSides();
     }
     GD.Print("Sides closed!");
-    
-    GD.Print("Placing down doors...");
-    level.FillRoomTransitionList();
-    GD.Print("Doors placed!");
+
+    // TODO
+    // GD.Print("Placing down doors...");
+    // level.FillRoomTransitionList();
+    // GD.Print("Doors placed!");
 
     GD.Print("Generating loot...");
 
@@ -218,7 +219,7 @@ public partial class WorldGenerator : Node2D
       for (int i = 0; i < endRoomTypeCount.Count; i++)
       {
         var roomTypeCount = endRoomTypeCount[typeCountShuffled[i]];
-        var roomMeta = RoomMeta.GetRandomRoom(roomTypeCount.type, RoomSize.S1X1, GetRoomExits(ref weightGrid, randomEndRoom));
+        var roomMeta = RoomMeta.GetRandomRoom(roomTypeCount.type, GetRoomExits(ref weightGrid, randomEndRoom));
         
         if (roomMeta == null) continue;
         
@@ -231,7 +232,7 @@ public partial class WorldGenerator : Node2D
         weightGrid[randomEndRoom.X, randomEndRoom.Y] = -(int)roomTypeCount.type; // change weight to room type for debugging
         
         var room = roomMeta.RoomScene.Instantiate<Room>();
-        room.ActualExits = GetRoomExits(ref weightGrid, randomEndRoom);
+        // TODO room.ActualExits = GetRoomExits(ref weightGrid, randomEndRoom);
         var placeGlobalPos = (randomEndRoom - levelCenter) * roomSize * tileSize;
         GD.Print($"Placing down room {room.Name} at {placeGlobalPos}, index {randomEndRoom}");
         room.GlobalPosition = placeGlobalPos;
@@ -254,19 +255,17 @@ public partial class WorldGenerator : Node2D
         
         var roomPos = new Vector2I(x, y);
         var actualExits = GetRoomExits(ref weightGrid, roomPos);
-        var roomMeta = RoomMeta.GetRandomRoom(RoomType.Pathway, RoomSize.S1X1, actualExits);
+        var roomMeta = RoomMeta.GetRandomRoom(RoomType.Pathway, actualExits);
         var room = roomMeta.RoomScene.Instantiate<Room>();
-        room.ActualExits = actualExits;
         var placeGlobalPos = (roomPos - levelCenter) * roomSize * tileSize;
         GD.Print($"Placing down room {room.Name} at {placeGlobalPos}");
         room.GlobalPosition = placeGlobalPos;
-        room.ActualExits = actualExits; // get exits for room
         level.AddRoom(room, x, y);
       }
     }
     
-    // Set actual exits of spawn
-    level.Spawn.ActualExits = GetRoomExits(ref weightGrid, levelCenter);
+    // TODO Set actual exits of spawn
+    // level.Spawn.ActualExits = GetRoomExits(ref weightGrid, levelCenter);
     
     // print in console
     for (var y = 0; y < level.Grid.GetLength(1); y++)
@@ -383,9 +382,9 @@ public partial class WorldGenerator : Node2D
     return endRooms;
   }
 
-  private static RoomExit GetRoomExits(ref int[,] weightGrid, Vector2I position)
+  private static List<Cardinal> GetRoomExits(ref int[,] weightGrid, Vector2I position)
   {
-    var exits = new RoomExit();
+    var exits = new List<Cardinal>();
     
     for (var i = 0; i < Neighbours.Count; i++)
     {
@@ -394,7 +393,9 @@ public partial class WorldGenerator : Node2D
       {
         if (weightGrid[neighbour.X, neighbour.Y] != -1)
         {
-          exits |= (RoomExit)(1 << i);
+          // TODO Wtf she doin
+          exits.Add((Cardinal)i);
+          // exits |= (RoomExit)(1 << i);
         }
       }
     }

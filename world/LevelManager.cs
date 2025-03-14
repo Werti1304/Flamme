@@ -139,7 +139,7 @@ public partial class LevelManager : Node2D
   private void SpawnUser(Level level)
   {
     // TODO 1 Preload 
-    var globalSpawnPosition = level.Spawn.GetGlobalMidPoint();
+    var globalSpawnPosition = level.Spawn.MidPoint.GlobalPosition;
     var playerScene = GD.Load<PackedScene>(PathConstants.PlayerScenePath);
     var player = playerScene.Instantiate<PlayableCharacter>();
     player.GlobalPosition = globalSpawnPosition;
@@ -176,7 +176,7 @@ public partial class LevelManager : Node2D
     
     // Bring stuff into new level
     level.PlayableCharacter = stuff.Character;
-    level.PlayableCharacter.GlobalPosition = level.Spawn.GetGlobalMidPoint();
+    level.PlayableCharacter.GlobalPosition = level.Spawn.MidPoint.GlobalPosition;
     level.AddChild(level.PlayableCharacter);
     
     if (stuff.Staff != null)

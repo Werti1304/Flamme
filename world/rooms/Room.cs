@@ -1,12 +1,13 @@
 using Flamme.common.enums;
 using Flamme.testing;
 using Godot;
-using System.Collections.Generic;
 using Flamme.common.constant;
 using Flamme.entities.env.Loot;
 using Flamme.ui;
+using Flamme.world.doors;
 using Flamme.world.generation;
 using System;
+using System.Collections.Generic;
 using Vector2I = Godot.Vector2I;
 
 namespace Flamme.world.rooms;
@@ -17,22 +18,20 @@ public partial class Room : Area2D
   [Export] public LevelType LevelType;
   // Room type, affects generation
   [Export] public RoomType Type;
-  // Room size, must match tilemap, when in doubt press Generate Template
-  [Export] public RoomSize Size;
+  
   // How likely this specific room is generated in comparison to others
   // To make a room super rare for example, make it 10
   // 0.999 is the workaround, cuz 1 will give you no slider at all in the editor :/
   [Export(PropertyHint.Range, "1,100,0.999")] public int RoomGenerationTickets = 100;
   
-  [ExportSubgroup("Exits")]
-  // All positions where the room may be entered/exited. Important for generation
-  [Export] public RoomExit AllowedExits;
-
-  public RoomExit ActualExits;
-
-  // Doors of the room. Shared with the neighbouring room!
-  public Dictionary<RoomExit, Door> Doors = new Dictionary<RoomExit, Door>();
-
+  // Gets automatically filled by pressing button, has to be done beforehand
+  // Should NOT BE USED after world generation
+  // All used ones get removed from here and added to Doors dictionary
+  [Export] public Godot.Collections.Dictionary<Cardinal, DoorMarker> TheoreticalDoorMarkers = [];
+  
+  // Gets filled during world generation
+  public Dictionary<Cardinal, Door> Doors = [];
+  
   public static Room Current { get; private set; } = null;
   
   private List<Node2D> _lootList = [];
@@ -57,6 +56,8 @@ public partial class Room : Area2D
   [Export] public TileMapLayer FloorTileMap;
   [Export] public TileMapLayer TileMap;
   [Export] public CollisionShape2D CollisionShape;
+  [Export] public Node2D DoorMarkerParent;
+  [Export] public Node2D MidPoint;
 
   [Signal] public delegate void PlayerEnteredEventHandler(PlayableCharacter playableCharacter);
   [Signal] public delegate void PlayerExitedEventHandler(PlayableCharacter playableCharacter);
@@ -88,16 +89,6 @@ public partial class Room : Area2D
     }
   }
 
-  private Vector2 GetMidPoint()
-  {
-    return new Vector2(Dimensions.RoomSizeDict[Size].X / 2.0f, Dimensions.RoomSizeDict[Size].Y / 2.0f);
-  }
-
-  public Vector2 GetGlobalMidPoint()
-  {
-    return GlobalPosition + GetMidPoint() * 32.0f;
-  }
-
   public void AddLoot(Node2D loot)
   {
     if (loot == null)
@@ -113,7 +104,7 @@ public partial class Room : Area2D
 
   private void SpawnLoot()
   {
-    LootGenerator.SpawnLootAt(_lootList, GetGlobalMidPoint());
+    LootGenerator.SpawnLootAt(_lootList, MidPoint.GlobalPosition);
     _lootList.Clear();
   }
   
@@ -167,8 +158,8 @@ public partial class Room : Area2D
   {
     GD.Print($"Room {Name} Locked!");
     
-    playableCharacter.GlobalPosition += 
-      playableCharacter.GlobalPosition.DirectionTo(GetGlobalMidPoint()) * 32.0f;
+    // playableCharacter.GlobalPosition += 
+    //   playableCharacter.GlobalPosition.DirectionTo(GetGlobalMidPoint()) * 32.0f;
 
     foreach (var door in Doors.Values)
     {
@@ -244,7 +235,7 @@ public partial class Room : Area2D
       var warperScene = GD.Load<PackedScene>(PathConstants.WarperScenePath);
       var warperNode = warperScene.Instantiate<entities.env.Warper>();
       CallDeferred(Node.MethodName.AddChild, warperNode);
-      warperNode.Position = GetMidPoint() * 32.0f;
+      warperNode.Position = MidPoint.Position * 32.0f;
     }
     else if (Type == RoomType.Pathway && enemiesDefeated)
     {
@@ -277,89 +268,11 @@ public partial class Room : Area2D
 
   public void CloseNotConnectedSides()
   {
-    for (var x = 0; x < Dimensions.RoomSizeDict[Size].X; x++)
+    foreach (var door in TheoreticalDoorMarkers)
     {
-      for (var y = 0; y < Dimensions.RoomSizeDict[Size].Y; y++)
-      {
-        // --- Check if we are at one of the exits ---
-        if (x == 0)
-        {
-          switch (y)
-          {
-            case 5 when ActualExits.HasFlag(RoomExit.West):
-            case 14 when ActualExits.HasFlag(RoomExit.West2):
-            case 23 when ActualExits.HasFlag(RoomExit.West3):
-              continue;
-            case 5:
-            case 14:
-            case 23:
-              TileMap.SetCell(new Vector2I(x, y), TemplateTileSourceId, TemplateWallAtlasCoords);
-              continue;
-            default:
-              continue;
-          }
-        }
-
-        if (x == Dimensions.RoomSizeDict[Size].X - 1)
-        {
-          switch (y)
-          {
-            case 5 when ActualExits.HasFlag(RoomExit.East):
-            case 14 when ActualExits.HasFlag(RoomExit.East2):
-            case 23 when ActualExits.HasFlag(RoomExit.East3):
-              continue;
-            case 5:
-            case 14:
-            case 23:
-              TileMap.SetCell(new Vector2I(x, y), TemplateTileSourceId, TemplateWallAtlasCoords);
-              continue;
-            default:
-              continue;
-          }
-        }
-
-        if (y == 0)
-        {
-          switch (x)
-          {
-            case 8 when ActualExits.HasFlag(RoomExit.North):
-            case 23 when ActualExits.HasFlag(RoomExit.North2):
-            case 38 when ActualExits.HasFlag(RoomExit.North3):
-              continue;
-            case 8:
-            case 23:
-            case 38:
-              TileMap.SetCell(new Vector2I(x, y), TemplateTileSourceId, TemplateWallAtlasCoords);
-              continue;
-            default:
-              continue;
-          }
-        }
-
-        if (y == Dimensions.RoomSizeDict[Size].Y - 1)
-        {
-          switch (x)
-          {
-            case 8 when ActualExits.HasFlag(RoomExit.South):
-            case 23 when ActualExits.HasFlag(RoomExit.South2):
-            case 38 when ActualExits.HasFlag(RoomExit.South3):
-              continue;
-            case 8:
-            case 23:
-            case 38:
-              TileMap.SetCell(new Vector2I(x, y), TemplateTileSourceId, TemplateWallAtlasCoords);
-              continue;
-            default:
-              continue;
-          }
-        }
-      }
+      door.Value.Disguise();
     }
   }
-
-  private const int TemplateTileSourceId = 0;
-  private static readonly Vector2I TemplateTileAtlasCoords = new Vector2I(1, 0);
-  private static readonly Vector2I TemplateWallAtlasCoords = new Vector2I(0, 0);
   
   private void GenerateTemplate()
   {
@@ -387,7 +300,23 @@ public partial class Room : Area2D
       TileMap.Owner = this;
       TileMap.ZIndex = -1;
     }
+    
+    if (MidPoint == null)
+    {
+      MidPoint = new Node2D();
+      AddChild(MidPoint);
+      MidPoint.Name = "MidPoint";
+      MidPoint.Owner = this;
+    }
 
+    if (DoorMarkerParent == null)
+    {
+      DoorMarkerParent = new Node2D();
+      AddChild(DoorMarkerParent);
+      DoorMarkerParent.Name = "DoorMarkerParent";
+      DoorMarkerParent.Owner = this;
+    }
+    
     if (CollisionShape == null)
     {
       CollisionShape = new CollisionShape2D();
@@ -396,117 +325,21 @@ public partial class Room : Area2D
       CollisionShape.Owner = this;
       
       var shape = new RectangleShape2D();
-      shape.Size = new Vector2(Dimensions.RoomSizeDict[Size].X * 32, Dimensions.RoomSizeDict[Size].Y * 32);
       CollisionShape.Shape = shape;
-      CollisionShape.SetPosition(GetMidPoint() * 32);
       CollisionShape.Hide();
       
+      // Just for simpler room building, unused in code
       var node = new Node2D();
       AddChild(node);
       node.Name = "Loot";
       node.Owner = this;
       
+      // just for simpler room building, unused in code
       node = new Node2D();
       AddChild(node);
       node.Name = "Enemies";
       node.Owner = this;
-    }
-
-    var errorAtlasCoords = new Vector2I(-1, -1);
-
-    // Check if map is empty or only filled with template stuff
-    for (var x = 0; x < Dimensions.RoomSizeDict[RoomSize.S3X3].X; x++)
-    {
-      for (var y = 0; y < Dimensions.RoomSizeDict[RoomSize.S3X3].Y; y++)
-      {
-        var cellCoords = new Vector2I(x, y);
-        var cellSourceId = TileMap.GetCellSourceId(cellCoords);
-
-        if (cellSourceId != -1 && cellSourceId != TemplateTileSourceId)
-        {
-          GD.Print(cellSourceId);
-          return;
-        }
-
-        var atlasCoords = TileMap.GetCellAtlasCoords(cellCoords);
-
-        if (atlasCoords != errorAtlasCoords
-            && atlasCoords != TemplateTileAtlasCoords
-            && atlasCoords != TemplateWallAtlasCoords)
-        {
-          GD.Print(atlasCoords);
-          return;
-        }
-      }
-    }
-
-    TileMap.Clear();
-
-    for (var x = 0; x < Dimensions.RoomSizeDict[Size].X; x++)
-    {
-      for (var y = 0; y < Dimensions.RoomSizeDict[Size].Y; y++)
-      {
-        // --- Check if we are at one of the exits ---
-        if (x == 0)
-        {
-          switch (y)
-          {
-            case 5 when AllowedExits.HasFlag(RoomExit.West):
-            case 14 when AllowedExits.HasFlag(RoomExit.West2):
-            case 23 when AllowedExits.HasFlag(RoomExit.West3):
-              break;
-            default:
-              TileMap.SetCell(new Vector2I(x, y), TemplateTileSourceId, TemplateWallAtlasCoords);
-              continue;
-          }
-        }
-
-        if (x == Dimensions.RoomSizeDict[Size].X - 1)
-        {
-          switch (y)
-          {
-            case 5 when AllowedExits.HasFlag(RoomExit.East):
-            case 14 when AllowedExits.HasFlag(RoomExit.East2):
-            case 23 when AllowedExits.HasFlag(RoomExit.East3):
-              break;
-            default:
-              TileMap.SetCell(new Vector2I(x, y), TemplateTileSourceId, TemplateWallAtlasCoords);
-              continue;
-          }
-        }
-
-        if (y == 0)
-        {
-          switch (x)
-          {
-            case 8 when AllowedExits.HasFlag(RoomExit.North):
-            case 23 when AllowedExits.HasFlag(RoomExit.North2):
-            case 38 when AllowedExits.HasFlag(RoomExit.North3):
-              break;
-            default:
-              TileMap.SetCell(new Vector2I(x, y), TemplateTileSourceId, TemplateWallAtlasCoords);
-              continue;
-          }
-        }
-
-        if (y == Dimensions.RoomSizeDict[Size].Y - 1)
-        {
-          switch (x)
-          {
-            case 8 when AllowedExits.HasFlag(RoomExit.South):
-            case 23 when AllowedExits.HasFlag(RoomExit.South2):
-            case 38 when AllowedExits.HasFlag(RoomExit.South3):
-              break;
-            default:
-              TileMap.SetCell(new Vector2I(x, y), TemplateTileSourceId, TemplateWallAtlasCoords);
-              continue;
-          }
-        }
-        // --- Check Over ---
-
-        // Replace with template
-        FloorTileMap.SetCell(new Vector2I(x, y), TemplateTileSourceId, TemplateTileAtlasCoords);
-      }
+      
     }
   }
 }

@@ -52,111 +52,111 @@ public partial class Level : Node2D
     room.Owner = this;
   }
   
-  public void FillRoomTransitionList()
-  {
-    for (var y = 0; y < Grid.GetLength(1); y++)
-    {
-      for (var x = 0; x < Grid.GetLength(0); x++)
-      {
-        var room = Grid[x, y];
-        if(room == null)
-          continue;
-        
-        foreach (var roomExit in Enum.GetValues<RoomExit>())
-        {
-          // Continue if there is no exit or door is already placed
-          if (!room.ActualExits.HasFlag(roomExit) || room.Doors.ContainsKey(roomExit))
-            continue;
-        
-          // Have to place doors
-          var neighbour = GetRoomNeighbour(x, y, roomExit);
-          var exitPosition = Dimensions.GetExitPosition(room.Size, roomExit);
-
-          var door = SceneLoader.Instance[SceneLoader.Scene.Door].Instantiate<Door>();
-          door.SetPerRoomTypes(room.Type, neighbour.Type);
-          
-          room.AddChild(door);
-          
-          var doorPos = exitPosition * 32;
-          switch (roomExit)
-          {
-            case RoomExit.North:
-            case RoomExit.North2:
-            case RoomExit.North3:
-            case RoomExit.South:
-            case RoomExit.South2:
-            case RoomExit.South3:
-              doorPos.X += 16;
-              doorPos.Y += 32;
-              break;
-            case RoomExit.West:
-            case RoomExit.West2:
-            case RoomExit.West3:
-            case RoomExit.East:
-            case RoomExit.East2:
-            case RoomExit.East3:
-              doorPos.X += 32;
-              doorPos.Y += 16;
-              door.RotationDegrees = 90;
-              break;
-            default:
-              throw new ArgumentOutOfRangeException();
-          }
-          door.Position = doorPos;
-          
-          GD.Print($"Placed door from {room.Name} to {neighbour.Name} at {doorPos}");
-          
-          room.Doors[roomExit] = door;
-          neighbour.Doors[Dimensions.OppositeExits[roomExit]] = door;
-        }
-      }
-    }
-  }
-
-  private Room GetRoomNeighbour(int startX, int startY, RoomExit roomExit)
-  {
-    int gridX;
-    int gridY;
-    
-    switch (roomExit)
-    {
-      case RoomExit.North:
-        gridX = 0;
-        gridY = -1;
-        break;
-      case RoomExit.South:
-        gridX = 0;
-        gridY = 1;
-        break;
-      case RoomExit.West:
-        gridX = -1;
-        gridY = 0;
-        break;
-      case RoomExit.East:
-        gridX = 1;
-        gridY = 0;
-        break;
-      // TODO
-      case RoomExit.North2:
-      case RoomExit.South2:
-      case RoomExit.West2:
-      case RoomExit.East2:
-      case RoomExit.North3:
-      case RoomExit.South3:
-      case RoomExit.West3:
-      case RoomExit.East3:
-      default:
-        throw new ArgumentOutOfRangeException(nameof(roomExit), roomExit, null);
-    }
-    
-    gridX += startX;
-    gridY += startY;
-    
-    if(gridX >= 0 && gridX < Grid.GetLength(0) && gridY >= 0 && gridY < Grid.GetLength(1))
-      return Grid[gridX, gridY];
-    GD.PushError($"Tried to get room neighbour of {startX}, {startY} with exit {roomExit} but got out of bounds!");
-    return null;
-  }
+  // public void FillRoomTransitionList()
+  // {
+  //   for (var y = 0; y < Grid.GetLength(1); y++)
+  //   {
+  //     for (var x = 0; x < Grid.GetLength(0); x++)
+  //     {
+  //       var room = Grid[x, y];
+  //       if(room == null)
+  //         continue;
+  //       
+  //       foreach (var roomExit in Enum.GetValues<RoomExit>())
+  //       {
+  //         // Continue if there is no exit or door is already placed
+  //         if (!room.ActualExits.HasFlag(roomExit) || room.Doors.ContainsKey(roomExit))
+  //           continue;
+  //       
+  //         // Have to place doors
+  //         var neighbour = GetRoomNeighbour(x, y, roomExit);
+  //         var exitPosition = Dimensions.GetExitPosition(room.Size, roomExit);
+  //
+  //         var door = SceneLoader.Instance[SceneLoader.Scene.Door].Instantiate<Door>();
+  //         door.SetPerRoomTypes(room.Type, neighbour.Type);
+  //         
+  //         room.AddChild(door);
+  //         
+  //         var doorPos = exitPosition * 32;
+  //         switch (roomExit)
+  //         {
+  //           case RoomExit.North:
+  //           case RoomExit.North2:
+  //           case RoomExit.North3:
+  //           case RoomExit.South:
+  //           case RoomExit.South2:
+  //           case RoomExit.South3:
+  //             doorPos.X += 16;
+  //             doorPos.Y += 32;
+  //             break;
+  //           case RoomExit.West:
+  //           case RoomExit.West2:
+  //           case RoomExit.West3:
+  //           case RoomExit.East:
+  //           case RoomExit.East2:
+  //           case RoomExit.East3:
+  //             doorPos.X += 32;
+  //             doorPos.Y += 16;
+  //             door.RotationDegrees = 90;
+  //             break;
+  //           default:
+  //             throw new ArgumentOutOfRangeException();
+  //         }
+  //         door.Position = doorPos;
+  //         
+  //         GD.Print($"Placed door from {room.Name} to {neighbour.Name} at {doorPos}");
+  //         
+  //         room.Doors[roomExit] = door;
+  //         neighbour.Doors[Dimensions.OppositeExits[roomExit]] = door;
+  //       }
+  //     }
+  //   }
+  // }
+  //
+  // private Room GetRoomNeighbour(int startX, int startY, RoomExit roomExit)
+  // {
+  //   int gridX;
+  //   int gridY;
+  //   
+  //   switch (roomExit)
+  //   {
+  //     case RoomExit.North:
+  //       gridX = 0;
+  //       gridY = -1;
+  //       break;
+  //     case RoomExit.South:
+  //       gridX = 0;
+  //       gridY = 1;
+  //       break;
+  //     case RoomExit.West:
+  //       gridX = -1;
+  //       gridY = 0;
+  //       break;
+  //     case RoomExit.East:
+  //       gridX = 1;
+  //       gridY = 0;
+  //       break;
+  //     // TODO
+  //     case RoomExit.North2:
+  //     case RoomExit.South2:
+  //     case RoomExit.West2:
+  //     case RoomExit.East2:
+  //     case RoomExit.North3:
+  //     case RoomExit.South3:
+  //     case RoomExit.West3:
+  //     case RoomExit.East3:
+  //     default:
+  //       throw new ArgumentOutOfRangeException(nameof(roomExit), roomExit, null);
+  //   }
+  //   
+  //   gridX += startX;
+  //   gridY += startY;
+  //   
+  //   if(gridX >= 0 && gridX < Grid.GetLength(0) && gridY >= 0 && gridY < Grid.GetLength(1))
+  //     return Grid[gridX, gridY];
+  //   GD.PushError($"Tried to get room neighbour of {startX}, {startY} with exit {roomExit} but got out of bounds!");
+  //   return null;
+  // }
 
   public override void _Ready()
   {

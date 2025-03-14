@@ -6,6 +6,9 @@ namespace Flamme.world.doors;
 
 public partial class DoorMarker : StaticBody2D
 {
+  [ExportGroup("Textures")]
+  [Export] public Texture2D DisguiseTexture;
+  
   [ExportGroup("Meta")]
   [Export] public Sprite2D Sprite;
   [Export] public CollisionShape2D CollisionShape;
@@ -13,6 +16,8 @@ public partial class DoorMarker : StaticBody2D
   [Export] public Node2D TeleportPoint;
   
   [Signal] public delegate void TeleportEventHandler(PlayableCharacter character);
+  
+  public Door Door { get; set; }
   
   public Cardinal FacingDirection = Cardinal.South;
 
@@ -50,6 +55,12 @@ public partial class DoorMarker : StaticBody2D
   public void Close()
   {
     Sprite.Texture = TextureClosed;
+    CollisionShape.SetDeferred(CollisionShape2D.PropertyName.Disabled, false);
+  }
+
+  public void Disguise()
+  {
+    Sprite.Texture = DisguiseTexture;
     CollisionShape.SetDeferred(CollisionShape2D.PropertyName.Disabled, false);
   }
 }

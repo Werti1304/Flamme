@@ -76,6 +76,9 @@ public partial class Door : Node2D
     }
     
     ExportMetaNonNull.Check(this);
+
+    _doorMarker1.Door = this;
+    _doorMarker2.Door = this;
     
     switch (_type)
     {

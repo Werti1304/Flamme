@@ -28,38 +28,39 @@ public class RoomMeta
   
   public PackedScene RoomScene;
   public string Name;
-  public RoomSize Size;
   public RoomType Type;
-  public RoomExit ActualExits;
+  public ICollection<Cardinal> PossibleExits;
   public int RoomGenerationTickets;
 
-  public RoomMeta(PackedScene roomScene, string name, RoomSize size, RoomType type, RoomExit actualExits, int roomGenerationTickets)
+  public RoomMeta(PackedScene roomScene, string name, RoomType type, ICollection<Cardinal> possibleExits, int roomGenerationTickets)
   {
     RoomScene = roomScene;
     Name = name;
-    Size = size;
     Type = type;
-    ActualExits = actualExits;
+    PossibleExits = possibleExits;
     RoomGenerationTickets = roomGenerationTickets;
   }
 
-  public static RoomMeta GetRandomRoom(RoomType roomType, RoomSize roomSize, RoomExit roomExits)
+  public static RoomMeta GetRandomRoom(RoomType roomType, ICollection<Cardinal> exitsNeeded)
   {
     var list = RoomDict[roomType];
 
     var validTickets = 0;
     var validRooms = list.FindAll(delegate(RoomMeta r)
     {
-      bool cond = r.Size == roomSize && (r.ActualExits & roomExits) >= roomExits;
-      if (cond)
+      foreach (var cardinal in exitsNeeded)
       {
-        validTickets += r.RoomGenerationTickets;
+        if (!r.PossibleExits.Contains(cardinal))
+        {
+          return false;
+        }
       }
-      return cond;
+      validTickets += r.RoomGenerationTickets;
+      return true;
     });
     if (validRooms.Count == 0)
     {
-      GD.PushError($"No room of type {roomType} with size {roomSize} and exits {roomExits} found!");
+      GD.PushError($"No room of type {roomType} with exits {exitsNeeded} found!");
       return null;
     }
 
@@ -120,7 +121,7 @@ public class RoomMeta
       }
       
       var roomData = new RoomMeta(
-        roomScene, roomTemp.Name, roomTemp.Size, roomTemp.Type, roomTemp.AllowedExits, roomTemp.RoomGenerationTickets);
+        roomScene, roomTemp.Name, roomTemp.Type, roomTemp.TheoreticalDoorMarkers.Keys, roomTemp.RoomGenerationTickets);
       RoomDict[roomTemp.Type].Add(roomData);
       roomTemp.QueueFree();
     }
