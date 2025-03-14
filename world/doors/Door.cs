@@ -190,11 +190,12 @@ public partial class Door : Node2D
       Open();
       return;
     }
-    #pragma warning restore CS0162 // Unreachable code detected
     
     _isOpen = false;
     
     DoorMarker1.Close();
     DoorMarker2.Close();
+    
+    #pragma warning restore CS0162 // Unreachable code detected
   }
 }

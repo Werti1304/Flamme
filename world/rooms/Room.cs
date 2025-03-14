@@ -9,6 +9,7 @@ using Flamme.world.generation;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
 using Vector2I = Godot.Vector2I;
 
@@ -33,7 +34,8 @@ public partial class Room : Area2D
   [Export] public LevelType LevelType;
   // Room type, affects generation
   [Export] public RoomType Type;
-  [Export] public bool CameraFixed = false;
+  [Export] public bool CameraFixedX = false;
+  [Export] public bool CameraFixedY = false;
   
   // How likely this specific room is generated in comparison to others
   // To make a room super rare for example, make it 10
@@ -310,17 +312,28 @@ public partial class Room : Area2D
   // Context: Editor Tool
   private void GenerateTemplate()
   {
-    var tileset = LevelType switch
+    TileSet FloorTileSet = null;
+    TileSet PropsTileSet = null;
+    TileSet OuterWallTileSet = null;
+
+    switch (LevelType)
     {
-      LevelType.Prison => GD.Load<TileSet>(PathConstants.PrisonTileSetPath),
-      _ => throw new ArgumentOutOfRangeException()
-    };
+      case LevelType.Prison:
+      {
+        FloorTileSet = GD.Load<TileSet>(PathConstants.PrisonFloorTileSetPath);
+        PropsTileSet = GD.Load<TileSet>(PathConstants.PrisonPropsTileSetPath);
+        OuterWallTileSet = GD.Load<TileSet>(PathConstants.PrisonWallTileSetPath);
+      }
+        break;
+      default:
+        throw new ArgumentOutOfRangeException();
+    }
 
     if (FloorTileMap == null || !IsInstanceValid(FloorTileMap))
     {
       FloorTileMap = new TileMapLayer();
       AddChild(FloorTileMap);
-      FloorTileMap.TileSet = tileset;
+      FloorTileMap.TileSet = FloorTileSet;
       FloorTileMap.Name = "Floor";
       FloorTileMap.Owner = this;
       FloorTileMap.ZIndex = -1;
@@ -330,7 +343,7 @@ public partial class Room : Area2D
     {
       PropsTileMap = new TileMapLayer();
       AddChild(PropsTileMap);
-      PropsTileMap.TileSet = tileset;
+      PropsTileMap.TileSet = PropsTileSet;
       PropsTileMap.Name = "Props";
       PropsTileMap.Owner = this;
     }
@@ -339,7 +352,7 @@ public partial class Room : Area2D
     {
       OuterWallTileMap = new TileMapLayer();
       AddChild(OuterWallTileMap);
-      OuterWallTileMap.TileSet = tileset;
+      OuterWallTileMap.TileSet = OuterWallTileSet;
       OuterWallTileMap.Name = "Outer Wall";
       OuterWallTileMap.Owner = this;
     }
@@ -368,7 +381,9 @@ public partial class Room : Area2D
       CollisionShape.Owner = this;
       
       var shape = new RectangleShape2D();
+      shape.Size = MinRoomSize;
       CollisionShape.Shape = shape;
+      CollisionShape.Position = new Vector2(MinRoomSize.X / 2.0f, MinRoomSize.Y / 2.0f);
       CollisionShape.Hide();
       
       // Just for simpler room building, unused in code
@@ -390,10 +405,24 @@ public partial class Room : Area2D
   
   private void SanityCheck()
   {
-    ExportMetaNonNull.Check(this);
+    var clear = ExportMetaNonNull.Check(this);
+
+    if (!clear)
+    {
+      GD.PushError("One or more required exports are missing, cannot continue!");
+      return;
+    }
+
+    var shouldBeName = SceneFilePath.Split('/').Last().Replace(".tscn", "");
+    shouldBeName = new CultureInfo("en").TextInfo.ToTitleCase(shouldBeName.ToLower().Replace("_", " ")).Replace(" ", "");
+    if (shouldBeName != Name)
+    {
+      Name = shouldBeName;
+      GD.Print($"Room name wrong, changed it from {shouldBeName} to {Name}!");
+    }
     
-    Debug.Assert(TheoreticalDoorMarkers.Count > 0, "No door markers in room!");
     UpdateDoorMarkers();
+    Debug.Assert(TheoreticalDoorMarkers.Count > 0, "No door markers in room!");
     
     var shape = CollisionShape.Shape as RectangleShape2D;
     Debug.Assert(shape != null, "CollisionShape is not a rectangle!");

@@ -7,7 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://cqfk2e6d0wte1" path="res://assets/sprites/levels/Roof.png" id="5_o2qjt"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_e5e6k"]
-resource_name = "Wall"
+resource_name = "<null>"
 texture = ExtResource("1_67aru")
 texture_region_size = Vector2i(32, 32)
 0:0/0 = 0

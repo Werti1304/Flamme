@@ -31,12 +31,19 @@ public partial class PlayerCamera : Camera2D
     _activeRoom = room;
     _roomChange = true;
 
-    if (room.CameraFixed)
+    if (room.CameraFixedX)
     {
       LimitLeft = -10000000;
-      LimitTop = -10000000;
       LimitRight = 10000000;
+    }
+
+    if (room.CameraFixedY)
+    {
+      LimitTop = -10000000;
       LimitBottom = 10000000;
+    }
+    if (room.CameraFixedX && room.CameraFixedY)
+    {
       GlobalPosition = room.MidPoint.GlobalPosition;
       SetProcess(false);
     }
@@ -61,7 +68,18 @@ public partial class PlayerCamera : Camera2D
     }
     if (SmoothingEnabled)
     {
-      GlobalPosition = GlobalPosition.Lerp(Player.GlobalPosition, _weight);
+      if (_activeRoom.CameraFixedX)
+      {
+        GlobalPosition = GlobalPosition with { Y = Mathf.Lerp(GlobalPosition.Y, Player.GlobalPosition.Y, _weight) };
+      }
+      else if (_activeRoom.CameraFixedY)
+      {
+        GlobalPosition = GlobalPosition with { X = Mathf.Lerp(GlobalPosition.X, Player.GlobalPosition.X, _weight) };
+      }
+      else
+      {
+        GlobalPosition = GlobalPosition.Lerp(Player.GlobalPosition, _weight);
+      }
     }
     else
     {

@@ -5,9 +5,11 @@ namespace Flamme.testing;
 
 public static class ExportMetaNonNull
 {
-  public static void Check(Node node)
+  public static bool Check(Node node)
   {
     // TODO Add check if in (debug?) mode or not
+    
+    bool hasErrors = false;
     
     // https://docs.godotengine.org/en/stable/classes/class_object.html#class-object-method-get-property-list
     foreach (var nodeDict in node.GetPropertyList())
@@ -46,6 +48,8 @@ public static class ExportMetaNonNull
       }
       
       GD.PushWarning($"Property {propertyName} from node {node} is null!");
+      hasErrors = true;
     }
+    return !hasErrors;
   }
 }
