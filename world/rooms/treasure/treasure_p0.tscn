@@ -3,4 +3,6 @@
 [ext_resource type="Script" uid="uid://cu3vdn0r1mer3" path="res://world/rooms/Room.cs" id="1_jmdyh"]
 
 [node name="TreasureP0" type="Area2D"]
+collision_layer = 15
+collision_mask = 15
 script = ExtResource("1_jmdyh")

@@ -18,6 +18,7 @@ public partial class SceneLoader : Node2D
     Chest, // TODO 3
     Runner,
     Door,
+    DoorMarker,
     Trailing,
     Fireball
   }
@@ -35,6 +36,7 @@ public partial class SceneLoader : Node2D
     { Scene.Chest, GD.Load<PackedScene>(PathConstants.ChestScenePath) },
     { Scene.Runner, GD.Load<PackedScene>(PathConstants.RunnerScenePath) },
     { Scene.Door, GD.Load<PackedScene>(PathConstants.DoorScenePath) },
+    { Scene.DoorMarker, GD.Load<PackedScene>(PathConstants.DoorMarkerScenePath) },
     { Scene.Trailing, GD.Load<PackedScene>(PathConstants.TrailingProjectileScenePath) },
     { Scene.Fireball, GD.Load<PackedScene>(PathConstants.FireballProjectileScenePath) },
   };

@@ -15,16 +15,16 @@ public partial class DoorMarker : StaticBody2D
     {
       RotationDegrees = value switch
       {
-        Cardinal.North => 180,
+        Cardinal.North => 0,
         Cardinal.East => 90,
-        Cardinal.South => 0,
+        Cardinal.South => 180,
         Cardinal.West => -90,
         _ => throw new ArgumentOutOfRangeException(nameof(value), value, null)
       };
       _facingDirection = value;
     }
   }
-  private Cardinal _facingDirection = Cardinal.South;
+  private Cardinal _facingDirection = Cardinal.North;
   
   [ExportGroup("Textures")]
   [Export] public Texture2D DisguiseTexture;

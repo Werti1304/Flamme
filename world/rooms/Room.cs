@@ -20,7 +20,7 @@ public partial class Room : Area2D
 {
   public static Room Current { get; private set; } = null;
   
-  [Export] private bool SanityCheckTool // Button to create current RoomSize/Exits configuration on tilemap
+  [Export] private bool CommitChangesTool // Button to create current RoomSize/Exits configuration on tilemap
   {
     get => false;
     // ReSharper disable once ValueParameterNotUsed
@@ -62,6 +62,18 @@ public partial class Room : Area2D
   
   [ExportGroup("Generation")]
   [Export]
+  public bool FillRoofTool // Button to fill in roof based on other tilemaps and collision shape
+  {
+    get => false;
+    // ReSharper disable once ValueParameterNotUsed
+    set
+    {
+      if(value)
+        FillRoof();
+    }
+  }
+
+  [Export]
   public bool GenerateTemplateTool // Button to create current RoomSize/Exits configuration on tilemap
   {
     get => false;
@@ -77,6 +89,7 @@ public partial class Room : Area2D
   [Export] public TileMapLayer FloorTileMap;
   [Export] public TileMapLayer PropsTileMap;
   [Export] public TileMapLayer OuterWallTileMap;
+  [Export] public TileMapLayer RoofTileMap;
   [Export] public CollisionShape2D CollisionShape;
   [Export] public Node2D DoorMarkerParent;
   [Export] public Node2D MidPoint;
@@ -353,8 +366,17 @@ public partial class Room : Area2D
       OuterWallTileMap = new TileMapLayer();
       AddChild(OuterWallTileMap);
       OuterWallTileMap.TileSet = OuterWallTileSet;
-      OuterWallTileMap.Name = "Outer Wall";
+      OuterWallTileMap.Name = "Wall";
       OuterWallTileMap.Owner = this;
+    }
+    
+    if (RoofTileMap == null)
+    {
+      RoofTileMap = new TileMapLayer();
+      AddChild(RoofTileMap);
+      RoofTileMap.TileSet = OuterWallTileSet;
+      RoofTileMap.Name = "Roof (Auto)";
+      RoofTileMap.Owner = this;
     }
     
     if (MidPoint == null)
@@ -372,6 +394,20 @@ public partial class Room : Area2D
       DoorMarkerParent.Name = "DoorMarkerParent";
       DoorMarkerParent.Owner = this;
     }
+
+    if (DoorMarkerParent.GetChildren().Count == 0)
+    {
+      // Add all 4 possible door marker. Can delete in scene if not needed
+      var doorMarkerScene = GD.Load<PackedScene>(PathConstants.DoorMarkerScenePath);
+      foreach (var cardinal in Enum.GetValues<Cardinal>())
+      {
+        var marker = doorMarkerScene.Instantiate<DoorMarker>();
+        DoorMarkerParent.AddChild(marker);
+        marker.Name = $"DoorMarker {cardinal}";
+        marker.FacingDirection = cardinal;
+        marker.Owner = this;
+      }
+    }
     
     if (CollisionShape == null)
     {
@@ -384,7 +420,6 @@ public partial class Room : Area2D
       shape.Size = MinRoomSize;
       CollisionShape.Shape = shape;
       CollisionShape.Position = new Vector2(MinRoomSize.X / 2.0f, MinRoomSize.Y / 2.0f);
-      CollisionShape.Hide();
       
       // Just for simpler room building, unused in code
       var node = new Node2D();
@@ -420,12 +455,26 @@ public partial class Room : Area2D
       Name = shouldBeName;
       GD.Print($"Room name wrong, changed it from {shouldBeName} to {Name}!");
     }
+
+    var shape = CollisionShape.Shape as RectangleShape2D;
+    Debug.Assert(shape != null, "CollisionShape is not a rectangle!");
+    var roomSize = (Vector2I)(shape.Size / 32);
+    
+    for (var x = 0; x < roomSize.X; x++)
+    {
+      for (var y = 0; y < roomSize.Y; y++)
+      {
+        var coords = new Vector2I(x, y);
+        if (PropsTileMap.GetCellSourceId(coords) != -1)
+        {
+          FloorTileMap.SetCell(coords, RoomGenConstants.FloorTileSourceId, RoomGenConstants.UnderPropFloor);
+        }
+      }
+    }
     
     UpdateDoorMarkers();
     Debug.Assert(TheoreticalDoorMarkers.Count > 0, "No door markers in room!");
     
-    var shape = CollisionShape.Shape as RectangleShape2D;
-    Debug.Assert(shape != null, "CollisionShape is not a rectangle!");
     Debug.Assert(shape.Size.X >= MinRoomSize.X && shape.Size.Y >= MinRoomSize.Y, 
       $"Room size is of {shape.Size} too small, must at least be {MinRoomSize} tiles!");
     Debug.Assert(shape.Size.X <= MaxRoomSize.X && shape.Size.Y <= MaxRoomSize.Y,
@@ -433,5 +482,55 @@ public partial class Room : Area2D
     
     Debug.Assert(!FloorTileMap.TileMapData.IsEmpty(), "FloorTileMap is empty!");
     Debug.Assert(!OuterWallTileMap.TileMapData.IsEmpty(), "OuterWallTileMap is empty!");
+    
+    GD.Print("Sanity check done!");
+  }
+
+  private void FillRoof()
+  {
+    RoofTileMap.Clear();
+    
+    // Get Region that needs to be filled in
+
+    var shape = CollisionShape.Shape as RectangleShape2D;
+    Debug.Assert(shape != null, "CollisionShape is not a rectangle!");
+    var roomSize = (Vector2I)(shape.Size / 32);
+
+    var alreadyFilledRect = new RectangleShape2D();
+
+    var toFill = new Godot.Collections.Array<Vector2I>();
+
+    // TODO Fill list with to be terrained tilemap positions, do setcellterrainconnect at the bottom
+    // try out how to get rid of pescy outer tile problems
+    for (var x = -1; x <= roomSize.X; x++)
+    {
+      for (var y = -1; y <= roomSize.Y; y++)
+      {
+        var coords = new Vector2I(x, y);
+
+        // If tile is neither empty nor a roof tile, break
+        if (FloorTileMap.GetCellSourceId(coords) is not -1 
+            || OuterWallTileMap.GetCellSourceId(coords) is not -1 and not RoomGenConstants.RoofTerrainSourceId)
+        {
+          continue;
+        }
+        toFill.Add(coords);
+      }
+    }
+
+    RoofTileMap.SetCellsTerrainConnect(toFill, 0, 0, true);
+
+    // Do the still water in minecraft equivalent with terrain tiles
+    for (var x = -1; x <= roomSize.X; x++)
+    {
+      for (var y = -1; y <= roomSize.Y; y++)
+      {
+        if (x == -1 || x == roomSize.X || y == -1 || y == roomSize.Y)
+        {
+          var coords = new Vector2I(x, y);
+          RoofTileMap.SetCell(coords, -1);
+        }
+      }
+    }
   }
 }

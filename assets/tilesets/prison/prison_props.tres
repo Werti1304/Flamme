@@ -1,6 +1,12 @@
-[gd_resource type="TileSet" load_steps=3 format=3 uid="uid://c5qpaglqhfr5s"]
+[gd_resource type="TileSet" load_steps=6 format=3 uid="uid://c5qpaglqhfr5s"]
 
 [ext_resource type="Texture2D" uid="uid://bt7pmlqkou3be" path="res://assets/sprites/levels/PrisonProps.png" id="1_ebb6h"]
+
+[sub_resource type="NavigationPolygon" id="NavigationPolygon_ebb6h"]
+
+[sub_resource type="NavigationPolygon" id="NavigationPolygon_03xon"]
+
+[sub_resource type="NavigationPolygon" id="NavigationPolygon_yugbk"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_03xon"]
 resource_name = "Props"
@@ -8,26 +14,35 @@ texture = ExtResource("1_ebb6h")
 texture_region_size = Vector2i(32, 32)
 0:0/0 = 0
 0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-16, -16, 16, -16, 16, 16, -16, 16)
+0:0/0/navigation_layer_0/polygon = SubResource("NavigationPolygon_ebb6h")
 1:0/0 = 0
 1:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-16, -16, 16, -16, 16, 16, -16, 16)
+1:0/0/navigation_layer_0/polygon = SubResource("NavigationPolygon_ebb6h")
 2:0/0 = 0
 2:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-16, -16, 16, -16, 16, 16, -16, 16)
+2:0/0/navigation_layer_0/polygon = SubResource("NavigationPolygon_ebb6h")
 3:0/0 = 0
 3:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-16, -16, 16, -16, 16, 16, -16, 16)
+3:0/0/navigation_layer_0/polygon = SubResource("NavigationPolygon_ebb6h")
 0:1/0 = 0
 0:1/0/probability = 0.1
 0:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(-16, -16, 16, -16, 16, 16, -16, 16)
+0:1/0/navigation_layer_0/polygon = SubResource("NavigationPolygon_03xon")
 1:1/0 = 0
 1:1/0/probability = 0.1
 1:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(-16, -16, 16, -16, 16, 16, -16, 16)
+1:1/0/navigation_layer_0/polygon = SubResource("NavigationPolygon_03xon")
 2:1/0 = 0
 2:1/0/probability = 0.1
 2:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(-12, -12, -12, -12, 12, -12, 12, 12, -12, 12)
+2:1/0/navigation_layer_0/polygon = SubResource("NavigationPolygon_03xon")
 7:0/size_in_atlas = Vector2i(1, 2)
 7:0/0 = 0
 7:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-12, -24, 12, -24, 12, 28, -12, 28)
+7:0/0/navigation_layer_0/polygon = SubResource("NavigationPolygon_yugbk")
 
 [resource]
 tile_size = Vector2i(32, 32)
 physics_layer_0/collision_layer = 1
+navigation_layer_0/layers = 1
 sources/40 = SubResource("TileSetAtlasSource_03xon")

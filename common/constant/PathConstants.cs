@@ -24,6 +24,7 @@ public static class PathConstants
   public const string WinRoomPath = "res://world/rooms/dev/WinRoom.tscn";
   
   public const string DoorScenePath = "res://world/doors/door.tscn";
+  public const string DoorMarkerScenePath = "res://world/doors/DoorMarker.tscn";
   
   public const string TrailingProjectileScenePath = "res://projectiles/player/trailing/trailing.tscn";
   public const string FireballProjectileScenePath = "res://projectiles/player/fireball/fireball.tscn";
