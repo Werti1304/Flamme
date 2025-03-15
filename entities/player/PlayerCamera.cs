@@ -44,7 +44,7 @@ public partial class PlayerCamera : Camera2D
     }
     if (room.CameraFixedX && room.CameraFixedY)
     {
-      GlobalPosition = room.MidPoint.GlobalPosition;
+      GlobalPosition = _activeRoom.MidPoint.GlobalPosition;
       SetProcess(false);
     }
     else
@@ -61,10 +61,27 @@ public partial class PlayerCamera : Camera2D
 
   public override void _Process(double delta)
   {
+    if (Player == null)
+    {
+      GD.PrintErr("PlayerCamera: Player is null, stopping camera");
+      SetProcess(false);
+      return;
+    }
     if (_roomChange)
     {
+      if (_activeRoom.CameraFixedX)
+      {
+        GlobalPosition = new Vector2(_activeRoom.MidPoint.GlobalPosition.X, Player.GlobalPosition.Y);
+      }
+      else if (_activeRoom.CameraFixedY)
+      {
+        GlobalPosition = new Vector2(Player.GlobalPosition.X, _activeRoom.MidPoint.GlobalPosition.Y);
+      }
+      else
+      {
+        GlobalPosition = Player.GlobalPosition;
+      }
       _roomChange = false;
-      GlobalPosition = Player.GlobalPosition;
     }
     if (SmoothingEnabled)
     {

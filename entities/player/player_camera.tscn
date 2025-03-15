@@ -5,4 +5,3 @@
 [node name="PlayerCamera" type="Camera2D"]
 zoom = Vector2(1.2, 1.2)
 script = ExtResource("1_ij6f7")
-SmoothingDistance = 5

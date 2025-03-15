@@ -15,6 +15,7 @@ collision_layer = 15
 collision_mask = 15
 script = ExtResource("1_mbywd")
 Type = 2
+CameraFixedX = true
 TheoreticalDoorMarkers = {
 0: NodePath("DoorMarkerParent/DoorMarker4"),
 1: NodePath("DoorMarkerParent/DoorMarker3"),
@@ -77,6 +78,7 @@ shape = SubResource("RectangleShape2D_r6uni")
 
 [node name="ItemPickup" parent="Loot" instance=ExtResource("5_44otc")]
 position = Vector2(336, 144)
+RetrievelMode = 1
 ItemId = 12
 
 [node name="Enemies" type="Node2D" parent="."]
