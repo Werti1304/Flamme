@@ -4,7 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://1y7ti0ctdqv8" path="res://assets/sprites/levels/PrisonFloors.png" id="2_o2qjt"]
 [ext_resource type="Texture2D" uid="uid://bt7pmlqkou3be" path="res://assets/sprites/levels/PrisonProps.png" id="3_74fap"]
 [ext_resource type="Texture2D" uid="uid://cclbodk6f87d3" path="res://assets/sprites/levels/PrisonDoors.png" id="4_lqqk3"]
-[ext_resource type="Texture2D" uid="uid://cqfk2e6d0wte1" path="res://assets/sprites/levels/Roof.png" id="5_o2qjt"]
+[ext_resource type="Texture2D" uid="uid://dsl62felydfc6" path="res://assets/sprites/levels/Roof.png" id="5_o2qjt"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_e5e6k"]
 resource_name = "<null>"

@@ -9,17 +9,33 @@ using Room = Flamme.world.rooms.Room;
 
 public abstract partial class Enemy : CharacterBody2D, IPlayerDamageable
 {
+  private float _health = 10;
   [Export] public bool EnemyDisabled = false;
-  [Export] public float Health = 10;
+  [Export]   public float Health
+  {
+    get => _health;
+    set
+    {
+      _health = value;
+      EmitSignal(SignalName.HealthChanged, this);
+    } 
+  }
   [Export] public float Weight = 10.0f;
   
+  [Signal] public delegate void HealthChangedEventHandler(Enemy enemy);
+
+  public float MaxHealth;
+  
   protected bool IsActive => Target != null;
+
   protected PlayableCharacter Target;
   private Room _room;
 
   public override void _Ready()
   {
     ExportMetaNonNull.Check(this);
+    
+    MaxHealth = Health;
   }
 
   public virtual void OnDeath()

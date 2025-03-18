@@ -1,6 +1,6 @@
 [gd_resource type="TileSet" load_steps=5 format=3 uid="uid://ca3qx51g3yg3u"]
 
-[ext_resource type="Texture2D" uid="uid://da5625niwmyq6" path="res://assets/sprites/levels/RoofTerrain.png" id="1_2cdha"]
+[ext_resource type="Texture2D" uid="uid://bn2mpnxisf6mw" path="res://assets/sprites/levels/RoofTerrain.png" id="1_2cdha"]
 [ext_resource type="Texture2D" uid="uid://bgc4ewqfbryq3" path="res://assets/sprites/levels/PrisonWalls.png" id="1_501r6"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_onfk3"]

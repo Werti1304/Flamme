@@ -1,0 +1,33 @@
+[gd_scene load_steps=6 format=3 uid="uid://dpjtf4eg65s6a"]
+
+[ext_resource type="Script" uid="uid://i5c0caqyw6dh" path="res://entities/enemies/prison/slider/Slider.cs" id="1_sj6d1"]
+[ext_resource type="Texture2D" uid="uid://cmdroei4ronrq" path="res://assets/sprites/entities/enemy/enemy_placeholders.png" id="2_kav6h"]
+[ext_resource type="PackedScene" uid="uid://chv1fakx6xghy" path="res://entities/enemies/components/health_bar/health_bar.tscn" id="3_2yxkh"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2yxkh"]
+atlas = ExtResource("2_kav6h")
+region = Rect2(0, 96, 32, 32)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_kav6h"]
+size = Vector2(24, 25)
+
+[node name="Slider" type="CharacterBody2D" node_paths=PackedStringArray("HealthBar")]
+z_index = 10
+collision_layer = 4
+collision_mask = 15
+script = ExtResource("1_sj6d1")
+HealthBar = NodePath("HealthBar")
+Health = 100.0
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = SubResource("AtlasTexture_2yxkh")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -0.5)
+shape = SubResource("RectangleShape2D_kav6h")
+
+[node name="HealthBar" parent="." instance=ExtResource("3_2yxkh")]
+offset_left = -32.0
+offset_top = -35.0
+offset_right = 32.0
+offset_bottom = -3.0

@@ -1,0 +1,15 @@
+[gd_scene load_steps=5 format=3 uid="uid://chv1fakx6xghy"]
+
+[ext_resource type="Texture2D" uid="uid://cd1wtn825hvoc" path="res://assets/sprites/entities/enemy/prison/slider/slider_bar_under.png" id="1_0b6jg"]
+[ext_resource type="Texture2D" uid="uid://bx2tgk5g5bysa" path="res://assets/sprites/entities/enemy/prison/slider/slider_bar_over.png" id="2_pqfef"]
+[ext_resource type="Texture2D" uid="uid://bjoixwkbdfudx" path="res://assets/sprites/entities/enemy/prison/slider/slider_bar_progress.png" id="3_jx7cg"]
+[ext_resource type="Script" uid="uid://cbj6rato22iy" path="res://entities/enemies/components/health_bar/HealthBar.cs" id="4_pqfef"]
+
+[node name="TextureProgressBar" type="TextureProgressBar"]
+offset_right = 64.0
+offset_bottom = 32.0
+value = 70.0
+texture_under = ExtResource("1_0b6jg")
+texture_over = ExtResource("2_pqfef")
+texture_progress = ExtResource("3_jx7cg")
+script = ExtResource("4_pqfef")

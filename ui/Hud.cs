@@ -30,6 +30,7 @@ public partial class Hud : CanvasLayer
   [Export] public MarginContainer MainContainer;
   [Export] public Minimap Minimap;
   [Export] private Timer _showCollectedItemtimer;
+  [Export] public Control HealthBarContainer;
   
   public override void _Ready()
   {

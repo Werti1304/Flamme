@@ -36,7 +36,7 @@ shader_parameter/darkness_in = 1.5
 atlas = ExtResource("6_3ju8l")
 region = Rect2(0, 0, 8, 8)
 
-[node name="HUD" type="CanvasLayer" node_paths=PackedStringArray("ItemNameLabel", "ItemDescriptionLabel", "PurseDisplay", "_healthRectContainer", "Vignette", "MainContainer", "Minimap", "_showCollectedItemtimer")]
+[node name="HUD" type="CanvasLayer" node_paths=PackedStringArray("ItemNameLabel", "ItemDescriptionLabel", "PurseDisplay", "_healthRectContainer", "Vignette", "MainContainer", "Minimap", "_showCollectedItemtimer", "HealthBarContainer")]
 script = ExtResource("1_kc1f2")
 HeartEmpty = ExtResource("2_mlhsj")
 HeartFull = ExtResource("2_6mpex")
@@ -55,6 +55,7 @@ Vignette = NodePath("Vignette")
 MainContainer = NodePath("MarginContainer")
 Minimap = NodePath("Minimap")
 _showCollectedItemtimer = NodePath("ShowItemTimer")
+HealthBarContainer = NodePath("MarginContainer/VBoxContainer/HealthBarContainer")
 
 [node name="ColorRect" type="ColorRect" parent="."]
 visible = false
@@ -219,6 +220,9 @@ KeyIcon = ExtResource("12_cxdcy")
 [node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/HBoxContainer2"]
 layout_mode = 2
 theme_override_constants/margin_left = 360
+
+[node name="HealthBarContainer" type="Control" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
 
 [node name="ShowItemTimer" type="Timer" parent="."]
 wait_time = 5.0
