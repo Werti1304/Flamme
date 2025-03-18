@@ -10,6 +10,7 @@ using Flamme.entities.player;
 using Flamme.testing;
 using Flamme.ui;
 using Flamme.world.rooms;
+using System.Linq;
 
 public partial class PlayableCharacter : CharacterBody2D, IEnemyDamagable
 {
@@ -24,6 +25,7 @@ public partial class PlayableCharacter : CharacterBody2D, IEnemyDamagable
   [Export] public PlayerPurse Purse;
   [Export] public PlayerSprite Sprite;
   [Export] public Area2D InteractionArea;
+  [Export] public Timer InvincibilityTimer;
   
   public ProjectileModifiers Modifiers = new ProjectileModifiers();
 
@@ -40,6 +42,8 @@ public partial class PlayableCharacter : CharacterBody2D, IEnemyDamagable
     
     InteractionArea.BodyEntered += BodyEntered;
     InteractionArea.AreaEntered += OnAreaEntered;
+    
+    InvincibilityTimer.Timeout += () => Invincible = false;
 
     OnInvChange();
     Hud.Instance.PurseDisplay.UpdatePurse(Purse);
@@ -81,23 +85,105 @@ public partial class PlayableCharacter : CharacterBody2D, IEnemyDamagable
     Sprite.OnFacingChange(newFacing);
   }
 
+
+  private int _stuckCounter = 0;
   public override void _PhysicsProcess(double delta)
   {
     Move(delta);
+
+    if (IsStuck())
+    {
+      SoftTeleport(Room.Current.MidPoint.GlobalPosition);
+    }
+  }
+
+  private bool IsStuck()
+  {
+    // if player is presumably stuck between an enemy and something different,
+    if (InteractionArea.GetOverlappingBodies().Count >= 2 && InteractionArea.GetOverlappingBodies().OfType<Enemy>().Any())
+    {
+      _stuckCounter++;
+
+      if (_stuckCounter > 10)
+      {
+        _stuckCounter = 0;
+        return true;
+      }
+    }
+    else
+    {
+      _stuckCounter = 0;
+    }
+    return false;
+  }
+
+  private bool _invincible = false;
+  private bool Invincible
+  {
+    get => _invincible;
+    set
+    {
+      if (_isTeleporting)
+      {
+        if (value)
+        {
+          InvincibilityTimer.Start();
+        }
+        return;
+      }
+      if (value)
+      {
+        InvincibilityTimer.Start();
+        Sprite.Modulate = Color.FromHtml("ff5959");
+      }
+      else
+      {
+        Sprite.Modulate = Colors.White;
+      }
+      _invincible = value;
+    }
+  }
+
+  private bool _isTeleporting = false;
+  private void SoftTeleport(Vector2 newGlobalPos)
+  {
+    if (_isTeleporting)
+      return;
+    _isTeleporting = true;
+    _invincible = true;
+    var tween = GetTree().CreateTween();
+    var originalModulate = Sprite.Modulate;
+    var newModulate = originalModulate;
+    newModulate.A = 0.2f;
+    tween.TweenProperty(Sprite, CanvasItem.PropertyName.Modulate.ToString(), newModulate, 0.2f);
+    tween.TweenProperty(this, Node2D.PropertyName.GlobalPosition.ToString(), newGlobalPos, 0.4f);
+    tween.TweenProperty(Sprite, CanvasItem.PropertyName.Modulate.ToString(), originalModulate, 0.2f);
+    tween.TweenCallback(Callable.From(AfterTeleport));
+  }
+
+  private void AfterTeleport()
+  {
+    _isTeleporting = false;
+    Invincible = false;
   }
   
   public void TakeDamage(int damage)
   {
+    if (Invincible)
+      return;
+    
     if (!Stats.RemoveHealth(damage))
     {
       // Player Death
       if (GetViewport().GetCamera2D() is PlayerCamera camera)
       {
         // Deactivate camera
-        camera.SetPhysicsProcess(false);
+        camera.SetProcess(false);
       }
+      Room.Current.LeaveRoom(); // "Leave" room cuz player is dead
       QueueFree(); 
     }
+    Invincible = true;
     OnInvChange();
   }
 
@@ -189,7 +275,7 @@ public partial class PlayableCharacter : CharacterBody2D, IEnemyDamagable
   private void Move(double delta)
   {
     Velocity = Velocity.Lerp(_movingVector * Stats.Speed * 2, AccelerationFactor);
-    Velocity = Velocity.LimitLength(Stats.Speed * 2);
+    // Velocity = Velocity.LimitLength(Stats.Speed * 2);
     // Velocity = Velocity.Lerp(Vector2.Zero, Friction);
     
     MoveAndSlide();

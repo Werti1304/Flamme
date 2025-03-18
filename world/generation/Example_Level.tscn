@@ -1,11 +1,13 @@
-[gd_scene load_steps=7 format=3 uid="uid://cs66mytyvgfwr"]
+[gd_scene load_steps=9 format=3 uid="uid://cs66mytyvgfwr"]
 
 [ext_resource type="Script" uid="uid://c6g26aj7v1tnv" path="res://world/generation/Level.cs" id="1_y0xvm"]
 [ext_resource type="PackedScene" uid="uid://bna3ai6fvr4er" path="res://entities/player/PlayableCharacter.tscn" id="2_qox26"]
 [ext_resource type="PackedScene" uid="uid://d3h1ghlubga01" path="res://entities/staff/staff.tscn" id="4_h7omj"]
 [ext_resource type="PackedScene" uid="uid://bns3echaf4llk" path="res://entities/player/player_camera.tscn" id="4_jo87b"]
-[ext_resource type="PackedScene" uid="uid://cd2rytm0jk7bg" path="res://world/rooms/spawn/spawn.tscn" id="5_3t1bn"]
-[ext_resource type="PackedScene" uid="uid://dpjtf4eg65s6a" path="res://entities/enemies/prison/slider/slider.tscn" id="6_6xny8"]
+[ext_resource type="PackedScene" uid="uid://pfhymug74cbs" path="res://world/rooms/spawn/spawn_p0.tscn" id="6_osotp"]
+[ext_resource type="PackedScene" uid="uid://be2wqjy01ensx" path="res://world/rooms/dev/testing_room.tscn" id="7_osotp"]
+[ext_resource type="PackedScene" uid="uid://ba5fp1aq2fdep" path="res://world/doors/door.tscn" id="8_dqqbh"]
+[ext_resource type="PackedScene" uid="uid://bnx0j5b2ekjat" path="res://world/doors/DoorMarker.tscn" id="9_w7y63"]
 
 [node name="ExampleLevel" type="Node2D" node_paths=PackedStringArray("PlayableCharacter", "ActiveStaff", "PlayerCamera")]
 script = ExtResource("1_y0xvm")
@@ -24,7 +26,30 @@ position = Vector2(-108, -42)
 [node name="PlayerCamera" parent="Character" node_paths=PackedStringArray("Player") instance=ExtResource("4_jo87b")]
 Player = NodePath("../PlayableCharacter")
 
-[node name="Spawn" parent="." instance=ExtResource("5_3t1bn")]
+[node name="Rooms" type="Node2D" parent="."]
 
-[node name="Slider" parent="." instance=ExtResource("6_6xny8")]
-position = Vector2(392, 175)
+[node name="Spawn2" parent="." node_paths=PackedStringArray("TheoreticalDoorMarkers") instance=ExtResource("6_osotp")]
+TheoreticalDoorMarkers = {
+0: NodePath("DoorMarkerParent/DoorMarker3"),
+1: NodePath("DoorMarkerParent/DoorMarker2"),
+2: NodePath("DoorMarkerParent/DoorMarker"),
+3: NodePath("DoorMarkerParent/DoorMarker4")
+}
+
+[node name="TestingRoom" parent="." instance=ExtResource("7_osotp")]
+position = Vector2(608, -160)
+
+[node name="Door" parent="." node_paths=PackedStringArray("DoorMarker1", "DoorMarker2", "Room1", "Room2") instance=ExtResource("8_dqqbh")]
+_type = 1
+DoorMarker1 = NodePath("DoorMarker")
+DoorMarker2 = NodePath("DoorMarker2")
+Room1 = NodePath("../Spawn2")
+Room2 = NodePath("../TestingRoom")
+
+[node name="DoorMarker" parent="Door" instance=ExtResource("9_w7y63")]
+position = Vector2(512, 64)
+
+[node name="DoorMarker2" parent="Door" instance=ExtResource("9_w7y63")]
+position = Vector2(704, 544)
+rotation = 3.14159
+FacingDirection = 2

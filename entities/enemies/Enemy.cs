@@ -35,6 +35,8 @@ public abstract partial class Enemy : CharacterBody2D, IPlayerDamageable
   {
     ExportMetaNonNull.Check(this);
     
+    SetPhysicsProcess(false);
+    
     MaxHealth = Health;
   }
 

@@ -35,6 +35,7 @@ public partial class MeleeArea : Area2D
         SetPhysicsProcess(true);
       }
       _damagables.Add(e);
+      e.TakeDamage(Damage);
     }
   }
   

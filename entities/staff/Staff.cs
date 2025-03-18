@@ -124,7 +124,7 @@ public partial class Staff : RigidBody2D
 
   public override void _IntegrateForces(PhysicsDirectBodyState2D state)
   {
-    if (_owner == null || _snapped)
+    if (_owner == null || !IsInstanceValid(_owner) || _snapped)
       return;
 
     // Friction

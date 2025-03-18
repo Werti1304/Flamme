@@ -1,11 +1,10 @@
-[gd_scene load_steps=14 format=4 uid="uid://dl3t47a8hmi7"]
+[gd_scene load_steps=13 format=4 uid="uid://dl3t47a8hmi7"]
 
 [ext_resource type="Script" uid="uid://cu3vdn0r1mer3" path="res://world/rooms/Room.cs" id="1_yngi1"]
 [ext_resource type="TileSet" uid="uid://ciata4jhj6wvu" path="res://assets/tilesets/prison/prison_floor.tres" id="2_xxu8i"]
 [ext_resource type="TileSet" uid="uid://c5qpaglqhfr5s" path="res://assets/tilesets/prison/prison_props.tres" id="3_tsus6"]
 [ext_resource type="TileSet" uid="uid://ca3qx51g3yg3u" path="res://assets/tilesets/prison/prison_wall.tres" id="4_cy0pq"]
 [ext_resource type="PackedScene" uid="uid://bnx0j5b2ekjat" path="res://world/doors/DoorMarker.tscn" id="5_b45db"]
-[ext_resource type="Script" uid="uid://lxis3ashrpf4" path="res://world/doors/DoorMarker.cs" id="6_n3jul"]
 [ext_resource type="Texture2D" uid="uid://bgc4ewqfbryq3" path="res://assets/sprites/levels/PrisonWalls.png" id="7_7s4eo"]
 [ext_resource type="PackedScene" uid="uid://bgqrp6nhkayrg" path="res://entities/env/shop/coin_buyable.tscn" id="8_tsus6"]
 [ext_resource type="PackedScene" uid="uid://ct41on4c43mde" path="res://entities/env/purse/purse_pickup.tscn" id="9_cy0pq"]
@@ -20,6 +19,8 @@ region = Rect2(0, 0, 32, 32)
 size = Vector2(544, 320)
 
 [node name="ShopP0" type="Area2D" node_paths=PackedStringArray("TheoreticalDoorMarkers", "FloorTileMap", "PropsTileMap", "OuterWallTileMap", "RoofTileMap", "CollisionShape", "DoorMarkerParent", "MidPoint")]
+collision_layer = 15
+collision_mask = 15
 script = ExtResource("1_yngi1")
 Type = 3
 CameraFixedX = true
@@ -59,47 +60,27 @@ position = Vector2(272, 144)
 
 [node name="DoorMarkerParent" type="Node2D" parent="."]
 
-[node name="DoorMarker North" type="StaticBody2D" parent="DoorMarkerParent" node_paths=PackedStringArray("Sprite", "CollisionShape", "TeleportZone", "TeleportPoint") instance=ExtResource("5_b45db")]
+[node name="DoorMarker North" parent="DoorMarkerParent" instance=ExtResource("5_b45db")]
 position = Vector2(256, 32)
-script = ExtResource("6_n3jul")
 DisguiseTexture = SubResource("AtlasTexture_l1djv")
-Sprite = NodePath("Sprite2D")
-CollisionShape = NodePath("CollisionShape2D")
-TeleportZone = NodePath("Area2D")
-TeleportPoint = NodePath("TeleportPoint")
 
-[node name="DoorMarker East" type="StaticBody2D" parent="DoorMarkerParent" node_paths=PackedStringArray("Sprite", "CollisionShape", "TeleportZone", "TeleportPoint") instance=ExtResource("5_b45db")]
+[node name="DoorMarker East" parent="DoorMarkerParent" instance=ExtResource("5_b45db")]
 position = Vector2(448, 128)
 rotation = 1.5708
-script = ExtResource("6_n3jul")
 FacingDirection = 1
 DisguiseTexture = SubResource("AtlasTexture_l1djv")
-Sprite = NodePath("Sprite2D")
-CollisionShape = NodePath("CollisionShape2D")
-TeleportZone = NodePath("Area2D")
-TeleportPoint = NodePath("TeleportPoint")
 
-[node name="DoorMarker South" type="StaticBody2D" parent="DoorMarkerParent" node_paths=PackedStringArray("Sprite", "CollisionShape", "TeleportZone", "TeleportPoint") instance=ExtResource("5_b45db")]
+[node name="DoorMarker South" parent="DoorMarkerParent" instance=ExtResource("5_b45db")]
 position = Vector2(288, 256)
 rotation = 3.14159
-script = ExtResource("6_n3jul")
 FacingDirection = 2
 DisguiseTexture = SubResource("AtlasTexture_l1djv")
-Sprite = NodePath("Sprite2D")
-CollisionShape = NodePath("CollisionShape2D")
-TeleportZone = NodePath("Area2D")
-TeleportPoint = NodePath("TeleportPoint")
 
-[node name="DoorMarker West" type="StaticBody2D" parent="DoorMarkerParent" node_paths=PackedStringArray("Sprite", "CollisionShape", "TeleportZone", "TeleportPoint") instance=ExtResource("5_b45db")]
+[node name="DoorMarker West" parent="DoorMarkerParent" instance=ExtResource("5_b45db")]
 position = Vector2(96, 160)
 rotation = -1.5708
-script = ExtResource("6_n3jul")
 FacingDirection = 3
 DisguiseTexture = SubResource("AtlasTexture_l1djv")
-Sprite = NodePath("Sprite2D")
-CollisionShape = NodePath("CollisionShape2D")
-TeleportZone = NodePath("Area2D")
-TeleportPoint = NodePath("TeleportPoint")
 
 [node name="CollisionShape" type="CollisionShape2D" parent="."]
 position = Vector2(272, 160)

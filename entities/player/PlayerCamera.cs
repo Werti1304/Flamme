@@ -61,7 +61,7 @@ public partial class PlayerCamera : Camera2D
 
   public override void _Process(double delta)
   {
-    if (Player == null)
+    if (Player == null || !IsInstanceValid(Player))
     {
       GD.PrintErr("PlayerCamera: Player is null, stopping camera");
       SetProcess(false);

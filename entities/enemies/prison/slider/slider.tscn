@@ -1,33 +1,57 @@
-[gd_scene load_steps=6 format=3 uid="uid://dpjtf4eg65s6a"]
+[gd_scene load_steps=8 format=3 uid="uid://dpjtf4eg65s6a"]
 
 [ext_resource type="Script" uid="uid://i5c0caqyw6dh" path="res://entities/enemies/prison/slider/Slider.cs" id="1_sj6d1"]
-[ext_resource type="Texture2D" uid="uid://cmdroei4ronrq" path="res://assets/sprites/entities/enemy/enemy_placeholders.png" id="2_kav6h"]
+[ext_resource type="Texture2D" uid="uid://imgup6tkjgf5" path="res://assets/sprites/entities/enemy/prison/slider/slider_phase_1.png" id="2_2yxkh"]
 [ext_resource type="PackedScene" uid="uid://chv1fakx6xghy" path="res://entities/enemies/components/health_bar/health_bar.tscn" id="3_2yxkh"]
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_2yxkh"]
-atlas = ExtResource("2_kav6h")
-region = Rect2(0, 96, 32, 32)
+[ext_resource type="Texture2D" uid="uid://7jipmhvniqoi" path="res://assets/sprites/entities/enemy/prison/slider/slider_eye.png" id="3_uxg3b"]
+[ext_resource type="PackedScene" uid="uid://dok621wlg1nam" path="res://entities/enemies/components/melee_area/melee_area.tscn" id="5_2t16q"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_kav6h"]
-size = Vector2(24, 25)
+size = Vector2(94, 94)
 
-[node name="Slider" type="CharacterBody2D" node_paths=PackedStringArray("HealthBar")]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_2t16q"]
+size = Vector2(96, 96)
+
+[node name="Slider" type="CharacterBody2D" node_paths=PackedStringArray("HealthBar", "Body", "Eye", "EyeCenter", "ChangeDirectionTimer", "CollisionShape", "MeleeArea")]
 z_index = 10
 collision_layer = 4
 collision_mask = 15
+motion_mode = 1
 script = ExtResource("1_sj6d1")
 HealthBar = NodePath("HealthBar")
+Body = NodePath("Sprite2D")
+Eye = NodePath("Eye")
+EyeCenter = NodePath("EyeCenterMarker")
+ChangeDirectionTimer = NodePath("ChangeDirectionTimer")
+CollisionShape = NodePath("CollisionShape2D")
+MeleeArea = NodePath("MeleeArea")
 Health = 100.0
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-texture = SubResource("AtlasTexture_2yxkh")
+texture = ExtResource("2_2yxkh")
+
+[node name="Eye" type="Sprite2D" parent="."]
+position = Vector2(-30, -18)
+texture = ExtResource("3_uxg3b")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(0, -0.5)
 shape = SubResource("RectangleShape2D_kav6h")
 
 [node name="HealthBar" parent="." instance=ExtResource("3_2yxkh")]
 offset_left = -32.0
-offset_top = -35.0
+offset_top = -71.0
 offset_right = 32.0
-offset_bottom = -3.0
+offset_bottom = -39.0
+tint_under = Color(1, 1, 1, 0.588235)
+
+[node name="EyeCenterMarker" type="Node2D" parent="."]
+position = Vector2(-26, -20)
+
+[node name="ChangeDirectionTimer" type="Timer" parent="."]
+wait_time = 2.0
+
+[node name="MeleeArea" parent="." instance=ExtResource("5_2t16q")]
+Damage = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="MeleeArea"]
+shape = SubResource("RectangleShape2D_2t16q")

@@ -20,10 +20,10 @@ radius = 8.0
 [sub_resource type="CircleShape2D" id="CircleShape2D_7g7to"]
 radius = 9.0
 
-[node name="PlayableCharacter" type="CharacterBody2D" node_paths=PackedStringArray("Stats", "Purse", "Sprite", "InteractionArea")]
+[node name="PlayableCharacter" type="CharacterBody2D" node_paths=PackedStringArray("Stats", "Purse", "Sprite", "InteractionArea", "InvincibilityTimer")]
 z_index = 100
 collision_layer = 2
-collision_mask = 15
+collision_mask = 7
 motion_mode = 1
 slide_on_ceiling = false
 script = ExtResource("1_7xu7i")
@@ -31,6 +31,7 @@ Stats = NodePath("Stats")
 Purse = NodePath("Purse")
 Sprite = NodePath("Sprite")
 InteractionArea = NodePath("InteractionArea")
+InvincibilityTimer = NodePath("InvincibleTimer")
 
 [node name="Sprite" type="Sprite2D" parent="."]
 texture = SubResource("AtlasTexture_nkoxa")
@@ -50,9 +51,13 @@ script = ExtResource("2_75lbi")
 script = ExtResource("9_p3q4a")
 
 [node name="InteractionArea" type="Area2D" parent="."]
-collision_layer = 3
-collision_mask = 3
+collision_layer = 5
+collision_mask = 15
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="InteractionArea"]
 shape = SubResource("CircleShape2D_7g7to")
 debug_color = Color(0.86453, 0.339727, 0.297452, 0.42)
+
+[node name="InvincibleTimer" type="Timer" parent="."]
+wait_time = 0.5
+one_shot = true

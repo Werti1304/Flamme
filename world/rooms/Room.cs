@@ -472,6 +472,8 @@ public partial class Room : Area2D
       }
     }
     
+    Debug.Assert(MidPoint.Position == Vector2.Zero, "MidPoint wasn't moved yet!");
+    
     UpdateDoorMarkers();
     Debug.Assert(TheoreticalDoorMarkers.Count > 0, "No door markers in room!");
     
