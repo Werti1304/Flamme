@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://buwj6yarcmjjf"]
+
+[ext_resource type="Script" uid="uid://cu3vdn0r1mer3" path="res://world/rooms/Room.cs" id="1_qhipt"]
+
+[node name="PathwayP2" type="Area2D"]
+script = ExtResource("1_qhipt")
