@@ -26,6 +26,7 @@ public abstract partial class EnemyProjectile : Area2D
 
   protected Enemy Shooter;
   protected float Range;
+  protected PlayableCharacter Target;
   // TODO Make ShootingEnemy class?
   
   public override void _Ready()
@@ -46,11 +47,9 @@ public abstract partial class EnemyProjectile : Area2D
     Counter = 0;
   }
 
-  public virtual void Fire(Enemy enemy, Room room, float range)
+  public virtual void Fire(Enemy enemy, Room room, PlayableCharacter target, float range)
   {
-    // TODO 3 Make range how far or how much time a bullet has?
-    
-    FireInit(enemy, range);
+    FireInit(enemy, range, target);
     CustomFireExec(enemy, room);
     if (WindupTime > 0.01f)
     {
@@ -66,13 +65,15 @@ public abstract partial class EnemyProjectile : Area2D
     }
   }
 
-  private void FireInit(Enemy enemy, float range)
+  private void FireInit(Enemy enemy, float range, PlayableCharacter playableCharacter)
   {
     Shooter = enemy;
     Range = range;
+    Target = playableCharacter;
   }
 
-  protected abstract void CustomFireExec(Enemy enemy, Room room);
+  protected virtual void CustomFireExec(Enemy enemy, Room room)
+  { }
 
   private void FireReady()
   {

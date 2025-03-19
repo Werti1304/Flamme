@@ -164,6 +164,39 @@ public partial class LevelManager : Node2D
     startingStaff.Owner = level;
   }
 
+  // For testing single rooms
+  public static void SpawnUser(Room room)
+  {
+    // TODO 1 Preload 
+    var globalSpawnPosition = room.MidPoint.GlobalPosition;
+    var playerScene = GD.Load<PackedScene>(PathConstants.PlayerScenePath);
+    var player = playerScene.Instantiate<PlayableCharacter>();
+    player.GlobalPosition = globalSpawnPosition;
+    room.AddChild(player);
+    player.Owner = room;
+
+    // ...
+    var playerCameraScene = GD.Load<PackedScene>(PathConstants.PlayerCameraScenePath);
+    var playerCamera = playerCameraScene.Instantiate<PlayerCamera>();
+    playerCamera.GlobalPosition = globalSpawnPosition;
+    room.AddChild(playerCamera);
+    playerCamera.Player = player;
+    playerCamera.Owner = room;
+
+    // ...
+    var startingStaffScene = GD.Load<PackedScene>(PathConstants.StartingStaffScenePath);
+    var startingStaff = startingStaffScene.Instantiate<Staff>();
+    startingStaff.GlobalPosition = globalSpawnPosition - new Vector2(64, 64);
+    room.AddChild(startingStaff);
+    startingStaff.Owner = room;
+
+    // Manually set owner to player so we can start instantly
+    startingStaff.PickupAreaOnBodyEntered(player);
+    
+    room.EnterRoom(player);
+    playerCamera.UpdateRoom();
+  }
+
   private void TransferUser(Level level)
   {
     if (_stuffToTransfer == null)
