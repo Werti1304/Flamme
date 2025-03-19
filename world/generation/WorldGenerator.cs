@@ -47,6 +47,7 @@ public partial class WorldGenerator : Node2D
     if(!GenerateNewLevel)
       return;
     GenerateNewLevel = true;
+    LevelManager.Instance.CurrentLevel = level;
     
     Debug.Assert(WaitingForSceneChangeToNewLevel);
     Debug.Assert(GetTree().CurrentScene == level);

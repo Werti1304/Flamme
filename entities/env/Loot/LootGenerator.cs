@@ -15,23 +15,6 @@ namespace Flamme.entities.env.Loot;
 public partial class LootGenerator
 {
   public static RandomNumberGenerator NotSeedRng = new RandomNumberGenerator();
-  
-  // public readonly Dictionary<LootPool, List<(int, PackedScene, Area2D)>> LootPoolDict = new();
-  // public readonly Dictionary<LootPool, List<(int, LootType)>> LootPoolDict = new();
-  //
-  // public List<(HealthType, int min, int max)> HealthPickupList;
-  //
-  public enum LootType
-  {
-    NormalHealth,
-    AbsorptionHealth,
-    Coin,
-    Key,
-    Crystal,
-    NormalChest,
-    LockedChest,
-    MimicChest
-  }
 
   // TODO 1 Add weights/distribution types? idk
   public struct LootMeta(LootType lootType, int generationChance, int generationTries, int worthMin, int worthMax)
@@ -57,33 +40,41 @@ public partial class LootGenerator
     bool firstSpawn = true;
     foreach (var loot in lootList)
     {
-      // LevelManager.Instance.CurrentLevel.LootParent.AddChild(loot);
-      LevelManager.Instance.CurrentLevel.LootParent.CallDeferred(Node.MethodName.AddChild, loot);
-      loot.CallDeferred(Node.MethodName.SetOwner, LevelManager.Instance.CurrentLevel);
-      
-      if (firstSpawn)
-      {
-        // Randomize position by a little bit
-        loot.GlobalPosition = globalPosition;
-        firstSpawn = false;
-      }
-      else
-      {
-        var randomOffset = new Vector2(NotSeedRng.RandiRange(-8, 8), NotSeedRng.RandiRange(-8, 8));
-        loot.GlobalPosition = globalPosition + randomOffset;
-      }
-      
-      GD.Print($"Spawning loot: {loot.Name} at {loot.GlobalPosition}");
-      GD.Print($"Current player position: {LevelManager.Instance.CurrentLevel.PlayableCharacter.GlobalPosition}.");
-
-      if (loot is Enemy enemy)
-      {
-        enemy.SetActive(LevelManager.Instance.CurrentLevel.PlayableCharacter);
-      }
-      
-      loot.SetProcessMode(Node.ProcessModeEnum.Inherit);
-      loot.SetVisible(true);
+      SpawnLootAt(loot, globalPosition, !firstSpawn);
+      firstSpawn = false;
     }
+  }
+
+  public static void SpawnLootAt(Node2D loot, Vector2 globalPosition, bool randomizePositionSlightly)
+  {
+    // LevelManager.Instance.CurrentLevel.LootParent.AddChild(loot);
+    LevelManager.Instance.CurrentLevel.LootParent.CallDeferred(Node.MethodName.AddChild, loot);
+    loot.CallDeferred(Node.MethodName.SetOwner, LevelManager.Instance.CurrentLevel);
+      
+    if (!randomizePositionSlightly)
+    {
+      // Randomize position by a little bit
+      loot.GlobalPosition = globalPosition;
+    }
+    else
+    {
+      var randomOffset = new Vector2(NotSeedRng.RandiRange(-8, 8), NotSeedRng.RandiRange(-8, 8));
+      loot.GlobalPosition = globalPosition + randomOffset;
+    }
+      
+    GD.Print($"Spawning loot: {loot.Name} at {loot.GlobalPosition}");
+    if (LevelManager.Instance.CurrentLevel.PlayableCharacter != null)
+    {
+      GD.Print($"Current player position: {LevelManager.Instance.CurrentLevel.PlayableCharacter.GlobalPosition}.");
+    }
+
+    if (loot is Enemy enemy)
+    {
+      enemy.SetActive(LevelManager.Instance.CurrentLevel.PlayableCharacter);
+    }
+      
+    loot.SetProcessMode(Node.ProcessModeEnum.Inherit);
+    loot.SetVisible(true);
   }
   
   public void RegisterLoot(LootPool lootPool, LootMeta lootMeta)
@@ -96,7 +87,25 @@ public partial class LootGenerator
   {
     _lootPoolDict[lootPool].AddRange(lootList);
   }
-  
+
+  public Node2D GenerateLyingAroundLoot()
+  {
+    var whatToSpawn = GD.RandRange(0, 100);
+    var chanceOffset = 0; // Offset so that we correctly cover the whole range
+    foreach (var lootMeta in _lootPoolDict[LootPool.LyingAround])
+    {
+      if (whatToSpawn <= lootMeta.GenerationChance + chanceOffset)
+      {
+        // 1 time guaranteed spawn
+        var worth = (int)(GD.Randi() % (lootMeta.WorthMax - lootMeta.WorthMin + 1) + lootMeta.WorthMin);
+        return GenerateSingleLoot(lootMeta.LootType, worth);
+      }
+      chanceOffset += lootMeta.GenerationChance;
+    }
+    GD.PrintErr("No loot found in LyingAround loot pool");
+    return null;
+  }
+
   public List<Node2D> GenerateChestLoot()
   {
     // This should only be called if chest already decided that something from loot pool should be spawned

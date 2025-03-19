@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://cyw1jorccdqfm"]
+
+[ext_resource type="Script" uid="uid://bqg7irysq6noo" path="res://entities/env/lying_around_loot/LyingAroundLoot.cs" id="1_wu38h"]
+
+[node name="LyingAroundLoot" type="Node2D"]
+script = ExtResource("1_wu38h")
