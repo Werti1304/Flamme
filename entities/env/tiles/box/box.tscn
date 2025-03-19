@@ -1,0 +1,26 @@
+[gd_scene load_steps=7 format=3 uid="uid://ct506hl51tduf"]
+
+[ext_resource type="Texture2D" uid="uid://cr5fkqhtxjped" path="res://assets/sprites/entities/env/box/box_1.png" id="1_8mhe5"]
+[ext_resource type="Script" uid="uid://b685wn5a23ljy" path="res://entities/env/tiles/box/Box.cs" id="1_wqahw"]
+[ext_resource type="Texture2D" uid="uid://3aptofwrd4gy" path="res://assets/sprites/entities/env/box/box_2.png" id="3_a8myk"]
+[ext_resource type="Texture2D" uid="uid://dx20bg1rr3po1" path="res://assets/sprites/entities/env/box/box_3.png" id="4_q8g7v"]
+[ext_resource type="Texture2D" uid="uid://hfo6suxtplrs" path="res://assets/sprites/entities/env/box/box_broken.png" id="5_820xh"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_8mhe5"]
+size = Vector2(32, 32)
+
+[node name="Box" type="StaticBody2D" node_paths=PackedStringArray("Sprite", "CollisionShape")]
+collision_mask = 15
+script = ExtResource("1_wqahw")
+Texture1 = ExtResource("1_8mhe5")
+Texture2 = ExtResource("3_a8myk")
+Texture3 = ExtResource("4_q8g7v")
+TextureBroken = ExtResource("5_820xh")
+Sprite = NodePath("Sprite2D")
+CollisionShape = NodePath("CollisionShape2D")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_8mhe5")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_8mhe5")
