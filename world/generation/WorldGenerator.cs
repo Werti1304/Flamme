@@ -257,9 +257,6 @@ public partial class WorldGenerator : Node2D
       }
     }
     
-    // TODO Set actual exits of spawn
-    // level.Spawn.ActualExits = GetRoomExits(ref weightGrid, levelCenter);
-    
     // print in console
     for (var y = 0; y < level.Grid.GetLength(1); y++)
     {

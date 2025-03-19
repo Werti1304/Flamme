@@ -1,9 +1,10 @@
 using Godot;
 using System;
 using Flamme.entities;
+using Flamme.entities.common;
 using Flamme.testing;
 
-public partial class Box : StaticBody2D, IPlayerDamageable
+public partial class Box : StaticBody2D, IPlayerDamageable, IEnemyDamagable
 {
   [Export] public float StartHealth = 10;
   private float _health;
@@ -59,5 +60,10 @@ public partial class Box : StaticBody2D, IPlayerDamageable
       Sprite.Texture = TextureBroken;
       CollisionShape.SetDeferred(CollisionShape2D.PropertyName.Disabled, true);
     }
+  }
+
+  public void TakeDamage(int damage)
+  {
+    Hit(damage, 0, Vector2.Zero);
   }
 }

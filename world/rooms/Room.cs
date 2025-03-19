@@ -106,8 +106,7 @@ public partial class Room : Area2D
   
   public override void _Ready()
   {
-    // TODO Uncomment once tilemaps fixed
-    // ExportMetaNonNull.Check(this);
+    ExportMetaNonNull.Check(this);
     
     BodyEntered += OnBodyEntered;
     BodyExited += OnBodyExited;
@@ -127,6 +126,7 @@ public partial class Room : Area2D
     {
       // We are just testing this room, spawn in player, etc.
       LevelManager.SpawnUser(this);
+      Hud.Instance.Show();
     }
   }
 
