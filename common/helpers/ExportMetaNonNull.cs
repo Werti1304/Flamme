@@ -1,4 +1,5 @@
 ﻿using System.Runtime.InteropServices;
+using Flamme.common.constant;
 using Godot;
 
 namespace Flamme.testing;
@@ -7,7 +8,8 @@ public static class ExportMetaNonNull
 {
   public static bool Check(Node node)
   {
-    // TODO Add check if in (debug?) mode or not
+    if (!DebugToggles.CheckMetaNonNull)
+      return true;
     
     bool hasErrors = false;
     
