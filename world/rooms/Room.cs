@@ -97,7 +97,7 @@ public partial class Room : Area2D
   [Signal] public delegate void PlayerEnteredEventHandler(PlayableCharacter playableCharacter);
   [Signal] public delegate void PlayerExitedEventHandler(PlayableCharacter playableCharacter);
 
-  public bool WasVisited;
+  public bool WasVisited = false;
   public readonly List<Enemy> Enemies = [];
 
   private PlayableCharacter _playableCharacter;
@@ -212,9 +212,7 @@ public partial class Room : Area2D
   {
     GD.Print($"Player entered Room {Name} with {Enemies.Count} enemies!");
     Current = this;
-    
-    Hud.Instance.Minimap.UpdateCurrentRoom();
-    Level.Current.PlayerCamera.UpdateRoom();
+    WasVisited = true;
     _playableCharacter = playableCharacter;
     
     if (Enemies.Count == 0)
@@ -229,7 +227,6 @@ public partial class Room : Area2D
       }
     }
     
-    WasVisited = true;
     if (Enemies.Count > 0)
     {
       LockRoom(playableCharacter);
@@ -238,6 +235,9 @@ public partial class Room : Area2D
     {
       SetRoomCleared(false);
     }
+    
+    Hud.Instance.Minimap.UpdateCurrentRoom();
+    Level.Current.PlayerCamera.UpdateRoom();
   }
   
   public void LeaveRoom()

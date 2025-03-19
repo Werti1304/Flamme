@@ -110,10 +110,7 @@ public partial class Minimap : GridContainer
       }
     }
   }
-
-  // TODO 1 Performance
-  // Can be made more efficient with less updates to the whole thing
-  // but for now its ok
+  
   public void UpdateLevel()
   {
     foreach (var textureRect in _grid)
