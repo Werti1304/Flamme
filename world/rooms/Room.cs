@@ -84,6 +84,8 @@ public partial class Room : Area2D
         GenerateTemplate();
     }
   }
+  [Export] public bool RestrictToFloor = false;
+  [Export] public LevelFloor LevelFloor;
 
   [ExportGroup("Meta")] 
   [Export] public TileMapLayer FloorTileMap;
@@ -286,7 +288,7 @@ public partial class Room : Area2D
       var warperScene = GD.Load<PackedScene>(PathConstants.WarperScenePath);
       var warperNode = warperScene.Instantiate<entities.env.Warper>();
       CallDeferred(Node.MethodName.AddChild, warperNode);
-      warperNode.Position = MidPoint.Position * 32.0f;
+      warperNode.SetDeferred(Node2D.PropertyName.GlobalPosition, MidPoint.GlobalPosition);
     }
     else if (Type == RoomType.Pathway && enemiesDefeated)
     {
@@ -494,7 +496,7 @@ public partial class Room : Area2D
       }
     }
     
-    Debug.Assert(MidPoint.Position == Vector2.Zero, "MidPoint wasn't moved yet!");
+    Debug.Assert(MidPoint.Position != Vector2.Zero, "MidPoint wasn't moved yet!");
     
     UpdateDoorMarkers();
     Debug.Assert(TheoreticalDoorMarkers.Count > 0, "No door markers in room!");

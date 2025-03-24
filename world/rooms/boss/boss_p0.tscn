@@ -20,6 +20,7 @@ TheoreticalDoorMarkers = {
 1: NodePath("DoorMarkerParent/DoorMarker East"),
 2: NodePath("DoorMarkerParent/DoorMarker South")
 }
+RestrictToFloor = true
 FloorTileMap = NodePath("Floor")
 PropsTileMap = NodePath("Props")
 OuterWallTileMap = NodePath("Wall")
@@ -45,7 +46,7 @@ tile_map_data = PackedByteArray("AAAQAAwAGQAJAAIAAAAQAAsAGQAJAAIAAAAQAAoAGQAJAAI
 tile_set = ExtResource("4_2rs2q")
 
 [node name="MidPoint" type="Node2D" parent="."]
-position = Vector2(272, 208)
+position = Vector2(272, 160)
 
 [node name="DoorMarkerParent" type="Node2D" parent="."]
 

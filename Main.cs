@@ -32,6 +32,12 @@ public partial class Main : Node
   // 3. Make actual loot spawning correct
   // 4. Make loot spawn in level generation
   
+  // Small TODO s
+  // Make staff trail speed scale better with speed, looks weird rn
+  // Make staff come with u even while youre holding it when changing rooms
+  // Fix enemy spawning in wall thats not good
+  // Make it so boss room 1 is on level 1 and 2 on 2
+  
   public bool ShuttingDown { get; private set; }= false;
 
   public override void _Notification(int what)

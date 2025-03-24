@@ -223,6 +223,8 @@ public partial class LevelManager : Node2D
     level.PlayerCamera = stuff.Camera;
     level.PlayerCamera.GlobalPosition = level.PlayableCharacter.GlobalPosition;
     level.AddChild(level.PlayerCamera);
+    
+    level.Spawn.EnterRoom(level.PlayableCharacter);
   }
   
   public LevelManager()

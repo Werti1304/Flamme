@@ -21,27 +21,27 @@ using System.Linq;
 
 namespace Flamme.world.rooms;
 
-public class RoomMeta
+public class RoomMeta(
+  PackedScene roomScene,
+  string name,
+  RoomType type,
+  ICollection<Cardinal> possibleExits,
+  int roomGenerationTickets,
+  bool restrictToFloor,
+  LevelFloor levelFloor = LevelFloor.Prison1)
 {
   public static readonly Dictionary<RoomType, List<RoomMeta>> RoomDict 
     = new Dictionary<RoomType, List<RoomMeta>>();
   
-  public PackedScene RoomScene;
-  public string Name;
-  public RoomType Type;
-  public ICollection<Cardinal> PossibleExits;
-  public int RoomGenerationTickets;
+  public PackedScene RoomScene = roomScene;
+  public string Name = name;
+  public RoomType Type = type;
+  public ICollection<Cardinal> PossibleExits = possibleExits;
+  public int RoomGenerationTickets = roomGenerationTickets;
+  public bool RestrictToFloor = restrictToFloor;
+  public LevelFloor LevelFloor = levelFloor;
 
-  public RoomMeta(PackedScene roomScene, string name, RoomType type, ICollection<Cardinal> possibleExits, int roomGenerationTickets)
-  {
-    RoomScene = roomScene;
-    Name = name;
-    Type = type;
-    PossibleExits = possibleExits;
-    RoomGenerationTickets = roomGenerationTickets;
-  }
-
-  public static RoomMeta GetRandomRoom(RoomType roomType, ICollection<Cardinal> exitsNeeded)
+  public static RoomMeta GetRandomRoom(RoomType roomType, ICollection<Cardinal> exitsNeeded, LevelFloor levelFloor)
   {
     var list = RoomDict[roomType];
 
@@ -50,7 +50,7 @@ public class RoomMeta
     {
       foreach (var cardinal in exitsNeeded)
       {
-        if (!r.PossibleExits.Contains(cardinal))
+        if (!r.PossibleExits.Contains(cardinal) || (r.RestrictToFloor && r.LevelFloor != levelFloor))
         {
           return false;
         }
@@ -121,7 +121,8 @@ public class RoomMeta
       }
       
       var roomData = new RoomMeta(
-        roomScene, roomTemp.Name, roomTemp.Type, roomTemp.TheoreticalDoorMarkers.Keys, roomTemp.RoomGenerationTickets);
+        roomScene, roomTemp.Name, roomTemp.Type, roomTemp.TheoreticalDoorMarkers.Keys, roomTemp.RoomGenerationTickets,
+        roomTemp.RestrictToFloor, roomTemp.LevelFloor);
       RoomDict[roomTemp.Type].Add(roomData);
       roomTemp.QueueFree();
     }

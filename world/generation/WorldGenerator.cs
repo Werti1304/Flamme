@@ -212,7 +212,7 @@ public partial class WorldGenerator : Node2D
       for (int i = 0; i < endRoomTypeCount.Count; i++)
       {
         var roomTypeCount = endRoomTypeCount[typeCountShuffled[i]];
-        var roomMeta = RoomMeta.GetRandomRoom(roomTypeCount.type, GetRoomExits(ref weightGrid, randomEndRoom));
+        var roomMeta = RoomMeta.GetRandomRoom(roomTypeCount.type, GetRoomExits(ref weightGrid, randomEndRoom), levelFloor);
         
         if (roomMeta == null) continue;
         
@@ -248,7 +248,7 @@ public partial class WorldGenerator : Node2D
         
         var roomPos = new Vector2I(x, y);
         var actualExits = GetRoomExits(ref weightGrid, roomPos);
-        var roomMeta = RoomMeta.GetRandomRoom(RoomType.Pathway, actualExits);
+        var roomMeta = RoomMeta.GetRandomRoom(RoomType.Pathway, actualExits, levelFloor);
         var room = roomMeta.RoomScene.Instantiate<Room>();
         var placeGlobalPos = (roomPos - levelCenter) * roomSize * tileSize;
         GD.Print($"Placing down room {room.Name} at {placeGlobalPos}");

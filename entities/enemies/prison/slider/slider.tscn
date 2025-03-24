@@ -49,7 +49,7 @@ ChangeDirectionTimer = NodePath("ChangeDirectionTimer")
 CollisionShape = NodePath("CollisionShape2D")
 MeleeArea = NodePath("MeleeArea")
 DeathParticles = NodePath("GPUParticles2D")
-Health = 5.0
+Health = 200.0
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("2_2yxkh")

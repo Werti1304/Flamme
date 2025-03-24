@@ -33,7 +33,7 @@ ShooterHoming = NodePath("ShooterHoming")
 ShooterSpiral = NodePath("ShooterSpiral")
 ShooterNormal = NodePath("ShooterNormal")
 HealthBar = NodePath("TextureProgressBar")
-Health = 100.0
+Health = 200.0
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = SubResource("AtlasTexture_mpq3j")

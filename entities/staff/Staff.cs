@@ -234,7 +234,7 @@ public partial class Staff : RigidBody2D
 
   private void OwnerOnStatsChanged(PlayerStats stats)
   {
-    TrailingForce = stats.Speed / 3.0f;
+    TrailingForce = stats.Speed / 5.0f;
     UpdateFireRate();
   }
 
