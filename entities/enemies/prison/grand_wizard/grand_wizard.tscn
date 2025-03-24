@@ -1,0 +1,77 @@
+[gd_scene load_steps=14 format=3 uid="uid://cy3iql36h76i8"]
+
+[ext_resource type="Script" uid="uid://somcxqjkl3h5" path="res://entities/enemies/prison/grand_wizard/GrandWizard.cs" id="1_vwxo0"]
+[ext_resource type="Texture2D" uid="uid://cmdroei4ronrq" path="res://assets/sprites/entities/enemy/enemy_placeholders.png" id="2_dmy7q"]
+[ext_resource type="PackedScene" uid="uid://dok621wlg1nam" path="res://entities/enemies/components/melee_area/melee_area.tscn" id="3_mpq3j"]
+[ext_resource type="PackedScene" uid="uid://ejoowujhpma3" path="res://entities/enemies/components/shooter/shooter.tscn" id="4_nc3ng"]
+[ext_resource type="PackedScene" uid="uid://dfy1t8r8kt5vi" path="res://projectiles/enemy/magic_ball/magic_ball_3.tscn" id="5_7m6dh"]
+[ext_resource type="PackedScene" uid="uid://db2ddadb2b0q1" path="res://projectiles/enemy/grand_mage/big_homing.tscn" id="6_cd407"]
+[ext_resource type="PackedScene" uid="uid://bd28jrw36iu0m" path="res://projectiles/enemy/magic_ball/magic_ball_4.tscn" id="7_pcdd3"]
+[ext_resource type="PackedScene" uid="uid://ycj73uglxa1j" path="res://projectiles/enemy/magic_ball/magic_ball_5.tscn" id="8_2ant5"]
+[ext_resource type="PackedScene" uid="uid://chv1fakx6xghy" path="res://entities/enemies/components/health_bar/health_bar.tscn" id="8_moh26"]
+[ext_resource type="Texture2D" uid="uid://bipwbtaje2jiw" path="res://assets/sprites/entities/enemy/prison/grand_wizard/grand_wizard_bar.png" id="9_nxpqp"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mpq3j"]
+atlas = ExtResource("2_dmy7q")
+region = Rect2(96, 96, 32, 32)
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_dmy7q"]
+radius = 6.0
+height = 20.0
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_nc3ng"]
+radius = 7.0
+height = 22.0
+
+[node name="GrandWizard" type="CharacterBody2D" node_paths=PackedStringArray("Sprite", "ShooterRapid", "ShooterHoming", "ShooterSpiral", "ShooterNormal", "HealthBar")]
+collision_layer = 4
+collision_mask = 7
+script = ExtResource("1_vwxo0")
+Sprite = NodePath("Sprite2D")
+ShooterRapid = NodePath("ShooterRapid")
+ShooterHoming = NodePath("ShooterHoming")
+ShooterSpiral = NodePath("ShooterSpiral")
+ShooterNormal = NodePath("ShooterNormal")
+HealthBar = NodePath("TextureProgressBar")
+Health = 100.0
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = SubResource("AtlasTexture_mpq3j")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 1.5)
+shape = SubResource("CapsuleShape2D_dmy7q")
+
+[node name="MeleeArea" parent="." instance=ExtResource("3_mpq3j")]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="MeleeArea"]
+position = Vector2(0, 1)
+shape = SubResource("CapsuleShape2D_nc3ng")
+
+[node name="ShooterRapid" parent="." instance=ExtResource("4_nc3ng")]
+ProjectileScene = ExtResource("5_7m6dh")
+Range = 256.0
+SpreadDegree = 360.0
+
+[node name="ShooterHoming" parent="." instance=ExtResource("4_nc3ng")]
+ProjectileScene = ExtResource("6_cd407")
+Range = 512.0
+SpawnOffsetInDirection = 32.0
+
+[node name="ShooterSpiral" parent="." instance=ExtResource("4_nc3ng")]
+ProjectileScene = ExtResource("7_pcdd3")
+Range = 256.0
+Damage = 2
+SpreadDegree = 90.0
+
+[node name="ShooterNormal" parent="." instance=ExtResource("4_nc3ng")]
+ProjectileScene = ExtResource("8_2ant5")
+Damage = 2
+SpreadDegree = 45.0
+
+[node name="TextureProgressBar" parent="." instance=ExtResource("8_moh26")]
+offset_left = -32.0
+offset_top = -36.0
+offset_right = 32.0
+offset_bottom = -4.0
+texture_progress = ExtResource("9_nxpqp")

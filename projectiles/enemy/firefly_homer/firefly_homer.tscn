@@ -1,7 +1,7 @@
 [gd_scene load_steps=7 format=3 uid="uid://crjd5jqq2vgxa"]
 
 [ext_resource type="Script" uid="uid://dy3xvfx15f2at" path="res://projectiles/enemy/firefly_homer/FireflyHomer.cs" id="1_8cgdi"]
-[ext_resource type="Texture2D" uid="uid://c6ty4kicag4s" path="res://assets/sprites/projectiles/enemies/firefly_homing/firefly_homing.png" id="2_ww3es"]
+[ext_resource type="Texture2D" uid="uid://7uyrbsk2ky1x" path="res://assets/sprites/projectiles/enemies/firefly_homing/firefly_homing.png" id="2_ww3es"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_ww3es"]
 radius = 2.0

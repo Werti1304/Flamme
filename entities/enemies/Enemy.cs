@@ -1,3 +1,4 @@
+using Flamme;
 using Flamme.entities;
 using Flamme.entities.common;
 using Flamme.testing;
@@ -108,5 +109,18 @@ public abstract partial class Enemy : CharacterBody2D, IPlayerDamageable
     OnHit();
     TakeDamage(attackDamage);
     Velocity += (knockBackStrength / Weight) * attackDirection;
+  }
+  
+  protected static void SpawnEnemy(PackedScene toSpawn, Vector2 globalPosition, int randomizedPosPx = 0)
+  {
+    if (randomizedPosPx > 0)
+    {
+      globalPosition += new Vector2(Main.Instance.Rnd.RandiRange(-randomizedPosPx, randomizedPosPx), 
+        Main.Instance.Rnd.RandiRange(-randomizedPosPx, randomizedPosPx));
+    }
+    var enemy = toSpawn.Instantiate();
+    // TODO 2 prevent from spawning in the wall
+    Room.Current.CallDeferred(Node.MethodName.AddChild, enemy);
+    enemy.SetDeferred(Node2D.PropertyName.GlobalPosition, globalPosition);
   }
 }

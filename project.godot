@@ -121,5 +121,6 @@ toggle_map={
 [rendering]
 
 textures/canvas_textures/default_texture_filter=0
+gl_compatibility/nvidia_disable_threaded_optimization=false
 renderer/rendering_method="gl_compatibility"
 renderer/rendering_method.mobile="gl_compatibility"

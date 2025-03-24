@@ -40,6 +40,5 @@ collision_mask = 15
 
 [node name="Shooter" parent="." instance=ExtResource("5_w2cd1")]
 ProjectileScene = ExtResource("2_r8boy")
-Speed = 4.0
 Range = 1024.0
 Damage = 4

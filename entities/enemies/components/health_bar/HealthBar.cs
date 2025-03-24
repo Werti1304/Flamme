@@ -12,7 +12,14 @@ public partial class HealthBar : TextureProgressBar
 
   public void OnHealthChanged(Enemy enemy)
   {
-    Value = enemy.Health / enemy.MaxHealth * 100.0f;
+    if (enemy.MaxHealth == 0)
+    {
+      Value = 100.0f;
+    }
+    else
+    {
+      Value = enemy.Health / enemy.MaxHealth * 100.0f;
+    }
   }
 
   public void OnDeath()

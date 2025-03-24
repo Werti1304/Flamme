@@ -9,7 +9,9 @@ public static class ExportMetaNonNull
   public static bool Check(Node node)
   {
     if (!DebugToggles.CheckMetaNonNull)
+#pragma warning disable CS0162 // Unreachable code detected
       return true;
+#pragma warning restore CS0162 // Unreachable code detected
     
     bool hasErrors = false;
     

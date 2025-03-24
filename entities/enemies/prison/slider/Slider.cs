@@ -8,7 +8,7 @@ using Main = Flamme.Main;
 
 public partial class Slider : Enemy
 {
-  [Export] public int RunnersSpawnedOnDeath = 5;
+  [Export] public int RunnersSpawnedOnDeath = 7;
   [Export] public float WaitTimeRandomnessPercentage = 0.3f;
   [Export] public float KnockbackMultiplier = 2.0f;
   
@@ -143,19 +143,16 @@ public partial class Slider : Enemy
     for (var i = 0; i < RunnersSpawnedOnDeath; i++)
     {
       Node2D enemy;
+      var randomPosOffset = new Vector2(Main.Instance.Rnd.RandfRange(-16, 16), Main.Instance.Rnd.RandfRange(-16, 16));
       if (Main.Instance.Rnd.Randf() < 0.3f)
       {
-        enemy = smartRunnerScene.Instantiate<RunnerSmart>();
+        SpawnEnemy(smartRunnerScene, GlobalPosition + randomPosOffset);
       }
       else
       {
-        enemy = runnerScene.Instantiate<Runner>();
+        SpawnEnemy(runnerScene, GlobalPosition + randomPosOffset);
       }
-      var randomPosOffset = new Vector2(Main.Instance.Rnd.RandfRange(-16, 16), Main.Instance.Rnd.RandfRange(-16, 16));
-      Room.Current.CallDeferred(Node.MethodName.AddChild, enemy);
-      enemy.SetDeferred(Node2D.PropertyName.GlobalPosition, GlobalPosition + randomPosOffset);
     }
-
     DeathParticles.Finished += base.OnDeath;
   }
 

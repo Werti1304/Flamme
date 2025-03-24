@@ -17,7 +17,9 @@ public static class PathConstants
   
   public const string RunnerScenePath = "res://entities/enemies/prison/runner/Runner.tscn";
   public const string RunnerSmartScenePath = "res://entities/enemies/prison/runner_smart/runner_smart.tscn";
-  
+  public const string FireflyNeutralScenePath = "res://entities/enemies/prison/firefly_neutral/firefly_neutral.tscn";
+  public const string FireflyHomingScenePath = "res://entities/enemies/prison/firefly_homing/firefly_homing.tscn";
+  public const string FireflyRagingScenePath = "res://entities/enemies/prison/firefly_raging_light/firefly_raging_light.tscn";
   
   public const string WarperScenePath = "res://entities/env/warper.tscn";
 
@@ -35,4 +37,5 @@ public static class PathConstants
   public const string PrisonFloorTileSetPath = "res://assets/tilesets/prison/prison_floor.tres";
   public const string PrisonPropsTileSetPath = "res://assets/tilesets/prison/prison_props.tres";
   public const string PrisonWallTileSetPath = "res://assets/tilesets/prison/prison_wall.tres";
+
 }

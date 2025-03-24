@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3 uid="uid://dfy1t8r8kt5vi"]
+
+[ext_resource type="PackedScene" uid="uid://bphl4845eyvn0" path="res://projectiles/enemy/magic_ball/magic_ball.tscn" id="1_pupos"]
+
+[node name="MagicBall" instance=ExtResource("1_pupos")]
+ShotSpeed = 1.0
+WindupTime = 0.3

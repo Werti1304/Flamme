@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=4 uid="uid://be2wqjy01ensx"]
+[gd_scene load_steps=11 format=4 uid="uid://be2wqjy01ensx"]
 
 [ext_resource type="Script" uid="uid://cu3vdn0r1mer3" path="res://world/rooms/Room.cs" id="1_tk1uq"]
 [ext_resource type="TileSet" uid="uid://ciata4jhj6wvu" path="res://assets/tilesets/prison/prison_floor.tres" id="2_exgaj"]
@@ -7,6 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://bnx0j5b2ekjat" path="res://world/doors/DoorMarker.tscn" id="5_7dt1j"]
 [ext_resource type="Texture2D" uid="uid://bgc4ewqfbryq3" path="res://assets/sprites/levels/PrisonWalls.png" id="7_ks368"]
 [ext_resource type="PackedScene" uid="uid://dpjtf4eg65s6a" path="res://entities/enemies/prison/slider/slider.tscn" id="8_exgaj"]
+[ext_resource type="PackedScene" uid="uid://cy3iql36h76i8" path="res://entities/enemies/prison/grand_wizard/grand_wizard.tscn" id="8_fto1v"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_l1djv"]
 atlas = ExtResource("7_ks368")
@@ -81,3 +82,6 @@ shape = SubResource("RectangleShape2D_bs18r")
 
 [node name="Slider" parent="Enemies" instance=ExtResource("8_exgaj")]
 position = Vector2(496, 272)
+
+[node name="GrandWizard" parent="Enemies" instance=ExtResource("8_fto1v")]
+position = Vector2(176, 160)

@@ -9,7 +9,7 @@ public partial class Shooter : Node2D
   [Export] public PackedScene ProjectileScene;
   
   // This can all be changed on the fly
-  [Export] public float Speed = 5.0f;
+  // [Export] public float Speed = 5.0f;
   [Export] public float Cooldown = 1.0f;
   [Export] public float Range = 128.0f;
   [Export] public int Damage = 1;
@@ -28,6 +28,7 @@ public partial class Shooter : Node2D
 
   private Enemy _shooter;
   private PlayableCharacter _target;
+  private Vector2 _targetPos;
 
   public override void _Ready()
   {
@@ -38,14 +39,32 @@ public partial class Shooter : Node2D
   {
     _shooter = enemy;
     _target = target;
+    
+    Shoot();
+  }
 
-    // TODO 1 Perf split multishot vs non multishot
+  public void Shoot(Enemy enemy, Vector2 targetPos)
+  {
+    _shooter = enemy;
+    _targetPos = targetPos;
+    
     Shoot();
   }
 
   private void Shoot()
   {
-    var directionVec = _target.GlobalPosition - _shooter.GlobalPosition;
+    Vector2 targetPos;
+    if (_target == null)
+    {
+      targetPos = _targetPos;
+    }
+    else
+    {
+      targetPos = _target.GlobalPosition;
+    }
+    
+    var directionVec = targetPos - _shooter.GlobalPosition;
+
 
     // Don't shoot if out of range
     if (directionVec.Length() > Range)
@@ -78,13 +97,13 @@ public partial class Shooter : Node2D
       // Also includes +- offset in the global position
       var spawnPos = _shooter.GlobalPosition + (directDirection * SpawnOffsetInDirection)
                      + (positionStep * multiplier * -posOffsetDirection);
-      directionVec = _target.GlobalPosition - spawnPos;
+      directionVec = targetPos - spawnPos;
       var direction = directionVec.Rotated(float.DegreesToRadians(degreeStep * multiplier)).Normalized();
       GenShot(spawnPos, direction);
       
       var spawnPos2 = _shooter.GlobalPosition + (directDirection * SpawnOffsetInDirection)
                      + (positionStep * multiplier * posOffsetDirection);
-      directionVec = _target.GlobalPosition - spawnPos2;
+      directionVec = targetPos - spawnPos2;
       var direction2 = directionVec.Rotated(float.DegreesToRadians(-degreeStep * multiplier)).Normalized();
       GenShot(spawnPos2, direction2);
     }
