@@ -4,7 +4,7 @@ using System;
 
 public partial class RunnerAngry : Enemy
 {
-  [Export] public float Speed = 100.0f;
+  [Export] public float Speed = 180.0f;
   [Export] public float TriggerDistance = 96.0f;
   
   [ExportGroup("Meta")]

@@ -17,6 +17,7 @@ public partial class SceneLoader : Node2D
     HealthPickup,
     Chest, // TODO 3
     Runner,
+    RunnerSmart,
     Door,
     DoorMarker,
     Trailing,
@@ -35,6 +36,7 @@ public partial class SceneLoader : Node2D
     { Scene.HealthPickup, GD.Load<PackedScene>(PathConstants.HealthPickupScenePath) },
     { Scene.Chest, GD.Load<PackedScene>(PathConstants.ChestScenePath) },
     { Scene.Runner, GD.Load<PackedScene>(PathConstants.RunnerScenePath) },
+    { Scene.RunnerSmart, GD.Load<PackedScene>(PathConstants.RunnerSmartScenePath) },
     { Scene.Door, GD.Load<PackedScene>(PathConstants.DoorScenePath) },
     { Scene.DoorMarker, GD.Load<PackedScene>(PathConstants.DoorMarkerScenePath) },
     { Scene.Trailing, GD.Load<PackedScene>(PathConstants.TrailingProjectileScenePath) },

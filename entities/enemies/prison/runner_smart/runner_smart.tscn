@@ -19,7 +19,6 @@ height = 24.0
 [node name="RunnerSmart" type="CharacterBody2D" node_paths=PackedStringArray("NavigationAgent", "Sprite")]
 motion_mode = 1
 script = ExtResource("1_tmgqv")
-Speed = 40.0
 NavigationAgent = NodePath("NavigationAgent2D")
 Sprite = NodePath("Sprite2D")
 Weight = 20.0

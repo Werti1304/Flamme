@@ -4,7 +4,7 @@ using Godot;
 // TODO Add possible loot to all enemies
 public partial class Runner : Enemy
 {
-  [Export] public float Speed = 20.0f;
+  [Export] public float Speed = 100.0f;
   
   [ExportGroup("Meta")] 
   [Export] public Sprite2D Sprite;

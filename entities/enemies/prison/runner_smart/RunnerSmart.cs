@@ -4,7 +4,7 @@ using System;
 
 public partial class RunnerSmart : Enemy
 {
-  [Export] public float Speed = 20.0f;
+  [Export] public float Speed = 120.0f;
   
   [ExportGroup("Meta")]
   [Export] public NavigationAgent2D NavigationAgent;

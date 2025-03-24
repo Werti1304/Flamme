@@ -24,7 +24,6 @@ height = 32.0
 [node name="RunnerAngry" type="CharacterBody2D" node_paths=PackedStringArray("NavigationAgent", "PassiveSprite", "ActiveSprite")]
 motion_mode = 1
 script = ExtResource("1_4l60g")
-Speed = 120.0
 NavigationAgent = NodePath("NavigationAgent2D")
 PassiveSprite = NodePath("Passive")
 ActiveSprite = NodePath("Active")

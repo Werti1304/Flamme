@@ -65,6 +65,11 @@ public abstract partial class Enemy : CharacterBody2D, IPlayerDamageable
 
   public virtual void SetActive(PlayableCharacter playableCharacter)
   {
+    if (playableCharacter == null)
+    {
+      GD.PushWarning("Tried to set enemy active with null playable character.");
+      return;
+    }
     if (EnemyDisabled)
     {
       return;

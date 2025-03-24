@@ -171,7 +171,11 @@ public partial class Room : Area2D
         // Only works if player goes into a room, not if it spawns there
         // -> No enemies in spawn room
         Enemies.Add(e);
-        e.SetActive(_playableCharacter);
+
+        if (_playableCharacter != null)
+        {
+          e.SetActive(_playableCharacter);
+        }
         break;
     }
   }

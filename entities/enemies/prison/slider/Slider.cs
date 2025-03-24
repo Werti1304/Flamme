@@ -1,5 +1,6 @@
 using Flamme.entities.common;
 using Flamme.entities.enemies.components.melee_area;
+using Flamme.world.rooms;
 using Godot;
 using GodotPlugins.Game;
 using System;
@@ -7,9 +8,22 @@ using Main = Flamme.Main;
 
 public partial class Slider : Enemy
 {
-  [Export] public float Speed = 300.0f;
-  [Export] public float AccelerationWeight = 0.1f;
+  [Export] public int RunnersSpawnedOnDeath = 5;
+  [Export] public float WaitTimeRandomnessPercentage = 0.3f;
   [Export] public float KnockbackMultiplier = 2.0f;
+  
+  [ExportGroup("Phase Specific")]
+  [Export] public float SpeedPhase1 = 150.0f;
+  [Export] public float SpeedPhase2 = 225.0f;
+  [Export] public float SpeedPhase3 = 350.0f;
+  [Export] public float WaitTimePhase1 = 3.0f;
+  [Export] public float WaitTimePhase2 = 2f;
+  [Export] public float WaitTimePhase3 = 1f;
+  
+  [ExportGroup("Textures")]
+  [Export] public Texture2D TexturePhase1;
+  [Export] public Texture2D TexturePhase2;
+  [Export] public Texture2D TexturePhase3;
   
   [ExportGroup("Meta")]
   [Export] public HealthBar HealthBar;
@@ -19,11 +33,52 @@ public partial class Slider : Enemy
   [Export] public Timer ChangeDirectionTimer;
   [Export] public CollisionShape2D CollisionShape;
   [Export] public MeleeArea MeleeArea;
+  [Export] public GpuParticles2D DeathParticles;
 
   private static readonly Vector2I EyeSize = new Vector2I(10, 5);
   
   private Vector2 _direction;
   private double _directionTimerDefault;
+  
+  private float _speed;
+
+  private enum Phase
+  {
+    Phase1,
+    Phase2,
+    Phase3,
+  }
+  
+  private Phase _currentPhase = Phase.Phase1;
+  private Phase CurrentPhase
+  {
+    get => _currentPhase;
+    set
+    {
+      _currentPhase = value;
+
+      switch (value)
+      {
+        case Phase.Phase1:
+          Body.Texture = TexturePhase1;
+          ChangeDirectionTimer.WaitTime = WaitTimePhase1;
+          _speed = SpeedPhase1;
+          break;
+        case Phase.Phase2:
+          ChangeDirectionTimer.WaitTime = WaitTimePhase2;
+          Body.Texture = TexturePhase2;
+          _speed = SpeedPhase2;
+          break;
+        case Phase.Phase3:
+          ChangeDirectionTimer.WaitTime = WaitTimePhase3;
+          Body.Texture = TexturePhase3;
+          _speed = SpeedPhase3;
+          break;
+        default:
+          throw new ArgumentOutOfRangeException(nameof(value), value, null);
+      }
+    }
+  }
   
   public override void _Ready()
   {
@@ -32,12 +87,15 @@ public partial class Slider : Enemy
     _directionTimerDefault = ChangeDirectionTimer.WaitTime;
     
     HealthChanged += HealthBar.OnHealthChanged;
+    HealthChanged += OnHealthChanged;
     
     HealthBar.OnHealthChanged(this);
     
     ChangeDirectionTimer.Timeout += ChangeDirectionTimerOnTimeout;
     
     MeleeArea.BodyEntered += MeleeAreaOnBodyEntered;
+    
+    CurrentPhase = Phase.Phase1;
   }
 
   private void MeleeAreaOnBodyEntered(Node2D body)
@@ -58,6 +116,49 @@ public partial class Slider : Enemy
     ChangeDirectionTimer.Stop();
   }
 
+  public override void _PhysicsProcess(double delta)
+  {
+    if (!IsActive)
+      return;
+    
+    var lookingDirection = (Target.GlobalPosition - EyeCenter.GlobalPosition).Normalized();
+    var pupilPosition = (Vector2I)(EyeCenter.Position + new Vector2I((int)(lookingDirection.X * EyeSize.X), (int)(lookingDirection.Y * EyeSize.Y)));
+    Eye.Position = pupilPosition;
+    
+    Velocity = _direction * _speed;
+
+    MoveAndSlide();
+  }
+
+  public override void OnDeath()
+  {
+    var runnerScene = SceneLoader.Instance[SceneLoader.Scene.Runner];
+    var smartRunnerScene = SceneLoader.Instance[SceneLoader.Scene.RunnerSmart];
+    
+    SetPhysicsProcess(false);
+    Body.Hide();
+    Eye.Hide();
+    DeathParticles.Emitting = true;
+
+    for (var i = 0; i < RunnersSpawnedOnDeath; i++)
+    {
+      Node2D enemy;
+      if (Main.Instance.Rnd.Randf() < 0.3f)
+      {
+        enemy = smartRunnerScene.Instantiate<RunnerSmart>();
+      }
+      else
+      {
+        enemy = runnerScene.Instantiate<Runner>();
+      }
+      var randomPosOffset = new Vector2(Main.Instance.Rnd.RandfRange(-16, 16), Main.Instance.Rnd.RandfRange(-16, 16));
+      Room.Current.CallDeferred(Node.MethodName.AddChild, enemy);
+      enemy.SetDeferred(Node2D.PropertyName.GlobalPosition, GlobalPosition + randomPosOffset);
+    }
+
+    DeathParticles.Finished += base.OnDeath;
+  }
+
   private void ChangeDirectionTimerOnTimeout()
   {
     if (Target == null)
@@ -67,7 +168,7 @@ public partial class Slider : Enemy
     var directionToAbs = directionTo.Abs();
     
     // Target is around diagonal to us, so theres a chance we go diagonal to him
-    if (directionToAbs.X - directionToAbs.Y < 0.5f && Main.Instance.Rnd.Randf() < 0.3f)
+    if (directionToAbs.X - directionToAbs.Y < 0.5f && Main.Instance.Rnd.Randf() < 0.1f)
     {
       _direction = directionTo;
     }
@@ -79,20 +180,18 @@ public partial class Slider : Enemy
     {
       _direction = new Vector2(0, directionTo.Y);
     }
-    ChangeDirectionTimer.WaitTime = _directionTimerDefault * 0.5f + Main.Instance.Rnd.Randf() * 0.8f;
+    ChangeDirectionTimer.WaitTime = _directionTimerDefault + Main.Instance.Rnd.RandfRange(-WaitTimeRandomnessPercentage, WaitTimeRandomnessPercentage) * _directionTimerDefault;
   }
-
-  public override void _PhysicsProcess(double delta)
+  
+  private void OnHealthChanged(Enemy enemy)
   {
-    if (!IsActive)
-      return;
-    
-    var lookingDirection = (Target.GlobalPosition - EyeCenter.GlobalPosition).Normalized();
-    var pupilPosition = (Vector2I)(EyeCenter.Position + new Vector2I((int)(lookingDirection.X * EyeSize.X), (int)(lookingDirection.Y * EyeSize.Y)));
-    Eye.Position = pupilPosition;
-    
-    Velocity = Velocity.Lerp(_direction * Speed, AccelerationWeight);
+    var percentage = Health / MaxHealth;
 
-    MoveAndSlide();
+    CurrentPhase = percentage switch
+    {
+      < 0.33f => Phase.Phase3,
+      < 0.66f => Phase.Phase2,
+      _ => Phase.Phase1
+    };
   }
 }

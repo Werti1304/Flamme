@@ -1,9 +1,11 @@
-[gd_scene load_steps=8 format=3 uid="uid://dpjtf4eg65s6a"]
+[gd_scene load_steps=13 format=3 uid="uid://dpjtf4eg65s6a"]
 
 [ext_resource type="Script" uid="uid://i5c0caqyw6dh" path="res://entities/enemies/prison/slider/Slider.cs" id="1_sj6d1"]
 [ext_resource type="Texture2D" uid="uid://imgup6tkjgf5" path="res://assets/sprites/entities/enemy/prison/slider/slider_phase_1.png" id="2_2yxkh"]
 [ext_resource type="PackedScene" uid="uid://chv1fakx6xghy" path="res://entities/enemies/components/health_bar/health_bar.tscn" id="3_2yxkh"]
+[ext_resource type="Texture2D" uid="uid://b6pk0s4l3y5qn" path="res://assets/sprites/entities/enemy/prison/slider/slider_phase_2.png" id="3_ili7w"]
 [ext_resource type="Texture2D" uid="uid://7jipmhvniqoi" path="res://assets/sprites/entities/enemy/prison/slider/slider_eye.png" id="3_uxg3b"]
+[ext_resource type="Texture2D" uid="uid://p8j0galpjvdd" path="res://assets/sprites/entities/enemy/prison/slider/slider_phase_3.png" id="4_o68fn"]
 [ext_resource type="PackedScene" uid="uid://dok621wlg1nam" path="res://entities/enemies/components/melee_area/melee_area.tscn" id="5_2t16q"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_kav6h"]
@@ -12,12 +14,33 @@ size = Vector2(94, 94)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_2t16q"]
 size = Vector2(96, 96)
 
-[node name="Slider" type="CharacterBody2D" node_paths=PackedStringArray("HealthBar", "Body", "Eye", "EyeCenter", "ChangeDirectionTimer", "CollisionShape", "MeleeArea")]
+[sub_resource type="Gradient" id="Gradient_ili7w"]
+colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_o68fn"]
+gradient = SubResource("Gradient_ili7w")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_tkv65"]
+lifetime_randomness = 0.3
+particle_flag_disable_z = true
+emission_shape = 3
+emission_box_extents = Vector3(40, 40, 1)
+radial_velocity_min = -2.23517e-05
+radial_velocity_max = 30.0
+gravity = Vector3(0, 0, 0)
+scale_min = 9.0
+scale_max = 9.0
+color_ramp = SubResource("GradientTexture1D_o68fn")
+
+[node name="Slider" type="CharacterBody2D" node_paths=PackedStringArray("HealthBar", "Body", "Eye", "EyeCenter", "ChangeDirectionTimer", "CollisionShape", "MeleeArea", "DeathParticles")]
 z_index = 10
 collision_layer = 4
 collision_mask = 15
 motion_mode = 1
 script = ExtResource("1_sj6d1")
+TexturePhase1 = ExtResource("2_2yxkh")
+TexturePhase2 = ExtResource("3_ili7w")
+TexturePhase3 = ExtResource("4_o68fn")
 HealthBar = NodePath("HealthBar")
 Body = NodePath("Sprite2D")
 Eye = NodePath("Eye")
@@ -25,7 +48,8 @@ EyeCenter = NodePath("EyeCenterMarker")
 ChangeDirectionTimer = NodePath("ChangeDirectionTimer")
 CollisionShape = NodePath("CollisionShape2D")
 MeleeArea = NodePath("MeleeArea")
-Health = 100.0
+DeathParticles = NodePath("GPUParticles2D")
+Health = 5.0
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("2_2yxkh")
@@ -55,3 +79,12 @@ Damage = 4
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="MeleeArea"]
 shape = SubResource("RectangleShape2D_2t16q")
+
+[node name="GPUParticles2D" type="GPUParticles2D" parent="."]
+z_index = 1000
+emitting = false
+amount = 128
+one_shot = true
+explosiveness = 1.0
+randomness = 1.0
+process_material = SubResource("ParticleProcessMaterial_tkv65")

@@ -90,7 +90,7 @@ public partial class PlayableCharacter : CharacterBody2D, IEnemyDamagable
   public override void _PhysicsProcess(double delta)
   {
     Move(delta);
-
+    
     if (IsStuck())
     {
       SoftTeleport(Room.Current.MidPoint.GlobalPosition);
@@ -274,7 +274,7 @@ public partial class PlayableCharacter : CharacterBody2D, IEnemyDamagable
 
   private void Move(double delta)
   {
-    Velocity = Velocity.Lerp(_movingVector * Stats.Speed * 2, AccelerationFactor);
+    Velocity = Velocity.Lerp(_movingVector * Stats.Speed, AccelerationFactor);
     // Velocity = Velocity.LimitLength(Stats.Speed * 2);
     // Velocity = Velocity.Lerp(Vector2.Zero, Friction);
     
