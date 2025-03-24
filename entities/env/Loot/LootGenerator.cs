@@ -177,6 +177,9 @@ public partial class LootGenerator
     }
     return lootToSpawn;
   }
+  
+  
+  
 
   private static Node2D GenerateSingleLoot(LootType lootType, int worth)
   {
