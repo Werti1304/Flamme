@@ -205,14 +205,21 @@ public partial class Staff : RigidBody2D
     _staffOverlappingWithPlayer = false;
   }
 
-  private void PickupAreaOnBodyEntered(Node2D body)
+  public void PickupAreaOnBodyEntered(Node2D body)
   {
     if (_owner != null || body is not PlayableCharacter playableCharacter)
       return;
     
     _owner = playableCharacter;
     _owner.StatsChanged += OwnerOnStatsChanged;
-    LevelManager.Instance.CurrentLevel.ActiveStaff = this;
+    if (!IsInstanceValid(Level.Current))
+    {
+      GD.PushWarning("Level is null, cannot set active staff");
+    }
+    else
+    {
+      LevelManager.Instance.CurrentLevel.ActiveStaff = this;
+    }
     OwnerOnStatsChanged(_owner.Stats);
     PickupArea.SetDeferred("Monitoring", false);
   }

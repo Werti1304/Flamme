@@ -98,6 +98,6 @@ public partial class Shooter : Node2D
     var targetRotation = projectile.Direction.Angle();
     projectile.Rotation = targetRotation;
     GetTree().Root.AddChild(projectile);
-    projectile.Fire(_shooter, Room.Current, Range);
+    projectile.Fire(_shooter, Room.Current, _target, Range);
   }
 }

@@ -69,6 +69,11 @@ public partial class Minimap : GridContainer
   public void UpdateCurrentRoom()
   {
     var level = LevelManager.Instance.CurrentLevel;
+    if (!IsInstanceValid(level))
+    {
+      GD.PushWarning("Level is null, can't update minimap");
+      return;
+    }
     var playerRoom = Room.Current;
     for (var x = 0; x < level.Grid.GetLength(0); x++)
     {
@@ -110,10 +115,7 @@ public partial class Minimap : GridContainer
       }
     }
   }
-
-  // TODO 1 Performance
-  // Can be made more efficient with less updates to the whole thing
-  // but for now its ok
+  
   public void UpdateLevel()
   {
     foreach (var textureRect in _grid)

@@ -97,7 +97,7 @@ public partial class Room : Area2D
   [Signal] public delegate void PlayerEnteredEventHandler(PlayableCharacter playableCharacter);
   [Signal] public delegate void PlayerExitedEventHandler(PlayableCharacter playableCharacter);
 
-  public bool WasVisited;
+  public bool WasVisited = false;
   public readonly List<Enemy> Enemies = [];
 
   private PlayableCharacter _playableCharacter;
@@ -106,8 +106,7 @@ public partial class Room : Area2D
   
   public override void _Ready()
   {
-    // TODO Uncomment once tilemaps fixed
-    // ExportMetaNonNull.Check(this);
+    ExportMetaNonNull.Check(this);
     
     BodyEntered += OnBodyEntered;
     BodyExited += OnBodyExited;
@@ -121,6 +120,13 @@ public partial class Room : Area2D
       {
         chest.GenerateLoot();
       }
+    }
+
+    if (GetTree().CurrentScene == this)
+    {
+      // We are just testing this room, spawn in player, etc.
+      LevelManager.SpawnUser(this);
+      Hud.Instance.Show();
     }
   }
 
@@ -165,6 +171,7 @@ public partial class Room : Area2D
         // Only works if player goes into a room, not if it spawns there
         // -> No enemies in spawn room
         Enemies.Add(e);
+        e.SetActive(_playableCharacter);
         break;
     }
   }
@@ -212,9 +219,7 @@ public partial class Room : Area2D
   {
     GD.Print($"Player entered Room {Name} with {Enemies.Count} enemies!");
     Current = this;
-    
-    Hud.Instance.Minimap.UpdateCurrentRoom();
-    Level.Current.PlayerCamera.UpdateRoom();
+    WasVisited = true;
     _playableCharacter = playableCharacter;
     
     if (Enemies.Count == 0)
@@ -229,7 +234,6 @@ public partial class Room : Area2D
       }
     }
     
-    WasVisited = true;
     if (Enemies.Count > 0)
     {
       LockRoom(playableCharacter);
@@ -238,6 +242,14 @@ public partial class Room : Area2D
     {
       SetRoomCleared(false);
     }
+    
+    if (!IsInstanceValid(Level.Current))
+    {
+      GD.PushWarning("Level is not valid, cannot update camera and minimap!");
+      return;
+    }
+    Hud.Instance.Minimap.UpdateCurrentRoom();
+    Level.Current.PlayerCamera.UpdateRoom();
   }
   
   public void LeaveRoom()
@@ -431,6 +443,12 @@ public partial class Room : Area2D
       node = new Node2D();
       AddChild(node);
       node.Name = "Enemies";
+      node.Owner = this;
+      
+      // just for simpler room building, unused in code
+      node = new Node2D();
+      AddChild(node);
+      node.Name = "Tile Entities";
       node.Owner = this;
     }
   }

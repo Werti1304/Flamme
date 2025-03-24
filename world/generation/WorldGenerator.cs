@@ -47,6 +47,7 @@ public partial class WorldGenerator : Node2D
     if(!GenerateNewLevel)
       return;
     GenerateNewLevel = true;
+    LevelManager.Instance.CurrentLevel = level;
     
     Debug.Assert(WaitingForSceneChangeToNewLevel);
     Debug.Assert(GetTree().CurrentScene == level);
@@ -255,9 +256,6 @@ public partial class WorldGenerator : Node2D
         level.AddRoom(room, x, y);
       }
     }
-    
-    // TODO Set actual exits of spawn
-    // level.Spawn.ActualExits = GetRoomExits(ref weightGrid, levelCenter);
     
     // print in console
     for (var y = 0; y < level.Grid.GetLength(1); y++)

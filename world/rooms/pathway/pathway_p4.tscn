@@ -1,0 +1,128 @@
+[gd_scene load_steps=12 format=4 uid="uid://buwj6yarcmjjf"]
+
+[ext_resource type="Script" uid="uid://cu3vdn0r1mer3" path="res://world/rooms/Room.cs" id="1_qhipt"]
+[ext_resource type="TileSet" uid="uid://ciata4jhj6wvu" path="res://assets/tilesets/prison/prison_floor.tres" id="2_lvv0u"]
+[ext_resource type="TileSet" uid="uid://c5qpaglqhfr5s" path="res://assets/tilesets/prison/prison_props.tres" id="3_mmqvu"]
+[ext_resource type="TileSet" uid="uid://ca3qx51g3yg3u" path="res://assets/tilesets/prison/prison_wall.tres" id="4_hyllw"]
+[ext_resource type="PackedScene" uid="uid://bnx0j5b2ekjat" path="res://world/doors/DoorMarker.tscn" id="5_13ar1"]
+[ext_resource type="Script" uid="uid://lxis3ashrpf4" path="res://world/doors/DoorMarker.cs" id="6_krodp"]
+[ext_resource type="Texture2D" uid="uid://bgc4ewqfbryq3" path="res://assets/sprites/levels/PrisonWalls.png" id="7_qvms6"]
+[ext_resource type="PackedScene" uid="uid://derajnc63qagj" path="res://entities/enemies/prison/runner_smart/runner_smart.tscn" id="8_mmqvu"]
+[ext_resource type="PackedScene" uid="uid://cy646ln75o03g" path="res://entities/enemies/prison/mage_weak/mage_weak.tscn" id="9_hyllw"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_l1djv"]
+atlas = ExtResource("7_qvms6")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_tyum6"]
+size = Vector2(608, 416)
+
+[node name="PathwayP4" type="Area2D" node_paths=PackedStringArray("TheoreticalDoorMarkers", "FloorTileMap", "PropsTileMap", "OuterWallTileMap", "RoofTileMap", "CollisionShape", "DoorMarkerParent", "MidPoint")]
+collision_layer = 15
+collision_mask = 15
+script = ExtResource("1_qhipt")
+TheoreticalDoorMarkers = {
+0: NodePath("DoorMarkerParent/DoorMarker North"),
+1: NodePath("DoorMarkerParent/DoorMarker East"),
+2: NodePath("DoorMarkerParent/DoorMarker South"),
+3: NodePath("DoorMarkerParent/DoorMarker West")
+}
+FloorTileMap = NodePath("Floor")
+PropsTileMap = NodePath("Props")
+OuterWallTileMap = NodePath("Wall")
+RoofTileMap = NodePath("Roof (Auto)")
+CollisionShape = NodePath("CollisionShape")
+DoorMarkerParent = NodePath("DoorMarkerParent")
+MidPoint = NodePath("MidPoint")
+
+[node name="Floor" type="TileMapLayer" parent="."]
+z_index = -1
+tile_map_data = PackedByteArray("AAADAAIAHgAAAAAAAAADAAMAHgAAAAAAAAADAAQAHgAAAAAAAAADAAUAHgAAAAAAAAADAAYAHgAAAAAAAAADAAcAHgAAAAAAAAADAAgAHgAAAAAAAAAEAAIAHgACAAAAAAAFAAIAHgAFAAEAAAAGAAIAHgAAAAAAAAAHAAIAHgAAAAAAAAAIAAIAHgAAAAAAAAAJAAIAHgAAAAAAAAAKAAIAHgABAAEAAAALAAIAHgAAAAAAAAAMAAIAHgAAAAAAAAANAAIAHgABAAAAAAAOAAIAHgAAAAAAAAAPAAIAHgAAAAAAAAAPAAMAHgAAAAAAAAAPAAQAHgADAAEAAAAPAAUAHgAAAAAAAAAPAAYAHgAAAAAAAAAPAAcAHgAAAAAAAAAPAAgAHgAAAAAAAAADAAkAHgAAAAAAAAADAAoAHgAAAAAAAAAPAAkAHgAAAAAAAAAHAAoAHgAAAAAAAAAHAAkAHgAAAAAAAAAHAAgAHgAAAAAAAAAHAAcAHgAAAAAAAAAHAAYAHgAAAAAAAAAHAAUAHgAAAAAAAAAHAAQAHgAAAAAAAAAHAAMAHgAEAAAAAAAGAAMAHgAAAAAAAAAFAAMAHgAAAAAAAAAEAAMAHgAAAAAAAAAEAAQAHgAAAAAAAAAEAAUAHgADAAAAAAAEAAYAHgAAAAAAAAAEAAcAHgAAAAAAAAAEAAgAHgAAAAAAAAAEAAkAHgAAAAAAAAAEAAoAHgABAAEAAAAFAAoAHgAFAAEAAAAFAAkAHgAAAAAAAAAFAAgAHgAAAAAAAAAFAAcAHgAAAAQAAAAFAAYAHgAFAAAAAAAFAAUAHgAAAAQAAAAFAAQAHgAAAAAAAAAGAAQAHgAAAAQAAAAGAAUAHgAAAAAAAAAGAAYAHgAAAAAAAAAGAAcAHgAAAAAAAAAGAAgAHgAAAAQAAAAGAAkAHgAAAAAAAAAGAAoAHgAAAAAAAAAIAAoAHgABAAAAAAAIAAkAHgAAAAAAAAAIAAgAHgAAAAAAAAAIAAcAHgAAAAAAAAAIAAYAHgAAAAAAAAAIAAUAHgAAAAAAAAAIAAQAHgAAAAAAAAAIAAMAHgAAAAAAAAAJAAMAHgAAAAAAAAAJAAQAHgAAAAAAAAAJAAUAHgACAAEAAAAJAAYAHgAAAAQAAAAJAAcAHgABAAEAAAAJAAgAHgAAAAAAAAAJAAkAHgAAAAAAAAAJAAoAHgAAAAAAAAAKAAoAHgAAAAAAAAAKAAkAHgAAAAAAAAAKAAgAHgAAAAAAAAAKAAcAHgAAAAAAAAAKAAYAHgAAAAAAAAAKAAUAHgAAAAAAAAAKAAQAHgAAAAAAAAAKAAMAHgABAAEAAAALAAMAHgAAAAAAAAALAAQAHgAAAAAAAAALAAUAHgAAAAAAAAALAAYAHgAAAAAAAAALAAcAHgAAAAAAAAALAAgAHgAAAAAAAAALAAkAHgAAAAAAAAALAAoAHgABAAEAAAAMAAoAHgAAAAEAAAAMAAkAHgAAAAAAAAAMAAgAHgAAAAQAAAAMAAcAHgAAAAAAAAAMAAYAHgAAAAAAAAAMAAUAHgAAAAAAAAAMAAQAHgAAAAQAAAAMAAMAHgAAAAAAAAANAAMAHgAEAAAAAAANAAQAHgABAAAAAAANAAUAHgAAAAQAAAANAAYAHgAAAAAAAAANAAcAHgAAAAQAAAANAAgAHgAEAAEAAAANAAkAHgAAAAAAAAANAAoAHgAAAAAAAAAOAAkAHgAAAAAAAAAOAAgAHgAAAAAAAAAOAAcAHgAAAAAAAAAOAAYAHgAAAAAAAAAOAAUAHgAAAAAAAAAOAAQAHgAAAAAAAAAOAAMAHgAAAAAAAAAOAAoAHgABAAAAAAAPAAoAHgAAAAAAAAAJAAEAHgAAAAAAAAACAAYAHgAAAAAAAAAJAAsAHgAAAAAAAAAQAAYAHgAAAAAAAAA=")
+tile_set = ExtResource("2_lvv0u")
+
+[node name="Props" type="TileMapLayer" parent="."]
+tile_map_data = PackedByteArray("AAAFAAcAKAABAAAAAAAGAAgAKAAAAAAAAAAFAAUAKAACAAAAAAAGAAQAKAABAAAAAAAMAAgAKAABAAAAAAANAAcAKAADAAAAAAAMAAQAKAADAAAAAAANAAUAKAABAAAAAAAJAAYAKAADAAAAAAA=")
+tile_set = ExtResource("3_mmqvu")
+
+[node name="Wall" type="TileMapLayer" parent="."]
+tile_map_data = PackedByteArray("AAADAAEACgABAAAAAAAEAAEACgACAAAAAAAFAAEACgABAAAAAAAGAAEACgABAAAAAAAHAAEACgAAAAAAAAAIAAEACgAAAAAAAAAKAAEACgACAAAAAAALAAEACgABAAAAAAAMAAEACgAAAAAAAAANAAEACgABAAAAAAAOAAEACgABAAAAAAAPAAEACgABAAAAAAAQAAIACgABAAAAAFAQAAMACgAAAAAAAFAQAAQACgACAAAAAFAQAAUACgABAAAAAFAQAAcACgAAAAAAAFAQAAgACgACAAAAAFAQAAkACgACAAAAAFAQAAoACgABAAAAAFAPAAsACgACAAAAADAOAAsACgABAAAAADANAAsACgABAAAAADAMAAsACgAAAAAAADALAAsACgAAAAAAADAKAAsACgAFAAAAADAIAAsACgAAAAAAADAHAAsACgACAAAAADAGAAsACgAAAAEAADAFAAsACgACAAAAADAEAAsACgAAAAAAADADAAsACgABAAAAADACAAkACgABAAAAAGACAAgACgABAAAAAGACAAcACgAAAAAAAGACAAUACgACAAAAAGACAAQACgABAAAAAGACAAMACgABAAAAAGACAAIACgACAAAAAGACAAEACgAAAAMAAAAQAAEACgAAAAMAAFAQAAsACgAAAAMAADACAAsACgAAAAMAAGACAAoACgABAAAAAGA=")
+tile_set = ExtResource("4_hyllw")
+
+[node name="Roof (Auto)" type="TileMapLayer" parent="."]
+tile_map_data = PackedByteArray("AAASAAwAGQAJAAIAAAASAAsAGQAJAAIAAAASAAoAGQAJAAIAAAASAAkAGQAJAAIAAAASAAgAGQAJAAIAAAASAAcAGQAJAAIAAAASAAYAGQAJAAIAAAASAAUAGQAJAAIAAAASAAQAGQAJAAIAAAASAAMAGQAJAAIAAAASAAIAGQAJAAIAAAASAAEAGQAJAAIAAAASAAAAGQAJAAIAAAARAAwAGQAFAAEAAAARAAsAGQAIAAEAAAARAAoAGQAIAAEAAAARAAkAGQAIAAEAAAARAAgAGQAIAAEAAAARAAcAGQAIAAEAAAARAAYAGQAIAAEAAAARAAUAGQAIAAEAAAARAAQAGQAIAAEAAAARAAMAGQAIAAEAAAARAAIAGQAIAAEAAAARAAEAGQAIAAEAAAARAAAAGQAFAAIAAAAQAAwAGQAKAAAAAAAQAAAAGQAJAAMAAAAPAAwAGQAKAAAAAAAPAAAAGQAJAAMAAAAOAAwAGQAKAAAAAAAOAAAAGQAJAAMAAAANAAwAGQAKAAAAAAANAAAAGQAJAAMAAAAMAAwAGQAKAAAAAAAMAAAAGQAJAAMAAAALAAwAGQAKAAAAAAALAAAAGQAJAAMAAAAKAAwAGQAKAAAAAAAKAAAAGQAJAAMAAAAJAAwAGQAKAAAAAAAJAAAAGQAJAAMAAAAIAAwAGQAKAAAAAAAIAAAAGQAJAAMAAAAHAAwAGQAKAAAAAAAHAAAAGQAJAAMAAAAGAAwAGQAKAAAAAAAGAAAAGQAJAAMAAAAFAAwAGQAKAAAAAAAFAAAAGQAJAAMAAAAEAAwAGQAKAAAAAAAEAAAAGQAJAAMAAAADAAwAGQAKAAAAAAADAAAAGQAJAAMAAAACAAwAGQAKAAAAAAACAAAAGQAJAAMAAAABAAwAGQAGAAEAAAABAAsAGQALAAIAAAABAAoAGQALAAIAAAABAAkAGQALAAIAAAABAAgAGQALAAIAAAABAAcAGQALAAIAAAABAAYAGQALAAIAAAABAAUAGQALAAIAAAABAAQAGQALAAIAAAABAAMAGQALAAIAAAABAAIAGQALAAIAAAABAAEAGQALAAIAAAABAAAAGQAGAAIAAAAAAAwAGQAJAAIAAAAAAAsAGQAJAAIAAAAAAAoAGQAJAAIAAAAAAAkAGQAJAAIAAAAAAAgAGQAJAAIAAAAAAAcAGQAJAAIAAAAAAAYAGQAJAAIAAAAAAAUAGQAJAAIAAAAAAAQAGQAJAAIAAAAAAAMAGQAJAAIAAAAAAAIAGQAJAAIAAAAAAAEAGQAJAAIAAAAAAAAAGQAJAAIAAAA=")
+tile_set = ExtResource("4_hyllw")
+
+[node name="MidPoint" type="Node2D" parent="."]
+position = Vector2(304, 176)
+
+[node name="DoorMarkerParent" type="Node2D" parent="."]
+
+[node name="DoorMarker North" type="StaticBody2D" parent="DoorMarkerParent" node_paths=PackedStringArray("Sprite", "CollisionShape", "TeleportZone", "TeleportPoint") instance=ExtResource("5_13ar1")]
+position = Vector2(288, 32)
+script = ExtResource("6_krodp")
+DisguiseTexture = SubResource("AtlasTexture_l1djv")
+Sprite = NodePath("Sprite2D")
+CollisionShape = NodePath("CollisionShape2D")
+TeleportZone = NodePath("Area2D")
+TeleportPoint = NodePath("TeleportPoint")
+
+[node name="DoorMarker East" type="StaticBody2D" parent="DoorMarkerParent" node_paths=PackedStringArray("Sprite", "CollisionShape", "TeleportZone", "TeleportPoint") instance=ExtResource("5_13ar1")]
+position = Vector2(544, 192)
+rotation = 1.5708
+script = ExtResource("6_krodp")
+FacingDirection = 1
+DisguiseTexture = SubResource("AtlasTexture_l1djv")
+Sprite = NodePath("Sprite2D")
+CollisionShape = NodePath("CollisionShape2D")
+TeleportZone = NodePath("Area2D")
+TeleportPoint = NodePath("TeleportPoint")
+
+[node name="DoorMarker South" type="StaticBody2D" parent="DoorMarkerParent" node_paths=PackedStringArray("Sprite", "CollisionShape", "TeleportZone", "TeleportPoint") instance=ExtResource("5_13ar1")]
+position = Vector2(320, 384)
+rotation = 3.14159
+script = ExtResource("6_krodp")
+FacingDirection = 2
+DisguiseTexture = SubResource("AtlasTexture_l1djv")
+Sprite = NodePath("Sprite2D")
+CollisionShape = NodePath("CollisionShape2D")
+TeleportZone = NodePath("Area2D")
+TeleportPoint = NodePath("TeleportPoint")
+
+[node name="DoorMarker West" type="StaticBody2D" parent="DoorMarkerParent" node_paths=PackedStringArray("Sprite", "CollisionShape", "TeleportZone", "TeleportPoint") instance=ExtResource("5_13ar1")]
+position = Vector2(64, 224)
+rotation = -1.5708
+script = ExtResource("6_krodp")
+FacingDirection = 3
+DisguiseTexture = SubResource("AtlasTexture_l1djv")
+Sprite = NodePath("Sprite2D")
+CollisionShape = NodePath("CollisionShape2D")
+TeleportZone = NodePath("Area2D")
+TeleportPoint = NodePath("TeleportPoint")
+
+[node name="CollisionShape" type="CollisionShape2D" parent="."]
+position = Vector2(304, 208)
+shape = SubResource("RectangleShape2D_tyum6")
+
+[node name="Loot" type="Node2D" parent="."]
+
+[node name="Enemies" type="Node2D" parent="."]
+
+[node name="RunnerSmart" parent="Enemies" instance=ExtResource("8_mmqvu")]
+position = Vector2(256, 160)
+
+[node name="RunnerSmart2" parent="Enemies" instance=ExtResource("8_mmqvu")]
+position = Vector2(352, 160)
+
+[node name="RunnerSmart3" parent="Enemies" instance=ExtResource("8_mmqvu")]
+position = Vector2(256, 256)
+
+[node name="RunnerSmart4" parent="Enemies" instance=ExtResource("8_mmqvu")]
+position = Vector2(352, 256)
+
+[node name="MageWeak" parent="Enemies" instance=ExtResource("9_hyllw")]
+position = Vector2(384, 208)
+
+[node name="MageWeak2" parent="Enemies" instance=ExtResource("9_hyllw")]
+position = Vector2(224, 208)
+
+[node name="Tile Entities" type="Node2D" parent="."]

@@ -138,17 +138,17 @@ public partial class LevelManager : Node2D
   
   private void SpawnUser(Level level)
   {
-    // TODO 1 Preload 
+    // Spawn player
     var globalSpawnPosition = level.Spawn.MidPoint.GlobalPosition;
-    var playerScene = GD.Load<PackedScene>(PathConstants.PlayerScenePath);
+    var playerScene = SceneLoader.Instance[SceneLoader.Scene.Player];
     var player = playerScene.Instantiate<PlayableCharacter>();
     player.GlobalPosition = globalSpawnPosition;
     level.AddChild(player);
     level.PlayableCharacter = player;
     player.Owner = level;
 
-    // ...
-    var playerCameraScene = GD.Load<PackedScene>(PathConstants.PlayerCameraScenePath);
+    // Spawn camera
+    var playerCameraScene = SceneLoader.Instance[SceneLoader.Scene.PlayerCamera];
     var playerCamera = playerCameraScene.Instantiate<PlayerCamera>();
     playerCamera.GlobalPosition = globalSpawnPosition;
     level.AddChild(playerCamera);
@@ -156,12 +156,45 @@ public partial class LevelManager : Node2D
     playerCamera.Player = player;
     playerCamera.Owner = level;
 
-    // ...
-    var startingStaffScene = GD.Load<PackedScene>(PathConstants.StartingStaffScenePath);
+    // Spawn def. staff
+    var startingStaffScene = SceneLoader.Instance[SceneLoader.Scene.StartingStaff];
     var startingStaff = startingStaffScene.Instantiate<Staff>();
     startingStaff.GlobalPosition = globalSpawnPosition - new Vector2(64, 64);
     level.AddChild(startingStaff);
     startingStaff.Owner = level;
+  }
+
+  // For testing single rooms
+  public static void SpawnUser(Room room)
+  {
+    // Spawn user
+    var globalSpawnPosition = room.MidPoint.GlobalPosition;
+    var playerScene = SceneLoader.Instance[SceneLoader.Scene.Player];
+    var player = playerScene.Instantiate<PlayableCharacter>();
+    player.GlobalPosition = globalSpawnPosition;
+    room.AddChild(player);
+    player.Owner = room;
+
+    // Spawn camera
+    var playerCameraScene = SceneLoader.Instance[SceneLoader.Scene.PlayerCamera];
+    var playerCamera = playerCameraScene.Instantiate<PlayerCamera>();
+    playerCamera.GlobalPosition = globalSpawnPosition;
+    room.AddChild(playerCamera);
+    playerCamera.Player = player;
+    playerCamera.Owner = room;
+
+    // Spawn def. staff
+    var startingStaffScene = SceneLoader.Instance[SceneLoader.Scene.StartingStaff];
+    var startingStaff = startingStaffScene.Instantiate<Staff>();
+    startingStaff.GlobalPosition = globalSpawnPosition - new Vector2(64, 64);
+    room.AddChild(startingStaff);
+    startingStaff.Owner = room;
+
+    // Manually set owner to player so we can start instantly
+    startingStaff.PickupAreaOnBodyEntered(player);
+    
+    room.EnterRoom(player);
+    playerCamera.UpdateRoom();
   }
 
   private void TransferUser(Level level)

@@ -1,0 +1,121 @@
+[gd_scene load_steps=10 format=4 uid="uid://dx4ilqls2tp16"]
+
+[ext_resource type="Script" uid="uid://cu3vdn0r1mer3" path="res://world/rooms/Room.cs" id="1_l52jp"]
+[ext_resource type="TileSet" uid="uid://ciata4jhj6wvu" path="res://assets/tilesets/prison/prison_floor.tres" id="2_nmpst"]
+[ext_resource type="TileSet" uid="uid://c5qpaglqhfr5s" path="res://assets/tilesets/prison/prison_props.tres" id="3_ufi4d"]
+[ext_resource type="TileSet" uid="uid://ca3qx51g3yg3u" path="res://assets/tilesets/prison/prison_wall.tres" id="4_6tps4"]
+[ext_resource type="PackedScene" uid="uid://bnx0j5b2ekjat" path="res://world/doors/DoorMarker.tscn" id="5_bfd2u"]
+[ext_resource type="PackedScene" uid="uid://ct506hl51tduf" path="res://entities/env/tiles/box/box.tscn" id="8_6tps4"]
+[ext_resource type="PackedScene" uid="uid://cyw1jorccdqfm" path="res://entities/env/lying_around_loot/lying_around_loot.tscn" id="8_ufi4d"]
+[ext_resource type="PackedScene" uid="uid://bh5tvnrt4tk45" path="res://entities/enemies/prison/runner/Runner.tscn" id="9_6tps4"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_gymle"]
+size = Vector2(608, 352)
+
+[node name="PathwayP2" type="Area2D" node_paths=PackedStringArray("TheoreticalDoorMarkers", "FloorTileMap", "PropsTileMap", "OuterWallTileMap", "RoofTileMap", "CollisionShape", "DoorMarkerParent", "MidPoint")]
+collision_layer = 15
+collision_mask = 15
+script = ExtResource("1_l52jp")
+TheoreticalDoorMarkers = {
+0: NodePath("DoorMarkerParent/DoorMarker North"),
+1: NodePath("DoorMarkerParent/DoorMarker East"),
+2: NodePath("DoorMarkerParent/DoorMarker South"),
+3: NodePath("DoorMarkerParent/DoorMarker West")
+}
+FloorTileMap = NodePath("Floor")
+PropsTileMap = NodePath("Props")
+OuterWallTileMap = NodePath("Wall")
+RoofTileMap = NodePath("Roof (Auto)")
+CollisionShape = NodePath("CollisionShape")
+DoorMarkerParent = NodePath("DoorMarkerParent")
+MidPoint = NodePath("MidPoint")
+
+[node name="Floor" type="TileMapLayer" parent="."]
+z_index = -1
+tile_map_data = PackedByteArray("AAACAAIAHgAAAAAAAAACAAMAHgAAAAQAAAACAAQAHgAAAAAAAAACAAUAHgAAAAAAAAACAAYAHgAAAAAAAAACAAcAHgAAAAQAAAACAAgAHgAAAAAAAAADAAIAHgABAAEAAAADAAMAHgAAAAQAAAADAAQAHgAAAAAAAAADAAUAHgAAAAAAAAADAAYAHgAAAAAAAAADAAcAHgAAAAQAAAADAAgAHgAAAAAAAAAEAAIAHgAAAAAAAAAEAAMAHgAAAAQAAAAEAAQAHgAAAAAAAAAEAAUAHgAAAAAAAAAEAAYAHgAAAAAAAAAEAAcAHgAAAAQAAAAEAAgAHgAAAAEAAAAFAAIAHgAAAAAAAAAFAAMAHgAAAAAAAAAFAAQAHgAAAAAAAAAFAAUAHgAAAAAAAAAFAAYAHgAAAAAAAAAFAAcAHgAAAAQAAAAFAAgAHgAAAAAAAAAGAAIAHgAAAAAAAAAGAAMAHgAAAAQAAAAGAAQAHgAAAAAAAAAGAAUAHgAAAAAAAAAGAAYAHgABAAEAAAAGAAcAHgAAAAQAAAAGAAgAHgAAAAAAAAAHAAIAHgAAAAAAAAAHAAMAHgAAAAQAAAAHAAQAHgAAAAAAAAAHAAUAHgAGAAEAAAAHAAYAHgAAAAAAAAAHAAcAHgAAAAAAAAAHAAgAHgAAAAAAAAAIAAIAHgAAAAQAAAAIAAMAHgAAAAQAAAAIAAQAHgAAAAAAAAAIAAUAHgAAAAAAAAAIAAYAHgAAAAAAAAAIAAcAHgAAAAQAAAAIAAgAHgAAAAQAAAAJAAIAHgAAAAAAAAAJAAMAHgAAAAAAAAAJAAQAHgAAAAAAAAAJAAUAHgAAAAAAAAAJAAYAHgAAAAAAAAAJAAcAHgAAAAAAAAAJAAgAHgAAAAAAAAAKAAIAHgAAAAQAAAAKAAMAHgAAAAQAAAAKAAQAHgAAAAAAAAAKAAUAHgACAAEAAAAKAAYAHgAAAAAAAAAKAAcAHgAAAAQAAAAKAAgAHgAAAAQAAAALAAIAHgAAAAAAAAALAAMAHgAAAAQAAAALAAQAHgAAAAAAAAALAAUAHgAAAAAAAAALAAYAHgAAAAAAAAALAAcAHgAAAAQAAAALAAgAHgAAAAAAAAAMAAIAHgAAAAAAAAAMAAMAHgAAAAQAAAAMAAQAHgAAAAAAAAAMAAUAHgAAAAAAAAAMAAYAHgAAAAAAAAAMAAcAHgAAAAQAAAAMAAgAHgAAAAAAAAANAAIAHgAAAAAAAAANAAMAHgAAAAAAAAANAAQAHgAAAAAAAAANAAUAHgAAAAAAAAANAAYAHgAAAAAAAAANAAcAHgAAAAQAAAANAAgAHgAAAAAAAAAOAAIAHgACAAAAAAAOAAMAHgAAAAQAAAAOAAQAHgAAAAAAAAAOAAUAHgAAAAAAAAAOAAYAHgAAAAAAAAAOAAcAHgAAAAAAAAAOAAgAHgAAAAAAAAAPAAIAHgAAAAAAAAAPAAMAHgAAAAQAAAAPAAQAHgAAAAAAAAAPAAUAHgABAAEAAAAPAAYAHgAAAAAAAAAPAAcAHgAAAAQAAAAPAAgAHgAAAAAAAAAJAAEAHgAAAAAAAAABAAUAHgAAAAAAAAAQAAUAHgAAAAAAAAAJAAkAHgAAAAAAAAAQAAgAHgAAAAAAAAAQAAcAHgAAAAQAAAAQAAYAHgABAAEAAAAQAAQAHgAAAAAAAAAQAAMAHgAAAAQAAAAQAAIAHgABAAEAAAARAAUAHgAAAAAAAAA=")
+tile_set = ExtResource("2_nmpst")
+
+[node name="Props" type="TileMapLayer" parent="."]
+tile_map_data = PackedByteArray("AAAIAAgAKAAAAAAAAAAIAAcAKAACAAAAAAAGAAcAKAABAAAAAAAFAAcAKAACAAAAAAAEAAcAKAAAAAAAAAADAAcAKAACAAAAAAACAAcAKAABAAAAAAAKAAgAKAACAAAAAAAKAAcAKAACAAAAAAALAAcAKAADAAAAAAAMAAcAKAABAAAAAAANAAcAKAADAAAAAAAPAAcAKAACAAAAAAAKAAMAKAAAAAAAAAALAAMAKAACAAAAAAAMAAMAKAAAAAAAAAAOAAMAKAABAAAAAAAPAAMAKAACAAAAAAAKAAIAKAACAAAAAAAIAAMAKAABAAAAAAAIAAIAKAAAAAAAAAAHAAMAKAADAAAAAAAGAAMAKAACAAAAAAAEAAMAKAACAAAAAAADAAMAKAADAAAAAAACAAMAKAADAAAAAAAQAAMAKAABAAAAAAAQAAcAKAAAAAAAAAA=")
+tile_set = ExtResource("3_ufi4d")
+
+[node name="Wall" type="TileMapLayer" parent="."]
+tile_map_data = PackedByteArray("AAABAAQACgACAAAAAGABAAMACgABAAAAAGABAAIACgABAAAAAGACAAEACgABAAAAAAADAAEACgABAAAAAAAEAAEACgACAAAAAAAFAAEACgACAAAAAAAGAAEACgACAAAAAAAHAAEACgAFAAAAAAAIAAEACgAAAAAAAAAKAAEACgAAAAAAAAALAAEACgACAAAAAAAMAAEACgABAAAAAAANAAEACgAAAAAAAAAOAAEACgABAAAAAAAPAAEACgACAAAAAAAPAAkACgAAAAAAADAOAAkACgABAAAAADANAAkACgACAAAAADAMAAkACgACAAAAADALAAkACgABAAAAADAKAAkACgAAAAAAADAIAAkACgAAAAAAADAHAAkACgABAAAAADAGAAkACgABAAAAADAFAAkACgACAAAAADAEAAkACgAAAAAAADADAAkACgACAAAAADACAAkACgACAAAAADABAAgACgABAAAAAGABAAcACgACAAAAAGABAAYACgACAAAAAGABAAEACgAAAAMAAAABAAkACgAAAAMAAGARAAEACgAAAAMAAFARAAIACgABAAAAAFARAAMACgACAAAAAFARAAQACgABAAAAAFARAAYACgABAAAAAFARAAcACgACAAAAAFARAAgACgACAAAAAFARAAkACgAAAAMAADAQAAEACgACAAAAAAAQAAkACgACAAAAADA=")
+tile_set = ExtResource("4_6tps4")
+
+[node name="Roof (Auto)" type="TileMapLayer" parent="."]
+tile_map_data = PackedByteArray("AAAQAAAAGQAJAAMAAAAPAAAAGQAJAAMAAAAOAAAAGQAJAAMAAAANAAAAGQAJAAMAAAAMAAAAGQAJAAMAAAALAAAAGQAJAAMAAAAKAAAAGQAJAAMAAAAJAAAAGQAJAAMAAAAIAAAAGQAJAAMAAAAHAAAAGQAJAAMAAAAGAAAAGQAJAAMAAAAFAAAAGQAJAAMAAAAEAAAAGQAJAAMAAAADAAAAGQAJAAMAAAACAAAAGQAJAAMAAAABAAAAGQAJAAMAAAAAAAkAGQALAAIAAAAAAAgAGQALAAIAAAAAAAcAGQALAAIAAAAAAAYAGQALAAIAAAAAAAUAGQALAAIAAAAAAAQAGQALAAIAAAAAAAMAGQALAAIAAAAAAAIAGQALAAIAAAAAAAEAGQALAAIAAAAAAAAAGQAGAAIAAAARAAoAGQAKAAAAAAARAAAAGQAJAAMAAAAQAAoAGQAKAAAAAAAPAAoAGQAKAAAAAAAOAAoAGQAKAAAAAAANAAoAGQAKAAAAAAAMAAoAGQAKAAAAAAALAAoAGQAKAAAAAAAKAAoAGQAKAAAAAAAJAAoAGQAKAAAAAAAIAAoAGQAKAAAAAAAHAAoAGQAKAAAAAAAGAAoAGQAKAAAAAAAFAAoAGQAKAAAAAAAEAAoAGQAKAAAAAAADAAoAGQAKAAAAAAACAAoAGQAKAAAAAAABAAoAGQAKAAAAAAAAAAoAGQAGAAEAAAASAAoAGQAFAAEAAAASAAkAGQAIAAEAAAASAAgAGQAIAAEAAAASAAcAGQAIAAEAAAASAAYAGQAIAAEAAAASAAUAGQAIAAEAAAASAAQAGQAIAAEAAAASAAMAGQAIAAEAAAASAAIAGQAIAAEAAAASAAEAGQAIAAEAAAASAAAAGQAFAAIAAAA=")
+tile_set = ExtResource("4_6tps4")
+
+[node name="MidPoint" type="Node2D" parent="."]
+position = Vector2(304, 176)
+
+[node name="DoorMarkerParent" type="Node2D" parent="."]
+
+[node name="DoorMarker North" parent="DoorMarkerParent" instance=ExtResource("5_bfd2u")]
+position = Vector2(288, 32)
+
+[node name="DoorMarker East" parent="DoorMarkerParent" instance=ExtResource("5_bfd2u")]
+position = Vector2(576, 160)
+rotation = 1.5708
+FacingDirection = 1
+
+[node name="DoorMarker South" parent="DoorMarkerParent" instance=ExtResource("5_bfd2u")]
+position = Vector2(320, 320)
+rotation = 3.14159
+FacingDirection = 2
+
+[node name="DoorMarker West" parent="DoorMarkerParent" instance=ExtResource("5_bfd2u")]
+position = Vector2(32, 192)
+rotation = -1.5708
+FacingDirection = 3
+
+[node name="CollisionShape" type="CollisionShape2D" parent="."]
+position = Vector2(304, 176)
+shape = SubResource("RectangleShape2D_gymle")
+
+[node name="Loot" type="Node2D" parent="."]
+
+[node name="LyingAroundLoot" parent="Loot" instance=ExtResource("8_ufi4d")]
+position = Vector2(80, 80)
+SpawnChance = 24.976
+
+[node name="LyingAroundLoot2" parent="Loot" instance=ExtResource("8_ufi4d")]
+position = Vector2(528, 80)
+SpawnChance = 24.976
+
+[node name="LyingAroundLoot3" parent="Loot" instance=ExtResource("8_ufi4d")]
+position = Vector2(80, 272)
+SpawnChance = 24.976
+
+[node name="LyingAroundLoot4" parent="Loot" instance=ExtResource("8_ufi4d")]
+position = Vector2(528, 272)
+SpawnChance = 24.976
+
+[node name="Enemies" type="Node2D" parent="."]
+
+[node name="Runner" parent="Enemies" instance=ExtResource("9_6tps4")]
+position = Vector2(80, 80)
+
+[node name="Runner2" parent="Enemies" instance=ExtResource("9_6tps4")]
+position = Vector2(80, 272)
+
+[node name="Runner3" parent="Enemies" instance=ExtResource("9_6tps4")]
+position = Vector2(528, 272)
+
+[node name="Runner4" parent="Enemies" instance=ExtResource("9_6tps4")]
+position = Vector2(528, 80)
+
+[node name="Tile Entities" type="Node2D" parent="."]
+
+[node name="Box" parent="Tile Entities" instance=ExtResource("8_6tps4")]
+position = Vector2(176, 112)
+
+[node name="Box2" parent="Tile Entities" instance=ExtResource("8_6tps4")]
+position = Vector2(240, 240)
+
+[node name="Box3" parent="Tile Entities" instance=ExtResource("8_6tps4")]
+position = Vector2(464, 240)
+
+[node name="Box4" parent="Tile Entities" instance=ExtResource("8_6tps4")]
+position = Vector2(432, 112)

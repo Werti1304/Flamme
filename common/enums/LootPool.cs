@@ -3,5 +3,6 @@
 public enum LootPool
 {
   Pathway,
-  LockedChest
+  LockedChest,
+  LyingAround
 }
