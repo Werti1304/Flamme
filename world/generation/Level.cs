@@ -41,7 +41,9 @@ public partial class Level : Node2D
     toRoom.EnterRoom(PlayableCharacter);
     
     var positionDiff = newPlayerPosition - PlayableCharacter.GlobalPosition;
+    GD.Print($"Position diff: {positionDiff}");
     PlayableCharacter.SetDeferred(Node2D.PropertyName.GlobalPosition, newPlayerPosition);
+    
     // Teleport staff to new room but don't change relative distance to player 
     ActiveStaff?.TeleportNextFrame(ActiveStaff.GlobalPosition + positionDiff);
   }

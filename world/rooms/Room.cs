@@ -130,6 +130,9 @@ public partial class Room : Area2D
       LevelManager.SpawnUser(this);
       Hud.Instance.Show();
     }
+    
+    // Just set the Z Indices here again cause I'd have to check all rooms again
+    RoofTileMap.ZIndex = 4000;
   }
 
   public void AddLoot(Node2D loot)

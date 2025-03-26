@@ -13,7 +13,7 @@ public abstract partial class Enemy : CharacterBody2D, IPlayerDamageable
 {
   private float _health = 10;
   [Export] public bool EnemyDisabled = false;
-  [Export]   public float Health
+  [Export] public float Health
   {
     get => _health;
     set

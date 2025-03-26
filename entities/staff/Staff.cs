@@ -130,7 +130,19 @@ public partial class Staff : RigidBody2D
 
     if (_teleportTargetPos is not null && _teleportTargetPos.Value != GlobalPosition)
     {
-      GlobalPosition = _teleportTargetPos.Value;
+      if (PinJoint.NodeB != null)
+      {
+        var nodeB = PinJoint.NodeB;
+        PinJoint.NodeB = null;
+        GlobalPosition = _teleportTargetPos.Value;
+        PinJoint.NodeB = nodeB;
+      }
+      else
+      {
+        GlobalPosition = _teleportTargetPos.Value;
+      }
+      LinearVelocity = Vector2.Zero;
+      AngularVelocity = 0;
       _teleportTargetPos = null;
     }
 
