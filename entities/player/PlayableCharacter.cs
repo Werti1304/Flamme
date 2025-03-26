@@ -1,3 +1,4 @@
+using Flamme.common.constant;
 using Flamme.items;
 using Godot;
 using System.Collections.Generic;
@@ -169,7 +170,7 @@ public partial class PlayableCharacter : CharacterBody2D, IEnemyDamagable
   
   public void TakeDamage(int damage)
   {
-    if (Invincible)
+    if (Invincible || DebugToggles.GodMode)
       return;
     
     if (!Stats.RemoveHealth(damage))

@@ -3,8 +3,11 @@ namespace Flamme.common.constant;
 public class DebugToggles
 {
   // Toggles for debug outputs / visuals / settings
-  public const bool MinimapSeeAll = false;
-  public const bool DoorsAlwaysOpen = false;
+  public static bool MinimapSeeAll = false;
+  public static bool DoorsAlwaysOpen = false;
+  
+  public static bool InstaKill = true;
+  public static bool GodMode = true;
 
-  public const bool CheckMetaNonNull = true;
+  public static bool CheckMetaNonNull = true;
 }

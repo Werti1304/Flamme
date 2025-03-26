@@ -128,6 +128,12 @@ public partial class Staff : RigidBody2D
     if (_owner == null || !IsInstanceValid(_owner) || Snapped)
       return;
 
+    if (_teleportTargetPos is not null && _teleportTargetPos.Value != GlobalPosition)
+    {
+      GlobalPosition = _teleportTargetPos.Value;
+      _teleportTargetPos = null;
+    }
+
     // Friction
     if (_owner.IsShooting)
     {
@@ -153,6 +159,12 @@ public partial class Staff : RigidBody2D
   public void UpdateFireRate()
   {
     _shootTimerMax = 1 / _owner.Stats.FireRate;
+  }
+
+  private Vector2? _teleportTargetPos = null;
+  public void TeleportNextFrame(Vector2 targetPos)
+  {
+    _teleportTargetPos = targetPos;
   }
 
   private void ShootingTimerOnTimeout()
@@ -264,6 +276,7 @@ public partial class Staff : RigidBody2D
 
   private void SetSnap(bool snapEnabled)
   {
+    GD.Print($"SetSnap: {snapEnabled}");
     if (snapEnabled)
     {
       PinJoint.NodeB = _owner.GetPath();

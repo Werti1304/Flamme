@@ -31,6 +31,7 @@ public partial class Level : Node2D
 
   public void Teleport(Room fromRoom, Room toRoom, Vector2 newPlayerPosition)
   {
+    GD.Print($"Teleporting from {fromRoom.Name} to {toRoom.Name}");
     if (fromRoom != Room.Current)
     {
       GD.PushWarning("Tried to teleport from room that is not current room!");
@@ -42,10 +43,7 @@ public partial class Level : Node2D
     var positionDiff = newPlayerPosition - PlayableCharacter.GlobalPosition;
     PlayableCharacter.SetDeferred(Node2D.PropertyName.GlobalPosition, newPlayerPosition);
     // Teleport staff to new room but don't change relative distance to player 
-    if (ActiveStaff is { Snapped: false })
-    {
-        ActiveStaff.SetDeferred(Node2D.PropertyName.GlobalPosition, ActiveStaff.GlobalPosition + positionDiff);
-    }
+    ActiveStaff?.TeleportNextFrame(ActiveStaff.GlobalPosition + positionDiff);
   }
 
   public void AddRoom(Room room, int x, int y)

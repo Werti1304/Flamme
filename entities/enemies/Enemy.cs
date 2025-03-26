@@ -1,4 +1,5 @@
 using Flamme;
+using Flamme.common.constant;
 using Flamme.entities;
 using Flamme.entities.common;
 using Flamme.testing;

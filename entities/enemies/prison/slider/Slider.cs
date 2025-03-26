@@ -142,7 +142,6 @@ public partial class Slider : Enemy
 
     for (var i = 0; i < RunnersSpawnedOnDeath; i++)
     {
-      Node2D enemy;
       var randomPosOffset = new Vector2(Main.Instance.Rnd.RandfRange(-16, 16), Main.Instance.Rnd.RandfRange(-16, 16));
       if (Main.Instance.Rnd.Randf() < 0.3f)
       {

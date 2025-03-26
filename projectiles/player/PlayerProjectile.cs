@@ -1,3 +1,4 @@
+using Flamme.common.constant;
 using Flamme.entities;
 using Flamme.testing;
 using Flamme.world.rooms;
@@ -82,7 +83,14 @@ public abstract partial class PlayerProjectile : Area2D
 
   protected virtual void OnBulletHit(Node2D body, IPlayerDamageable enemy)
   {
+    if (DebugToggles.InstaKill)
+    {
+      enemy.Hit(9999999, StatDamage * StatShotSpeed * 100, (body.GlobalPosition - GlobalPosition).Normalized());
+      return;
+    }
+#pragma warning disable CS0162 // Unreachable code detected
     enemy.Hit(StatDamage, StatDamage * StatShotSpeed * 100, (body.GlobalPosition - GlobalPosition).Normalized());
+#pragma warning restore CS0162 // Unreachable code detected
   }
   
   public override void _PhysicsProcess(double delta)
