@@ -42,7 +42,10 @@ public partial class Level : Node2D
     var positionDiff = newPlayerPosition - PlayableCharacter.GlobalPosition;
     PlayableCharacter.SetDeferred(Node2D.PropertyName.GlobalPosition, newPlayerPosition);
     // Teleport staff to new room but don't change relative distance to player 
-    ActiveStaff?.SetDeferred(Node2D.PropertyName.GlobalPosition, ActiveStaff.GlobalPosition + positionDiff);
+    if (ActiveStaff is { Snapped: false })
+    {
+        ActiveStaff.SetDeferred(Node2D.PropertyName.GlobalPosition, ActiveStaff.GlobalPosition + positionDiff);
+    }
   }
 
   public void AddRoom(Room room, int x, int y)

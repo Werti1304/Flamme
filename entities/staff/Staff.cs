@@ -33,9 +33,10 @@ public partial class Staff : RigidBody2D
   [Export] public PinJoint2D PinJoint;
   [Export] public CollisionShape2D CollisionShape;
 
+  public bool Snapped { get; private set; }
+  
   private PlayableCharacter _owner;
   private bool _staffOverlappingWithPlayer = false;
-  private bool _snapped = false;
   private bool _trailing = false;
   private bool _collisionDisabled = false;
   private Tween _tween;
@@ -124,7 +125,7 @@ public partial class Staff : RigidBody2D
 
   public override void _IntegrateForces(PhysicsDirectBodyState2D state)
   {
-    if (_owner == null || !IsInstanceValid(_owner) || _snapped)
+    if (_owner == null || !IsInstanceValid(_owner) || Snapped)
       return;
 
     // Friction
@@ -245,17 +246,17 @@ public partial class Staff : RigidBody2D
       var targetVec = _owner.GlobalPosition + (_owner.ShootingVector * DistanceFromPlayer) - GlobalPosition; // ;
       var distance = targetVec.Length();
       
-      if (_snapped && distance > 10.0f)
+      if (Snapped && distance > 10.0f)
       {
         SetSnap(false);
       }
-      else if (!_snapped && distance < 5.0f)
+      else if (!Snapped && distance < 5.0f)
       {
         SetDeferred(Node2D.PropertyName.GlobalPosition, _owner.GlobalPosition + (_owner.ShootingVector * DistanceFromPlayer));
         SetSnap(true);
       }
     }
-    else if (_snapped)
+    else if (Snapped)
     {
       SetSnap(false);
     }
@@ -267,13 +268,13 @@ public partial class Staff : RigidBody2D
     {
       PinJoint.NodeB = _owner.GetPath();
       SetDeferred(RigidBody2D.PropertyName.LockRotation, true);
-      _snapped = true;
+      Snapped = true;
     }
     else
     {
       PinJoint.NodeB = null;
       SetDeferred(RigidBody2D.PropertyName.LockRotation, false);
-      _snapped = false;
+      Snapped = false;
     }
   }
 }
