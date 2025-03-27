@@ -15,8 +15,6 @@ size = Vector2(32, 32)
 size = Vector2(32, 11)
 
 [node name="DoorMarker" type="StaticBody2D" node_paths=PackedStringArray("Sprite", "CollisionShape", "TeleportZone", "TeleportPoint")]
-collision_layer = 9
-collision_mask = 9
 script = ExtResource("1_4qrfw")
 DisguiseTexture = SubResource("AtlasTexture_l1djv")
 Sprite = NodePath("Sprite2D")

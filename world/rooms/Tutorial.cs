@@ -46,6 +46,7 @@ public partial class Tutorial : Node2D
     foreach (var keyPress in KeyPresses)
     {
       keyPress.SetProcessInput(false);
+      keyPress.Modulate = keyPress.ModulateColor;
     }
     SetProcessInput(false);
   }
