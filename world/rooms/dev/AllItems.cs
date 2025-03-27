@@ -1,8 +1,8 @@
-
 using Flamme.items;
-using Flamme.world.rooms;
 using Godot;
 using System;
+
+namespace Flamme.world.rooms.dev;
 
 [Tool]
 public partial class AllItems : Room

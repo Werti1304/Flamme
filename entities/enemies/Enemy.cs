@@ -1,13 +1,8 @@
-using Flamme;
-using Flamme.common.constant;
-using Flamme.entities;
-using Flamme.entities.common;
-using Flamme.testing;
+using Flamme.common.helpers;
 using Godot;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using Room = Flamme.world.rooms.Room;
+
+namespace Flamme.entities.enemies;
 
 public abstract partial class Enemy : CharacterBody2D, IPlayerDamageable
 {
@@ -30,7 +25,7 @@ public abstract partial class Enemy : CharacterBody2D, IPlayerDamageable
   
   protected bool IsActive => Target != null;
 
-  protected PlayableCharacter Target;
+  protected player.PlayableCharacter Target;
   private Room _room;
 
   public override void _Ready()
@@ -65,7 +60,7 @@ public abstract partial class Enemy : CharacterBody2D, IPlayerDamageable
     return true;
   }
 
-  public virtual void SetActive(PlayableCharacter playableCharacter)
+  public virtual void SetActive(player.PlayableCharacter playableCharacter)
   {
     if (playableCharacter == null)
     {

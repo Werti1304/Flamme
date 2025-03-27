@@ -1,8 +1,8 @@
-using Godot;
-using System;
-using Flamme.testing;
-using Flamme.world;
+using Flamme.common.helpers;
 using Flamme.world.rooms;
+using Godot;
+
+namespace Flamme.entities.enemies.components.shooter;
 
 public partial class Shooter : Node2D
 { 
@@ -27,7 +27,7 @@ public partial class Shooter : Node2D
   [Export] public bool Homing = false;
 
   private Enemy _shooter;
-  private PlayableCharacter _target;
+  private player.PlayableCharacter _target;
   private Vector2 _targetPos;
 
   public override void _Ready()
@@ -35,7 +35,7 @@ public partial class Shooter : Node2D
     ExportMetaNonNull.Check(this);
   }
 
-  public void Shoot(Enemy enemy, PlayableCharacter target)
+  public void Shoot(Enemy enemy, player.PlayableCharacter target)
   {
     _shooter = enemy;
     _target = target;
@@ -96,13 +96,13 @@ public partial class Shooter : Node2D
       // Send one with + and one with - degrees
       // Also includes +- offset in the global position
       var spawnPos = _shooter.GlobalPosition + (directDirection * SpawnOffsetInDirection)
-                     + (positionStep * multiplier * -posOffsetDirection);
+                                             + (positionStep * multiplier * -posOffsetDirection);
       directionVec = targetPos - spawnPos;
       var direction = directionVec.Rotated(float.DegreesToRadians(degreeStep * multiplier)).Normalized();
       GenShot(spawnPos, direction);
       
       var spawnPos2 = _shooter.GlobalPosition + (directDirection * SpawnOffsetInDirection)
-                     + (positionStep * multiplier * posOffsetDirection);
+                                              + (positionStep * multiplier * posOffsetDirection);
       directionVec = targetPos - spawnPos2;
       var direction2 = directionVec.Rotated(float.DegreesToRadians(-degreeStep * multiplier)).Normalized();
       GenShot(spawnPos2, direction2);
@@ -111,7 +111,7 @@ public partial class Shooter : Node2D
 
   private void GenShot(Vector2 spawnPos, Vector2 direction)
   {
-    var projectile = ProjectileScene.Instantiate<EnemyProjectile>();
+    var projectile = ProjectileScene.Instantiate<projectiles.enemy.EnemyProjectile>();
     projectile.GlobalPosition = spawnPos;
     projectile.Direction = direction;
     var targetRotation = projectile.Direction.Angle();

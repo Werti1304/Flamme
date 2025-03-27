@@ -1,7 +1,8 @@
 using Flamme.common.constant;
 using Godot;
 using Godot.Collections;
-using System;
+
+namespace Flamme.common.scenes;
 
 public partial class SceneLoader : Node2D
 {

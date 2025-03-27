@@ -1,7 +1,7 @@
 using Flamme.common.enums;
-using Flamme.testing;
 using Godot;
 using Flamme.common.constant;
+using Flamme.common.helpers;
 using Flamme.entities.env.Loot;
 using Flamme.ui;
 using Flamme.world.doors;
@@ -60,7 +60,7 @@ public partial class Room : Area2D
   [Export] public Godot.Collections.Dictionary<Cardinal, DoorMarker> TheoreticalDoorMarkers = [];
   
   // Gets filled during world generation
-  public readonly Dictionary<Cardinal, Door> Doors = [];
+  public readonly Dictionary<Cardinal, doors.Door> Doors = [];
   
   [ExportGroup("Generation")]
   [Export]
@@ -96,13 +96,13 @@ public partial class Room : Area2D
   [Export] public Node2D DoorMarkerParent;
   [Export] public Node2D MidPoint;
 
-  [Signal] public delegate void PlayerEnteredEventHandler(PlayableCharacter playableCharacter);
-  [Signal] public delegate void PlayerExitedEventHandler(PlayableCharacter playableCharacter);
+  [Signal] public delegate void PlayerEnteredEventHandler(entities.player.PlayableCharacter playableCharacter);
+  [Signal] public delegate void PlayerExitedEventHandler(entities.player.PlayableCharacter playableCharacter);
 
   public bool WasVisited = false;
-  public readonly List<Enemy> Enemies = [];
+  public readonly List<entities.enemies.Enemy> Enemies = [];
 
-  private PlayableCharacter _playableCharacter;
+  private entities.player.PlayableCharacter _playableCharacter;
   private List<Node2D> _lootList = [];
   private bool _cleared;
 
@@ -131,7 +131,7 @@ public partial class Room : Area2D
 
     foreach (var childNode in GetChildren())
     {
-      if (childNode is Chest chest)
+      if (childNode is entities.env.chests.Chest chest)
       {
         chest.GenerateLoot();
       }
@@ -184,7 +184,7 @@ public partial class Room : Area2D
     
     switch (body)
     {
-      case PlayableCharacter p:
+      case entities.player.PlayableCharacter p:
         if (Current == null)
         {
           // Only a fallback for dev worlds and spawns
@@ -192,7 +192,7 @@ public partial class Room : Area2D
           EnterRoom(p);
         }
         break;
-      case Enemy e:
+      case entities.enemies.Enemy e:
         // GD.Print($"Enemy found in room {Name}");
         // Only works if player goes into a room, not if it spawns there
         // -> No enemies in spawn room
@@ -215,7 +215,7 @@ public partial class Room : Area2D
     
     switch (body)
     {
-      case Enemy e:
+      case entities.enemies.Enemy e:
         Enemies.Remove(e);
 
         if (Enemies.Count == 0)
@@ -226,7 +226,7 @@ public partial class Room : Area2D
     }
   }
 
-  public void LockRoom(PlayableCharacter playableCharacter)
+  public void LockRoom(entities.player.PlayableCharacter playableCharacter)
   {
     GD.Print($"Room {Name} Locked!");
     
@@ -247,7 +247,7 @@ public partial class Room : Area2D
     }
   }
 
-  public void EnterRoom(PlayableCharacter playableCharacter)
+  public void EnterRoom(entities.player.PlayableCharacter playableCharacter)
   {
     GD.Print($"Player entered Room {Name} with {Enemies.Count} enemies!");
     Current = this;
@@ -258,7 +258,7 @@ public partial class Room : Area2D
     {
       foreach (var body in GetOverlappingBodies())
       {
-        if (body is Enemy e)
+        if (body is entities.enemies.Enemy e)
         {
           Enemies.Add(e);
           GD.Print($"Thought room {Name} is empty, but had enemy {e.Name} inside!");

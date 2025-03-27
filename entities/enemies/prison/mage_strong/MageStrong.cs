@@ -1,5 +1,6 @@
 using Godot;
-using System;
+
+namespace Flamme.entities.enemies.prison.mage_strong;
 
 public partial class MageStrong : Enemy
 {
@@ -12,7 +13,7 @@ public partial class MageStrong : Enemy
   [Export] public Sprite2D Sprite;
   [Export] public RayCast2D RayCast;
   [Export] public NavigationAgent2D NavigationAgent;
-  [Export] public Shooter Shooter;
+  [Export] public components.shooter.Shooter Shooter;
   
   private double _shootTimer;
 
@@ -23,7 +24,7 @@ public partial class MageStrong : Enemy
     
     RayCast.TargetPosition = RayCast.ToLocal(Target.GlobalPosition);
     if (Target.GlobalPosition.DistanceTo(GlobalPosition) < Range 
-        && RayCast.IsColliding() && RayCast.GetCollider() is PlayableCharacter)
+        && RayCast.IsColliding() && RayCast.GetCollider() is player.PlayableCharacter)
     {
       Velocity = Velocity.Lerp(Vector2.Zero, 0.05f);
       

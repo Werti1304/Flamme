@@ -1,6 +1,7 @@
-using Flamme.testing;
+using Flamme.common.helpers;
 using Godot;
-using System;
+
+namespace Flamme.entities.enemies.prison.runner_angry;
 
 public partial class RunnerAngry : Enemy
 {

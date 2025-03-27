@@ -1,8 +1,7 @@
-﻿using System.Runtime.InteropServices;
-using Flamme.common.constant;
+﻿using Flamme.common.constant;
 using Godot;
 
-namespace Flamme.testing;
+namespace Flamme.common.helpers;
 
 public static class ExportMetaNonNull
 {

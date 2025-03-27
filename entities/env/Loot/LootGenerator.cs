@@ -68,7 +68,7 @@ public partial class LootGenerator
       GD.Print($"Current player position: {LevelManager.Instance.CurrentLevel.PlayableCharacter.GlobalPosition}.");
     }
 
-    if (loot is Enemy enemy)
+    if (loot is enemies.Enemy enemy)
     {
       enemy.SetActive(LevelManager.Instance.CurrentLevel.PlayableCharacter);
     }
@@ -197,7 +197,7 @@ public partial class LootGenerator
     {
       case LootType.NormalHealth:
       {
-        var normalHealthNode = SceneLoader.Instance[SceneLoader.Scene.HealthPickup].Instantiate<HealthPickup>();
+        var normalHealthNode = Flamme.common.scenes.SceneLoader.Instance[Flamme.common.scenes.SceneLoader.Scene.HealthPickup].Instantiate<HealthPickup>();
         normalHealthNode.HealthType = HealthType.Normal;
         normalHealthNode.HealingAmount = worth;
         loot = normalHealthNode;
@@ -205,7 +205,7 @@ public partial class LootGenerator
       }
       case LootType.AbsorptionHealth:
       {
-        var absorptionHealthNode = SceneLoader.Instance[SceneLoader.Scene.HealthPickup].Instantiate<HealthPickup>();
+        var absorptionHealthNode = Flamme.common.scenes.SceneLoader.Instance[Flamme.common.scenes.SceneLoader.Scene.HealthPickup].Instantiate<HealthPickup>();
         absorptionHealthNode.HealthType = HealthType.Absorption;
         absorptionHealthNode.HealingAmount = worth;
         loot = absorptionHealthNode;
@@ -213,7 +213,7 @@ public partial class LootGenerator
       }
       case LootType.Coin:
       {
-        var coinNode = SceneLoader.Instance[SceneLoader.Scene.PursePickup].Instantiate<PursePickup>();
+        var coinNode = Flamme.common.scenes.SceneLoader.Instance[Flamme.common.scenes.SceneLoader.Scene.PursePickup].Instantiate<PursePickup>();
         coinNode.PurseContent = PurseContent.Coin;
         coinNode.Amount = worth;
         loot = coinNode;
@@ -221,7 +221,7 @@ public partial class LootGenerator
       }
       case LootType.Key:
       {
-        var keyNode = SceneLoader.Instance[SceneLoader.Scene.PursePickup].Instantiate<PursePickup>();
+        var keyNode = Flamme.common.scenes.SceneLoader.Instance[Flamme.common.scenes.SceneLoader.Scene.PursePickup].Instantiate<PursePickup>();
         keyNode.PurseContent = PurseContent.Key;
         keyNode.Amount = worth;
         loot = keyNode;
@@ -229,7 +229,7 @@ public partial class LootGenerator
       }
       case LootType.Crystal:
       {
-        var crystalNode = SceneLoader.Instance[SceneLoader.Scene.PursePickup].Instantiate<PursePickup>();
+        var crystalNode = Flamme.common.scenes.SceneLoader.Instance[Flamme.common.scenes.SceneLoader.Scene.PursePickup].Instantiate<PursePickup>();
         crystalNode.PurseContent = PurseContent.Crystal;
         crystalNode.Amount = worth;
         loot = crystalNode;
@@ -237,16 +237,16 @@ public partial class LootGenerator
       }
       case LootType.NormalChest:
       {
-        var normalChestNode = SceneLoader.Instance[SceneLoader.Scene.Chest].Instantiate<Chest>();
-        normalChestNode.Type = Chest.ChestType.Normal;
+        var normalChestNode = Flamme.common.scenes.SceneLoader.Instance[Flamme.common.scenes.SceneLoader.Scene.Chest].Instantiate<chests.Chest>();
+        normalChestNode.Type = chests.Chest.ChestType.Normal;
         normalChestNode.GenerateLoot();
         loot = normalChestNode;
         break;
       }
       case LootType.LockedChest:
       {
-        var lockedChestNode = SceneLoader.Instance[SceneLoader.Scene.Chest].Instantiate<Chest>();
-        lockedChestNode.Type = Chest.ChestType.Locked;
+        var lockedChestNode = Flamme.common.scenes.SceneLoader.Instance[Flamme.common.scenes.SceneLoader.Scene.Chest].Instantiate<chests.Chest>();
+        lockedChestNode.Type = chests.Chest.ChestType.Locked;
         lockedChestNode.GenerateLoot();
         loot = lockedChestNode;
         break;
@@ -254,8 +254,8 @@ public partial class LootGenerator
       case LootType.MimicChest:
       {
         // Todo 1 replace with something better
-        var mimicChestNode = SceneLoader.Instance[SceneLoader.Scene.Chest].Instantiate<Chest>();
-        mimicChestNode.Type = Chest.ChestType.Mimic;
+        var mimicChestNode = Flamme.common.scenes.SceneLoader.Instance[Flamme.common.scenes.SceneLoader.Scene.Chest].Instantiate<chests.Chest>();
+        mimicChestNode.Type = chests.Chest.ChestType.Mimic;
         mimicChestNode.GenerateLoot();
         loot = mimicChestNode;
         break;

@@ -1,12 +1,14 @@
 using Flamme.common.constant;
 using Flamme.common.enums;
-using Flamme.testing;
-using Flamme.world.doors;
+using Flamme.common.helpers;
 using Flamme.world.generation;
 using Flamme.world.rooms;
 using Godot;
 using System;
+
 // ReSharper disable HeuristicUnreachableCode
+
+namespace Flamme.world.doors;
 
 public partial class Door : Node2D
 {
@@ -127,12 +129,12 @@ public partial class Door : Node2D
     DoorMarker2.Teleport += OnTeleportDoorMarker2;
   }
   
-  private void OnTeleportDoorMarker1(PlayableCharacter character)
+  private void OnTeleportDoorMarker1(entities.player.PlayableCharacter character)
   {
     Level.Current.Teleport(Room1, Room2, DoorMarker2.TeleportPoint.GlobalPosition);
   }
   
-  private void OnTeleportDoorMarker2(PlayableCharacter character)
+  private void OnTeleportDoorMarker2(entities.player.PlayableCharacter character)
   {
     Level.Current.Teleport(Room2, Room1, DoorMarker1.TeleportPoint.GlobalPosition); 
   }
@@ -158,7 +160,7 @@ public partial class Door : Node2D
     Open();
   }
 
-  public virtual bool TryOpen(PlayableCharacter player)
+  public virtual bool TryOpen(entities.player.PlayableCharacter player)
   {
     if (_isLocked)
       return false;
@@ -194,7 +196,7 @@ public partial class Door : Node2D
   {
     if (DebugToggles.DoorsAlwaysOpen)
       
-    #pragma warning disable CS0162 // Unreachable code detected
+#pragma warning disable CS0162 // Unreachable code detected
     {
       Open();
       return;
@@ -205,6 +207,6 @@ public partial class Door : Node2D
     DoorMarker1.Close();
     DoorMarker2.Close();
     
-    #pragma warning restore CS0162 // Unreachable code detected
+#pragma warning restore CS0162 // Unreachable code detected
   }
 }

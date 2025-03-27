@@ -2,6 +2,8 @@
 using Godot;
 
 // TODO Add possible loot to all enemies
+namespace Flamme.entities.enemies.prison.runner;
+
 public partial class Runner : Enemy
 {
   [Export] public float Speed = 100.0f;

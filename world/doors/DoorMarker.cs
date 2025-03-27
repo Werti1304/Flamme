@@ -1,5 +1,5 @@
 using Flamme.common.enums;
-using Flamme.testing;
+using Flamme.common.helpers;
 using Godot;
 using System;
 
@@ -35,7 +35,7 @@ public partial class DoorMarker : StaticBody2D
   [Export] public Area2D TeleportZone;
   [Export] public Node2D TeleportPoint;
 
-  [Signal] public delegate void TeleportEventHandler(PlayableCharacter character);
+  [Signal] public delegate void TeleportEventHandler(entities.player.PlayableCharacter character);
   
   public Door Door { get; set; }
 
@@ -54,7 +54,7 @@ public partial class DoorMarker : StaticBody2D
 
   private void TeleportZoneOnBodyEntered(Node2D body)
   {
-    if (body is PlayableCharacter playableCharacter)
+    if (body is entities.player.PlayableCharacter playableCharacter)
     {
       EmitSignal(SignalName.Teleport, playableCharacter);
     }

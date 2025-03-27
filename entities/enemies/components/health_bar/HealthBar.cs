@@ -1,6 +1,6 @@
 using Godot;
-using System;
-using Flamme.ui;
+
+namespace Flamme.entities.enemies.components.health_bar;
 
 public partial class HealthBar : TextureProgressBar
 {

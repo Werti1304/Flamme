@@ -1,6 +1,5 @@
 using Flamme.entities;
 using Flamme.entities.player;
-using Flamme.testing;
 using Flamme.world.rooms;
 using Godot;
 using System.Collections.Generic;
@@ -19,10 +18,10 @@ public partial class Trailing : PlayerProjectile
   
   private Vector2 _normalToDirection = Vector2.Left;
   
-  private Enemy _homingTarget = null;
+  private entities.enemies.Enemy _homingTarget = null;
   private bool _homing = false;
 
-  protected override void CustomFireExec(PlayableCharacter player, Room room)
+  protected override void CustomFireExec(entities.player.PlayableCharacter player, Room room)
   {
     Sprite.Modulate = Colors.Transparent;
     TrailLine.Modulate = Colors.Transparent;
@@ -62,7 +61,7 @@ public partial class Trailing : PlayerProjectile
       {
         // Select nearest enemy
         var nearestDistance = float.MaxValue;
-        Enemy nearestEnemy = null;
+        entities.enemies.Enemy nearestEnemy = null;
         foreach (var enemy in room.Enemies)
         {
           var distance = enemy.GlobalPosition.DistanceTo(_startPointP0);

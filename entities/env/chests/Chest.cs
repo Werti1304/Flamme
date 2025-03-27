@@ -1,12 +1,12 @@
 using Flamme.common.enums;
-using Flamme.entities.env;
 using Flamme.entities.env.Loot;
 using Flamme.entities.player;
-using Flamme.items;
 using Flamme.world;
 using Godot;
 using System;
 using System.Collections.Generic;
+
+namespace Flamme.entities.env.chests;
 
 public partial class Chest : RigidBody2D
 {
@@ -66,14 +66,14 @@ public partial class Chest : RigidBody2D
       case ChestType.Locked:
         if (ItemPickupLoot == null)
         {
-          var itemPickup = SceneLoader.Instance[SceneLoader.Scene.ItemPickup].Instantiate<ItemPickup>();
+          var itemPickup = Flamme.common.scenes.SceneLoader.Instance[Flamme.common.scenes.SceneLoader.Scene.ItemPickup].Instantiate<ItemPickup>();
           itemPickup.RetrievelMode = ItemPickup.ItemRetrievel.FromItemPool;
           itemPickup.ItemLootPool = ItemLootPool.LockedChest;
           ItemPickupLoot = itemPickup;
         }
         break;
       case ChestType.Mimic:
-        var enemy = SceneLoader.Instance[SceneLoader.Scene.Runner].Instantiate<Runner>();
+        var enemy = Flamme.common.scenes.SceneLoader.Instance[Flamme.common.scenes.SceneLoader.Scene.Runner].Instantiate<enemies.prison.runner.Runner>();
         _lootList.Add(enemy);
         break;
       default:

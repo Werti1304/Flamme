@@ -1,6 +1,6 @@
 using Flamme.common.constant;
+using Flamme.common.helpers;
 using Flamme.entities;
-using Flamme.testing;
 using Flamme.world.rooms;
 using Godot;
 
@@ -40,7 +40,7 @@ public abstract partial class PlayerProjectile : Area2D
     Counter = 0;
   }
 
-  public virtual void Fire(PlayableCharacter player, Room room)
+  public virtual void Fire(entities.player.PlayableCharacter player, Room room)
   {
     // TODO 3 Make range how far or how much time a bullet has?
     
@@ -49,14 +49,14 @@ public abstract partial class PlayerProjectile : Area2D
     FireReady();
   }
 
-  private void FireInit(PlayableCharacter player)
+  private void FireInit(entities.player.PlayableCharacter player)
   {
     StatDamage = player.Stats.Damage;
     StatShotSpeed = player.Stats.ShotSpeed;
     StatRange = player.Stats.Range;
   }
 
-  protected abstract void CustomFireExec(PlayableCharacter player, Room room);
+  protected abstract void CustomFireExec(entities.player.PlayableCharacter player, Room room);
 
   private void FireReady()
   {

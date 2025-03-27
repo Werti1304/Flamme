@@ -13,11 +13,11 @@ public partial class GrandWizard : Enemy
   
   [ExportGroup("Meta")]
   [Export] public Sprite2D Sprite;
-  [Export] public Shooter ShooterRapid;
-  [Export] public Shooter ShooterHoming;
-  [Export] public Shooter ShooterSpiral;
-  [Export] public Shooter ShooterNormal;
-  [Export] public HealthBar HealthBar;
+  [Export] public components.shooter.Shooter ShooterRapid;
+  [Export] public components.shooter.Shooter ShooterHoming;
+  [Export] public components.shooter.Shooter ShooterSpiral;
+  [Export] public components.shooter.Shooter ShooterNormal;
+  [Export] public components.health_bar.HealthBar HealthBar;
   
   private double _attackTimer;
 
@@ -163,13 +163,13 @@ public partial class GrandWizard : Enemy
         var perpendicular = new Vector2(-spawnDirection.Y, spawnDirection.X).Normalized();
         var mirroredPosition1 = GlobalPosition + perpendicular * 32;
         var mirroredPosition2 = GlobalPosition - perpendicular * 32;
-        SpawnEnemy(SceneLoader.Instance[SceneLoader.Scene.FireflyHoming], mirroredPosition1);
-        SpawnEnemy(SceneLoader.Instance[SceneLoader.Scene.FireflyHoming], mirroredPosition2);
+        SpawnEnemy(Flamme.common.scenes.SceneLoader.Instance[Flamme.common.scenes.SceneLoader.Scene.FireflyHoming], mirroredPosition1);
+        SpawnEnemy(Flamme.common.scenes.SceneLoader.Instance[Flamme.common.scenes.SceneLoader.Scene.FireflyHoming], mirroredPosition2);
         break;
       case Attack.SpawnRagingFlies:
         for (var i = 0; i < 5; i++)
         {
-          SpawnEnemy(SceneLoader.Instance[SceneLoader.Scene.FireflyRaging], GlobalPosition, 16);
+          SpawnEnemy(Flamme.common.scenes.SceneLoader.Instance[Flamme.common.scenes.SceneLoader.Scene.FireflyRaging], GlobalPosition, 16);
         }
         break;
       case Attack.ShootRapid:

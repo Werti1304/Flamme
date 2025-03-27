@@ -29,7 +29,7 @@ public partial class Warper : Area2D
 
   private void OnBodyEntered(Node2D body)
   {
-    if (body is not PlayableCharacter playableCharacter)
+    if (body is not player.PlayableCharacter playableCharacter)
       return;
 
     WorldGenerator.Instance.WaitingForSceneChangeToNewLevel = true;
@@ -42,7 +42,7 @@ public partial class Warper : Area2D
     else
     {
       // This is used for normal progression
-      LevelManager.Instance.StartlevelChange(SceneLoader.Instance[SceneLoader.Scene.Level]);
+      LevelManager.Instance.StartlevelChange(Flamme.common.scenes.SceneLoader.Instance[Flamme.common.scenes.SceneLoader.Scene.Level]);
     }
   }
 }

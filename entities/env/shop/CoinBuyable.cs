@@ -1,7 +1,7 @@
 using Flamme.common.constant;
+using Flamme.common.helpers;
 using Flamme.entities.env.health;
 using Flamme.entities.env.purse;
-using Flamme.testing;
 using Godot;
 using System;
 
@@ -58,7 +58,7 @@ public partial class CoinBuyable : Area2D
     }
   }
 
-  public void Buy(PlayableCharacter player)
+  public void Buy(player.PlayableCharacter player)
   {
     if (_selling == null || !IsInstanceValid(_selling))
     {

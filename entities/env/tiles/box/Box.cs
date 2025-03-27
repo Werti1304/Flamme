@@ -1,8 +1,8 @@
-using Godot;
-using System;
-using Flamme.entities;
+using Flamme.common.helpers;
 using Flamme.entities.common;
-using Flamme.testing;
+using Godot;
+
+namespace Flamme.entities.env.tiles.box;
 
 public partial class Box : StaticBody2D, IPlayerDamageable, IEnemyDamagable
 {

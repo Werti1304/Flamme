@@ -1,6 +1,6 @@
 using Godot;
-using System;
-using Flamme.world;
+
+namespace Flamme.entities.enemies.prison.archer;
 
 public partial class Archer : Enemy
 {
@@ -14,7 +14,7 @@ public partial class Archer : Enemy
   [Export] public Sprite2D Sprite;
   [Export] public RayCast2D RayCast;
   [Export] public NavigationAgent2D NavigationAgent;
-  [Export] public Shooter Shooter;
+  [Export] public components.shooter.Shooter Shooter;
   
   private double _shootTimer;
 
@@ -24,7 +24,7 @@ public partial class Archer : Enemy
       return;
     
     RayCast.TargetPosition = RayCast.ToLocal(Target.GlobalPosition);
-    if (RayCast.IsColliding() && RayCast.GetCollider() is PlayableCharacter)
+    if (RayCast.IsColliding() && RayCast.GetCollider() is player.PlayableCharacter)
     {
       Velocity = Velocity.Lerp(Vector2.Zero, 0.05f);
       

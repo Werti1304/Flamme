@@ -1,8 +1,9 @@
+using Flamme.common.helpers;
 using Flamme.entities.common;
-using Flamme.testing;
 using Flamme.world.rooms;
 using Godot;
-using System;
+
+namespace Flamme.projectiles.enemy;
 
 public abstract partial class EnemyProjectile : Area2D
 {
@@ -24,9 +25,9 @@ public abstract partial class EnemyProjectile : Area2D
   protected bool Dissipating;
   protected bool HitSomething;
 
-  protected Enemy Shooter;
+  protected entities.enemies.Enemy Shooter;
   protected float Range;
-  protected PlayableCharacter Target;
+  protected entities.player.PlayableCharacter Target;
   // TODO Make ShootingEnemy class?
   
   public override void _Ready()
@@ -47,7 +48,7 @@ public abstract partial class EnemyProjectile : Area2D
     Counter = 0;
   }
 
-  public virtual void Fire(Enemy enemy, Room room, PlayableCharacter target, float range)
+  public virtual void Fire(entities.enemies.Enemy enemy, Room room, entities.player.PlayableCharacter target, float range)
   {
     FireInit(enemy, range, target);
     CustomFireExec(enemy, room);
@@ -65,14 +66,14 @@ public abstract partial class EnemyProjectile : Area2D
     }
   }
 
-  private void FireInit(Enemy enemy, float range, PlayableCharacter playableCharacter)
+  private void FireInit(entities.enemies.Enemy enemy, float range, entities.player.PlayableCharacter playableCharacter)
   {
     Shooter = enemy;
     Range = range;
     Target = playableCharacter;
   }
 
-  protected virtual void CustomFireExec(Enemy enemy, Room room)
+  protected virtual void CustomFireExec(entities.enemies.Enemy enemy, Room room)
   { }
 
   private void FireReady()

@@ -1,10 +1,8 @@
-using Flamme.entities.common;
 using Flamme.entities.enemies.components.melee_area;
-using Flamme.world.rooms;
 using Godot;
-using GodotPlugins.Game;
 using System;
-using Main = Flamme.Main;
+
+namespace Flamme.entities.enemies.prison.slider;
 
 public partial class Slider : Enemy
 {
@@ -26,7 +24,7 @@ public partial class Slider : Enemy
   [Export] public Texture2D TexturePhase3;
   
   [ExportGroup("Meta")]
-  [Export] public HealthBar HealthBar;
+  [Export] public components.health_bar.HealthBar HealthBar;
   [Export] public Sprite2D Body;
   [Export] public Sprite2D Eye;
   [Export] public Node2D EyeCenter;
@@ -100,7 +98,7 @@ public partial class Slider : Enemy
 
   private void MeleeAreaOnBodyEntered(Node2D body)
   {
-    if (body is PlayableCharacter playableCharacter)
+    if (body is player.PlayableCharacter playableCharacter)
     {
       playableCharacter.Velocity += GlobalPosition.DirectionTo(body.GlobalPosition) * Mathf.Max(200.0f, Velocity.Length() * KnockbackMultiplier);
     }
@@ -132,8 +130,8 @@ public partial class Slider : Enemy
 
   public override void OnDeath()
   {
-    var runnerScene = SceneLoader.Instance[SceneLoader.Scene.Runner];
-    var smartRunnerScene = SceneLoader.Instance[SceneLoader.Scene.RunnerSmart];
+    var runnerScene = Flamme.common.scenes.SceneLoader.Instance[Flamme.common.scenes.SceneLoader.Scene.Runner];
+    var smartRunnerScene = Flamme.common.scenes.SceneLoader.Instance[Flamme.common.scenes.SceneLoader.Scene.RunnerSmart];
     
     SetPhysicsProcess(false);
     Body.Hide();

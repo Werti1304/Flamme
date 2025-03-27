@@ -1,18 +1,19 @@
 using Flamme.common.constant;
-using Flamme.items;
-using Godot;
-using System.Collections.Generic;
 using Flamme.common.enums;
+using Flamme.common.helpers;
 using Flamme.common.input;
 using Flamme.entities.common;
 using Flamme.entities.env.health;
 using Flamme.entities.env.shop;
-using Flamme.entities.player;
-using Flamme.testing;
+using Flamme.items;
 using Flamme.ui;
 using Flamme.world.doors;
 using Flamme.world.rooms;
+using Godot;
+using System.Collections.Generic;
 using System.Linq;
+
+namespace Flamme.entities.player;
 
 public partial class PlayableCharacter : CharacterBody2D, IEnemyDamagable
 {
@@ -103,7 +104,7 @@ public partial class PlayableCharacter : CharacterBody2D, IEnemyDamagable
   {
     // if player is presumably stuck between an enemy and something different,
     // Currently strictly for THE SLIDER
-    if (InteractionArea.GetOverlappingBodies().Count >= 2 && InteractionArea.GetOverlappingBodies().OfType<Slider>().Any())
+    if (InteractionArea.GetOverlappingBodies().Count >= 2 && InteractionArea.GetOverlappingBodies().OfType<enemies.prison.slider.Slider>().Any())
     {
       _stuckCounter++;
 
@@ -218,7 +219,7 @@ public partial class PlayableCharacter : CharacterBody2D, IEnemyDamagable
       rigidBody2D.ApplyCentralForce(GlobalPosition.DirectionTo(rigidBody2D.GlobalPosition) * 3000.0f);
     }
     
-    if (body is Chest chest)
+    if (body is env.chests.Chest chest)
     {
       if (chest.IsOpen)
       {

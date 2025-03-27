@@ -1,13 +1,13 @@
-using Flamme.world;
-using Flamme.world.rooms;
 using Godot;
 using Godot.Collections;
 using System.Linq;
 
+namespace Flamme.world.rooms;
+
 public partial class Tutorial : Node2D
 {
   [Export] public Room TutorialRoom;
-  [Export] public Array<KeyPress> KeyPresses = [];
+  [Export] public Array<ui.key_press.KeyPress> KeyPresses = [];
 
   public override void _Ready()
   {

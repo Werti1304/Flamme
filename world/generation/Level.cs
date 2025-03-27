@@ -2,7 +2,6 @@ using Flamme.common.constant;
 using Flamme.common.enums;
 using System;
 using Flamme.entities.staff;
-using Flamme.testing;
 using Flamme.ui;
 using Flamme.world.doors;
 using Godot;
@@ -16,9 +15,9 @@ namespace Flamme.world.generation;
 public partial class Level : Node2D
 {
   [Export] public Room Spawn;
-  [Export] public PlayableCharacter PlayableCharacter;
+  [Export] public entities.player.PlayableCharacter PlayableCharacter;
   [Export] public Staff ActiveStaff;
-  [Export] public PlayerCamera PlayerCamera;
+  [Export] public entities.player.PlayerCamera PlayerCamera;
 
   public Room[,] Grid = new Room[16, 16];
   public static Level Current => LevelManager.Instance.CurrentLevel;
@@ -84,7 +83,7 @@ public partial class Level : Node2D
             continue;
           }
           
-          var door = SceneLoader.Instance[SceneLoader.Scene.Door].Instantiate<Door>();
+          var door = common.scenes.SceneLoader.Instance[common.scenes.SceneLoader.Scene.Door].Instantiate<doors.Door>();
           
           // Setup door
           door.DoorMarker1 = roomExit.Value;

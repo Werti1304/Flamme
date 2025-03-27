@@ -1,8 +1,8 @@
-using Flamme;
 using Flamme.common.constant;
 using Flamme.world.generation;
 using Godot;
-using System;
+
+namespace Flamme.ui;
 
 public partial class MainMenu : CanvasLayer
 {

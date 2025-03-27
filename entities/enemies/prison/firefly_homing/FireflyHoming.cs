@@ -1,13 +1,14 @@
 using Godot;
-using System;
 
-public partial class FireflyHoming : FireflyNeutral
+namespace Flamme.entities.enemies.prison.firefly_homing;
+
+public partial class FireflyHoming : firefly_neutral.FireflyNeutral
 {
   [Export] public float Range = 192.0f;
   [Export] public float ShootTimerSec = 3.0f;
   
   [ExportGroup("Meta")]
-  [Export] public Shooter Shooter;
+  [Export] public components.shooter.Shooter Shooter;
   
   protected override Vector2 GetNewDirection()
   {

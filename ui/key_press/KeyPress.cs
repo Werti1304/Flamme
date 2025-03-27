@@ -1,6 +1,7 @@
 using Flamme.common.input;
 using Godot;
-using System;
+
+namespace Flamme.ui.key_press;
 
 public partial class KeyPress : Sprite2D
 {

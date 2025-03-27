@@ -1,5 +1,4 @@
-using Godot;
-using System;
+namespace Flamme.projectiles.enemy.grand_mage;
 
 public partial class BigHoming : EnemyProjectile
 {

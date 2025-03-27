@@ -1,8 +1,10 @@
+using Flamme.common.helpers;
 using Flamme.entities.player;
-using Flamme.testing;
 using Godot;
 using System;
 using System.Text;
+
+namespace Flamme.ui;
 
 public partial class StatsDisplay : RichTextLabel
 {

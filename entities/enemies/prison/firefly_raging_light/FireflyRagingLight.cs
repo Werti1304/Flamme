@@ -1,7 +1,8 @@
 using Godot;
-using System;
 
-public partial class FireflyRagingLight : FireflyNeutral
+namespace Flamme.entities.enemies.prison.firefly_raging_light;
+
+public partial class FireflyRagingLight : firefly_neutral.FireflyNeutral
 {
   protected override void OnSetActive()
   {

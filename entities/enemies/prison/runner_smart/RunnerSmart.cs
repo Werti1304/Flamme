@@ -1,6 +1,7 @@
-using Flamme.testing;
+using Flamme.common.helpers;
 using Godot;
-using System;
+
+namespace Flamme.entities.enemies.prison.runner_smart;
 
 public partial class RunnerSmart : Enemy
 {

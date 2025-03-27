@@ -1,6 +1,8 @@
+using Flamme.common.enums;
 using Godot;
 using System;
-using Flamme.common.enums;
+
+namespace Flamme.entities.player;
 
 public partial class PlayerSprite : Sprite2D
 {

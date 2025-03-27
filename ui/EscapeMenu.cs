@@ -1,6 +1,5 @@
 using Flamme.common.constant;
 using Flamme.common.input;
-using Flamme.testing;
 using Godot;
 
 namespace Flamme.ui;

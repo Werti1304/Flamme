@@ -31,11 +31,11 @@ public partial class LevelManager : Node2D
   
   private struct TransferableStuff
   {
-    public PlayableCharacter Character;
+    public entities.player.PlayableCharacter Character;
     public Staff Staff;
-    public PlayerCamera Camera;
+    public entities.player.PlayerCamera Camera;
 
-    public TransferableStuff(PlayableCharacter character, Staff staff, PlayerCamera camera)
+    public TransferableStuff(entities.player.PlayableCharacter character, Staff staff, entities.player.PlayerCamera camera)
     {
       Character = character;
       Staff = staff;
@@ -145,16 +145,16 @@ public partial class LevelManager : Node2D
   {
     // Spawn player
     var globalSpawnPosition = level.Spawn.MidPoint.GlobalPosition;
-    var playerScene = SceneLoader.Instance[SceneLoader.Scene.Player];
-    var player = playerScene.Instantiate<PlayableCharacter>();
+    var playerScene = common.scenes.SceneLoader.Instance[common.scenes.SceneLoader.Scene.Player];
+    var player = playerScene.Instantiate<entities.player.PlayableCharacter>();
     player.GlobalPosition = globalSpawnPosition;
     level.AddChild(player);
     level.PlayableCharacter = player;
     player.Owner = level;
 
     // Spawn camera
-    var playerCameraScene = SceneLoader.Instance[SceneLoader.Scene.PlayerCamera];
-    var playerCamera = playerCameraScene.Instantiate<PlayerCamera>();
+    var playerCameraScene = common.scenes.SceneLoader.Instance[common.scenes.SceneLoader.Scene.PlayerCamera];
+    var playerCamera = playerCameraScene.Instantiate<entities.player.PlayerCamera>();
     playerCamera.GlobalPosition = globalSpawnPosition;
     level.AddChild(playerCamera);
     level.PlayerCamera = playerCamera;
@@ -162,7 +162,7 @@ public partial class LevelManager : Node2D
     playerCamera.Owner = level;
 
     // Spawn def. staff
-    var startingStaffScene = SceneLoader.Instance[SceneLoader.Scene.StartingStaff];
+    var startingStaffScene = common.scenes.SceneLoader.Instance[common.scenes.SceneLoader.Scene.StartingStaff];
     var startingStaff = startingStaffScene.Instantiate<Staff>();
     startingStaff.GlobalPosition = globalSpawnPosition - new Vector2(64, 64);
     level.AddChild(startingStaff);
@@ -175,22 +175,22 @@ public partial class LevelManager : Node2D
     // Spawn user in front of the first door we can find
     var doorToSpawnAt = room.TheoreticalDoorMarkers.First();
     var globalSpawnPosition = doorToSpawnAt.Value.GlobalPosition + doorToSpawnAt.Key.Opposite().ToVector() * 32;
-    var playerScene = SceneLoader.Instance[SceneLoader.Scene.Player];
-    var player = playerScene.Instantiate<PlayableCharacter>();
+    var playerScene = common.scenes.SceneLoader.Instance[common.scenes.SceneLoader.Scene.Player];
+    var player = playerScene.Instantiate<entities.player.PlayableCharacter>();
     player.GlobalPosition = globalSpawnPosition;
     room.AddChild(player);
     player.Owner = room;
 
     // Spawn camera
-    var playerCameraScene = SceneLoader.Instance[SceneLoader.Scene.PlayerCamera];
-    var playerCamera = playerCameraScene.Instantiate<PlayerCamera>();
+    var playerCameraScene = common.scenes.SceneLoader.Instance[common.scenes.SceneLoader.Scene.PlayerCamera];
+    var playerCamera = playerCameraScene.Instantiate<entities.player.PlayerCamera>();
     playerCamera.GlobalPosition = globalSpawnPosition;
     room.AddChild(playerCamera);
     playerCamera.Player = player;
     playerCamera.Owner = room;
 
     // Spawn def. staff
-    var startingStaffScene = SceneLoader.Instance[SceneLoader.Scene.StartingStaff];
+    var startingStaffScene = common.scenes.SceneLoader.Instance[common.scenes.SceneLoader.Scene.StartingStaff];
     var startingStaff = startingStaffScene.Instantiate<Staff>();
     startingStaff.GlobalPosition = globalSpawnPosition - new Vector2(64, 64);
     room.AddChild(startingStaff);

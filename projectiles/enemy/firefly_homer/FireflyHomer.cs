@@ -1,7 +1,4 @@
-using Flamme.world;
-using Flamme.world.rooms;
-using Godot;
-using System;
+namespace Flamme.projectiles.enemy.firefly_homer;
 
 public partial class FireflyHomer : EnemyProjectile
 {

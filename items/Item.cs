@@ -80,12 +80,12 @@ public class Item
     return this;
   }
   
-  public void InvokePickupEvent(PlayableCharacter playableCharacter)
+  public void InvokePickupEvent(entities.player.PlayableCharacter playableCharacter)
   {
     ItemPickedUp?.Invoke(this, new ItemChangeEventArgs(playableCharacter));
   }
 
-  public void InvokeRemoveEvent(PlayableCharacter playableCharacter)
+  public void InvokeRemoveEvent(entities.player.PlayableCharacter playableCharacter)
   {
     ItemRemoved?.Invoke(this, new ItemChangeEventArgs(playableCharacter));
   }

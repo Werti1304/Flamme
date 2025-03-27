@@ -16,9 +16,9 @@ namespace Flamme.common.eventArgs;
 
 public class ItemChangeEventArgs : EventArgs
 {
-  public PlayableCharacter Character { get; init; }
+  public entities.player.PlayableCharacter Character { get; init; }
   
-  public ItemChangeEventArgs(PlayableCharacter character)
+  public ItemChangeEventArgs(entities.player.PlayableCharacter character)
   {
     Character = character;
   }

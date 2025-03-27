@@ -1,8 +1,7 @@
-using Flamme.world;
-using Flamme.world.generation;
 using Flamme.world.rooms;
 using Godot;
-using System;
+
+namespace Flamme.entities.player;
 
 public partial class PlayerCamera : Camera2D
 {

@@ -1,6 +1,7 @@
-using Flamme.testing;
+using Flamme.common.helpers;
 using Godot;
-using System;
+
+namespace Flamme.entities.env.tiles.moving_statue;
 
 public partial class MovingStatue : AnimatableBody2D
 {
@@ -16,7 +17,7 @@ public partial class MovingStatue : AnimatableBody2D
 
   private void PlayerDetectionAreaOnBodyEntered(Node2D body)
   {
-    if (body is not PlayableCharacter)
+    if (body is not player.PlayableCharacter)
       return;
     
     PlayerDetectionArea.SetDeferred(Area2D.PropertyName.Monitoring, false);

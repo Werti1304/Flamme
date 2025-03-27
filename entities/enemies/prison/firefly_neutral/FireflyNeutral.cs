@@ -1,6 +1,6 @@
 using Godot;
-using System;
-using Flamme;
+
+namespace Flamme.entities.enemies.prison.firefly_neutral;
 
 public partial class FireflyNeutral : Enemy
 {

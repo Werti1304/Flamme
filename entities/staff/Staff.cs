@@ -1,6 +1,6 @@
+using Flamme.common.helpers;
 using Flamme.entities.player;
 using Flamme.projectiles.player;
-using Flamme.testing;
 using Flamme.world;
 using Flamme.world.generation;
 using Flamme.world.rooms;
@@ -35,7 +35,7 @@ public partial class Staff : RigidBody2D
 
   public bool Snapped { get; private set; }
   
-  private PlayableCharacter _owner;
+  private player.PlayableCharacter _owner;
   private bool _staffOverlappingWithPlayer = false;
   private bool _trailing = false;
   private bool _collisionDisabled = false;
@@ -199,11 +199,11 @@ public partial class Staff : RigidBody2D
     PackedScene projectileScene;
     if (_owner.Modifiers.IsFireball)
     {
-      projectileScene = SceneLoader.Instance[SceneLoader.Scene.Fireball];
+      projectileScene = Flamme.common.scenes.SceneLoader.Instance[Flamme.common.scenes.SceneLoader.Scene.Fireball];
     }
     else
     {
-      projectileScene = SceneLoader.Instance[SceneLoader.Scene.Trailing];
+      projectileScene = Flamme.common.scenes.SceneLoader.Instance[Flamme.common.scenes.SceneLoader.Scene.Trailing];
     }
     var projectile = projectileScene.Instantiate<PlayerProjectile>();
     projectile.GlobalPosition = GlobalPosition + (_owner.ShootingVector * ShootDistanceFromStaff);
@@ -216,7 +216,7 @@ public partial class Staff : RigidBody2D
 
   private void AreaOnBodyEntered(Node2D body)
   {
-    if (body is not PlayableCharacter)
+    if (body is not player.PlayableCharacter)
       return;
     
     _staffOverlappingWithPlayer = true;
@@ -224,7 +224,7 @@ public partial class Staff : RigidBody2D
 
   private void AreaOnBodyExited(Node2D body)
   {
-    if (body is not PlayableCharacter)
+    if (body is not player.PlayableCharacter)
       return;
 
     _staffOverlappingWithPlayer = false;
@@ -232,7 +232,7 @@ public partial class Staff : RigidBody2D
 
   public void PickupAreaOnBodyEntered(Node2D body)
   {
-    if (_owner != null || body is not PlayableCharacter playableCharacter)
+    if (_owner != null || body is not player.PlayableCharacter playableCharacter)
       return;
     
     _owner = playableCharacter;

@@ -1,6 +1,7 @@
 using Godot;
-using System;
 using System.Globalization;
+
+namespace Flamme.ui;
 
 public partial class FpsLabel : Label
 {
