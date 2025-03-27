@@ -1,0 +1,8 @@
+[gd_scene load_steps=3 format=3 uid="uid://k87pe50t1oua"]
+
+[ext_resource type="Texture2D" uid="uid://bxww55w18rbee" path="res://assets/ui/keyboard/UP.png" id="1_4b3gc"]
+[ext_resource type="Script" uid="uid://c8bkcvilp2j50" path="res://ui/key_press/KeyPress.cs" id="2_e17no"]
+
+[node name="KeyPress" type="Sprite2D"]
+texture = ExtResource("1_4b3gc")
+script = ExtResource("2_e17no")

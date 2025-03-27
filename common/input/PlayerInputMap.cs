@@ -13,7 +13,10 @@ public class PlayerInputMap
     ShootUp,
     ShootDown,
     ShootRight,
-    ShootLeft
+    ShootLeft,
+    Pause,
+    ToggleMap,
+    Interact
   }
 
   public const string EscapeMenu = "open_escape_menu";
@@ -28,6 +31,9 @@ public class PlayerInputMap
     { Action.ShootUp, "shoot_up" },
     { Action.ShootDown, "shoot_down" },
     { Action.ShootRight, "shoot_right" },
-    { Action.ShootLeft, "shoot_left" }
+    { Action.ShootLeft, "shoot_left" },
+    { Action.Pause, "open_escape_menu" },
+    { Action.ToggleMap, "toggle_map" },
+    { Action.Interact, "interact" }
   };
 }

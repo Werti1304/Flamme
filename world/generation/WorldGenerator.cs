@@ -115,9 +115,8 @@ public partial class WorldGenerator : Node2D
       room.GenerateLoot();
     }
     GD.Print("Loot generated!");
-    
-    GD.Print("Level fully generated!");
 
+    GD.Print("Level fully generated!");
   }
 
   private void GenerateRooms(Level level, LevelFloor levelFloor)

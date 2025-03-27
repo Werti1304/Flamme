@@ -12,6 +12,8 @@ namespace Flamme.world;
 
 public partial class LevelManager : Node2D
 {
+  [Signal] public delegate void LevelReadyEventHandler();
+  
   private Level _currentLevel;
 
   public Level CurrentLevel
@@ -116,7 +118,7 @@ public partial class LevelManager : Node2D
       shaderMaterial.SetShaderParameter(shaderProperty, value);
     }
   }
-
+  
   public void SetLevelActive(Level level)
   {
     CurrentLevel = level;
@@ -136,6 +138,7 @@ public partial class LevelManager : Node2D
       TransferUser(level);
     }
     CurrentLevel = level;
+    EmitSignal(SignalName.LevelReady);
   }
   
   private void SpawnUser(Level level)

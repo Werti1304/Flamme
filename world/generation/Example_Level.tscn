@@ -30,10 +30,10 @@ Player = NodePath("../PlayableCharacter")
 
 [node name="Spawn2" parent="." node_paths=PackedStringArray("TheoreticalDoorMarkers") instance=ExtResource("6_osotp")]
 TheoreticalDoorMarkers = {
-0: NodePath("DoorMarkerParent/DoorMarker3"),
-1: NodePath("DoorMarkerParent/DoorMarker2"),
-2: NodePath("DoorMarkerParent/DoorMarker"),
-3: NodePath("DoorMarkerParent/DoorMarker4")
+0: null,
+1: null,
+2: null,
+3: null
 }
 
 [node name="TestingRoom" parent="." instance=ExtResource("7_osotp")]

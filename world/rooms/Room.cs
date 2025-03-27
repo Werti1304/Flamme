@@ -105,6 +105,8 @@ public partial class Room : Area2D
   private PlayableCharacter _playableCharacter;
   private List<Node2D> _lootList = [];
   private bool _cleared;
+
+  public bool OverrideDoorLogic = false;
   
   public override void _Ready()
   {
@@ -224,16 +226,18 @@ public partial class Room : Area2D
     }
   }
 
-  private void LockRoom(PlayableCharacter playableCharacter)
+  public void LockRoom(PlayableCharacter playableCharacter)
   {
     GD.Print($"Room {Name} Locked!");
     
     // playableCharacter.GlobalPosition += 
     //   playableCharacter.GlobalPosition.DirectionTo(GetGlobalMidPoint()) * 32.0f;
-
-    foreach (var door in Doors.Values)
+    if (!OverrideDoorLogic)
     {
-      door.Lock();
+      foreach (var door in Doors.Values)
+      {
+        door.Lock();
+      }
     }
       
     // Could replace with signals but idk
@@ -290,15 +294,18 @@ public partial class Room : Area2D
     }
   }
 
-  private void SetRoomCleared(bool enemiesDefeated)
+  public void SetRoomCleared(bool enemiesDefeated)
   {
     if (_cleared)
       return;
     _cleared = true;
 
-    foreach (var door in Doors.Values)
+    if (!OverrideDoorLogic)
     {
-      door.OpenByClearingRoom();
+      foreach (var door in Doors.Values)
+      {
+        door.OpenByClearingRoom();
+      }
     }
     
     GD.Print($"Room {Name} Cleared!");
