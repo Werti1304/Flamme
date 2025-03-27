@@ -51,6 +51,8 @@ CollisionShape = NodePath("CollisionShape")
 DoorMarkerParent = NodePath("DoorMarkerParent")
 MidPoint = NodePath("MidPoint")
 
+[node name="MoreDebugStuff" type="Node2D" parent="."]
+
 [node name="Debug Stuff" type="Node2D" parent="."]
 process_mode = 4
 visible = false

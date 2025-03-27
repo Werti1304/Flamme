@@ -62,8 +62,9 @@ public partial class Box : StaticBody2D, IPlayerDamageable, IEnemyDamagable
     }
   }
 
-  public void TakeDamage(int damage)
+  public bool TakeDamage(int damage)
   {
     Hit(damage, 0, Vector2.Zero);
+    return true;
   }
 }

@@ -47,6 +47,7 @@ tile_map_data = PackedByteArray("AAAQAAoAGQAJAAIAAAAQAAkAGQAJAAIAAAAQAAgAGQAJAAI
 tile_set = ExtResource("4_nt4hm")
 
 [node name="MidPoint" type="Node2D" parent="."]
+position = Vector2(288, 176)
 
 [node name="DoorMarkerParent" type="Node2D" parent="."]
 

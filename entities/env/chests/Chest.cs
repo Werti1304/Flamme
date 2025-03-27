@@ -64,13 +64,7 @@ public partial class Chest : RigidBody2D
         }
         break;
       case ChestType.Locked:
-        if (ItemPickupLoot == null)
-        {
-          var itemPickup = Flamme.common.scenes.SceneLoader.Instance[Flamme.common.scenes.SceneLoader.Scene.ItemPickup].Instantiate<ItemPickup>();
-          itemPickup.RetrievelMode = ItemPickup.ItemRetrievel.FromItemPool;
-          itemPickup.ItemLootPool = ItemLootPool.LockedChest;
-          ItemPickupLoot = itemPickup;
-        }
+        ItemPickupLoot ??= ItemPickup.GetInstance(ItemLootPool.LockedChest);
         break;
       case ChestType.Mimic:
         var enemy = Flamme.common.scenes.SceneLoader.Instance[Flamme.common.scenes.SceneLoader.Scene.Runner].Instantiate<enemies.prison.runner.Runner>();

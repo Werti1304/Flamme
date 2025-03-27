@@ -3,6 +3,7 @@ using Flamme.common.enums;
 using Flamme.common.helpers;
 using Flamme.common.input;
 using Flamme.entities.common;
+using Flamme.entities.enemies;
 using Flamme.entities.env.health;
 using Flamme.entities.env.shop;
 using Flamme.items;
@@ -171,10 +172,10 @@ public partial class PlayableCharacter : CharacterBody2D, IEnemyDamagable
     Invincible = false;
   }
   
-  public void TakeDamage(int damage)
+  public bool TakeDamage(int damage)
   {
     if (Invincible || DebugToggles.GodMode)
-      return;
+      return false;
     
     if (!Stats.RemoveHealth(damage))
     {
@@ -189,10 +190,13 @@ public partial class PlayableCharacter : CharacterBody2D, IEnemyDamagable
     }
     Invincible = true;
     OnInvChange();
+    return true;
   }
 
   private void PickupItem(Item item)
   {
+    if (item == null)
+      return;
     HeldItems.Add(item);
     Hud.Instance.CollectItem(item);
     OnInvChange(item);
@@ -257,6 +261,13 @@ public partial class PlayableCharacter : CharacterBody2D, IEnemyDamagable
       doorMarker.Door.TryOpen(this);
       OnInvChange();
     }
+    else if (body is Pedestal pedestal)
+    {
+      if (IsInstanceValid(pedestal.ItemPickupLoot))
+      {
+        OnAreaEntered(pedestal.ItemPickupLoot);
+      }
+    }
   }
   
   private void OnAreaEntered(Area2D area)
@@ -281,7 +292,19 @@ public partial class PlayableCharacter : CharacterBody2D, IEnemyDamagable
     Velocity = Velocity.Lerp(_movingVector * Stats.Speed, AccelerationFactor);
     // Velocity = Velocity.LimitLength(Stats.Speed * 2);
     // Velocity = Velocity.Lerp(Vector2.Zero, Friction);
-    
-    MoveAndSlide();
+
+    if (MoveAndSlide())
+    {
+      for(var i = 0; i < GetSlideCollisionCount(); i++)
+      {
+        var col = GetSlideCollision(i);
+
+        if (col.GetCollider() is Enemy enemy)
+        {
+          // enemy.Velocity += col.GetNormal() * - (1 / enemy.Weight) * 100.0f;
+          enemy.Velocity += col.GetNormal() * - 15.0f;
+        }
+      }
+    }
   }
 }

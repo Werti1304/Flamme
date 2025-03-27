@@ -17,7 +17,6 @@ collision_mask = 15
 script = ExtResource("1_630ix")
 Type = 5
 RestrictToFloor = true
-LevelFloor = 1
 TheoreticalDoorMarkers = {
 0: NodePath("DoorMarkerParent/DoorMarker North"),
 1: NodePath("DoorMarkerParent/DoorMarker East"),

@@ -6,6 +6,8 @@ namespace Flamme.entities.enemies.components.melee_area;
 
 public partial class MeleeArea : Area2D
 {
+  [Signal] public delegate void DamagedTargetEventHandler(int damage);
+  
   [Export] public bool MeleeDamageEnabled = true;
   [Export] public int Damage = 1;
 
@@ -70,7 +72,10 @@ public partial class MeleeArea : Area2D
 
     foreach (var damagable in _damagables)
     {
-      damagable.TakeDamage(Damage);
+      if (damagable.TakeDamage(Damage))
+      {
+        EmitSignal(SignalName.DamagedTarget, Damage);
+      }
     }
   }
 }

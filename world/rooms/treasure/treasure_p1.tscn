@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=4 uid="uid://oariq48kwrf4"]
+[gd_scene load_steps=9 format=4 uid="uid://oariq48kwrf4"]
 
 [ext_resource type="Script" uid="uid://cu3vdn0r1mer3" path="res://world/rooms/Room.cs" id="1_mbywd"]
 [ext_resource type="TileSet" uid="uid://ciata4jhj6wvu" path="res://assets/tilesets/prison/prison_floor.tres" id="2_kpldu"]
@@ -6,6 +6,7 @@
 [ext_resource type="TileSet" uid="uid://ca3qx51g3yg3u" path="res://assets/tilesets/prison/prison_wall.tres" id="4_q8bm0"]
 [ext_resource type="PackedScene" uid="uid://bfulsjxd53ikv" path="res://entities/env/itemPickup.tscn" id="5_44otc"]
 [ext_resource type="PackedScene" uid="uid://bnx0j5b2ekjat" path="res://world/doors/DoorMarker.tscn" id="5_q8bm0"]
+[ext_resource type="PackedScene" uid="uid://de4gtmblvgbyu" path="res://entities/env/pedestal/pedestal.tscn" id="7_r6uni"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_r6uni"]
 size = Vector2(672, 352)
@@ -77,9 +78,11 @@ shape = SubResource("RectangleShape2D_r6uni")
 
 [node name="Loot" type="Node2D" parent="."]
 
-[node name="ItemPickup" parent="Loot" instance=ExtResource("5_44otc")]
+[node name="Pedestal" parent="Loot" instance=ExtResource("7_r6uni")]
 position = Vector2(336, 144)
+
+[node name="ItemPickup" parent="Loot/Pedestal" instance=ExtResource("5_44otc")]
 RetrievelMode = 1
-ItemId = 12
+ItemId = 6
 
 [node name="Enemies" type="Node2D" parent="."]

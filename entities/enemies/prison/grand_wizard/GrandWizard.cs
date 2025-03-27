@@ -9,7 +9,7 @@ public partial class GrandWizard : Enemy
   [Export] public float Speed = 10.0f;
   [Export] public float AttackTimerSec = 3.0f;
 
-  [Export] public float Range = 312.0f;
+  [Export] public float Range = 96.0f;
   
   [ExportGroup("Meta")]
   [Export] public Sprite2D Sprite;
@@ -44,12 +44,75 @@ public partial class GrandWizard : Enemy
   {
     if (!IsActive)
       return;
-    
-    var direction = GlobalPosition.DirectionTo(Target.GlobalPosition);
-    if(GlobalPosition.DistanceTo(Target.GlobalPosition) < Range)
+
+    if (_currentAttack == Attack.ShootRapid && _attackTimer >= 0.7f)
     {
-      Velocity = Velocity.Lerp(Vector2.Zero, 0.05f);
-      
+      _shootCounter++;
+
+      if (_shootCounter >= 6)
+      {
+        _currentAttack = Attack.None;
+      }
+
+      if (_shootCounter % 2 == 0)
+      {
+        ShooterRapid.ProjectileCount = 15;
+      }
+      else
+      {
+        ShooterRapid.ProjectileCount = 16;
+      }
+      ShooterRapid.Shoot(this, _initialTargetPos);
+      _attackTimer = 0.0f;
+    }
+    else if (_currentAttack == Attack.ShootSpiral && _attackTimer >= 0.1f)
+    {
+      _shootCounter++;
+
+      var chanceToStop = Math.Pow(1 / 40.0f * _shootCounter, 2);
+
+      if (Main.Instance.Rnd.Randf() > chanceToStop)
+      {
+        ShooterSpiral.Shoot(this, Target);
+      }
+      else
+      {
+        _currentAttack = Attack.None;
+      }
+
+      _attackTimer = 0.0f;
+    }
+    else if (_attackTimer >= AttackTimerSec)
+    {
+      AttackTimerOnTimeout();
+      _attackTimer = 0.0f;
+    }
+    else
+    {
+      _attackTimer += delta;
+    }
+
+    Move(delta);
+  }
+
+  private void Move(double delta)
+  {
+    var midPoint = Room.Current.MidPoint;
+    var direction = GlobalPosition.DirectionTo(midPoint.GlobalPosition);
+
+    if (direction.X < 0 && Sprite.FlipH)
+    {
+      Sprite.FlipH = false;
+    }
+    else if (direction.X > 0 && !Sprite.FlipH)
+    {
+      Sprite.FlipH = true;
+    }
+
+    if (GlobalPosition.DistanceTo(midPoint.GlobalPosition) > Range)
+    {
+      Velocity = Velocity.Lerp(direction * Speed, 0.05f);
+
       if (direction.X < 0 && Sprite.FlipH)
       {
         Sprite.FlipH = false;
@@ -57,69 +120,13 @@ public partial class GrandWizard : Enemy
       else if (direction.X > 0 && !Sprite.FlipH)
       {
         Sprite.FlipH = true;
-      }
-      
-      if (_currentAttack == Attack.ShootRapid && _attackTimer >= 0.7f)
-      {
-        _shootCounter++;
-
-        if (_shootCounter >= 6)
-        {
-          _currentAttack = Attack.None;
-        }
-        if (_shootCounter % 2 == 0)
-        {
-          ShooterRapid.ProjectileCount = 15;
-        }
-        else
-        {
-          ShooterRapid.ProjectileCount = 16;
-        }
-        ShooterRapid.Shoot(this, _initialTargetPos);
-        _attackTimer = 0.0f;
-      }
-      else if (_currentAttack == Attack.ShootSpiral && _attackTimer >= 0.1f)
-      {
-        _shootCounter++;
-
-        var chanceToStop = Math.Pow(1 / 40.0f * _shootCounter, 2);
-
-        if (Main.Instance.Rnd.Randf() > chanceToStop)
-        {
-          ShooterSpiral.Shoot(this, Target);
-        }
-        else
-        {
-          _currentAttack = Attack.None;
-        }
-
-        _attackTimer = 0.0f;
-      }
-      else if (_attackTimer >= AttackTimerSec)
-      {
-        AttackTimerOnTimeout();
-        _attackTimer = 0.0f;
-      }
-
-      else
-      {
-        _attackTimer += delta;
       }
     }
     else
     {
-      Velocity = Velocity.Lerp(direction * Speed, 0.05f);
-      
-      if (direction.X < 0 && Sprite.FlipH)
-      {
-        Sprite.FlipH = false;
-      }
-      else if (direction.X > 0 && !Sprite.FlipH)
-      {
-        Sprite.FlipH = true;
-      }
+      Velocity = Velocity.Lerp(Vector2.Zero, 0.05f);
     }
-    
+
     MoveAndSlide();
   }
 
@@ -169,7 +176,8 @@ public partial class GrandWizard : Enemy
       case Attack.SpawnRagingFlies:
         for (var i = 0; i < 5; i++)
         {
-          SpawnEnemy(Flamme.common.scenes.SceneLoader.Instance[Flamme.common.scenes.SceneLoader.Scene.FireflyRaging], GlobalPosition, 16);
+          var spawnPos = new Vector2(GlobalPosition.X, GlobalPosition.Y + 32);
+          SpawnEnemy(Flamme.common.scenes.SceneLoader.Instance[Flamme.common.scenes.SceneLoader.Scene.FireflyRaging], spawnPos, 16);
         }
         break;
       case Attack.ShootRapid:

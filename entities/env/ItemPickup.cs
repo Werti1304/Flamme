@@ -1,5 +1,6 @@
 using Flamme.common.enums;
 using Flamme.common.helpers;
+using Flamme.common.scenes;
 using Flamme.items;
 using Godot;
 using System;
@@ -22,8 +23,27 @@ public partial class ItemPickup : Area2D
   [ExportGroup("Meta")] 
   [Export] private Sprite2D _sprite;
   [Export] private CollisionShape2D _collisionShape;
+  [Export] public GpuParticles2D Particles2D;
 
   private Item _item;
+
+  public static ItemPickup GetInstance(ItemId itemId)
+  {
+    var itemPickup = SceneLoader.Instance[SceneLoader.Scene.ItemPickup].Instantiate<ItemPickup>();
+    itemPickup.RetrievelMode = ItemRetrievel.FromId;
+    itemPickup.ItemId = itemId;
+    itemPickup.ItemLootPool = 0;
+    return itemPickup;
+  }
+  
+  public static ItemPickup GetInstance(ItemLootPool itemLootPool)
+  {
+    var itemPickup = SceneLoader.Instance[SceneLoader.Scene.ItemPickup].Instantiate<ItemPickup>();
+    itemPickup.RetrievelMode = ItemRetrievel.FromItemPool;
+    itemPickup.ItemId = 0;
+    itemPickup.ItemLootPool = itemLootPool;
+    return itemPickup;
+  }
 
   public override void _Ready()
   {
@@ -65,13 +85,20 @@ public partial class ItemPickup : Area2D
     SetItem(ItemManager.Instance.GetRandomFromPool(ItemLootPool));
   }
 
+  private bool _pickedUp = false;
   public Item Pickup()
   {
-    QueueFree();
+    if (_pickedUp)
+      return null;
+    _pickedUp = true;
+    
+    _sprite.Hide();
+    Particles2D.OneShot = true;
+    Particles2D.Restart();
+    Particles2D.Finished += QueueFree;
 
     if (_item == null)
     {
-      
       return ItemManager.Instance.DefaultItem;
     }
     return _item;
@@ -93,6 +120,7 @@ public partial class ItemPickup : Area2D
   public void HideItem()
   {
     SetDeferred(Area2D.PropertyName.Monitorable, false);
+    Particles2D.Emitting = false;
     _sprite.Hide();
   }
 
@@ -102,6 +130,7 @@ public partial class ItemPickup : Area2D
     {
       SetDeferred(Area2D.PropertyName.Monitorable, true);
     }
+    Particles2D.Emitting = true;
     _sprite.Show();
   }
 }

@@ -1,18 +1,43 @@
-[gd_scene load_steps=4 format=3 uid="uid://bfulsjxd53ikv"]
+[gd_scene load_steps=7 format=3 uid="uid://bfulsjxd53ikv"]
 
 [ext_resource type="Script" uid="uid://d2seg062g50v4" path="res://entities/env/ItemPickup.cs" id="1_rp6wu"]
 [ext_resource type="Texture2D" uid="uid://b2bq2t7ftmcrl" path="res://flamme_item.png" id="2_um77p"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_qluf5"]
 
-[node name="ItemPickup" type="Area2D" node_paths=PackedStringArray("_sprite", "_collisionShape")]
+[sub_resource type="Gradient" id="Gradient_um77p"]
+offsets = PackedFloat32Array(0, 0.167002, 0.762575, 1)
+colors = PackedColorArray(1, 1, 0, 1, 1, 1, 0.9, 1, 1, 1, 0, 1, 0.5, 0.5, 0, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_kkqg3"]
+gradient = SubResource("Gradient_um77p")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_um77p"]
+lifetime_randomness = 0.3
+particle_flag_disable_z = true
+emission_shape = 1
+emission_sphere_radius = 16.0
+radial_velocity_min = -2.23517e-05
+radial_velocity_max = 0.199978
+gravity = Vector3(0, 0, 0)
+color_ramp = SubResource("GradientTexture1D_kkqg3")
+
+[node name="ItemPickup" type="Area2D" node_paths=PackedStringArray("_sprite", "_collisionShape", "Particles2D")]
 z_index = 10
 script = ExtResource("1_rp6wu")
 _sprite = NodePath("Sprite2D")
 _collisionShape = NodePath("CollisionShape2D")
+Particles2D = NodePath("GPUParticles2D")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_qluf5")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("2_um77p")
+
+[node name="GPUParticles2D" type="GPUParticles2D" parent="."]
+amount = 16
+lifetime = 5.0
+preprocess = 3.0
+randomness = 0.3
+process_material = SubResource("ParticleProcessMaterial_um77p")

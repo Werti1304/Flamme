@@ -1,3 +1,4 @@
+using Flamme.world.generation;
 using Godot;
 using Godot.Collections;
 using System.Linq;
@@ -30,6 +31,9 @@ public partial class Tutorial : Node2D
 
     var allPressed = KeyPresses.All(keyPress => keyPress.WasPressed);
     if (!allPressed)
+      return;
+
+    if (Level.Current.ActiveStaff == null)
       return;
 
     foreach (var door in TutorialRoom.Doors.Values)

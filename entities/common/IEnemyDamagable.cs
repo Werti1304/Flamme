@@ -5,5 +5,5 @@ namespace Flamme.entities.common;
 /// </summary>
 public interface IEnemyDamagable
 {
-  public void TakeDamage(int damage);
+  public bool TakeDamage(int damage);
 }
