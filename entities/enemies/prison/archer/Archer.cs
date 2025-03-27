@@ -5,7 +5,7 @@ namespace Flamme.entities.enemies.prison.archer;
 public partial class Archer : Enemy
 {
   [Export] public float Speed = 10.0f;
-  [Export] public float ShootTimerSec = 3.0f;
+  [Export] public float ShootTimerSec = 2.0f;
 
   [Export] public float ShootStartDistance = 24.0f;
   [Export] public PackedScene ProjectileScene;

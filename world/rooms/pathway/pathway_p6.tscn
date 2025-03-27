@@ -1,8 +1,110 @@
-[gd_scene load_steps=2 format=3 uid="uid://docgrvefwb6fh"]
+[gd_scene load_steps=9 format=4 uid="uid://docgrvefwb6fh"]
 
 [ext_resource type="Script" uid="uid://cu3vdn0r1mer3" path="res://world/rooms/Room.cs" id="1_wktvb"]
+[ext_resource type="TileSet" uid="uid://ciata4jhj6wvu" path="res://assets/tilesets/prison/prison_floor.tres" id="2_bvput"]
+[ext_resource type="TileSet" uid="uid://c5qpaglqhfr5s" path="res://assets/tilesets/prison/prison_props.tres" id="3_4msvd"]
+[ext_resource type="TileSet" uid="uid://ca3qx51g3yg3u" path="res://assets/tilesets/prison/prison_wall.tres" id="4_usqv8"]
+[ext_resource type="PackedScene" uid="uid://bnx0j5b2ekjat" path="res://world/doors/DoorMarker.tscn" id="5_25bdk"]
+[ext_resource type="PackedScene" uid="uid://ct506hl51tduf" path="res://entities/env/tiles/box/box.tscn" id="8_4msvd"]
+[ext_resource type="PackedScene" uid="uid://ct41on4c43mde" path="res://entities/env/purse/purse_pickup.tscn" id="9_usqv8"]
 
-[node name="PathwayP2" type="Area2D"]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_mosih"]
+size = Vector2(576, 352)
+
+[node name="PathwayP6" type="Area2D" node_paths=PackedStringArray("TheoreticalDoorMarkers", "FloorTileMap", "PropsTileMap", "OuterWallTileMap", "RoofTileMap", "CollisionShape", "DoorMarkerParent", "MidPoint")]
 collision_layer = 15
 collision_mask = 15
 script = ExtResource("1_wktvb")
+CameraFixedX = true
+CameraFixedY = true
+TheoreticalDoorMarkers = {
+0: NodePath("DoorMarkerParent/DoorMarker North"),
+1: NodePath("DoorMarkerParent/DoorMarker East"),
+2: NodePath("DoorMarkerParent/DoorMarker South"),
+3: NodePath("DoorMarkerParent/DoorMarker West")
+}
+FloorTileMap = NodePath("Floor")
+PropsTileMap = NodePath("Props")
+OuterWallTileMap = NodePath("Wall")
+RoofTileMap = NodePath("Roof (Auto)")
+CollisionShape = NodePath("CollisionShape")
+DoorMarkerParent = NodePath("DoorMarkerParent")
+MidPoint = NodePath("MidPoint")
+
+[node name="Floor" type="TileMapLayer" parent="."]
+z_index = -1
+tile_map_data = PackedByteArray("AAAGAAYAHgAAAAAAAAAGAAUAHgAAAAAAAAAGAAQAHgAAAAAAAAAHAAQAHgAAAAAAAAAHAAMAHgAAAAAAAAAHAAIAHgAAAAAAAAAGAAIAHgAAAAAAAAAGAAMAHgAAAAAAAAAIAAIAHgAAAAAAAAAJAAIAHgAAAAAAAAAKAAIAHgAAAAAAAAAKAAMAHgAAAAAAAAAKAAQAHgAAAAAAAAAKAAUAHgAAAAAAAAAKAAYAHgAAAAAAAAAJAAYAHgACAAAAAAAIAAYAHgAAAAAAAAAHAAYAHgAAAAAAAAAHAAUAHgAAAAAAAAAIAAUAHgAAAAAAAAAJAAUAHgAAAAAAAAAJAAQAHgAAAAAAAAAJAAMAHgAAAAAAAAAIAAQAHgAAAAAAAAAIAAMAHgAAAAAAAAAIAAcAHgAAAAAAAAAFAAQAHgAAAAAAAAAIAAEAHgAAAAAAAAALAAQAHgABAAAAAAA=")
+tile_set = ExtResource("2_bvput")
+
+[node name="Props" type="TileMapLayer" parent="."]
+tile_set = ExtResource("3_4msvd")
+
+[node name="Wall" type="TileMapLayer" parent="."]
+tile_map_data = PackedByteArray("AAAGAAEACgADAAEAAAAHAAEACgAAAAAAAAAJAAEACgAAAAAAAAAKAAEACgAAAAAAAAALAAIACgAAAAAAAFALAAMACgABAAAAAFALAAUACgAAAAAAAFALAAYACgAAAAAAAFAKAAcACgACAAEAADAJAAcACgAAAAAAADAHAAcACgABAAAAADAGAAcACgABAAAAADAFAAYACgACAAAAAGAFAAUACgACAAAAAGAFAAMACgAAAAAAAGAFAAIACgACAAAAAGAFAAEACgAAAAMAAAALAAEACgAAAAMAAFALAAcACgAAAAMAADAFAAcACgAAAAMAAGA=")
+tile_set = ExtResource("4_usqv8")
+
+[node name="Roof (Auto)" type="TileMapLayer" parent="."]
+z_index = 4000
+tile_map_data = PackedByteArray("AAARAAoAGQAJAAIAAAARAAkAGQAJAAIAAAARAAgAGQAJAAIAAAARAAcAGQAJAAIAAAARAAYAGQAJAAIAAAARAAUAGQAJAAIAAAARAAQAGQAJAAIAAAARAAMAGQAJAAIAAAARAAIAGQAJAAIAAAARAAEAGQAJAAIAAAARAAAAGQAJAAIAAAAQAAoAGQAJAAIAAAAQAAkAGQAJAAIAAAAQAAgAGQAJAAIAAAAQAAcAGQAJAAIAAAAQAAYAGQAJAAIAAAAQAAUAGQAJAAIAAAAQAAQAGQAJAAIAAAAQAAMAGQAJAAIAAAAQAAIAGQAJAAIAAAAQAAEAGQAJAAIAAAAQAAAAGQAJAAIAAAAPAAoAGQAJAAIAAAAPAAkAGQAJAAIAAAAPAAgAGQAJAAIAAAAPAAcAGQAJAAIAAAAPAAYAGQAJAAIAAAAPAAUAGQAJAAIAAAAPAAQAGQAJAAIAAAAPAAMAGQAJAAIAAAAPAAIAGQAJAAIAAAAPAAEAGQAJAAIAAAAPAAAAGQAJAAIAAAAOAAoAGQAJAAIAAAAOAAkAGQAJAAIAAAAOAAgAGQAJAAIAAAAOAAcAGQAJAAIAAAAOAAYAGQAJAAIAAAAOAAUAGQAJAAIAAAAOAAQAGQAJAAIAAAAOAAMAGQAJAAIAAAAOAAIAGQAJAAIAAAAOAAEAGQAJAAIAAAAOAAAAGQAJAAIAAAANAAoAGQAJAAIAAAANAAkAGQAJAAIAAAANAAgAGQAJAAIAAAANAAcAGQAJAAIAAAANAAYAGQAJAAIAAAANAAUAGQAJAAIAAAANAAQAGQAJAAIAAAANAAMAGQAJAAIAAAANAAIAGQAJAAIAAAANAAEAGQAJAAIAAAANAAAAGQAJAAIAAAAMAAoAGQAJAAIAAAAMAAkAGQAJAAIAAAAMAAgAGQAFAAEAAAAMAAcAGQAIAAEAAAAMAAYAGQAIAAEAAAAMAAUAGQAIAAEAAAAMAAQAGQAIAAEAAAAMAAMAGQAIAAEAAAAMAAIAGQAIAAEAAAAMAAEAGQAIAAEAAAAMAAAAGQAFAAIAAAALAAoAGQAJAAIAAAALAAkAGQAJAAIAAAALAAgAGQAKAAAAAAALAAAAGQAJAAMAAAAKAAoAGQAJAAIAAAAKAAkAGQAJAAIAAAAKAAgAGQAKAAAAAAAKAAAAGQAJAAMAAAAJAAoAGQAJAAIAAAAJAAkAGQAJAAIAAAAJAAgAGQAKAAAAAAAJAAAAGQAJAAMAAAAIAAoAGQAJAAIAAAAIAAkAGQAJAAIAAAAIAAgAGQAKAAAAAAAIAAAAGQAJAAMAAAAHAAoAGQAJAAIAAAAHAAkAGQAJAAIAAAAHAAgAGQAKAAAAAAAHAAAAGQAJAAMAAAAGAAoAGQAJAAIAAAAGAAkAGQAJAAIAAAAGAAgAGQAKAAAAAAAGAAAAGQAJAAMAAAAFAAoAGQAJAAIAAAAFAAkAGQAJAAIAAAAFAAgAGQAKAAAAAAAFAAAAGQAJAAMAAAAEAAoAGQAJAAIAAAAEAAkAGQAJAAIAAAAEAAgAGQAGAAEAAAAEAAcAGQALAAIAAAAEAAYAGQALAAIAAAAEAAUAGQALAAIAAAAEAAQAGQALAAIAAAAEAAMAGQALAAIAAAAEAAIAGQALAAIAAAAEAAEAGQALAAIAAAAEAAAAGQAGAAIAAAADAAoAGQAJAAIAAAADAAkAGQAJAAIAAAADAAgAGQAJAAIAAAADAAcAGQAJAAIAAAADAAYAGQAJAAIAAAADAAUAGQAJAAIAAAADAAQAGQAJAAIAAAADAAMAGQAJAAIAAAADAAIAGQAJAAIAAAADAAEAGQAJAAIAAAADAAAAGQAJAAIAAAACAAoAGQAJAAIAAAACAAkAGQAJAAIAAAACAAgAGQAJAAIAAAACAAcAGQAJAAIAAAACAAYAGQAJAAIAAAACAAUAGQAJAAIAAAACAAQAGQAJAAIAAAACAAMAGQAJAAIAAAACAAIAGQAJAAIAAAACAAEAGQAJAAIAAAACAAAAGQAJAAIAAAABAAoAGQAJAAIAAAABAAkAGQAJAAIAAAABAAgAGQAJAAIAAAABAAcAGQAJAAIAAAABAAYAGQAJAAIAAAABAAUAGQAJAAIAAAABAAQAGQAJAAIAAAABAAMAGQAJAAIAAAABAAIAGQAJAAIAAAABAAEAGQAJAAIAAAABAAAAGQAJAAIAAAAAAAoAGQAJAAIAAAAAAAkAGQAJAAIAAAAAAAgAGQAJAAIAAAAAAAcAGQAJAAIAAAAAAAYAGQAJAAIAAAAAAAUAGQAJAAIAAAAAAAQAGQAJAAIAAAAAAAMAGQAJAAIAAAAAAAIAGQAJAAIAAAAAAAEAGQAJAAIAAAAAAAAAGQAJAAIAAAA=")
+tile_set = ExtResource("4_usqv8")
+
+[node name="MidPoint" type="Node2D" parent="."]
+position = Vector2(272, 144)
+
+[node name="DoorMarkerParent" type="Node2D" parent="."]
+
+[node name="DoorMarker North" parent="DoorMarkerParent" instance=ExtResource("5_25bdk")]
+position = Vector2(256, 32)
+
+[node name="DoorMarker East" parent="DoorMarkerParent" instance=ExtResource("5_25bdk")]
+position = Vector2(384, 128)
+rotation = 1.5708
+FacingDirection = 1
+
+[node name="DoorMarker South" parent="DoorMarkerParent" instance=ExtResource("5_25bdk")]
+position = Vector2(288, 256)
+rotation = 3.14159
+FacingDirection = 2
+
+[node name="DoorMarker West" parent="DoorMarkerParent" instance=ExtResource("5_25bdk")]
+position = Vector2(160, 160)
+rotation = -1.5708
+FacingDirection = 3
+
+[node name="CollisionShape" type="CollisionShape2D" parent="."]
+position = Vector2(288, 176)
+shape = SubResource("RectangleShape2D_mosih")
+
+[node name="Loot" type="Node2D" parent="."]
+
+[node name="Enemies" type="Node2D" parent="."]
+
+[node name="Tile Entities" type="Node2D" parent="."]
+
+[node name="Box" parent="Tile Entities" instance=ExtResource("8_4msvd")]
+position = Vector2(208, 80)
+collision_mask = 7
+
+[node name="PursePickup" parent="Tile Entities/Box" instance=ExtResource("9_usqv8")]
+z_index = 0
+
+[node name="Box2" parent="Tile Entities" instance=ExtResource("8_4msvd")]
+position = Vector2(336, 80)
+collision_mask = 7
+
+[node name="PursePickup2" parent="Tile Entities/Box2" instance=ExtResource("9_usqv8")]
+z_index = 0
+
+[node name="Box3" parent="Tile Entities" instance=ExtResource("8_4msvd")]
+position = Vector2(336, 208)
+collision_mask = 7
+
+[node name="PursePickup3" parent="Tile Entities/Box3" instance=ExtResource("9_usqv8")]
+z_index = 0
+
+[node name="Box4" parent="Tile Entities" instance=ExtResource("8_4msvd")]
+position = Vector2(208, 208)
+collision_mask = 7
+
+[node name="PursePickup4" parent="Tile Entities/Box4" instance=ExtResource("9_usqv8")]
+z_index = 0

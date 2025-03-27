@@ -28,4 +28,5 @@ CollisionShape = NodePath("CollisionShape2D")
 shape = SubResource("CircleShape2D_b4t0w")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
+z_index = 5
 texture = ExtResource("2_tnvo0")
