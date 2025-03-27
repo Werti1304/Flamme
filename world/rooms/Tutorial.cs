@@ -37,5 +37,12 @@ public partial class Tutorial : Node2D
       door.OpenByClearingRoom();
     }
     TutorialRoom.OverrideDoorLogic = false;
+    
+    // Disable processing for all
+    foreach (var keyPress in KeyPresses)
+    {
+      keyPress.SetProcessInput(false);
+    }
+    SetProcessInput(false);
   }
 }

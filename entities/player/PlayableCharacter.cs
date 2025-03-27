@@ -10,6 +10,7 @@ using Flamme.entities.env.shop;
 using Flamme.entities.player;
 using Flamme.testing;
 using Flamme.ui;
+using Flamme.world.doors;
 using Flamme.world.rooms;
 using System.Linq;
 
@@ -250,9 +251,9 @@ public partial class PlayableCharacter : CharacterBody2D, IEnemyDamagable
       Purse.Add(pursePickup.Pickup());
       OnInvChange();
     }
-    else if (body is Door door)
+    else if (body is DoorMarker doorMarker && IsInstanceValid(doorMarker.Door)) // Door can be null here if doorMarker is disguised
     {
-      door.TryOpen(this);
+      doorMarker.Door.TryOpen(this);
       OnInvChange();
     }
   }
