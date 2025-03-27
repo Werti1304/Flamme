@@ -1,10 +1,12 @@
 using Flamme.common.constant;
+using Flamme.common.enums;
 using Flamme.entities.staff;
 using Flamme.ui;
 using Flamme.world.generation;
 using Flamme.world.rooms;
 using Godot;
 using System.Diagnostics;
+using System.Linq;
 
 namespace Flamme.world;
 
@@ -167,8 +169,9 @@ public partial class LevelManager : Node2D
   // For testing single rooms
   public static void SpawnUser(Room room)
   {
-    // Spawn user
-    var globalSpawnPosition = room.MidPoint.GlobalPosition;
+    // Spawn user in front of the first door we can find
+    var doorToSpawnAt = room.TheoreticalDoorMarkers.First();
+    var globalSpawnPosition = doorToSpawnAt.Value.GlobalPosition + doorToSpawnAt.Key.Opposite().ToVector() * 32;
     var playerScene = SceneLoader.Instance[SceneLoader.Scene.Player];
     var player = playerScene.Instantiate<PlayableCharacter>();
     player.GlobalPosition = globalSpawnPosition;

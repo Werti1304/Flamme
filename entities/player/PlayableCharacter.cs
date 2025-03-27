@@ -224,14 +224,14 @@ public partial class PlayableCharacter : CharacterBody2D, IEnemyDamagable
         if (chest.ItemPickupLoot != null && IsInstanceValid(chest.ItemPickupLoot))
         {
           OnAreaEntered(chest.ItemPickupLoot);
-          SetDeferred(CharacterBody2D.PropertyName.Velocity, Velocity += (chest.GlobalPosition.DirectionTo(GlobalPosition) * 1000.0f));
+          SetDeferred(CharacterBody2D.PropertyName.Velocity,  (chest.GlobalPosition.DirectionTo(GlobalPosition) * 100.0f));
         }
       }
       else
       {
         if (chest.TryOpen(Purse))
         {
-          SetDeferred(CharacterBody2D.PropertyName.Velocity, Velocity += (chest.GlobalPosition.DirectionTo(GlobalPosition) * 1000.0f));
+          SetDeferred(CharacterBody2D.PropertyName.Velocity,  (chest.GlobalPosition.DirectionTo(GlobalPosition) * 100.0f));
           OnInvChange();
         }
       }

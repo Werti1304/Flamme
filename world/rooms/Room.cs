@@ -34,6 +34,8 @@ public partial class Room : Area2D
   [Export] public LevelType LevelType;
   // Room type, affects generation
   [Export] public RoomType Type;
+  [Export] public bool RestrictToFloor = false;
+  [Export] public LevelFloor LevelFloor;
   [Export] public bool CameraFixedX = false;
   [Export] public bool CameraFixedY = false;
   
@@ -84,8 +86,6 @@ public partial class Room : Area2D
         GenerateTemplate();
     }
   }
-  [Export] public bool RestrictToFloor = false;
-  [Export] public LevelFloor LevelFloor;
 
   [ExportGroup("Meta")] 
   [Export] public TileMapLayer FloorTileMap;
@@ -108,13 +108,24 @@ public partial class Room : Area2D
   
   public override void _Ready()
   {
+    if (Engine.IsEditorHint())
+    {
+      // Sets values, will run at least once when opening Godot
+      // Just kinda makes it so I can change rooms when I want
+      ReadyInsideEditor();
+    }
+    else
+    {
+      ReadyInsideGame();
+    }
+  }
+
+  private void ReadyInsideGame()
+  {
     ExportMetaNonNull.Check(this);
     
     BodyEntered += OnBodyEntered;
     BodyExited += OnBodyExited;
-
-    CollisionMask = 0b1111;
-    CollisionLayer = 0b1111;
 
     foreach (var childNode in GetChildren())
     {
@@ -130,9 +141,16 @@ public partial class Room : Area2D
       LevelManager.SpawnUser(this);
       Hud.Instance.Show();
     }
-    
-    // Just set the Z Indices here again cause I'd have to check all rooms again
-    RoofTileMap.ZIndex = 4000;
+  }
+
+  private void ReadyInsideEditor()
+  {
+    CollisionLayer = 0b1111;
+    CollisionMask = 0b1111;
+    if (RoofTileMap != null)
+    {
+      RoofTileMap.ZIndex = 4000;
+    }
   }
 
   public void AddLoot(Node2D loot)
