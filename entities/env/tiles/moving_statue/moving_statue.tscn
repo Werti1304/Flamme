@@ -1,0 +1,78 @@
+[gd_scene load_steps=9 format=3 uid="uid://dsv8mj86spnst"]
+
+[ext_resource type="Texture2D" uid="uid://bt7pmlqkou3be" path="res://assets/sprites/levels/PrisonProps.png" id="1_oirij"]
+[ext_resource type="Script" uid="uid://bnldtxvc0kxgp" path="res://entities/env/tiles/moving_statue/MovingStatue.cs" id="1_u7n40"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6d3i4"]
+atlas = ExtResource("1_oirij")
+region = Rect2(224, 0, 32, 64)
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_7j36m"]
+height = 52.0
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_u7n40"]
+height = 52.0
+
+[sub_resource type="Animation" id="Animation_u7n40"]
+resource_name = "move_left"
+length = 3.0
+step = 0.0166667
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(-20, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_7j36m"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_7j36m"]
+_data = {
+&"RESET": SubResource("Animation_7j36m"),
+&"move_left": SubResource("Animation_u7n40")
+}
+
+[node name="MovingStatue" type="AnimatableBody2D" node_paths=PackedStringArray("PlayerDetectionArea", "AnimationPlayer")]
+z_index = 10
+script = ExtResource("1_u7n40")
+PlayerDetectionArea = NodePath("Area2D")
+AnimationPlayer = NodePath("AnimationPlayer")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = SubResource("AtlasTexture_6d3i4")
+
+[node name="Area2D" type="Area2D" parent="."]
+collision_layer = 2
+collision_mask = 2
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("CapsuleShape2D_7j36m")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -1)
+shape = SubResource("CapsuleShape2D_u7n40")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_7j36m")
+}

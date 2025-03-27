@@ -16,6 +16,7 @@ public partial class Door : Node2D
     Boss,
     Gold,
     Shop,
+    Secret
   }
   
   [Export] private DoorType _type = DoorType.Bars;
@@ -33,6 +34,8 @@ public partial class Door : Node2D
   [Export] public AtlasTexture GoldOpenTexture;
   [Export] public AtlasTexture ShopClosedTexture;
   [Export] public AtlasTexture ShopOpenTexture;
+  [Export] public AtlasTexture SecretClosedTexture;
+  [Export] public AtlasTexture SecretOpenTexture;
   
   private bool _isOpen = false;
   private bool _isLocked = false;
@@ -107,6 +110,12 @@ public partial class Door : Node2D
         DoorMarker1.TextureClosed = ShopClosedTexture;
         DoorMarker2.TextureClosed = ShopClosedTexture;
         _isLockedByKey = true;
+        break;
+      case DoorType.Secret:
+        DoorMarker1.TextureOpen = SecretOpenTexture;
+        DoorMarker2.TextureOpen = SecretOpenTexture;
+        DoorMarker1.TextureClosed = SecretClosedTexture;
+        DoorMarker2.TextureClosed = SecretClosedTexture;
         break;
       default:
         throw new ArgumentOutOfRangeException();

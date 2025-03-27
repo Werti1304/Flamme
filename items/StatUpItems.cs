@@ -95,7 +95,7 @@ public static class StatUpItems
       new Item(ItemId.AllStatsUpToken,"Lucky Wheel Token", "All Stats Up!", Item.Tier.Uncommon)
         .AddSpriteFull(AssetManager.Asset.SpriteItemStatup1, new Vector2I(1, 1))
         .AddSpriteInventory()
-        .AddStatUp(StatType.HealthContainer, 4).AddStatUp(StatType.Damage, 12).AddStatUp(StatType.Speed, 10)
+        .AddStatUp(StatType.HealthContainer, 1).AddStatUp(StatType.Damage, 12).AddStatUp(StatType.Speed, 10)
         .AddHealing(HealthType.Absorption, 4).AddHealing(HealthType.Normal, 4),
       ItemLootPool.Treasure, ItemLootPool.LockedChest, ItemLootPool.Boss, ItemLootPool.Shop
     );

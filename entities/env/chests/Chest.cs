@@ -111,7 +111,10 @@ public partial class Chest : RigidBody2D
     if (ItemPickupLoot != null)
     {
       // This should stay seperated, as the position of the itempickup should be differently calculated/set than the normal loot
-      CallDeferred(Node.MethodName.AddChild, ItemPickupLoot);
+      if (ItemPickupLoot.GetParent() == null)
+      {
+        CallDeferred(Node.MethodName.AddChild, ItemPickupLoot);
+      }
       ItemPickupLoot.CallDeferred(Node.MethodName.SetOwner, LevelManager.Instance.CurrentLevel);
       
       ItemPickupLoot.Position = new Vector2(0, -14.0f);

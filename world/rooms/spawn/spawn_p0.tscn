@@ -31,195 +31,199 @@ CollisionShape = NodePath("CollisionShape")
 DoorMarkerParent = NodePath("DoorMarkerParent")
 MidPoint = NodePath("MidPoint")
 
-[node name="heart pickups" type="Node2D" parent="."]
+[node name="Debug Stuff" type="Node2D" parent="."]
+process_mode = 4
+visible = false
+
+[node name="heart pickups" type="Node2D" parent="Debug Stuff"]
 position = Vector2(64, 224)
 
-[node name="HealthPickup" parent="heart pickups" instance=ExtResource("3_x642v")]
+[node name="HealthPickup" parent="Debug Stuff/heart pickups" instance=ExtResource("3_x642v")]
 position = Vector2(16, 15)
 
-[node name="HealthPickup2" parent="heart pickups" instance=ExtResource("3_x642v")]
+[node name="HealthPickup2" parent="Debug Stuff/heart pickups" instance=ExtResource("3_x642v")]
 position = Vector2(48, 15)
 HealingAmount = 3
 
-[node name="HealthPickup3" parent="heart pickups" instance=ExtResource("3_x642v")]
+[node name="HealthPickup3" parent="Debug Stuff/heart pickups" instance=ExtResource("3_x642v")]
 position = Vector2(79, 16)
 HealingAmount = 2
 
-[node name="HealthPickup4" parent="heart pickups" instance=ExtResource("3_x642v")]
+[node name="HealthPickup4" parent="Debug Stuff/heart pickups" instance=ExtResource("3_x642v")]
 position = Vector2(112, 15)
 HealingAmount = 1
 
-[node name="HealthPickup5" parent="heart pickups" instance=ExtResource("3_x642v")]
+[node name="HealthPickup5" parent="Debug Stuff/heart pickups" instance=ExtResource("3_x642v")]
 position = Vector2(16, 47)
 HealthType = 1
 
-[node name="HealthPickup6" parent="heart pickups" instance=ExtResource("3_x642v")]
+[node name="HealthPickup6" parent="Debug Stuff/heart pickups" instance=ExtResource("3_x642v")]
 position = Vector2(48, 47)
 HealthType = 1
 HealingAmount = 3
 
-[node name="HealthPickup7" parent="heart pickups" instance=ExtResource("3_x642v")]
+[node name="HealthPickup7" parent="Debug Stuff/heart pickups" instance=ExtResource("3_x642v")]
 position = Vector2(80, 47)
 HealthType = 1
 HealingAmount = 2
 
-[node name="HealthPickup8" parent="heart pickups" instance=ExtResource("3_x642v")]
+[node name="HealthPickup8" parent="Debug Stuff/heart pickups" instance=ExtResource("3_x642v")]
 position = Vector2(112, 46)
 HealthType = 1
 HealingAmount = 1
 
-[node name="purse pickups" type="Node2D" parent="."]
+[node name="purse pickups" type="Node2D" parent="Debug Stuff"]
 position = Vector2(64, 64)
 
-[node name="PursePickup" parent="purse pickups" instance=ExtResource("4_1i1kx")]
+[node name="PursePickup" parent="Debug Stuff/purse pickups" instance=ExtResource("4_1i1kx")]
 position = Vector2(17, 15)
 
-[node name="PursePickup2" parent="purse pickups" instance=ExtResource("4_1i1kx")]
+[node name="PursePickup2" parent="Debug Stuff/purse pickups" instance=ExtResource("4_1i1kx")]
 position = Vector2(47, 14)
 Amount = 2
 
-[node name="PursePickup3" parent="purse pickups" instance=ExtResource("4_1i1kx")]
+[node name="PursePickup3" parent="Debug Stuff/purse pickups" instance=ExtResource("4_1i1kx")]
 position = Vector2(80, 16)
 Amount = 3
 
-[node name="PursePickup4" parent="purse pickups" instance=ExtResource("4_1i1kx")]
+[node name="PursePickup4" parent="Debug Stuff/purse pickups" instance=ExtResource("4_1i1kx")]
 position = Vector2(113, 15)
 Amount = 4
 
-[node name="PursePickup5" parent="purse pickups" instance=ExtResource("4_1i1kx")]
+[node name="PursePickup5" parent="Debug Stuff/purse pickups" instance=ExtResource("4_1i1kx")]
 position = Vector2(144, 16)
 Amount = 5
 
-[node name="PursePickup6" parent="purse pickups" instance=ExtResource("4_1i1kx")]
+[node name="PursePickup6" parent="Debug Stuff/purse pickups" instance=ExtResource("4_1i1kx")]
 position = Vector2(15, 47)
 Amount = 6
 
-[node name="PursePickup7" parent="purse pickups" instance=ExtResource("4_1i1kx")]
+[node name="PursePickup7" parent="Debug Stuff/purse pickups" instance=ExtResource("4_1i1kx")]
 position = Vector2(48, 47)
 Amount = 7
 
-[node name="PursePickup8" parent="purse pickups" instance=ExtResource("4_1i1kx")]
+[node name="PursePickup8" parent="Debug Stuff/purse pickups" instance=ExtResource("4_1i1kx")]
 position = Vector2(80, 48)
 Amount = 8
 
-[node name="PursePickup9" parent="purse pickups" instance=ExtResource("4_1i1kx")]
+[node name="PursePickup9" parent="Debug Stuff/purse pickups" instance=ExtResource("4_1i1kx")]
 position = Vector2(114, 46)
 Amount = 9
 
-[node name="PursePickup10" parent="purse pickups" instance=ExtResource("4_1i1kx")]
+[node name="PursePickup10" parent="Debug Stuff/purse pickups" instance=ExtResource("4_1i1kx")]
 position = Vector2(144, 47)
 Amount = 10
 
-[node name="PursePickup11" parent="purse pickups" instance=ExtResource("4_1i1kx")]
+[node name="PursePickup11" parent="Debug Stuff/purse pickups" instance=ExtResource("4_1i1kx")]
 position = Vector2(16, 80)
 Amount = 20
 
-[node name="PursePickup12" parent="purse pickups" instance=ExtResource("4_1i1kx")]
+[node name="PursePickup12" parent="Debug Stuff/purse pickups" instance=ExtResource("4_1i1kx")]
 position = Vector2(49, 80)
 Amount = 30
 
-[node name="PursePickup13" parent="purse pickups" instance=ExtResource("4_1i1kx")]
+[node name="PursePickup13" parent="Debug Stuff/purse pickups" instance=ExtResource("4_1i1kx")]
 position = Vector2(80, 79)
 PurseContent = 1
 
-[node name="PursePickup14" parent="purse pickups" instance=ExtResource("4_1i1kx")]
+[node name="PursePickup14" parent="Debug Stuff/purse pickups" instance=ExtResource("4_1i1kx")]
 position = Vector2(112, 79)
 PurseContent = 1
 Amount = 2
 
-[node name="PursePickup15" parent="purse pickups" instance=ExtResource("4_1i1kx")]
+[node name="PursePickup15" parent="Debug Stuff/purse pickups" instance=ExtResource("4_1i1kx")]
 position = Vector2(143, 80)
 PurseContent = 1
 Amount = 3
 
-[node name="PursePickup16" parent="purse pickups" instance=ExtResource("4_1i1kx")]
+[node name="PursePickup16" parent="Debug Stuff/purse pickups" instance=ExtResource("4_1i1kx")]
 position = Vector2(173, 15)
 PurseContent = 2
 
-[node name="Itempickups" type="Node2D" parent="."]
+[node name="Itempickups" type="Node2D" parent="Debug Stuff"]
 
-[node name="ItemPickup" parent="Itempickups" instance=ExtResource("5_q01ak")]
+[node name="ItemPickup" parent="Debug Stuff/Itempickups" instance=ExtResource("5_q01ak")]
 position = Vector2(369, 239)
 RetrievelMode = 1
 ItemId = 1
 
-[node name="ItemPickup2" parent="Itempickups" instance=ExtResource("5_q01ak")]
+[node name="ItemPickup2" parent="Debug Stuff/Itempickups" instance=ExtResource("5_q01ak")]
 position = Vector2(433, 240)
 RetrievelMode = 1
 ItemId = 3
 
-[node name="ItemPickup3" parent="Itempickups" instance=ExtResource("5_q01ak")]
+[node name="ItemPickup3" parent="Debug Stuff/Itempickups" instance=ExtResource("5_q01ak")]
 position = Vector2(369, 307)
 RetrievelMode = 1
 ItemId = 6
 
-[node name="ItemPickup4" parent="Itempickups" instance=ExtResource("5_q01ak")]
+[node name="ItemPickup4" parent="Debug Stuff/Itempickups" instance=ExtResource("5_q01ak")]
 position = Vector2(430, 306)
 RetrievelMode = 1
 ItemId = 11
 
-[node name="ItemPickup5" parent="Itempickups" instance=ExtResource("5_q01ak")]
+[node name="ItemPickup5" parent="Debug Stuff/Itempickups" instance=ExtResource("5_q01ak")]
 position = Vector2(496, 304)
 RetrievelMode = 1
 ItemId = 12
 
-[node name="Buyable" type="Node2D" parent="."]
+[node name="Buyable" type="Node2D" parent="Debug Stuff"]
 
-[node name="CoinBuyable" parent="Buyable" instance=ExtResource("6_ogn66")]
+[node name="CoinBuyable" parent="Debug Stuff/Buyable" instance=ExtResource("6_ogn66")]
 position = Vector2(368, 107)
 
-[node name="PursePickup" parent="Buyable/CoinBuyable" instance=ExtResource("4_1i1kx")]
+[node name="PursePickup" parent="Debug Stuff/Buyable/CoinBuyable" instance=ExtResource("4_1i1kx")]
 Amount = 5
 
-[node name="CoinBuyable2" parent="Buyable" instance=ExtResource("6_ogn66")]
+[node name="CoinBuyable2" parent="Debug Stuff/Buyable" instance=ExtResource("6_ogn66")]
 position = Vector2(400, 107)
 Price = 5
 
-[node name="PursePickup" parent="Buyable/CoinBuyable2" instance=ExtResource("4_1i1kx")]
+[node name="PursePickup" parent="Debug Stuff/Buyable/CoinBuyable2" instance=ExtResource("4_1i1kx")]
 PurseContent = 2
 
-[node name="CoinBuyable3" parent="Buyable" instance=ExtResource("6_ogn66")]
+[node name="CoinBuyable3" parent="Debug Stuff/Buyable" instance=ExtResource("6_ogn66")]
 position = Vector2(429, 108)
 
-[node name="HealthPickup" parent="Buyable/CoinBuyable3" instance=ExtResource("3_x642v")]
+[node name="HealthPickup" parent="Debug Stuff/Buyable/CoinBuyable3" instance=ExtResource("3_x642v")]
 
-[node name="CoinBuyable4" parent="Buyable" instance=ExtResource("6_ogn66")]
+[node name="CoinBuyable4" parent="Debug Stuff/Buyable" instance=ExtResource("6_ogn66")]
 position = Vector2(463, 109)
 Price = 5
 
-[node name="HealthPickup" parent="Buyable/CoinBuyable4" instance=ExtResource("3_x642v")]
+[node name="HealthPickup" parent="Debug Stuff/Buyable/CoinBuyable4" instance=ExtResource("3_x642v")]
 HealthType = 1
 
-[node name="CoinBuyable5" parent="Buyable" instance=ExtResource("6_ogn66")]
+[node name="CoinBuyable5" parent="Debug Stuff/Buyable" instance=ExtResource("6_ogn66")]
 position = Vector2(495, 110)
 Price = 15
 
-[node name="ItemPickup" parent="Buyable/CoinBuyable5" instance=ExtResource("5_q01ak")]
+[node name="ItemPickup" parent="Debug Stuff/Buyable/CoinBuyable5" instance=ExtResource("5_q01ak")]
 
-[node name="Rigidbodyfun" type="Node2D" parent="."]
+[node name="Rigidbodyfun" type="Node2D" parent="Debug Stuff"]
 position = Vector2(333, 272)
 
-[node name="HealthPickup" parent="Rigidbodyfun" instance=ExtResource("3_x642v")]
+[node name="HealthPickup" parent="Debug Stuff/Rigidbodyfun" instance=ExtResource("3_x642v")]
 
-[node name="HealthPickup2" parent="Rigidbodyfun" instance=ExtResource("3_x642v")]
+[node name="HealthPickup2" parent="Debug Stuff/Rigidbodyfun" instance=ExtResource("3_x642v")]
 
-[node name="HealthPickup3" parent="Rigidbodyfun" instance=ExtResource("3_x642v")]
+[node name="HealthPickup3" parent="Debug Stuff/Rigidbodyfun" instance=ExtResource("3_x642v")]
 
-[node name="HealthPickup4" parent="Rigidbodyfun" instance=ExtResource("3_x642v")]
+[node name="HealthPickup4" parent="Debug Stuff/Rigidbodyfun" instance=ExtResource("3_x642v")]
 
-[node name="HealthPickup5" parent="Rigidbodyfun" instance=ExtResource("3_x642v")]
+[node name="HealthPickup5" parent="Debug Stuff/Rigidbodyfun" instance=ExtResource("3_x642v")]
 
-[node name="HealthPickup6" parent="Rigidbodyfun" instance=ExtResource("3_x642v")]
+[node name="HealthPickup6" parent="Debug Stuff/Rigidbodyfun" instance=ExtResource("3_x642v")]
 
-[node name="HealthPickup7" parent="Rigidbodyfun" instance=ExtResource("3_x642v")]
+[node name="HealthPickup7" parent="Debug Stuff/Rigidbodyfun" instance=ExtResource("3_x642v")]
 
-[node name="HealthPickup8" parent="Rigidbodyfun" instance=ExtResource("3_x642v")]
+[node name="HealthPickup8" parent="Debug Stuff/Rigidbodyfun" instance=ExtResource("3_x642v")]
 
-[node name="HealthPickup9" parent="Rigidbodyfun" instance=ExtResource("3_x642v")]
+[node name="HealthPickup9" parent="Debug Stuff/Rigidbodyfun" instance=ExtResource("3_x642v")]
 
-[node name="HealthPickup10" parent="Rigidbodyfun" instance=ExtResource("3_x642v")]
+[node name="HealthPickup10" parent="Debug Stuff/Rigidbodyfun" instance=ExtResource("3_x642v")]
 
-[node name="HealthPickup11" parent="Rigidbodyfun" instance=ExtResource("3_x642v")]
+[node name="HealthPickup11" parent="Debug Stuff/Rigidbodyfun" instance=ExtResource("3_x642v")]
 
 [node name="Floor" type="TileMapLayer" parent="."]
 z_index = -1

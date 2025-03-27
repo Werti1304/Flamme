@@ -101,7 +101,8 @@ public partial class PlayableCharacter : CharacterBody2D, IEnemyDamagable
   private bool IsStuck()
   {
     // if player is presumably stuck between an enemy and something different,
-    if (InteractionArea.GetOverlappingBodies().Count >= 2 && InteractionArea.GetOverlappingBodies().OfType<Enemy>().Any())
+    // Currently strictly for THE SLIDER
+    if (InteractionArea.GetOverlappingBodies().Count >= 2 && InteractionArea.GetOverlappingBodies().OfType<Slider>().Any())
     {
       _stuckCounter++;
 

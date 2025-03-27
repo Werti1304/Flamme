@@ -1,12 +1,10 @@
-[gd_resource type="TileSet" load_steps=6 format=3 uid="uid://c5qpaglqhfr5s"]
+[gd_resource type="TileSet" load_steps=5 format=3 uid="uid://c5qpaglqhfr5s"]
 
 [ext_resource type="Texture2D" uid="uid://bt7pmlqkou3be" path="res://assets/sprites/levels/PrisonProps.png" id="1_ebb6h"]
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_ebb6h"]
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_03xon"]
-
-[sub_resource type="NavigationPolygon" id="NavigationPolygon_yugbk"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_03xon"]
 resource_name = "Props"
@@ -36,10 +34,11 @@ texture_region_size = Vector2i(32, 32)
 2:1/0/probability = 0.1
 2:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(-12, -12, -12, -12, 12, -12, 12, 12, -12, 12)
 2:1/0/navigation_layer_0/polygon = SubResource("NavigationPolygon_03xon")
-7:0/size_in_atlas = Vector2i(1, 2)
 7:0/0 = 0
-7:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-12, -24, 12, -24, 12, 28, -12, 28)
-7:0/0/navigation_layer_0/polygon = SubResource("NavigationPolygon_yugbk")
+7:0/0/z_index = 10
+7:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, -8, 12, 16, -12, 16)
+7:1/0 = 0
+7:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(-12, -16, 16, -16, 12, -16, 12, 12, -12, 12)
 
 [resource]
 tile_size = Vector2i(32, 32)

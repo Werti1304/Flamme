@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://ba5fp1aq2fdep"]
+[gd_scene load_steps=12 format=3 uid="uid://ba5fp1aq2fdep"]
 
 [ext_resource type="Script" uid="uid://cgl8qbhfa3lec" path="res://world/doors/Door.cs" id="1_hg41a"]
 [ext_resource type="Texture2D" uid="uid://bdt2boo38aq4o" path="res://world/doors/textures/door_bar_closed.tres" id="2_pn1n0"]
@@ -9,6 +9,8 @@
 [ext_resource type="Texture2D" uid="uid://do5hkb3t8hspx" path="res://world/doors/textures/door_gold_open.tres" id="5_bkp00"]
 [ext_resource type="Texture2D" uid="uid://baijjaya1yism" path="res://world/doors/textures/door_shop_closed.tres" id="6_t7wlw"]
 [ext_resource type="Texture2D" uid="uid://4mjhfsvqba8" path="res://world/doors/textures/door_shop_open.tres" id="7_pn1n0"]
+[ext_resource type="Texture2D" uid="uid://ckxidjnboorl1" path="res://world/doors/textures/door_secret_closed.tres" id="10_3petx"]
+[ext_resource type="Texture2D" uid="uid://comcs0uug2cfd" path="res://world/doors/textures/door_secret_open.tres" id="11_ww8ah"]
 
 [node name="Door" type="Node2D"]
 script = ExtResource("1_hg41a")
@@ -20,3 +22,5 @@ GoldClosedTexture = ExtResource("4_w6mg2")
 GoldOpenTexture = ExtResource("5_bkp00")
 ShopClosedTexture = ExtResource("6_t7wlw")
 ShopOpenTexture = ExtResource("7_pn1n0")
+SecretClosedTexture = ExtResource("10_3petx")
+SecretOpenTexture = ExtResource("11_ww8ah")

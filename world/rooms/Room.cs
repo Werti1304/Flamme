@@ -139,6 +139,7 @@ public partial class Room : Area2D
     {
       // We are just testing this room, spawn in player, etc.
       LevelManager.SpawnUser(this);
+      Level.Current.PlayableCharacter = this._playableCharacter;
       Hud.Instance.Show();
     }
   }
