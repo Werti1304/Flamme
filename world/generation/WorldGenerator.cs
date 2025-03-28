@@ -24,6 +24,13 @@ public partial class WorldGenerator : Node2D
     RoomMeta.Init();
   }
 
+  public void Reset()
+  {
+    Levels.Clear();
+    GenerateNewLevel = true;
+    WaitingForSceneChangeToNewLevel = false;
+  }
+
   public System.Collections.Generic.Dictionary<LevelFloor, Level> Levels = new System.Collections.Generic.Dictionary<LevelFloor, Level>();
   public bool WaitingForSceneChangeToNewLevel;
   public bool GenerateNewLevel = true;
@@ -31,6 +38,7 @@ public partial class WorldGenerator : Node2D
   public void GenerateLevels(ulong seed)
   {
     GD.Seed(seed);
+    Reset();
     var levelScene = GD.Load<PackedScene>(PathConstants.LevelScenePath);
     WaitingForSceneChangeToNewLevel = true;
     

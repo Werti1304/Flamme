@@ -1,0 +1,70 @@
+[gd_scene load_steps=6 format=3 uid="uid://cukmkbhrtbcuf"]
+
+[ext_resource type="Script" uid="uid://haconxetctgh" path="res://ui/death_screen/DeathScreen.cs" id="1_yvlic"]
+[ext_resource type="Texture2D" uid="uid://djyibtpo5ch1m" path="res://assets/sprites/EscapeMenu.png" id="8_awrqq"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_u4mlj"]
+atlas = ExtResource("8_awrqq")
+region = Rect2(0, 160, 64, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2m4f0"]
+atlas = ExtResource("8_awrqq")
+region = Rect2(0, 176, 64, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_as6ee"]
+atlas = ExtResource("8_awrqq")
+region = Rect2(0, 176, 64, 16)
+
+[node name="DeathScreen" type="CanvasLayer"]
+layer = 10
+script = ExtResource("1_yvlic")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.9, 0, 0, 0.223529)
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 192
+theme_override_constants/margin_right = 192
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Control/MarginContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="Label" type="Label" parent="Control/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Back to"
+horizontal_alignment = 1
+
+[node name="MainMenuButton" type="TextureButton" parent="Control/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 64)
+layout_mode = 2
+texture_normal = SubResource("AtlasTexture_u4mlj")
+texture_pressed = SubResource("AtlasTexture_2m4f0")
+texture_hover = SubResource("AtlasTexture_as6ee")
+stretch_mode = 5
+
+[node name="Label2" type="Label" parent="Control/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "?"
+horizontal_alignment = 1
+
+[connection signal="button_down" from="Control/MarginContainer/VBoxContainer/MainMenuButton" to="." method="OnMainMenuButtonPressed"]

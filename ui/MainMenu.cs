@@ -8,7 +8,12 @@ public partial class MainMenu : CanvasLayer
 {
   [ExportGroup("Meta")] 
   [Export] private SpinBox _spinBox;
-  
+
+  public override void _Ready()
+  {
+    Main.Instance.UnloadingLevel = false;
+  }
+
   public void OnNewGame()
   {
     WorldGenerator.Instance.GenerateLevels((ulong)_spinBox.Value);

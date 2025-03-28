@@ -25,6 +25,7 @@ Main="*res://Main.cs"
 Hud="*res://ui/hud.tscn"
 LevelManager="*res://world/LevelManager.cs"
 EscapeMenu="*res://ui/escape_menu.tscn"
+DeathScreen="res://ui/death_screen/death_screen.tscn"
 LootGenerator="*res://entities/env/Loot/loot_generator.tscn"
 
 [display]

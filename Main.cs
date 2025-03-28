@@ -35,8 +35,8 @@ public partial class Main : Node
   // Make staff come with u even while youre holding it when changing rooms
   // Fix enemy spawning in wall thats not good
   // Make it so boss room 1 is on level 1 and 2 on 2
-  
-  public bool ShuttingDown { get; private set; }
+
+  public bool UnloadingLevel;
 
   public override void _Notification(int what)
   {
@@ -48,10 +48,10 @@ public partial class Main : Node
 
   public void Shutdown()
   {
-    if (ShuttingDown)
+    if (UnloadingLevel)
       return;
     GD.Print($"SHUTDOWN REQUESTED");
-    ShuttingDown = true;
+    UnloadingLevel = true;
     GetTree().Quit();
   }
 

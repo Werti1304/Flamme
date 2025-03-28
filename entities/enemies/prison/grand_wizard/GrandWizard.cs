@@ -100,11 +100,12 @@ public partial class GrandWizard : Enemy
     var midPoint = Room.Current.MidPoint;
     var direction = GlobalPosition.DirectionTo(midPoint.GlobalPosition);
 
-    if (direction.X < 0 && Sprite.FlipH)
+    var playerDirection = GlobalPosition.DirectionTo(Target.GlobalPosition);
+    if (playerDirection.X < 0 && Sprite.FlipH)
     {
       Sprite.FlipH = false;
     }
-    else if (direction.X > 0 && !Sprite.FlipH)
+    else if (playerDirection.X > 0 && !Sprite.FlipH)
     {
       Sprite.FlipH = true;
     }

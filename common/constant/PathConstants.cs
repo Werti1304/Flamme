@@ -3,6 +3,8 @@ namespace Flamme.common.constant;
 
 public static class PathConstants
 {
+  public const string MainMenuScenePath = "res://ui/main_menu.tscn";
+  
   public const string RoomFolderPath = "world/rooms/";
   public const string LevelScenePath = "world/generation/Level.tscn";
 
@@ -39,4 +41,5 @@ public static class PathConstants
   public const string PrisonWallTileSetPath = "res://assets/tilesets/prison/prison_wall.tres";
 
   public const string NodeParentPath = "res://world/rooms/node_parent.tscn";
+
 }

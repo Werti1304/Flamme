@@ -6,8 +6,8 @@ public class DebugToggles
   public static bool MinimapSeeAll = true;
   public static bool DoorsAlwaysOpen = true;
   
-  public static bool InstaKill = true;
-  public static bool GodMode = true;
+  public static bool InstaKill = false;
+  public static bool GodMode = false;
 
   public static bool CheckMetaNonNull = true;
 }

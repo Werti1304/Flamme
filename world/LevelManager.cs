@@ -43,6 +43,22 @@ public partial class LevelManager : Node2D
   }
 
   private TransferableStuff? _stuffToTransfer;
+
+  public void Unload()
+  {
+    _currentLevel = null;
+
+    if (_stuffToTransfer != null && _stuffToTransfer.HasValue)
+    {
+      if (_stuffToTransfer.Value.Staff != null)
+      {
+        _stuffToTransfer.Value.Staff.QueueFree();
+        _stuffToTransfer.Value.Character.QueueFree();
+        _stuffToTransfer.Value.Camera.QueueFree();
+      }
+      _stuffToTransfer = null;
+    }
+  }
   
   public void StartlevelChange(PackedScene levelScene)
   {
@@ -137,6 +153,7 @@ public partial class LevelManager : Node2D
       TransferUser(level);
     }
     CurrentLevel = level;
+    level.Spawn.EnterRoom(level.PlayableCharacter);
     EmitSignal(SignalName.LevelReady);
   }
   
@@ -166,6 +183,8 @@ public partial class LevelManager : Node2D
     startingStaff.GlobalPosition = globalSpawnPosition - new Vector2(64, 64);
     level.AddChild(startingStaff);
     startingStaff.Owner = level;
+    
+    level.Spawn.EnterRoom(player);
   }
 
   // For testing single rooms

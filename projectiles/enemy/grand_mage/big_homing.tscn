@@ -28,6 +28,8 @@ scale_max = 4.0
 color_ramp = SubResource("GradientTexture1D_oovqd")
 
 [node name="BigHoming" type="Area2D" node_paths=PackedStringArray("Sprite", "DestructionParticles")]
+collision_layer = 2
+collision_mask = 2
 script = ExtResource("1_eryr7")
 Damage = 8
 ShotSpeed = 1.2
@@ -42,7 +44,9 @@ texture = ExtResource("2_3qhty")
 shape = SubResource("CircleShape2D_eryr7")
 
 [node name="GPUParticles2D" type="GPUParticles2D" parent="."]
+emitting = false
 amount = 64
+one_shot = true
 explosiveness = 1.0
 randomness = 1.0
 process_material = SubResource("ParticleProcessMaterial_3qhty")

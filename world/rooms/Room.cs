@@ -175,7 +175,7 @@ public partial class Room : Area2D
   
   private void OnBodyEntered(Node2D body)
   {
-    if (Main.Instance.ShuttingDown)
+    if (Main.Instance.UnloadingLevel)
     {
       return;
     }
@@ -183,7 +183,7 @@ public partial class Room : Area2D
     switch (body)
     {
       case entities.player.PlayableCharacter p:
-        if (Current == null)
+        if (!IsInstanceValid(Current))
         {
           // Only a fallback for dev worlds and spawns
           GD.Print($"Player entered room {Name} for on failsafe! (This should only happen on non-generated worlds)");
@@ -206,7 +206,7 @@ public partial class Room : Area2D
   
   private void OnBodyExited(Node2D body)
   {
-    if (Main.Instance.ShuttingDown)
+    if (Main.Instance.UnloadingLevel)
     {
       return;
     }

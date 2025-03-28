@@ -10,7 +10,12 @@ public partial class Tutorial : Node2D
   [Export] public Room TutorialRoom;
   [Export] public Array<ui.key_press.KeyPress> KeyPresses = [];
 
-  public static bool Completed = false;
+  public static bool Completed;
+
+  public static void Reset()
+  {
+    Completed = false;
+  }
   
   public override void _Ready()
   {

@@ -8,6 +8,7 @@ using Flamme.entities.env.health;
 using Flamme.entities.env.shop;
 using Flamme.items;
 using Flamme.ui;
+using Flamme.ui.death_screen;
 using Flamme.world.doors;
 using Flamme.world.rooms;
 using Godot;
@@ -180,11 +181,11 @@ public partial class PlayableCharacter : CharacterBody2D, IEnemyDamagable
     
     if (!Stats.RemoveHealth(damage))
     {
-      // Player Death
       if (GetViewport().GetCamera2D() is PlayerCamera camera)
       {
         // Deactivate camera
         camera.SetProcess(false);
+        DeathScreen.Instance.ShowDeathScreen();
       }
       Room.Current.LeaveRoom(); // "Leave" room cuz player is dead
       QueueFree(); 

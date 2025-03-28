@@ -8,6 +8,7 @@ public partial class SceneLoader : Node2D
 {
   public enum Scene
   {
+    MainMenu,
     Level,
     Warper,
     Player,        // Todo AP (after prototype) Replace with randomized player char
@@ -25,11 +26,12 @@ public partial class SceneLoader : Node2D
     Door,
     DoorMarker,
     Trailing,
-    Fireball
+    Fireball,
   }
 
   public readonly Dictionary<Scene, PackedScene> Scenes = new Dictionary<Scene, PackedScene>()
   {
+    { Scene.MainMenu, GD.Load<PackedScene>(PathConstants.MainMenuScenePath) },
     { Scene.Level, GD.Load<PackedScene>(PathConstants.LevelScenePath) },
     { Scene.Warper, GD.Load<PackedScene>(PathConstants.WarperScenePath) },
     { Scene.Player, GD.Load<PackedScene>(PathConstants.PlayerScenePath) },

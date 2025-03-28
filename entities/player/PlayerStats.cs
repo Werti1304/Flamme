@@ -12,8 +12,8 @@ public partial class PlayerStats : Node2D
 {
   // TODO Include Staff Stats in all calculations.. yaaay
   [Export] public int BaseHealthContainers = 3;
-  [Export] public int StartingHealth = 12; // 1 health is 1/4 of a container
-  [Export] public int StartingAbsorption = 12;
+  [Export] public int StartingHealth = 1; // 1 health is 1/4 of a container
+  [Export] public int StartingAbsorption = 0;
   
   [Export] public int BaseSpeed = 100; // px/sec?
   [Export] public float BaseDamage = 3; // Damage against enemies
