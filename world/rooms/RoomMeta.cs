@@ -17,9 +17,9 @@ public class RoomMeta(
   bool restrictToFloor,
   LevelFloor levelFloor = LevelFloor.Prison1)
 {
-  public static readonly Dictionary<RoomType, List<RoomMeta>> RoomDict 
+  public static readonly Dictionary<RoomType, List<RoomMeta>> RoomDict
     = new Dictionary<RoomType, List<RoomMeta>>();
-  
+
   public PackedScene RoomScene = roomScene;
   public string Name = name;
   public RoomType Type = type;
@@ -45,6 +45,7 @@ public class RoomMeta(
       validTickets += r.RoomGenerationTickets;
       return true;
     });
+
     if (validRooms.Count == 0)
     {
       GD.PushError($"No room of type {roomType} with exits {exitsNeeded} found!");
@@ -54,10 +55,12 @@ public class RoomMeta(
     RoomMeta chosenRoom = null;
     var randomTicket = GD.RandRange(0, validTickets);
     var idx = 0;
+
     while (randomTicket >= 0)
     {
       var room = validRooms[idx];
       randomTicket -= room.RoomGenerationTickets;
+
       if (randomTicket <= 0)
       {
         chosenRoom = room;
@@ -65,7 +68,7 @@ public class RoomMeta(
       }
       idx++;
     }
-    
+
     return chosenRoom;
   }
 
@@ -79,12 +82,12 @@ public class RoomMeta(
       GD.PushError("RoomMeta init() called twice!");
       return;
     }
-    
+
     foreach (var roomType in Enum.GetValues<RoomType>())
     {
       RoomDict[roomType] = new List<RoomMeta>();
     }
-    
+
     var dir = DirAccess.Open(PathConstants.RoomFolderPath);
     Debug.Assert(dir != null, "Room folder not found!");
 
@@ -97,16 +100,17 @@ public class RoomMeta(
       var roomScene = GD.Load<PackedScene>(file);
 
       Room roomTemp;
-      try
-      {
-        roomTemp = roomScene.Instantiate<Room>();
-      }
-      catch (InvalidCastException)
+
+      var nodeTemp = roomScene.Instantiate();
+      roomTemp = nodeTemp as Room;
+
+      if (roomTemp == null)
       {
         // For other scenes, which aren't rooms, but are still in some subfolder (tools, etc.)
+        nodeTemp.QueueFree();
         continue;
       }
-      
+
       var roomData = new RoomMeta(
         roomScene, roomTemp.Name, roomTemp.Type, roomTemp.TheoreticalDoorMarkers.Keys, roomTemp.RoomGenerationTickets,
         roomTemp.RestrictToFloor, roomTemp.LevelFloor);
