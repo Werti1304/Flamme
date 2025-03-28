@@ -5,8 +5,8 @@
 [ext_resource type="TileSet" uid="uid://c5qpaglqhfr5s" path="res://assets/tilesets/prison/prison_props.tres" id="3_lseld"]
 [ext_resource type="TileSet" uid="uid://ca3qx51g3yg3u" path="res://assets/tilesets/prison/prison_wall.tres" id="4_bxonj"]
 [ext_resource type="PackedScene" uid="uid://bnx0j5b2ekjat" path="res://world/doors/DoorMarker.tscn" id="5_wsd4t"]
-[ext_resource type="Script" uid="uid://lxis3ashrpf4" path="res://world/doors/DoorMarker.cs" id="6_2d58c"]
 [ext_resource type="Texture2D" uid="uid://bgc4ewqfbryq3" path="res://assets/sprites/levels/PrisonWalls.png" id="7_bj23f"]
+[ext_resource type="PackedScene" uid="uid://to5gnfx5ksif" path="res://world/rooms/node_parent.tscn" id="7_bxonj"]
 [ext_resource type="PackedScene" uid="uid://dxtul4kw81ds6" path="res://entities/enemies/prison/mage_strong/mage_strong.tscn" id="8_lseld"]
 [ext_resource type="PackedScene" uid="uid://cy646ln75o03g" path="res://entities/enemies/prison/mage_weak/mage_weak.tscn" id="9_bxonj"]
 
@@ -17,7 +17,8 @@ region = Rect2(0, 0, 32, 32)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_nvwor"]
 size = Vector2(544, 320)
 
-[node name="PathwayP5" type="Area2D" node_paths=PackedStringArray("TheoreticalDoorMarkers", "FloorTileMap", "PropsTileMap", "OuterWallTileMap", "RoofTileMap", "CollisionShape", "DoorMarkerParent", "MidPoint")]
+[node name="PathwayP5" type="Area2D" node_paths=PackedStringArray("TheoreticalDoorMarkers", "FloorTileMap", "PropsTileMap", "OuterWallTileMap", "RoofTileMap", "CollisionShape", "DoorMarkerParent", "MidPoint", "EnemiesParent", "LootParent", "TileEntitiesParent")]
+y_sort_enabled = true
 collision_layer = 15
 collision_mask = 15
 script = ExtResource("1_cc212")
@@ -34,9 +35,11 @@ RoofTileMap = NodePath("Roof (Auto)")
 CollisionShape = NodePath("CollisionShape")
 DoorMarkerParent = NodePath("DoorMarkerParent")
 MidPoint = NodePath("MidPoint")
+EnemiesParent = NodePath("Enemies")
+LootParent = NodePath("Loot")
+TileEntitiesParent = NodePath("TileEntities")
 
 [node name="Floor" type="TileMapLayer" parent="."]
-z_index = -1
 tile_map_data = PackedByteArray("AAAEAAUAHgAAAAAAAAAFAAUAHgAAAAAAAAAGAAUAHgAAAAAAAAAHAAUAHgAAAAAAAAAIAAUAHgAAAAAAAAAJAAUAHgAAAAAAAAAKAAUAHgAAAAAAAAALAAUAHgAAAAAAAAAFAAQAHgAAAAAAAAAGAAQAHgAAAAAAAAAHAAQAHgAAAAAAAAAIAAQAHgAAAAAAAAAJAAQAHgAAAAAAAAAKAAQAHgAFAAAAAAAFAAYAHgAAAAAAAAAGAAYAHgAAAAAAAAAHAAYAHgAAAAAAAAAIAAYAHgAAAAAAAAAJAAYAHgAAAAAAAAAKAAYAHgAAAAAAAAAGAAcAHgAAAAAAAAAHAAcAHgAAAAAAAAAIAAcAHgAAAAAAAAAJAAcAHgAAAAAAAAAGAAMAHgAAAAAAAAAHAAMAHgAAAAAAAAAIAAMAHgAAAAQAAAAJAAMAHgAAAAAAAAAFAAMAHgAAAAAAAAAFAAcAHgAAAAAAAAAEAAcAHgAAAAAAAAAEAAYAHgAAAAAAAAAEAAQAHgAAAAAAAAAEAAMAHgAAAAAAAAALAAQAHgAAAAAAAAAMAAQAHgAAAAAAAAAMAAMAHgAAAAAAAAALAAMAHgAAAAAAAAAKAAMAHgAAAAAAAAAKAAcAHgAEAAAAAAALAAcAHgAAAAAAAAALAAYAHgAAAAAAAAAMAAUAHgAAAAAAAAAMAAYAHgAAAAAAAAAMAAcAHgAAAAAAAAADAAUAHgAAAAAAAAAHAAIAHgAAAAAAAAANAAUAHgAAAAAAAAAJAAgAHgAAAAAAAAAIAAIAHgAAAAQAAAA=")
 tile_set = ExtResource("2_nvwor")
 
@@ -57,55 +60,33 @@ position = Vector2(272, 160)
 
 [node name="DoorMarkerParent" type="Node2D" parent="."]
 
-[node name="DoorMarker North" type="StaticBody2D" parent="DoorMarkerParent" node_paths=PackedStringArray("Sprite", "CollisionShape", "TeleportZone", "TeleportPoint") instance=ExtResource("5_wsd4t")]
+[node name="DoorMarker North" parent="DoorMarkerParent" instance=ExtResource("5_wsd4t")]
 position = Vector2(224, 64)
-script = ExtResource("6_2d58c")
 DisguiseTexture = SubResource("AtlasTexture_l1djv")
-Sprite = NodePath("Sprite2D")
-CollisionShape = NodePath("CollisionShape2D")
-TeleportZone = NodePath("Area2D")
-TeleportPoint = NodePath("TeleportPoint")
 
-[node name="DoorMarker East" type="StaticBody2D" parent="DoorMarkerParent" node_paths=PackedStringArray("Sprite", "CollisionShape", "TeleportZone", "TeleportPoint") instance=ExtResource("5_wsd4t")]
+[node name="DoorMarker East" parent="DoorMarkerParent" instance=ExtResource("5_wsd4t")]
 position = Vector2(448, 160)
 rotation = 1.5708
-script = ExtResource("6_2d58c")
 FacingDirection = 1
 DisguiseTexture = SubResource("AtlasTexture_l1djv")
-Sprite = NodePath("Sprite2D")
-CollisionShape = NodePath("CollisionShape2D")
-TeleportZone = NodePath("Area2D")
-TeleportPoint = NodePath("TeleportPoint")
 
-[node name="DoorMarker South" type="StaticBody2D" parent="DoorMarkerParent" node_paths=PackedStringArray("Sprite", "CollisionShape", "TeleportZone", "TeleportPoint") instance=ExtResource("5_wsd4t")]
+[node name="DoorMarker South" parent="DoorMarkerParent" instance=ExtResource("5_wsd4t")]
 position = Vector2(320, 288)
 rotation = 3.14159
-script = ExtResource("6_2d58c")
 FacingDirection = 2
 DisguiseTexture = SubResource("AtlasTexture_l1djv")
-Sprite = NodePath("Sprite2D")
-CollisionShape = NodePath("CollisionShape2D")
-TeleportZone = NodePath("Area2D")
-TeleportPoint = NodePath("TeleportPoint")
 
-[node name="DoorMarker West" type="StaticBody2D" parent="DoorMarkerParent" node_paths=PackedStringArray("Sprite", "CollisionShape", "TeleportZone", "TeleportPoint") instance=ExtResource("5_wsd4t")]
+[node name="DoorMarker West" parent="DoorMarkerParent" instance=ExtResource("5_wsd4t")]
 position = Vector2(96, 192)
 rotation = -1.5708
-script = ExtResource("6_2d58c")
 FacingDirection = 3
 DisguiseTexture = SubResource("AtlasTexture_l1djv")
-Sprite = NodePath("Sprite2D")
-CollisionShape = NodePath("CollisionShape2D")
-TeleportZone = NodePath("Area2D")
-TeleportPoint = NodePath("TeleportPoint")
 
 [node name="CollisionShape" type="CollisionShape2D" parent="."]
 position = Vector2(272, 160)
 shape = SubResource("RectangleShape2D_nvwor")
 
-[node name="Loot" type="Node2D" parent="."]
-
-[node name="Enemies" type="Node2D" parent="."]
+[node name="Enemies" parent="." instance=ExtResource("7_bxonj")]
 
 [node name="MageStrong" parent="Enemies" instance=ExtResource("8_lseld")]
 position = Vector2(224, 160)
@@ -122,4 +103,6 @@ position = Vector2(160, 128)
 [node name="MageWeak3" parent="Enemies" instance=ExtResource("9_bxonj")]
 position = Vector2(384, 128)
 
-[node name="Tile Entities" type="Node2D" parent="."]
+[node name="Loot" parent="." instance=ExtResource("7_bxonj")]
+
+[node name="TileEntities" parent="." instance=ExtResource("7_bxonj")]

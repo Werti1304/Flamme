@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=4 uid="uid://cxw26m3xxp5bu"]
+[gd_scene load_steps=10 format=4 uid="uid://cxw26m3xxp5bu"]
 
 [ext_resource type="Script" uid="uid://cu3vdn0r1mer3" path="res://world/rooms/Room.cs" id="1_foxi4"]
 [ext_resource type="TileSet" uid="uid://ciata4jhj6wvu" path="res://assets/tilesets/prison/prison_floor.tres" id="2_jm75k"]
@@ -6,6 +6,7 @@
 [ext_resource type="TileSet" uid="uid://ca3qx51g3yg3u" path="res://assets/tilesets/prison/prison_wall.tres" id="4_qe3cr"]
 [ext_resource type="PackedScene" uid="uid://bnx0j5b2ekjat" path="res://world/doors/DoorMarker.tscn" id="5_287wo"]
 [ext_resource type="Texture2D" uid="uid://bgc4ewqfbryq3" path="res://assets/sprites/levels/PrisonWalls.png" id="7_j5uqj"]
+[ext_resource type="PackedScene" uid="uid://to5gnfx5ksif" path="res://world/rooms/node_parent.tscn" id="7_jm75k"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_l1djv"]
 atlas = ExtResource("7_j5uqj")
@@ -14,7 +15,7 @@ region = Rect2(0, 0, 32, 32)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_je6sf"]
 size = Vector2(544, 320)
 
-[node name="SmithyP0" type="Area2D" node_paths=PackedStringArray("TheoreticalDoorMarkers", "FloorTileMap", "PropsTileMap", "OuterWallTileMap", "RoofTileMap", "CollisionShape", "DoorMarkerParent", "MidPoint")]
+[node name="SmithyP0" type="Area2D" node_paths=PackedStringArray("TheoreticalDoorMarkers", "FloorTileMap", "PropsTileMap", "OuterWallTileMap", "RoofTileMap", "CollisionShape", "DoorMarkerParent", "MidPoint", "EnemiesParent", "LootParent", "TileEntitiesParent")]
 collision_layer = 15
 collision_mask = 15
 script = ExtResource("1_foxi4")
@@ -34,9 +35,11 @@ RoofTileMap = NodePath("Roof (Auto)")
 CollisionShape = NodePath("CollisionShape")
 DoorMarkerParent = NodePath("DoorMarkerParent")
 MidPoint = NodePath("MidPoint")
+EnemiesParent = NodePath("Enemies")
+LootParent = NodePath("Loot")
+TileEntitiesParent = NodePath("TileEntities")
 
 [node name="Floor" type="TileMapLayer" parent="."]
-z_index = -1
 tile_map_data = PackedByteArray("AAAOAAcAHgAAAAAAAAANAAcAHgAAAAAAAAAMAAcAHgAAAAAAAAALAAcAHgAAAAAAAAAKAAcAHgAEAAEAAAAJAAcAHgAAAAAAAAAIAAcAHgAAAAAAAAAHAAcAHgAAAAAAAAAGAAcAHgAAAAAAAAAFAAcAHgAAAAAAAAAEAAcAHgAAAAAAAAADAAcAHgAAAAAAAAACAAcAHgAAAAAAAAACAAYAHgAAAAAAAAACAAUAHgAAAAAAAAACAAQAHgAAAAAAAAACAAIAHgAAAAAAAAACAAMAHgAAAAAAAAADAAIAHgAAAAAAAAADAAMAHgAAAAAAAAADAAQAHgAAAAAAAAADAAUAHgAAAAAAAAADAAYAHgAAAAAAAAAEAAIAHgAAAAAAAAAEAAMAHgAAAAAAAAAEAAQAHgAAAAAAAAAEAAUAHgAAAAAAAAAEAAYAHgAAAAAAAAAFAAIAHgAAAAEAAAAFAAMAHgAAAAAAAAAFAAQAHgACAAEAAAAFAAUAHgAHAAEAAAAFAAYAHgAAAAAAAAAGAAIAHgAAAAAAAAAGAAMAHgAAAAQAAAAGAAQAHgAAAAQAAAAGAAUAHgAAAAAAAAAGAAYAHgAAAAAAAAAHAAIAHgAAAAAAAAAHAAMAHgABAAEAAAAHAAQAHgAAAAQAAAAHAAUAHgAAAAAAAAAHAAYAHgAAAAAAAAAIAAIAHgAAAAAAAAAIAAMAHgAAAAAAAAAIAAQAHgAAAAQAAAAIAAUAHgAAAAAAAAAIAAYAHgAAAAAAAAAJAAIAHgAAAAAAAAAJAAMAHgAAAAAAAAAJAAQAHgAAAAQAAAAJAAUAHgAAAAAAAAAJAAYAHgAAAAAAAAAKAAIAHgAAAAAAAAAKAAMAHgAAAAAAAAAKAAQAHgAAAAQAAAAKAAUAHgAAAAAAAAAKAAYAHgAAAAAAAAALAAIAHgAAAAAAAAALAAMAHgAAAAAAAAALAAQAHgAAAAQAAAALAAUAHgAAAAAAAAALAAYAHgAAAAAAAAAMAAIAHgAAAAAAAAAMAAMAHgAAAAAAAAAMAAQAHgAAAAQAAAAMAAUAHgAAAAAAAAAMAAYAHgAAAAEAAAANAAIAHgAAAAAAAAANAAMAHgAAAAAAAAANAAQAHgAAAAQAAAANAAUAHgAAAAAAAAANAAYAHgAAAAAAAAAOAAIAHgAEAAAAAAAOAAMAHgAAAAAAAAAOAAQAHgAAAAAAAAAOAAUAHgABAAAAAAAOAAYAHgAAAAAAAAABAAYAHgAAAAAAAAADAAEAHgAAAAAAAAAPAAYAHgAGAAEAAAADAAgAHgAAAAAAAAA=")
 tile_set = ExtResource("2_jm75k")
 
@@ -49,7 +52,6 @@ tile_map_data = PackedByteArray("AAACAAEACgAAAAAAAAAFAAEACgABAAAAAAAGAAEACgACAAA
 tile_set = ExtResource("4_qe3cr")
 
 [node name="Roof (Auto)" type="TileMapLayer" parent="."]
-z_index = 4000
 tile_map_data = PackedByteArray("AAAQAAkAGQAFAAEAAAAQAAgAGQAIAAEAAAAQAAcAGQAIAAEAAAAQAAYAGQAIAAEAAAAQAAUAGQAIAAEAAAAQAAQAGQAIAAEAAAAQAAMAGQAIAAEAAAAQAAIAGQAIAAEAAAAQAAEAGQAIAAEAAAAQAAAAGQAFAAIAAAAPAAkAGQAKAAAAAAAPAAAAGQAJAAMAAAAOAAkAGQAKAAAAAAAOAAAAGQAJAAMAAAANAAkAGQAKAAAAAAANAAAAGQAJAAMAAAAMAAkAGQAKAAAAAAAMAAAAGQAJAAMAAAALAAkAGQAKAAAAAAALAAAAGQAJAAMAAAAKAAkAGQAKAAAAAAAKAAAAGQAJAAMAAAAJAAkAGQAKAAAAAAAJAAAAGQAJAAMAAAAIAAkAGQAKAAAAAAAIAAAAGQAJAAMAAAAHAAkAGQAKAAAAAAAHAAAAGQAJAAMAAAAGAAkAGQAKAAAAAAAGAAAAGQAJAAMAAAAFAAkAGQAKAAAAAAAFAAAAGQAJAAMAAAAEAAkAGQAKAAAAAAAEAAAAGQAJAAMAAAADAAkAGQAKAAAAAAADAAAAGQAJAAMAAAACAAkAGQAKAAAAAAACAAAAGQAJAAMAAAABAAkAGQAKAAAAAAABAAAAGQAJAAMAAAAAAAkAGQAGAAEAAAAAAAgAGQALAAIAAAAAAAcAGQALAAIAAAAAAAYAGQALAAIAAAAAAAUAGQALAAIAAAAAAAQAGQALAAIAAAAAAAMAGQALAAIAAAAAAAIAGQALAAIAAAAAAAEAGQALAAIAAAAAAAAAGQAGAAIAAAA=")
 tile_set = ExtResource("4_qe3cr")
 
@@ -84,6 +86,11 @@ DisguiseTexture = SubResource("AtlasTexture_l1djv")
 position = Vector2(272, 160)
 shape = SubResource("RectangleShape2D_je6sf")
 
-[node name="Loot" type="Node2D" parent="."]
+[node name="Enemies" type="Node2D" parent="." instance=ExtResource("7_jm75k")]
+y_sort_enabled = true
 
-[node name="Enemies" type="Node2D" parent="."]
+[node name="Loot" type="Node2D" parent="." instance=ExtResource("7_jm75k")]
+y_sort_enabled = true
+
+[node name="TileEntities" type="Node2D" parent="." instance=ExtResource("7_jm75k")]
+y_sort_enabled = true

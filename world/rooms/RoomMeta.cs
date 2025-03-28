@@ -114,10 +114,10 @@ public class RoomMeta(
       {
         roomTemp = roomScene.Instantiate<Room>();
       }
-      catch (InvalidCastException e)
+      catch (InvalidCastException)
       {
-        Console.WriteLine($"Non-room type file found in room folder: {file}\n{e}");
-        throw;
+        // For other scenes, which aren't rooms, but are still in some subfolder (tools, etc.)
+        continue;
       }
       
       var roomData = new RoomMeta(

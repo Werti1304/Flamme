@@ -23,7 +23,6 @@ gravity = Vector3(0, 0, 0)
 color_ramp = SubResource("GradientTexture1D_kkqg3")
 
 [node name="ItemPickup" type="Area2D" node_paths=PackedStringArray("_sprite", "_collisionShape", "Particles2D")]
-z_index = 10
 script = ExtResource("1_rp6wu")
 _sprite = NodePath("Sprite2D")
 _collisionShape = NodePath("CollisionShape2D")

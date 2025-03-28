@@ -33,9 +33,7 @@ public abstract partial class EnemyProjectile : Area2D
   public override void _Ready()
   {
     ExportMetaNonNull.Check(this);
-
-    Sprite.ZIndex = 10;
-    DestructionParticles.ZIndex = 2000;
+    
     SetPhysicsProcess(false);
     Direction = Direction.Normalized();
     Sprite.Visible = false;

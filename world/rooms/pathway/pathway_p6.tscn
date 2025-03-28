@@ -1,17 +1,19 @@
-[gd_scene load_steps=9 format=4 uid="uid://docgrvefwb6fh"]
+[gd_scene load_steps=10 format=4 uid="uid://docgrvefwb6fh"]
 
 [ext_resource type="Script" uid="uid://cu3vdn0r1mer3" path="res://world/rooms/Room.cs" id="1_wktvb"]
 [ext_resource type="TileSet" uid="uid://ciata4jhj6wvu" path="res://assets/tilesets/prison/prison_floor.tres" id="2_bvput"]
 [ext_resource type="TileSet" uid="uid://c5qpaglqhfr5s" path="res://assets/tilesets/prison/prison_props.tres" id="3_4msvd"]
 [ext_resource type="TileSet" uid="uid://ca3qx51g3yg3u" path="res://assets/tilesets/prison/prison_wall.tres" id="4_usqv8"]
 [ext_resource type="PackedScene" uid="uid://bnx0j5b2ekjat" path="res://world/doors/DoorMarker.tscn" id="5_25bdk"]
+[ext_resource type="PackedScene" uid="uid://to5gnfx5ksif" path="res://world/rooms/node_parent.tscn" id="6_4msvd"]
 [ext_resource type="PackedScene" uid="uid://ct506hl51tduf" path="res://entities/env/tiles/box/box.tscn" id="8_4msvd"]
 [ext_resource type="PackedScene" uid="uid://ct41on4c43mde" path="res://entities/env/purse/purse_pickup.tscn" id="9_usqv8"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_mosih"]
 size = Vector2(576, 352)
 
-[node name="PathwayP6" type="Area2D" node_paths=PackedStringArray("TheoreticalDoorMarkers", "FloorTileMap", "PropsTileMap", "OuterWallTileMap", "RoofTileMap", "CollisionShape", "DoorMarkerParent", "MidPoint")]
+[node name="PathwayP6" type="Area2D" node_paths=PackedStringArray("TheoreticalDoorMarkers", "FloorTileMap", "PropsTileMap", "OuterWallTileMap", "RoofTileMap", "CollisionShape", "DoorMarkerParent", "MidPoint", "EnemiesParent", "LootParent", "TileEntitiesParent")]
+y_sort_enabled = true
 collision_layer = 15
 collision_mask = 15
 script = ExtResource("1_wktvb")
@@ -30,9 +32,11 @@ RoofTileMap = NodePath("Roof (Auto)")
 CollisionShape = NodePath("CollisionShape")
 DoorMarkerParent = NodePath("DoorMarkerParent")
 MidPoint = NodePath("MidPoint")
+EnemiesParent = NodePath("Enemies")
+LootParent = NodePath("Loot")
+TileEntitiesParent = NodePath("TileEntities")
 
 [node name="Floor" type="TileMapLayer" parent="."]
-z_index = -1
 tile_map_data = PackedByteArray("AAAGAAYAHgAAAAAAAAAGAAUAHgAAAAAAAAAGAAQAHgAAAAAAAAAHAAQAHgAAAAAAAAAHAAMAHgAAAAAAAAAHAAIAHgAAAAAAAAAGAAIAHgAAAAAAAAAGAAMAHgAAAAAAAAAIAAIAHgAAAAAAAAAJAAIAHgAAAAAAAAAKAAIAHgAAAAAAAAAKAAMAHgAAAAAAAAAKAAQAHgAAAAAAAAAKAAUAHgAAAAAAAAAKAAYAHgAAAAAAAAAJAAYAHgACAAAAAAAIAAYAHgAAAAAAAAAHAAYAHgAAAAAAAAAHAAUAHgAAAAAAAAAIAAUAHgAAAAAAAAAJAAUAHgAAAAAAAAAJAAQAHgAAAAAAAAAJAAMAHgAAAAAAAAAIAAQAHgAAAAAAAAAIAAMAHgAAAAAAAAAIAAcAHgAAAAAAAAAFAAQAHgAAAAAAAAAIAAEAHgAAAAAAAAALAAQAHgABAAAAAAA=")
 tile_set = ExtResource("2_bvput")
 
@@ -44,7 +48,6 @@ tile_map_data = PackedByteArray("AAAGAAEACgADAAEAAAAHAAEACgAAAAAAAAAJAAEACgAAAAA
 tile_set = ExtResource("4_usqv8")
 
 [node name="Roof (Auto)" type="TileMapLayer" parent="."]
-z_index = 4000
 tile_map_data = PackedByteArray("AAARAAoAGQAJAAIAAAARAAkAGQAJAAIAAAARAAgAGQAJAAIAAAARAAcAGQAJAAIAAAARAAYAGQAJAAIAAAARAAUAGQAJAAIAAAARAAQAGQAJAAIAAAARAAMAGQAJAAIAAAARAAIAGQAJAAIAAAARAAEAGQAJAAIAAAARAAAAGQAJAAIAAAAQAAoAGQAJAAIAAAAQAAkAGQAJAAIAAAAQAAgAGQAJAAIAAAAQAAcAGQAJAAIAAAAQAAYAGQAJAAIAAAAQAAUAGQAJAAIAAAAQAAQAGQAJAAIAAAAQAAMAGQAJAAIAAAAQAAIAGQAJAAIAAAAQAAEAGQAJAAIAAAAQAAAAGQAJAAIAAAAPAAoAGQAJAAIAAAAPAAkAGQAJAAIAAAAPAAgAGQAJAAIAAAAPAAcAGQAJAAIAAAAPAAYAGQAJAAIAAAAPAAUAGQAJAAIAAAAPAAQAGQAJAAIAAAAPAAMAGQAJAAIAAAAPAAIAGQAJAAIAAAAPAAEAGQAJAAIAAAAPAAAAGQAJAAIAAAAOAAoAGQAJAAIAAAAOAAkAGQAJAAIAAAAOAAgAGQAJAAIAAAAOAAcAGQAJAAIAAAAOAAYAGQAJAAIAAAAOAAUAGQAJAAIAAAAOAAQAGQAJAAIAAAAOAAMAGQAJAAIAAAAOAAIAGQAJAAIAAAAOAAEAGQAJAAIAAAAOAAAAGQAJAAIAAAANAAoAGQAJAAIAAAANAAkAGQAJAAIAAAANAAgAGQAJAAIAAAANAAcAGQAJAAIAAAANAAYAGQAJAAIAAAANAAUAGQAJAAIAAAANAAQAGQAJAAIAAAANAAMAGQAJAAIAAAANAAIAGQAJAAIAAAANAAEAGQAJAAIAAAANAAAAGQAJAAIAAAAMAAoAGQAJAAIAAAAMAAkAGQAJAAIAAAAMAAgAGQAFAAEAAAAMAAcAGQAIAAEAAAAMAAYAGQAIAAEAAAAMAAUAGQAIAAEAAAAMAAQAGQAIAAEAAAAMAAMAGQAIAAEAAAAMAAIAGQAIAAEAAAAMAAEAGQAIAAEAAAAMAAAAGQAFAAIAAAALAAoAGQAJAAIAAAALAAkAGQAJAAIAAAALAAgAGQAKAAAAAAALAAAAGQAJAAMAAAAKAAoAGQAJAAIAAAAKAAkAGQAJAAIAAAAKAAgAGQAKAAAAAAAKAAAAGQAJAAMAAAAJAAoAGQAJAAIAAAAJAAkAGQAJAAIAAAAJAAgAGQAKAAAAAAAJAAAAGQAJAAMAAAAIAAoAGQAJAAIAAAAIAAkAGQAJAAIAAAAIAAgAGQAKAAAAAAAIAAAAGQAJAAMAAAAHAAoAGQAJAAIAAAAHAAkAGQAJAAIAAAAHAAgAGQAKAAAAAAAHAAAAGQAJAAMAAAAGAAoAGQAJAAIAAAAGAAkAGQAJAAIAAAAGAAgAGQAKAAAAAAAGAAAAGQAJAAMAAAAFAAoAGQAJAAIAAAAFAAkAGQAJAAIAAAAFAAgAGQAKAAAAAAAFAAAAGQAJAAMAAAAEAAoAGQAJAAIAAAAEAAkAGQAJAAIAAAAEAAgAGQAGAAEAAAAEAAcAGQALAAIAAAAEAAYAGQALAAIAAAAEAAUAGQALAAIAAAAEAAQAGQALAAIAAAAEAAMAGQALAAIAAAAEAAIAGQALAAIAAAAEAAEAGQALAAIAAAAEAAAAGQAGAAIAAAADAAoAGQAJAAIAAAADAAkAGQAJAAIAAAADAAgAGQAJAAIAAAADAAcAGQAJAAIAAAADAAYAGQAJAAIAAAADAAUAGQAJAAIAAAADAAQAGQAJAAIAAAADAAMAGQAJAAIAAAADAAIAGQAJAAIAAAADAAEAGQAJAAIAAAADAAAAGQAJAAIAAAACAAoAGQAJAAIAAAACAAkAGQAJAAIAAAACAAgAGQAJAAIAAAACAAcAGQAJAAIAAAACAAYAGQAJAAIAAAACAAUAGQAJAAIAAAACAAQAGQAJAAIAAAACAAMAGQAJAAIAAAACAAIAGQAJAAIAAAACAAEAGQAJAAIAAAACAAAAGQAJAAIAAAABAAoAGQAJAAIAAAABAAkAGQAJAAIAAAABAAgAGQAJAAIAAAABAAcAGQAJAAIAAAABAAYAGQAJAAIAAAABAAUAGQAJAAIAAAABAAQAGQAJAAIAAAABAAMAGQAJAAIAAAABAAIAGQAJAAIAAAABAAEAGQAJAAIAAAABAAAAGQAJAAIAAAAAAAoAGQAJAAIAAAAAAAkAGQAJAAIAAAAAAAgAGQAJAAIAAAAAAAcAGQAJAAIAAAAAAAYAGQAJAAIAAAAAAAUAGQAJAAIAAAAAAAQAGQAJAAIAAAAAAAMAGQAJAAIAAAAAAAIAGQAJAAIAAAAAAAEAGQAJAAIAAAAAAAAAGQAJAAIAAAA=")
 tile_set = ExtResource("4_usqv8")
 
@@ -75,36 +78,33 @@ FacingDirection = 3
 position = Vector2(288, 176)
 shape = SubResource("RectangleShape2D_mosih")
 
-[node name="Loot" type="Node2D" parent="."]
+[node name="Enemies" parent="." instance=ExtResource("6_4msvd")]
 
-[node name="Enemies" type="Node2D" parent="."]
+[node name="Loot" parent="." instance=ExtResource("6_4msvd")]
 
-[node name="Tile Entities" type="Node2D" parent="."]
+[node name="TileEntities" parent="." instance=ExtResource("6_4msvd")]
 
-[node name="Box" parent="Tile Entities" instance=ExtResource("8_4msvd")]
+[node name="Box" parent="TileEntities" instance=ExtResource("8_4msvd")]
 position = Vector2(208, 80)
 collision_mask = 7
 
-[node name="PursePickup" parent="Tile Entities/Box" instance=ExtResource("9_usqv8")]
-z_index = 0
+[node name="PursePickup" parent="TileEntities" instance=ExtResource("9_usqv8")]
+position = Vector2(208, 80)
 
-[node name="Box2" parent="Tile Entities" instance=ExtResource("8_4msvd")]
+[node name="Box2" parent="TileEntities" instance=ExtResource("8_4msvd")]
 position = Vector2(336, 80)
 collision_mask = 7
 
-[node name="PursePickup2" parent="Tile Entities/Box2" instance=ExtResource("9_usqv8")]
-z_index = 0
+[node name="PursePickup2" parent="TileEntities/Box2" instance=ExtResource("9_usqv8")]
 
-[node name="Box3" parent="Tile Entities" instance=ExtResource("8_4msvd")]
+[node name="Box3" parent="TileEntities" instance=ExtResource("8_4msvd")]
 position = Vector2(336, 208)
 collision_mask = 7
 
-[node name="PursePickup3" parent="Tile Entities/Box3" instance=ExtResource("9_usqv8")]
-z_index = 0
+[node name="PursePickup3" parent="TileEntities/Box3" instance=ExtResource("9_usqv8")]
 
-[node name="Box4" parent="Tile Entities" instance=ExtResource("8_4msvd")]
+[node name="Box4" parent="TileEntities" instance=ExtResource("8_4msvd")]
 position = Vector2(208, 208)
 collision_mask = 7
 
-[node name="PursePickup4" parent="Tile Entities/Box4" instance=ExtResource("9_usqv8")]
-z_index = 0
+[node name="PursePickup4" parent="TileEntities/Box4" instance=ExtResource("9_usqv8")]

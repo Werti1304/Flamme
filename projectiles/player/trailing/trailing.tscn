@@ -39,7 +39,6 @@ color_ramp = SubResource("GradientTexture1D_rvkfn")
 color_initial_ramp = SubResource("GradientTexture1D_0q7qc")
 
 [node name="Trailing" type="Area2D" node_paths=PackedStringArray("Sprite", "TrailLine", "DestructionParticles")]
-z_index = 15
 collision_layer = 5
 collision_mask = 5
 script = ExtResource("1_0q7qc")
@@ -57,7 +56,6 @@ shape = SubResource("CircleShape2D_yuy2c")
 
 [node name="Line2D" type="Line2D" parent="."]
 top_level = true
-z_index = 14
 points = PackedVector2Array(0, 0, -30, 0)
 width = 3.0
 width_curve = SubResource("Curve_0q7qc")

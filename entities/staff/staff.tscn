@@ -14,7 +14,6 @@ height = 40.0
 radius = 8.0
 
 [node name="Staff" type="RigidBody2D" node_paths=PackedStringArray("StaffSprite", "StaffCore", "PickupArea", "Area", "PinJoint", "CollisionShape")]
-z_index = 90
 collision_layer = 0
 collision_mask = 14
 script = ExtResource("1_w1xtw")

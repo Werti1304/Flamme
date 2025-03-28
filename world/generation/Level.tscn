@@ -3,13 +3,14 @@
 [ext_resource type="Script" uid="uid://c6g26aj7v1tnv" path="res://world/generation/Level.cs" id="1_46mwi"]
 
 [node name="Level" type="Node2D" node_paths=PackedStringArray("LootParent")]
+y_sort_enabled = true
 script = ExtResource("1_46mwi")
 LootParent = NodePath("LootParent")
 
 [node name="LootParent" type="Node2D" parent="."]
 
 [node name="Control" type="Control" parent="."]
-z_index = -100
+z_index = -4096
 layout_mode = 3
 anchors_preset = 0
 offset_right = 40.0

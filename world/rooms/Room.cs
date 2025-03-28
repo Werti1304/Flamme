@@ -95,6 +95,9 @@ public partial class Room : Area2D
   [Export] public CollisionShape2D CollisionShape;
   [Export] public Node2D DoorMarkerParent;
   [Export] public Node2D MidPoint;
+  [Export] public Node2D EnemiesParent;
+  [Export] public Node2D LootParent;
+  [Export] public Node2D TileEntitiesParent;
 
   [Signal] public delegate void PlayerEnteredEventHandler(entities.player.PlayableCharacter playableCharacter);
   [Signal] public delegate void PlayerExitedEventHandler(entities.player.PlayableCharacter playableCharacter);
@@ -115,6 +118,8 @@ public partial class Room : Area2D
       // Sets values, will run at least once when opening Godot
       // Just kinda makes it so I can change rooms when I want
       ReadyInsideEditor();
+
+      YSortEnabled = true;
     }
     else
     {
@@ -149,10 +154,6 @@ public partial class Room : Area2D
   {
     CollisionLayer = 0b1111;
     CollisionMask = 0b1111;
-    if (RoofTileMap != null)
-    {
-      RoofTileMap.ZIndex = 4000;
-    }
   }
 
   public void AddLoot(Node2D loot)
@@ -375,6 +376,8 @@ public partial class Room : Area2D
     TileSet PropsTileSet = null;
     TileSet OuterWallTileSet = null;
 
+    YSortEnabled = true;
+
     switch (LevelType)
     {
       case LevelType.Prison:
@@ -395,7 +398,6 @@ public partial class Room : Area2D
       FloorTileMap.TileSet = FloorTileSet;
       FloorTileMap.Name = "Floor";
       FloorTileMap.Owner = this;
-      FloorTileMap.ZIndex = -1;
     }
     
     if (PropsTileMap == null)
@@ -466,24 +468,35 @@ public partial class Room : Area2D
       shape.Size = MinRoomSize;
       CollisionShape.Shape = shape;
       CollisionShape.Position = new Vector2(MinRoomSize.X / 2.0f, MinRoomSize.Y / 2.0f);
-      
-      // Just for simpler room building, unused in code
-      var node = new Node2D();
-      AddChild(node);
-      node.Name = "Loot";
-      node.Owner = this;
-      
-      // just for simpler room building, unused in code
-      node = new Node2D();
-      AddChild(node);
-      node.Name = "Enemies";
-      node.Owner = this;
-      
-      // just for simpler room building, unused in code
-      node = new Node2D();
-      AddChild(node);
-      node.Name = "Tile Entities";
-      node.Owner = this;
+    }
+    
+    var parentScene = GD.Load<PackedScene>(PathConstants.NodeParentPath);
+
+    if (EnemiesParent == null)
+    {
+      EnemiesParent = parentScene.Instantiate<Node2D>();
+      AddChild(EnemiesParent);
+      EnemiesParent.Name = "Enemies";
+      EnemiesParent.Owner = this;
+      EnemiesParent.YSortEnabled = true;
+    }
+
+    if (LootParent == null)
+    {
+      LootParent = parentScene.Instantiate<Node2D>();
+      AddChild(LootParent);
+      LootParent.Name = "Loot";
+      LootParent.Owner = this;
+      LootParent.YSortEnabled = true;
+    }
+    
+    if (TileEntitiesParent == null)
+    {
+      TileEntitiesParent = parentScene.Instantiate<Node2D>();
+      AddChild(TileEntitiesParent);
+      TileEntitiesParent.Name = "TileEntities";
+      TileEntitiesParent.Owner = this;
+      TileEntitiesParent.YSortEnabled = true;
     }
   }
   

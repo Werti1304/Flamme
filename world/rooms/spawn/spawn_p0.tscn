@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=4 uid="uid://pfhymug74cbs"]
+[gd_scene load_steps=26 format=4 uid="uid://pfhymug74cbs"]
 
 [ext_resource type="Script" uid="uid://cu3vdn0r1mer3" path="res://world/rooms/Room.cs" id="1_rabtc"]
 [ext_resource type="PackedScene" uid="uid://cu2hrf4t2q3w0" path="res://entities/env/health/health_pickup.tscn" id="3_x642v"]
@@ -12,6 +12,7 @@
 [ext_resource type="Script" uid="uid://0vcgovjdsym8" path="res://world/rooms/Tutorial.cs" id="11_7c6e3"]
 [ext_resource type="Texture2D" uid="uid://bgc4ewqfbryq3" path="res://assets/sprites/levels/PrisonWalls.png" id="11_dcmud"]
 [ext_resource type="PackedScene" uid="uid://k87pe50t1oua" path="res://ui/key_press/key_press.tscn" id="11_ogn66"]
+[ext_resource type="PackedScene" uid="uid://to5gnfx5ksif" path="res://world/rooms/node_parent.tscn" id="11_ww5ik"]
 [ext_resource type="Texture2D" uid="uid://d10jtjvekibmf" path="res://assets/ui/keyboard/DOWN.png" id="12_ny30j"]
 [ext_resource type="Texture2D" uid="uid://7owf21gsv1vg" path="res://assets/ui/keyboard/LEFT.png" id="13_swocj"]
 [ext_resource type="Texture2D" uid="uid://cewa7uxl8ttyo" path="res://assets/ui/keyboard/RIGHT.png" id="14_swocj"]
@@ -30,7 +31,8 @@ region = Rect2(0, 0, 32, 32)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_1ed62"]
 size = Vector2(544, 352)
 
-[node name="SpawnP0" type="Area2D" node_paths=PackedStringArray("TheoreticalDoorMarkers", "FloorTileMap", "PropsTileMap", "OuterWallTileMap", "RoofTileMap", "CollisionShape", "DoorMarkerParent", "MidPoint")]
+[node name="SpawnP0" type="Area2D" node_paths=PackedStringArray("TheoreticalDoorMarkers", "FloorTileMap", "PropsTileMap", "OuterWallTileMap", "RoofTileMap", "CollisionShape", "DoorMarkerParent", "MidPoint", "EnemiesParent", "LootParent", "TileEntitiesParent")]
+y_sort_enabled = true
 collision_layer = 15
 collision_mask = 15
 script = ExtResource("1_rabtc")
@@ -50,6 +52,9 @@ RoofTileMap = NodePath("Roof (Auto)")
 CollisionShape = NodePath("CollisionShape")
 DoorMarkerParent = NodePath("DoorMarkerParent")
 MidPoint = NodePath("MidPoint")
+EnemiesParent = NodePath("Enemies")
+LootParent = NodePath("Loot")
+TileEntitiesParent = NodePath("TileEntities")
 
 [node name="MoreDebugStuff" type="Node2D" parent="."]
 
@@ -248,11 +253,11 @@ position = Vector2(333, 272)
 [node name="HealthPickup11" parent="Debug Stuff/Rigidbodyfun" instance=ExtResource("3_x642v")]
 
 [node name="Floor" type="TileMapLayer" parent="."]
-z_index = -1
 tile_map_data = PackedByteArray("AAAGAAYAHgAAAAAAAAAHAAYAHgAAAAAAAAAIAAYAHgAAAAAAAAAJAAYAHgAAAAAAAAAKAAYAHgAAAAAAAAALAAYAHgAAAAAAAAALAAUAHgAAAAAAAAALAAQAHgAAAAAAAAALAAMAHgAAAAAAAAALAAIAHgAAAAAAAAAGAAIAHgAAAAAAAAAGAAMAHgAAAAAAAAAGAAQAHgAAAAAAAAAGAAUAHgAAAAAAAAAHAAMAHgAAAAAAAAAHAAIAHgAAAAAAAAAHAAQAHgAAAAAAAAAHAAUAHgAAAAAAAAAIAAQAHgAAAAAAAAAIAAMAHgAAAAAAAAAIAAIAHgAAAAAAAAAIAAUAHgAAAAAAAAAJAAIAHgAAAAAAAAAJAAMAHgAAAAAAAAAJAAQAHgAAAAAAAAAJAAUAHgAAAAAAAAAKAAQAHgAAAAAAAAAKAAMAHgAAAAAAAAAKAAIAHgAAAAAAAAAKAAUAHgAAAAAAAAAGAAcAHgAAAAAAAAAHAAcAHgAAAAAAAAAIAAcAHgAAAAAAAAAJAAcAHgAAAAAAAAAKAAcAHgAAAAAAAAALAAcAHgAAAAAAAAAFAAIAHgAAAAAAAAAFAAMAHgAAAAAAAAAFAAQAHgAAAAAAAAAFAAUAHgAAAAAAAAAFAAYAHgAAAAAAAAAFAAcAHgAAAAAAAAAFAAgAHgAAAAAAAAAGAAgAHgAAAAAAAAAHAAgAHgAAAAAAAAAIAAgAHgAAAAAAAAAJAAgAHgAAAAAAAAAKAAgAHgAAAAAAAAALAAgAHgAAAAAAAAAIAAkAHgAAAAAAAAAEAAUAHgAAAAAAAAAIAAEAHgAAAAAAAAAMAAUAHgAAAAAAAAA=")
 tile_set = ExtResource("6_wysig")
 
 [node name="Props" type="TileMapLayer" parent="."]
+y_sort_enabled = true
 tile_set = ExtResource("7_ny30j")
 
 [node name="Wall" type="TileMapLayer" parent="."]
@@ -260,7 +265,6 @@ tile_map_data = PackedByteArray("AAAFAAEACgAAAAAAAAAGAAEACgABAAAAAAAHAAEACgAAAAA
 tile_set = ExtResource("8_x642v")
 
 [node name="Roof (Auto)" type="TileMapLayer" parent="."]
-z_index = 4000
 tile_map_data = PackedByteArray("AAAQAAoAGQAJAAIAAAAQAAkAGQAJAAIAAAAQAAgAGQAJAAIAAAAQAAcAGQAJAAIAAAAQAAYAGQAJAAIAAAAQAAUAGQAJAAIAAAAQAAQAGQAJAAIAAAAQAAMAGQAJAAIAAAAQAAIAGQAJAAIAAAAQAAEAGQAJAAIAAAAQAAAAGQAJAAIAAAAPAAoAGQAJAAIAAAAPAAkAGQAJAAIAAAAPAAgAGQAJAAIAAAAPAAcAGQAJAAIAAAAPAAYAGQAJAAIAAAAPAAUAGQAJAAIAAAAPAAQAGQAJAAIAAAAPAAMAGQAJAAIAAAAPAAIAGQAJAAIAAAAPAAEAGQAJAAIAAAAPAAAAGQAJAAIAAAAOAAoAGQAJAAIAAAAOAAkAGQAJAAIAAAAOAAgAGQAJAAIAAAAOAAcAGQAJAAIAAAAOAAYAGQAJAAIAAAAOAAUAGQAJAAIAAAAOAAQAGQAJAAIAAAAOAAMAGQAJAAIAAAAOAAIAGQAJAAIAAAAOAAEAGQAJAAIAAAAOAAAAGQAJAAIAAAANAAoAGQAFAAEAAAANAAkAGQAIAAEAAAANAAgAGQAIAAEAAAANAAcAGQAIAAEAAAANAAYAGQAIAAEAAAANAAUAGQAIAAEAAAANAAQAGQAIAAEAAAANAAMAGQAIAAEAAAANAAIAGQAIAAEAAAANAAEAGQAIAAEAAAANAAAAGQAFAAIAAAAMAAoAGQAKAAAAAAAMAAAAGQAJAAMAAAALAAoAGQAKAAAAAAALAAAAGQAJAAMAAAAKAAoAGQAKAAAAAAAKAAAAGQAJAAMAAAAJAAoAGQAKAAAAAAAJAAAAGQAJAAMAAAAIAAoAGQAKAAAAAAAIAAAAGQAJAAMAAAAHAAoAGQAKAAAAAAAHAAAAGQAJAAMAAAAGAAoAGQAKAAAAAAAGAAAAGQAJAAMAAAAFAAoAGQAKAAAAAAAFAAAAGQAJAAMAAAAEAAoAGQAKAAAAAAAEAAAAGQAJAAMAAAADAAoAGQAGAAEAAAADAAkAGQALAAIAAAADAAgAGQALAAIAAAADAAcAGQALAAIAAAADAAYAGQALAAIAAAADAAUAGQALAAIAAAADAAQAGQALAAIAAAADAAMAGQALAAIAAAADAAIAGQALAAIAAAADAAEAGQALAAIAAAADAAAAGQAGAAIAAAACAAoAGQAJAAIAAAACAAkAGQAJAAIAAAACAAgAGQAJAAIAAAACAAcAGQAJAAIAAAACAAYAGQAJAAIAAAACAAUAGQAJAAIAAAACAAQAGQAJAAIAAAACAAMAGQAJAAIAAAACAAIAGQAJAAIAAAACAAEAGQAJAAIAAAACAAAAGQAJAAIAAAABAAoAGQAJAAIAAAABAAkAGQAJAAIAAAABAAgAGQAJAAIAAAABAAcAGQAJAAIAAAABAAYAGQAJAAIAAAABAAUAGQAJAAIAAAABAAQAGQAJAAIAAAABAAMAGQAJAAIAAAABAAIAGQAJAAIAAAABAAEAGQAJAAIAAAABAAAAGQAJAAIAAAAAAAoAGQAJAAIAAAAAAAkAGQAJAAIAAAAAAAgAGQAJAAIAAAAAAAcAGQAJAAIAAAAAAAYAGQAJAAIAAAAAAAUAGQAJAAIAAAAAAAQAGQAJAAIAAAAAAAMAGQAJAAIAAAAAAAIAGQAJAAIAAAAAAAEAGQAJAAIAAAAAAAAAGQAJAAIAAAA=")
 tile_set = ExtResource("8_x642v")
 
@@ -292,14 +296,18 @@ FacingDirection = 3
 DisguiseTexture = SubResource("AtlasTexture_l1djv")
 
 [node name="CollisionShape" type="CollisionShape2D" parent="."]
+z_index = -2000
 position = Vector2(272, 176)
 shape = SubResource("RectangleShape2D_1ed62")
 
-[node name="Loot" type="Node2D" parent="."]
+[node name="Enemies" type="Node2D" parent="." instance=ExtResource("11_ww5ik")]
+y_sort_enabled = true
 
-[node name="Enemies" type="Node2D" parent="."]
+[node name="Loot" type="Node2D" parent="." instance=ExtResource("11_ww5ik")]
+y_sort_enabled = true
 
-[node name="Tile Entities" type="Node2D" parent="."]
+[node name="TileEntities" type="Node2D" parent="." instance=ExtResource("11_ww5ik")]
+y_sort_enabled = true
 
 [node name="Tutorial" type="Node2D" parent="." node_paths=PackedStringArray("TutorialRoom", "KeyPresses")]
 script = ExtResource("11_7c6e3")

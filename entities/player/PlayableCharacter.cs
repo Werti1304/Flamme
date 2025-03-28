@@ -51,6 +51,7 @@ public partial class PlayableCharacter : CharacterBody2D, IEnemyDamagable
 
     OnInvChange();
     Hud.Instance.PurseDisplay.UpdatePurse(Purse);
+    GD.Print($"Player {Name} ready, Parent: {GetParent()}, Owner: {GetOwner()}!");
   }
 
   private Vector2 _movingVector = Vector2.Zero;

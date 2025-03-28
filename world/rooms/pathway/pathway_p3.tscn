@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=4 uid="uid://c0hqtyoju3wkt"]
+[gd_scene load_steps=12 format=4 uid="uid://c0hqtyoju3wkt"]
 
 [ext_resource type="Script" uid="uid://cu3vdn0r1mer3" path="res://world/rooms/Room.cs" id="1_ruv2y"]
 [ext_resource type="TileSet" uid="uid://ciata4jhj6wvu" path="res://assets/tilesets/prison/prison_floor.tres" id="2_puv0s"]
@@ -6,6 +6,7 @@
 [ext_resource type="TileSet" uid="uid://ca3qx51g3yg3u" path="res://assets/tilesets/prison/prison_wall.tres" id="4_uyf7g"]
 [ext_resource type="PackedScene" uid="uid://bnx0j5b2ekjat" path="res://world/doors/DoorMarker.tscn" id="5_w8ts5"]
 [ext_resource type="Texture2D" uid="uid://bgc4ewqfbryq3" path="res://assets/sprites/levels/PrisonWalls.png" id="7_rw8bg"]
+[ext_resource type="PackedScene" uid="uid://to5gnfx5ksif" path="res://world/rooms/node_parent.tscn" id="7_uyf7g"]
 [ext_resource type="PackedScene" uid="uid://copi3yylq7fvi" path="res://entities/enemies/prison/firefly_homing/firefly_homing.tscn" id="8_uyf7g"]
 [ext_resource type="PackedScene" uid="uid://cxavn5gxsjjnh" path="res://entities/enemies/prison/firefly_raging_light/firefly_raging_light.tscn" id="9_w8ts5"]
 
@@ -16,7 +17,8 @@ region = Rect2(0, 0, 32, 32)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_xj75n"]
 size = Vector2(544, 352)
 
-[node name="PathwayP3" type="Area2D" node_paths=PackedStringArray("TheoreticalDoorMarkers", "FloorTileMap", "PropsTileMap", "OuterWallTileMap", "RoofTileMap", "CollisionShape", "DoorMarkerParent", "MidPoint")]
+[node name="PathwayP3" type="Area2D" node_paths=PackedStringArray("TheoreticalDoorMarkers", "FloorTileMap", "PropsTileMap", "OuterWallTileMap", "RoofTileMap", "CollisionShape", "DoorMarkerParent", "MidPoint", "EnemiesParent", "LootParent", "TileEntitiesParent")]
+y_sort_enabled = true
 collision_layer = 15
 collision_mask = 15
 script = ExtResource("1_ruv2y")
@@ -33,9 +35,11 @@ RoofTileMap = NodePath("Roof (Auto)")
 CollisionShape = NodePath("CollisionShape")
 DoorMarkerParent = NodePath("DoorMarkerParent")
 MidPoint = NodePath("MidPoint")
+EnemiesParent = NodePath("Enemies")
+LootParent = NodePath("Loot")
+TileEntitiesParent = NodePath("TileEntities")
 
 [node name="Floor" type="TileMapLayer" parent="."]
-z_index = -1
 tile_map_data = PackedByteArray("AAACAAUAHgAAAAAAAAADAAQAHgAAAAAAAAADAAUAHgAAAAAAAAADAAYAHgAAAAAAAAAEAAQAHgAAAAAAAAAEAAUAHgAGAAEAAAAEAAYAHgAAAAAAAAAFAAQAHgAAAAAAAAAFAAUAHgAAAAAAAAAFAAYAHgAAAAAAAAAGAAMAHgAAAAAAAAAGAAQAHgAAAAAAAAAGAAUAHgAAAAAAAAAGAAYAHgACAAEAAAAGAAcAHgAAAAAAAAAHAAIAHgAAAAAAAAAHAAMAHgAAAAAAAAAHAAQAHgAAAAAAAAAHAAUAHgAAAAAAAAAHAAYAHgAAAAAAAAAHAAcAHgAAAAAAAAAHAAgAHgAAAAAAAAAIAAIAHgAAAAAAAAAIAAMAHgAAAAAAAAAIAAQAHgAAAAAAAAAIAAUAHgAAAAAAAAAIAAYAHgAAAAAAAAAIAAcAHgADAAAAAAAIAAgAHgAAAAAAAAAJAAMAHgAAAAAAAAAJAAQAHgAAAAAAAAAJAAUAHgAAAAAAAAAJAAYAHgAAAAAAAAAJAAcAHgAGAAAAAAAKAAQAHgAAAAAAAAAKAAUAHgADAAAAAAAKAAYAHgAAAAAAAAALAAQAHgAAAAAAAAALAAUAHgAEAAAAAAALAAYAHgAAAAAAAAAMAAQAHgAAAAAAAAAMAAUAHgAAAAAAAAAMAAYAHgAAAAAAAAANAAUAHgAAAAAAAAAIAAEAHgAAAAAAAAAIAAkAHgAAAAAAAAAJAAIAHgAAAAAAAAAJAAgAHgAAAAAAAAAKAAMAHgABAAEAAAAKAAcAHgAFAAAAAAANAAQAHgAAAAAAAAANAAYAHgABAAAAAAAOAAUAHgAAAAEAAAA=")
 tile_set = ExtResource("2_puv0s")
 
@@ -47,7 +51,6 @@ tile_map_data = PackedByteArray("AAACAAMACgAAAAMAAAACAAcACgAAAAMAAGADAAMACgACAAA
 tile_set = ExtResource("4_uyf7g")
 
 [node name="Roof (Auto)" type="TileMapLayer" parent="."]
-z_index = 4000
 tile_map_data = PackedByteArray("AAAOAAoAGQAJAAIAAAAOAAkAGQAJAAIAAAAOAAgAGQAKAAAAAAAOAAIAGQAJAAMAAAAOAAEAGQAJAAIAAAAOAAAAGQAJAAIAAAANAAoAGQAJAAIAAAANAAkAGQAJAAIAAAANAAgAGQAKAAAAAAANAAIAGQAJAAMAAAANAAEAGQAJAAIAAAANAAAAGQAJAAIAAAAMAAoAGQAJAAIAAAAMAAkAGQAFAAEAAAAMAAgAGQAIAAAAAAAMAAIAGQAIAAMAAAAMAAEAGQAFAAIAAAAMAAAAGQAJAAIAAAALAAoAGQAFAAEAAAALAAkAGQAIAAAAAAALAAEAGQAIAAMAAAALAAAAGQAFAAIAAAAKAAoAGQAKAAAAAAAKAAAAGQAJAAMAAAAJAAoAGQAKAAAAAAAJAAAAGQAJAAMAAAAIAAoAGQAKAAAAAAAIAAAAGQAJAAMAAAAHAAoAGQAKAAAAAAAHAAAAGQAJAAMAAAAGAAoAGQAKAAAAAAAGAAAAGQAJAAMAAAAFAAoAGQAGAAEAAAAFAAAAGQAGAAIAAAAEAAoAGQAJAAIAAAAEAAkAGQAGAAEAAAAEAAEAGQAGAAIAAAAEAAAAGQAJAAIAAAADAAoAGQAJAAIAAAADAAkAGQAJAAIAAAADAAgAGQAKAAAAAAADAAIAGQAJAAMAAAADAAEAGQAJAAIAAAADAAAAGQAJAAIAAAACAAoAGQAJAAIAAAACAAkAGQAJAAIAAAACAAgAGQAKAAAAAAACAAIAGQAJAAMAAAACAAEAGQAJAAIAAAACAAAAGQAJAAIAAAABAAoAGQAJAAIAAAABAAkAGQAJAAIAAAABAAgAGQAGAAEAAAABAAIAGQAGAAIAAAABAAEAGQAJAAIAAAABAAAAGQAJAAIAAAAAAAoAGQAJAAIAAAAAAAkAGQAJAAIAAAAAAAgAGQAJAAIAAAAAAAcAGQAJAAIAAAAAAAYAGQAJAAIAAAAAAAUAGQAJAAIAAAAAAAQAGQAJAAIAAAAAAAMAGQAJAAIAAAAAAAIAGQAJAAIAAAAAAAEAGQAJAAIAAAAAAAAAGQAJAAIAAAAQAAoAGQAJAAIAAAAQAAkAGQAJAAIAAAAQAAgAGQAJAAIAAAAQAAcAGQAJAAIAAAAQAAYAGQAJAAIAAAAQAAUAGQAJAAIAAAAQAAQAGQAJAAIAAAAQAAMAGQAJAAIAAAAQAAIAGQAJAAIAAAAQAAEAGQAJAAIAAAAQAAAAGQAJAAIAAAAPAAoAGQAJAAIAAAAPAAkAGQAJAAIAAAAPAAgAGQAFAAEAAAAPAAcAGQAIAAEAAAAPAAYAGQAIAAEAAAAPAAUAGQAIAAEAAAAPAAQAGQAIAAEAAAAPAAMAGQAIAAEAAAAPAAIAGQAFAAIAAAAPAAEAGQAJAAIAAAAPAAAAGQAJAAIAAAAFAAkAGQALAAAAAAAFAAEAGQALAAMAAAAEAAgAGQALAAAAAAAEAAIAGQALAAMAAAABAAcAGQALAAIAAAABAAYAGQALAAIAAAABAAUAGQALAAIAAAABAAQAGQALAAIAAAABAAMAGQALAAIAAAA=")
 tile_set = ExtResource("4_uyf7g")
 
@@ -82,9 +85,7 @@ DisguiseTexture = SubResource("AtlasTexture_l1djv")
 position = Vector2(272, 176)
 shape = SubResource("RectangleShape2D_xj75n")
 
-[node name="Loot" type="Node2D" parent="."]
-
-[node name="Enemies" type="Node2D" parent="."]
+[node name="Enemies" parent="." instance=ExtResource("7_uyf7g")]
 
 [node name="FireflyHoming" parent="Enemies" instance=ExtResource("8_uyf7g")]
 position = Vector2(272, 176)
@@ -101,4 +102,6 @@ position = Vector2(272, 208)
 [node name="FireflyRagingLight4" parent="Enemies" instance=ExtResource("9_w8ts5")]
 position = Vector2(304, 176)
 
-[node name="Tile Entities" type="Node2D" parent="."]
+[node name="Loot" parent="." instance=ExtResource("7_uyf7g")]
+
+[node name="TileEntities" parent="." instance=ExtResource("7_uyf7g")]

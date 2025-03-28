@@ -1,10 +1,11 @@
-[gd_scene load_steps=10 format=4 uid="uid://dx4ilqls2tp16"]
+[gd_scene load_steps=11 format=4 uid="uid://dx4ilqls2tp16"]
 
 [ext_resource type="Script" uid="uid://cu3vdn0r1mer3" path="res://world/rooms/Room.cs" id="1_l52jp"]
 [ext_resource type="TileSet" uid="uid://ciata4jhj6wvu" path="res://assets/tilesets/prison/prison_floor.tres" id="2_nmpst"]
 [ext_resource type="TileSet" uid="uid://c5qpaglqhfr5s" path="res://assets/tilesets/prison/prison_props.tres" id="3_ufi4d"]
 [ext_resource type="TileSet" uid="uid://ca3qx51g3yg3u" path="res://assets/tilesets/prison/prison_wall.tres" id="4_6tps4"]
 [ext_resource type="PackedScene" uid="uid://bnx0j5b2ekjat" path="res://world/doors/DoorMarker.tscn" id="5_bfd2u"]
+[ext_resource type="PackedScene" uid="uid://to5gnfx5ksif" path="res://world/rooms/node_parent.tscn" id="6_6tps4"]
 [ext_resource type="PackedScene" uid="uid://ct506hl51tduf" path="res://entities/env/tiles/box/box.tscn" id="8_6tps4"]
 [ext_resource type="PackedScene" uid="uid://cyw1jorccdqfm" path="res://entities/env/lying_around_loot/lying_around_loot.tscn" id="8_ufi4d"]
 [ext_resource type="PackedScene" uid="uid://bh5tvnrt4tk45" path="res://entities/enemies/prison/runner/Runner.tscn" id="9_6tps4"]
@@ -12,7 +13,8 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_gymle"]
 size = Vector2(608, 352)
 
-[node name="PathwayP2" type="Area2D" node_paths=PackedStringArray("TheoreticalDoorMarkers", "FloorTileMap", "PropsTileMap", "OuterWallTileMap", "RoofTileMap", "CollisionShape", "DoorMarkerParent", "MidPoint")]
+[node name="PathwayP2" type="Area2D" node_paths=PackedStringArray("TheoreticalDoorMarkers", "FloorTileMap", "PropsTileMap", "OuterWallTileMap", "RoofTileMap", "CollisionShape", "DoorMarkerParent", "MidPoint", "EnemiesParent", "LootParent", "TileEntitiesParent")]
+y_sort_enabled = true
 collision_layer = 15
 collision_mask = 15
 script = ExtResource("1_l52jp")
@@ -29,9 +31,11 @@ RoofTileMap = NodePath("Roof (Auto)")
 CollisionShape = NodePath("CollisionShape")
 DoorMarkerParent = NodePath("DoorMarkerParent")
 MidPoint = NodePath("MidPoint")
+EnemiesParent = NodePath("Enemies")
+LootParent = NodePath("Loot")
+TileEntitiesParent = NodePath("TileEntities")
 
 [node name="Floor" type="TileMapLayer" parent="."]
-z_index = -1
 tile_map_data = PackedByteArray("AAACAAIAHgAAAAAAAAACAAMAHgAAAAQAAAACAAQAHgAAAAAAAAACAAUAHgAAAAAAAAACAAYAHgAAAAAAAAACAAcAHgAAAAQAAAACAAgAHgAAAAAAAAADAAIAHgABAAEAAAADAAMAHgAAAAQAAAADAAQAHgAAAAAAAAADAAUAHgAAAAAAAAADAAYAHgAAAAAAAAADAAcAHgAAAAQAAAADAAgAHgAAAAAAAAAEAAIAHgAAAAAAAAAEAAMAHgAAAAQAAAAEAAQAHgAAAAAAAAAEAAUAHgAAAAAAAAAEAAYAHgAAAAAAAAAEAAcAHgAAAAQAAAAEAAgAHgAAAAEAAAAFAAIAHgAAAAAAAAAFAAMAHgAAAAAAAAAFAAQAHgAAAAAAAAAFAAUAHgAAAAAAAAAFAAYAHgAAAAAAAAAFAAcAHgAAAAQAAAAFAAgAHgAAAAAAAAAGAAIAHgAAAAAAAAAGAAMAHgAAAAQAAAAGAAQAHgAAAAAAAAAGAAUAHgAAAAAAAAAGAAYAHgABAAEAAAAGAAcAHgAAAAQAAAAGAAgAHgAAAAAAAAAHAAIAHgAAAAAAAAAHAAMAHgAAAAQAAAAHAAQAHgAAAAAAAAAHAAUAHgAGAAEAAAAHAAYAHgAAAAAAAAAHAAcAHgAAAAAAAAAHAAgAHgAAAAAAAAAIAAIAHgAAAAQAAAAIAAMAHgAAAAQAAAAIAAQAHgAAAAAAAAAIAAUAHgAAAAAAAAAIAAYAHgAAAAAAAAAIAAcAHgAAAAQAAAAIAAgAHgAAAAQAAAAJAAIAHgAAAAAAAAAJAAMAHgAAAAAAAAAJAAQAHgAAAAAAAAAJAAUAHgAAAAAAAAAJAAYAHgAAAAAAAAAJAAcAHgAAAAAAAAAJAAgAHgAAAAAAAAAKAAIAHgAAAAQAAAAKAAMAHgAAAAQAAAAKAAQAHgAAAAAAAAAKAAUAHgACAAEAAAAKAAYAHgAAAAAAAAAKAAcAHgAAAAQAAAAKAAgAHgAAAAQAAAALAAIAHgAAAAAAAAALAAMAHgAAAAQAAAALAAQAHgAAAAAAAAALAAUAHgAAAAAAAAALAAYAHgAAAAAAAAALAAcAHgAAAAQAAAALAAgAHgAAAAAAAAAMAAIAHgAAAAAAAAAMAAMAHgAAAAQAAAAMAAQAHgAAAAAAAAAMAAUAHgAAAAAAAAAMAAYAHgAAAAAAAAAMAAcAHgAAAAQAAAAMAAgAHgAAAAAAAAANAAIAHgAAAAAAAAANAAMAHgAAAAAAAAANAAQAHgAAAAAAAAANAAUAHgAAAAAAAAANAAYAHgAAAAAAAAANAAcAHgAAAAQAAAANAAgAHgAAAAAAAAAOAAIAHgACAAAAAAAOAAMAHgAAAAQAAAAOAAQAHgAAAAAAAAAOAAUAHgAAAAAAAAAOAAYAHgAAAAAAAAAOAAcAHgAAAAAAAAAOAAgAHgAAAAAAAAAPAAIAHgAAAAAAAAAPAAMAHgAAAAQAAAAPAAQAHgAAAAAAAAAPAAUAHgABAAEAAAAPAAYAHgAAAAAAAAAPAAcAHgAAAAQAAAAPAAgAHgAAAAAAAAAJAAEAHgAAAAAAAAABAAUAHgAAAAAAAAAQAAUAHgAAAAAAAAAJAAkAHgAAAAAAAAAQAAgAHgAAAAAAAAAQAAcAHgAAAAQAAAAQAAYAHgABAAEAAAAQAAQAHgAAAAAAAAAQAAMAHgAAAAQAAAAQAAIAHgABAAEAAAARAAUAHgAAAAAAAAA=")
 tile_set = ExtResource("2_nmpst")
 
@@ -44,7 +48,6 @@ tile_map_data = PackedByteArray("AAABAAQACgACAAAAAGABAAMACgABAAAAAGABAAIACgABAAA
 tile_set = ExtResource("4_6tps4")
 
 [node name="Roof (Auto)" type="TileMapLayer" parent="."]
-z_index = 4000
 tile_map_data = PackedByteArray("AAAQAAAAGQAJAAMAAAAPAAAAGQAJAAMAAAAOAAAAGQAJAAMAAAANAAAAGQAJAAMAAAAMAAAAGQAJAAMAAAALAAAAGQAJAAMAAAAKAAAAGQAJAAMAAAAJAAAAGQAJAAMAAAAIAAAAGQAJAAMAAAAHAAAAGQAJAAMAAAAGAAAAGQAJAAMAAAAFAAAAGQAJAAMAAAAEAAAAGQAJAAMAAAADAAAAGQAJAAMAAAACAAAAGQAJAAMAAAABAAAAGQAJAAMAAAAAAAkAGQALAAIAAAAAAAgAGQALAAIAAAAAAAcAGQALAAIAAAAAAAYAGQALAAIAAAAAAAUAGQALAAIAAAAAAAQAGQALAAIAAAAAAAMAGQALAAIAAAAAAAIAGQALAAIAAAAAAAEAGQALAAIAAAAAAAAAGQAGAAIAAAARAAoAGQAKAAAAAAARAAAAGQAJAAMAAAAQAAoAGQAKAAAAAAAPAAoAGQAKAAAAAAAOAAoAGQAKAAAAAAANAAoAGQAKAAAAAAAMAAoAGQAKAAAAAAALAAoAGQAKAAAAAAAKAAoAGQAKAAAAAAAJAAoAGQAKAAAAAAAIAAoAGQAKAAAAAAAHAAoAGQAKAAAAAAAGAAoAGQAKAAAAAAAFAAoAGQAKAAAAAAAEAAoAGQAKAAAAAAADAAoAGQAKAAAAAAACAAoAGQAKAAAAAAABAAoAGQAKAAAAAAAAAAoAGQAGAAEAAAASAAoAGQAFAAEAAAASAAkAGQAIAAEAAAASAAgAGQAIAAEAAAASAAcAGQAIAAEAAAASAAYAGQAIAAEAAAASAAUAGQAIAAEAAAASAAQAGQAIAAEAAAASAAMAGQAIAAEAAAASAAIAGQAIAAEAAAASAAEAGQAIAAEAAAASAAAAGQAFAAIAAAA=")
 tile_set = ExtResource("4_6tps4")
 
@@ -75,7 +78,21 @@ FacingDirection = 3
 position = Vector2(304, 176)
 shape = SubResource("RectangleShape2D_gymle")
 
-[node name="Loot" type="Node2D" parent="."]
+[node name="Enemies" parent="." instance=ExtResource("6_6tps4")]
+
+[node name="Runner" parent="Enemies" instance=ExtResource("9_6tps4")]
+position = Vector2(80, 80)
+
+[node name="Runner2" parent="Enemies" instance=ExtResource("9_6tps4")]
+position = Vector2(80, 272)
+
+[node name="Runner3" parent="Enemies" instance=ExtResource("9_6tps4")]
+position = Vector2(528, 272)
+
+[node name="Runner4" parent="Enemies" instance=ExtResource("9_6tps4")]
+position = Vector2(528, 80)
+
+[node name="Loot" parent="." instance=ExtResource("6_6tps4")]
 
 [node name="LyingAroundLoot" parent="Loot" instance=ExtResource("8_ufi4d")]
 position = Vector2(80, 80)
@@ -93,30 +110,16 @@ SpawnChance = 24.976
 position = Vector2(528, 272)
 SpawnChance = 24.976
 
-[node name="Enemies" type="Node2D" parent="."]
+[node name="TileEntities" parent="." instance=ExtResource("6_6tps4")]
 
-[node name="Runner" parent="Enemies" instance=ExtResource("9_6tps4")]
-position = Vector2(80, 80)
-
-[node name="Runner2" parent="Enemies" instance=ExtResource("9_6tps4")]
-position = Vector2(80, 272)
-
-[node name="Runner3" parent="Enemies" instance=ExtResource("9_6tps4")]
-position = Vector2(528, 272)
-
-[node name="Runner4" parent="Enemies" instance=ExtResource("9_6tps4")]
-position = Vector2(528, 80)
-
-[node name="Tile Entities" type="Node2D" parent="."]
-
-[node name="Box" parent="Tile Entities" instance=ExtResource("8_6tps4")]
+[node name="Box" parent="TileEntities" instance=ExtResource("8_6tps4")]
 position = Vector2(176, 112)
 
-[node name="Box2" parent="Tile Entities" instance=ExtResource("8_6tps4")]
+[node name="Box2" parent="TileEntities" instance=ExtResource("8_6tps4")]
 position = Vector2(240, 240)
 
-[node name="Box3" parent="Tile Entities" instance=ExtResource("8_6tps4")]
+[node name="Box3" parent="TileEntities" instance=ExtResource("8_6tps4")]
 position = Vector2(464, 240)
 
-[node name="Box4" parent="Tile Entities" instance=ExtResource("8_6tps4")]
+[node name="Box4" parent="TileEntities" instance=ExtResource("8_6tps4")]
 position = Vector2(432, 112)

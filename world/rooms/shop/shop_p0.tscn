@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=4 uid="uid://dl3t47a8hmi7"]
+[gd_scene load_steps=14 format=4 uid="uid://dl3t47a8hmi7"]
 
 [ext_resource type="Script" uid="uid://cu3vdn0r1mer3" path="res://world/rooms/Room.cs" id="1_yngi1"]
 [ext_resource type="TileSet" uid="uid://ciata4jhj6wvu" path="res://assets/tilesets/prison/prison_floor.tres" id="2_xxu8i"]
@@ -9,6 +9,7 @@
 [ext_resource type="PackedScene" uid="uid://bgqrp6nhkayrg" path="res://entities/env/shop/coin_buyable.tscn" id="8_tsus6"]
 [ext_resource type="PackedScene" uid="uid://ct41on4c43mde" path="res://entities/env/purse/purse_pickup.tscn" id="9_cy0pq"]
 [ext_resource type="PackedScene" uid="uid://cu2hrf4t2q3w0" path="res://entities/env/health/health_pickup.tscn" id="10_b45db"]
+[ext_resource type="PackedScene" uid="uid://to5gnfx5ksif" path="res://world/rooms/node_parent.tscn" id="11_7s4eo"]
 [ext_resource type="PackedScene" uid="uid://bfulsjxd53ikv" path="res://entities/env/itemPickup.tscn" id="11_n3jul"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_l1djv"]
@@ -18,7 +19,7 @@ region = Rect2(0, 0, 32, 32)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_2qjs0"]
 size = Vector2(544, 320)
 
-[node name="ShopP0" type="Area2D" node_paths=PackedStringArray("TheoreticalDoorMarkers", "FloorTileMap", "PropsTileMap", "OuterWallTileMap", "RoofTileMap", "CollisionShape", "DoorMarkerParent", "MidPoint")]
+[node name="ShopP0" type="Area2D" node_paths=PackedStringArray("TheoreticalDoorMarkers", "FloorTileMap", "PropsTileMap", "OuterWallTileMap", "RoofTileMap", "CollisionShape", "DoorMarkerParent", "MidPoint", "EnemiesParent", "LootParent", "TileEntitiesParent")]
 collision_layer = 15
 collision_mask = 15
 script = ExtResource("1_yngi1")
@@ -38,9 +39,11 @@ RoofTileMap = NodePath("Roof (Auto)")
 CollisionShape = NodePath("CollisionShape")
 DoorMarkerParent = NodePath("DoorMarkerParent")
 MidPoint = NodePath("MidPoint")
+EnemiesParent = NodePath("Enemies")
+LootParent = NodePath("Loot")
+TileEntitiesParent = NodePath("TileEntities")
 
 [node name="Floor" type="TileMapLayer" parent="."]
-z_index = -1
 tile_map_data = PackedByteArray("AAAMAAIAHgAAAAAAAAALAAIAHgAAAAAAAAAKAAIAHgAFAAEAAAAJAAIAHgACAAAAAAAIAAIAHgAAAAAAAAAHAAIAHgAAAAAAAAAGAAIAHgAAAAAAAAAFAAIAHgAAAAAAAAAEAAIAHgAAAAAAAAAEAAMAHgAAAAAAAAAFAAMAHgAAAAAAAAAGAAMAHgAAAAAAAAAHAAMAHgAAAAEAAAAIAAMAHgAAAAAAAAAJAAMAHgAAAAAAAAAKAAMAHgAAAAAAAAALAAMAHgAAAAAAAAAMAAMAHgAAAAAAAAAMAAQAHgAAAAAAAAALAAQAHgAAAAAAAAAKAAQAHgAAAAAAAAAJAAQAHgAAAAAAAAAIAAQAHgAFAAAAAAAHAAQAHgAAAAAAAAAGAAQAHgAAAAAAAAAFAAQAHgAAAAAAAAAEAAQAHgAAAAAAAAAEAAYAHgAAAAAAAAAEAAUAHgACAAEAAAAFAAUAHgAAAAAAAAAGAAUAHgAAAAAAAAAHAAUAHgAAAAAAAAAIAAUAHgAAAAAAAAAJAAUAHgAAAAAAAAAKAAUAHgAAAAAAAAALAAUAHgAAAAAAAAAMAAUAHgAAAAAAAAAMAAYAHgAAAAAAAAALAAYAHgAEAAEAAAAKAAYAHgAAAAEAAAAJAAYAHgAAAAAAAAAIAAYAHgAAAAAAAAAHAAYAHgAAAAAAAAAGAAYAHgACAAEAAAAFAAYAHgAAAAAAAAADAAQAHgAAAAAAAAAIAAEAHgAAAAAAAAANAAQAHgAAAAAAAAAIAAcAHgAAAAAAAAA=")
 tile_set = ExtResource("2_xxu8i")
 
@@ -52,7 +55,6 @@ tile_map_data = PackedByteArray("AAAEAAEACgAFAAAAAAAFAAEACgAAAAAAAAAGAAEACgACAAA
 tile_set = ExtResource("4_cy0pq")
 
 [node name="Roof (Auto)" type="TileMapLayer" parent="."]
-z_index = 4000
 tile_map_data = PackedByteArray("AAAQAAkAGQAJAAIAAAAQAAgAGQAJAAIAAAAQAAcAGQAJAAIAAAAQAAYAGQAJAAIAAAAQAAUAGQAJAAIAAAAQAAQAGQAJAAIAAAAQAAMAGQAJAAIAAAAQAAIAGQAJAAIAAAAQAAEAGQAJAAIAAAAQAAAAGQAJAAIAAAAPAAkAGQAJAAIAAAAPAAgAGQAJAAIAAAAPAAcAGQAJAAIAAAAPAAYAGQAJAAIAAAAPAAUAGQAJAAIAAAAPAAQAGQAJAAIAAAAPAAMAGQAJAAIAAAAPAAIAGQAJAAIAAAAPAAEAGQAJAAIAAAAPAAAAGQAJAAIAAAAOAAkAGQAJAAIAAAAOAAgAGQAFAAEAAAAOAAcAGQAIAAEAAAAOAAYAGQAIAAEAAAAOAAUAGQAIAAEAAAAOAAQAGQAIAAEAAAAOAAMAGQAIAAEAAAAOAAIAGQAIAAEAAAAOAAEAGQAIAAEAAAAOAAAAGQAFAAIAAAANAAkAGQAJAAIAAAANAAgAGQAKAAAAAAANAAAAGQAJAAMAAAAMAAkAGQAJAAIAAAAMAAgAGQAKAAAAAAAMAAAAGQAJAAMAAAALAAkAGQAJAAIAAAALAAgAGQAKAAAAAAALAAAAGQAJAAMAAAAKAAkAGQAJAAIAAAAKAAgAGQAKAAAAAAAKAAAAGQAJAAMAAAAJAAkAGQAJAAIAAAAJAAgAGQAKAAAAAAAJAAAAGQAJAAMAAAAIAAkAGQAJAAIAAAAIAAgAGQAKAAAAAAAIAAAAGQAJAAMAAAAHAAkAGQAJAAIAAAAHAAgAGQAKAAAAAAAHAAAAGQAJAAMAAAAGAAkAGQAJAAIAAAAGAAgAGQAKAAAAAAAGAAAAGQAJAAMAAAAFAAkAGQAJAAIAAAAFAAgAGQAKAAAAAAAFAAAAGQAJAAMAAAAEAAkAGQAJAAIAAAAEAAgAGQAKAAAAAAAEAAAAGQAJAAMAAAADAAkAGQAJAAIAAAADAAgAGQAKAAAAAAADAAAAGQAJAAMAAAACAAkAGQAJAAIAAAACAAgAGQAGAAEAAAACAAcAGQALAAIAAAACAAYAGQALAAIAAAACAAUAGQALAAIAAAACAAQAGQALAAIAAAACAAMAGQALAAIAAAACAAIAGQALAAIAAAACAAEAGQALAAIAAAACAAAAGQAGAAIAAAABAAkAGQAJAAIAAAABAAgAGQAJAAIAAAABAAcAGQAJAAIAAAABAAYAGQAJAAIAAAABAAUAGQAJAAIAAAABAAQAGQAJAAIAAAABAAMAGQAJAAIAAAABAAIAGQAJAAIAAAABAAEAGQAJAAIAAAABAAAAGQAJAAIAAAAAAAkAGQAJAAIAAAAAAAgAGQAJAAIAAAAAAAcAGQAJAAIAAAAAAAYAGQAJAAIAAAAAAAUAGQAJAAIAAAAAAAQAGQAJAAIAAAAAAAMAGQAJAAIAAAAAAAIAGQAJAAIAAAAAAAEAGQAJAAIAAAAAAAAAGQAJAAIAAAA=")
 tile_set = ExtResource("4_cy0pq")
 
@@ -87,7 +89,11 @@ DisguiseTexture = SubResource("AtlasTexture_l1djv")
 position = Vector2(272, 160)
 shape = SubResource("RectangleShape2D_2qjs0")
 
-[node name="Loot" type="Node2D" parent="."]
+[node name="Enemies" type="Node2D" parent="." instance=ExtResource("11_7s4eo")]
+y_sort_enabled = true
+
+[node name="Loot" type="Node2D" parent="." instance=ExtResource("11_7s4eo")]
+y_sort_enabled = true
 
 [node name="CoinBuyable" parent="Loot" instance=ExtResource("8_tsus6")]
 position = Vector2(176, 176)
@@ -116,4 +122,5 @@ Price = 5
 [node name="PursePickup" parent="Loot/CoinBuyable4" instance=ExtResource("9_cy0pq")]
 PurseContent = 2
 
-[node name="Enemies" type="Node2D" parent="."]
+[node name="TileEntities" type="Node2D" parent="." instance=ExtResource("11_7s4eo")]
+y_sort_enabled = true

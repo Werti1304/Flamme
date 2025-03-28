@@ -1,17 +1,18 @@
-[gd_scene load_steps=9 format=4 uid="uid://2th3b5t6ox55"]
+[gd_scene load_steps=10 format=4 uid="uid://2th3b5t6ox55"]
 
 [ext_resource type="Script" uid="uid://cu3vdn0r1mer3" path="res://world/rooms/Room.cs" id="1_jdq44"]
 [ext_resource type="TileSet" uid="uid://ciata4jhj6wvu" path="res://assets/tilesets/prison/prison_floor.tres" id="2_p1xno"]
 [ext_resource type="TileSet" uid="uid://c5qpaglqhfr5s" path="res://assets/tilesets/prison/prison_props.tres" id="3_e1aju"]
 [ext_resource type="TileSet" uid="uid://ca3qx51g3yg3u" path="res://assets/tilesets/prison/prison_wall.tres" id="4_6q2mw"]
 [ext_resource type="PackedScene" uid="uid://bnx0j5b2ekjat" path="res://world/doors/DoorMarker.tscn" id="5_jmbd6"]
+[ext_resource type="PackedScene" uid="uid://to5gnfx5ksif" path="res://world/rooms/node_parent.tscn" id="6_e1aju"]
 [ext_resource type="PackedScene" uid="uid://lgaf0ao8rsb4" path="res://entities/enemies/prison/runner_angry/runner_angry.tscn" id="8_e1aju"]
 [ext_resource type="PackedScene" uid="uid://bh5tvnrt4tk45" path="res://entities/enemies/prison/runner/Runner.tscn" id="9_6q2mw"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_sds4u"]
 size = Vector2(544, 416)
 
-[node name="PathwayP8" type="Area2D" node_paths=PackedStringArray("TheoreticalDoorMarkers", "FloorTileMap", "PropsTileMap", "OuterWallTileMap", "RoofTileMap", "CollisionShape", "DoorMarkerParent", "MidPoint")]
+[node name="PathwayP8" type="Area2D" node_paths=PackedStringArray("TheoreticalDoorMarkers", "FloorTileMap", "PropsTileMap", "OuterWallTileMap", "RoofTileMap", "CollisionShape", "DoorMarkerParent", "MidPoint", "EnemiesParent", "LootParent", "TileEntitiesParent")]
 collision_layer = 15
 collision_mask = 15
 script = ExtResource("1_jdq44")
@@ -28,9 +29,11 @@ RoofTileMap = NodePath("Roof (Auto)")
 CollisionShape = NodePath("CollisionShape")
 DoorMarkerParent = NodePath("DoorMarkerParent")
 MidPoint = NodePath("MidPoint")
+EnemiesParent = NodePath("Enemies")
+LootParent = NodePath("Loot")
+TileEntitiesParent = NodePath("TileEntities")
 
 [node name="Floor" type="TileMapLayer" parent="."]
-z_index = -1
 position = Vector2(-1, 0)
 tile_map_data = PackedByteArray("AAACAAIAHgAAAAAAAAACAAMAHgAAAAAAAAACAAQAHgAAAAAAAAACAAUAHgABAAAAAAACAAYAHgAAAAAAAAACAAcAHgAAAAAAAAACAAgAHgAAAAAAAAACAAkAHgAAAAAAAAADAAIAHgAAAAAAAAADAAMAHgAAAAAAAAADAAQAHgAAAAAAAAADAAUAHgAAAAAAAAADAAYAHgAAAAAAAAADAAcAHgAAAAAAAAADAAgAHgAAAAEAAAADAAkAHgAAAAAAAAAEAAIAHgABAAAAAAAEAAMAHgAAAAAAAAAEAAQAHgAAAAEAAAAEAAUAHgAAAAAAAAAEAAYAHgAAAAAAAAAEAAcAHgAAAAAAAAAEAAgAHgAAAAAAAAAEAAkAHgAAAAAAAAAFAAIAHgAAAAAAAAAFAAMAHgAAAAAAAAAFAAgAHgAAAAAAAAAFAAkAHgAAAAAAAAAGAAIAHgAAAAAAAAAGAAMAHgAAAAAAAAAGAAgAHgAAAAAAAAAGAAkAHgABAAEAAAAHAAIAHgAAAAAAAAAHAAMAHgADAAAAAAAHAAgAHgAAAAAAAAAHAAkAHgAFAAEAAAAIAAIAHgAAAAAAAAAIAAMAHgAAAAAAAAAIAAcAHgAAAAAAAAAIAAgAHgAAAAAAAAAIAAkAHgAAAAAAAAAIAAoAHgACAAEAAAAJAAIAHgAAAAAAAAAJAAMAHgAAAAAAAAAJAAgAHgAAAAAAAAAJAAkAHgAAAAAAAAAKAAIAHgAAAAAAAAAKAAMAHgAAAAAAAAAKAAgAHgAAAAAAAAAKAAkAHgAAAAAAAAALAAIAHgAAAAAAAAALAAMAHgAAAAAAAAALAAgAHgACAAEAAAALAAkAHgAAAAEAAAAMAAIAHgAAAAAAAAAMAAMAHgAAAAAAAAAMAAQAHgAAAAAAAAAMAAUAHgAAAAAAAAAMAAYAHgAHAAAAAAAMAAcAHgAAAAAAAAAMAAgAHgAAAAAAAAAMAAkAHgAAAAAAAAANAAIAHgABAAEAAAANAAMAHgAAAAAAAAANAAQAHgAAAAAAAAANAAUAHgAAAAAAAAANAAYAHgAAAAAAAAANAAcAHgAAAAAAAAANAAgAHgAAAAAAAAANAAkAHgAEAAAAAAAOAAIAHgAAAAAAAAAOAAMAHgAAAAAAAAAOAAQAHgABAAEAAAAOAAUAHgABAAAAAAAOAAYAHgACAAEAAAAOAAcAHgAAAAAAAAAOAAgAHgAAAAAAAAAOAAkAHgAAAAAAAAABAAYAHgAAAAAAAAACAAoAHgAAAAAAAAADAAoAHgAEAAAAAAAEAAoAHgAAAAAAAAAFAAQAHgAAAAAAAAAFAAoAHgABAAEAAAAGAAQAHgAEAAAAAAAGAAoAHgAAAAAAAAAHAAQAHgAAAAAAAAAHAAoAHgAAAAAAAAAIAAQAHgAAAAAAAAAIAAsAHgAAAAAAAAAJAAQAHgAAAAAAAAAJAAoAHgAAAAAAAAAKAAQAHgADAAEAAAAKAAoAHgAAAAAAAAALAAQAHgAAAAAAAAALAAoAHgAAAAAAAAAMAAoAHgAAAAAAAAANAAoAHgAAAAAAAAAOAAoAHgAGAAAAAAAPAAYAHgAAAAAAAAA=")
 tile_set = ExtResource("2_p1xno")
@@ -43,7 +46,6 @@ tile_map_data = PackedByteArray("AAACAAEACgAAAAAAAAADAAEACgAAAAAAAAAEAAEACgACAAA
 tile_set = ExtResource("4_6q2mw")
 
 [node name="Roof (Auto)" type="TileMapLayer" parent="."]
-z_index = 4000
 tile_map_data = PackedByteArray("AAAQAAkAGQAIAAEAAAAQAAgAGQAIAAEAAAAQAAcAGQAIAAEAAAAQAAYAGQAIAAEAAAAQAAUAGQAIAAEAAAAQAAQAGQAIAAEAAAAQAAMAGQAIAAEAAAAQAAIAGQAIAAEAAAAQAAEAGQAIAAEAAAAQAAAAGQAFAAIAAAAPAAAAGQAJAAMAAAAOAAAAGQAJAAMAAAANAAAAGQAJAAMAAAAMAAAAGQAJAAMAAAALAAAAGQAJAAMAAAAKAAYAGQADAAMAAAAKAAAAGQAJAAMAAAAJAAYAGQACAAMAAAAJAAAAGQAJAAMAAAAIAAAAGQAJAAMAAAAHAAYAGQACAAMAAAAHAAAAGQAJAAMAAAAGAAYAGQABAAMAAAAGAAAAGQAJAAMAAAAFAAAAGQAJAAMAAAAEAAAAGQAJAAMAAAADAAAAGQAJAAMAAAACAAAAGQAJAAMAAAABAAAAGQAJAAMAAAAAAAkAGQALAAIAAAAAAAgAGQALAAIAAAAAAAcAGQALAAIAAAAAAAYAGQALAAIAAAAAAAUAGQALAAIAAAAAAAQAGQALAAIAAAAAAAMAGQALAAIAAAAAAAIAGQALAAIAAAAAAAEAGQALAAIAAAAAAAAAGQAGAAIAAAAQAAwAGQAFAAEAAAAQAAsAGQAIAAEAAAAQAAoAGQAIAAEAAAAPAAwAGQAKAAAAAAAOAAwAGQAKAAAAAAANAAwAGQAKAAAAAAAMAAwAGQAKAAAAAAALAAwAGQAKAAAAAAAKAAwAGQAKAAAAAAAJAAwAGQAKAAAAAAAIAAwAGQAKAAAAAAAIAAYAGQACAAMAAAAHAAwAGQAKAAAAAAAGAAwAGQAKAAAAAAAFAAwAGQAKAAAAAAAEAAwAGQAKAAAAAAADAAwAGQAKAAAAAAACAAwAGQAKAAAAAAABAAwAGQAKAAAAAAAAAAwAGQAGAAEAAAAAAAsAGQALAAIAAAAAAAoAGQALAAIAAAA=")
 tile_set = ExtResource("4_6q2mw")
 
@@ -74,9 +76,8 @@ FacingDirection = 3
 position = Vector2(272, 208)
 shape = SubResource("RectangleShape2D_sds4u")
 
-[node name="Loot" type="Node2D" parent="."]
-
-[node name="Enemies" type="Node2D" parent="."]
+[node name="Enemies" type="Node2D" parent="." instance=ExtResource("6_e1aju")]
+y_sort_enabled = true
 
 [node name="RunnerAngry" parent="Enemies" instance=ExtResource("8_e1aju")]
 position = Vector2(240, 96)
@@ -93,4 +94,8 @@ position = Vector2(112, 305)
 [node name="Runner2" parent="Enemies" instance=ExtResource("9_6q2mw")]
 position = Vector2(432, 304)
 
-[node name="Tile Entities" type="Node2D" parent="."]
+[node name="Loot" type="Node2D" parent="." instance=ExtResource("6_e1aju")]
+y_sort_enabled = true
+
+[node name="TileEntities" type="Node2D" parent="." instance=ExtResource("6_e1aju")]
+y_sort_enabled = true

@@ -10,6 +10,7 @@
 [ext_resource type="PackedScene" uid="uid://bnx0j5b2ekjat" path="res://world/doors/DoorMarker.tscn" id="9_w7y63"]
 
 [node name="ExampleLevel" type="Node2D" node_paths=PackedStringArray("PlayableCharacter", "ActiveStaff", "PlayerCamera")]
+y_sort_enabled = true
 script = ExtResource("1_y0xvm")
 PlayableCharacter = NodePath("Character/PlayableCharacter")
 ActiveStaff = NodePath("Character/Staff")
@@ -28,28 +29,34 @@ Player = NodePath("../PlayableCharacter")
 
 [node name="Rooms" type="Node2D" parent="."]
 
-[node name="Spawn2" parent="." node_paths=PackedStringArray("TheoreticalDoorMarkers") instance=ExtResource("6_osotp")]
+[node name="Spawn2" parent="." node_paths=PackedStringArray("TheoreticalDoorMarkers", "EnemiesParent", "LootParent", "TileEntitiesParent") instance=ExtResource("6_osotp")]
 TheoreticalDoorMarkers = {
 0: null,
 1: null,
 2: null,
 3: null
 }
+EnemiesParent = NodePath("Enemies")
+LootParent = NodePath("Loot")
+TileEntitiesParent = NodePath("TileEntities")
 
-[node name="TestingRoom" parent="." instance=ExtResource("7_osotp")]
+[node name="TestingRoom" parent="." node_paths=PackedStringArray("EnemiesParent", "LootParent") instance=ExtResource("7_osotp")]
 position = Vector2(608, -160)
+EnemiesParent = NodePath("Enemies")
+LootParent = NodePath("Loot")
 
-[node name="Door" parent="." node_paths=PackedStringArray("DoorMarker1", "DoorMarker2", "Room1", "Room2") instance=ExtResource("8_dqqbh")]
+[node name="Door" parent="TestingRoom" node_paths=PackedStringArray("DoorMarker1", "DoorMarker2", "Room1", "Room2") instance=ExtResource("8_dqqbh")]
+position = Vector2(-608, 160)
 _type = 1
 DoorMarker1 = NodePath("DoorMarker")
 DoorMarker2 = NodePath("DoorMarker2")
-Room1 = NodePath("../Spawn2")
-Room2 = NodePath("../TestingRoom")
+Room1 = NodePath("../../Spawn2")
+Room2 = NodePath("..")
 
-[node name="DoorMarker" parent="Door" instance=ExtResource("9_w7y63")]
-position = Vector2(512, 64)
+[node name="DoorMarker" parent="TestingRoom/Door" instance=ExtResource("9_w7y63")]
+position = Vector2(352, 64)
 
-[node name="DoorMarker2" parent="Door" instance=ExtResource("9_w7y63")]
+[node name="DoorMarker2" parent="TestingRoom/Door" instance=ExtResource("9_w7y63")]
 position = Vector2(704, 544)
 rotation = 3.14159
 FacingDirection = 2

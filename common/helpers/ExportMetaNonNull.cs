@@ -50,7 +50,7 @@ public static class ExportMetaNonNull
         continue;
       }
       
-      GD.PushWarning($"Property {propertyName} from node {node} is null!");
+      GD.PushWarning($"Property {propertyName} from node {node.Name} is null!");
       hasErrors = true;
     }
     return !hasErrors;

@@ -43,7 +43,6 @@ offsets = PackedFloat32Array(0, 0.603352, 1)
 colors = PackedColorArray(0, 0, 0, 0, 0.878431, 0.847059, 0.356863, 1, 0.988235, 0.984314, 0.952941, 1)
 
 [node name="Fireball" type="Area2D" node_paths=PackedStringArray("Sprite", "TrailLine", "DestructionParticles")]
-z_index = 10
 collision_layer = 5
 collision_mask = 5
 script = ExtResource("1_b7gwv")
@@ -57,11 +56,9 @@ DestructionParticles = NodePath("GPUParticles2D")
 shape = SubResource("CircleShape2D_tsqf6")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-z_index = 15
 texture = ExtResource("2_tsqf6")
 
 [node name="GPUParticles2D" type="GPUParticles2D" parent="."]
-z_index = 17
 emitting = false
 amount = 128
 one_shot = true
@@ -74,7 +71,6 @@ visible = false
 
 [node name="Line2D2" type="Line2D" parent="."]
 top_level = true
-z_index = 14
 points = PackedVector2Array(0, 0, -9.7169, 0, -13, 0, -14.8794, 0, -18.5737, 0, -21.3681, 0, -25, 0, -30, 0)
 width = 5.0
 width_curve = SubResource("Curve_uug5p")

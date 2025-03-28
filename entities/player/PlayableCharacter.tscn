@@ -14,14 +14,16 @@
 atlas = ExtResource("2_ubm3h")
 region = Rect2(0, 96, 32, 32)
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_3pk4b"]
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_wwsi2"]
 radius = 8.0
+height = 21.0
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_7g7to"]
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_3y81k"]
 radius = 9.0
+height = 23.0
 
 [node name="PlayableCharacter" type="CharacterBody2D" node_paths=PackedStringArray("Stats", "Purse", "Sprite", "InteractionArea", "InvincibilityTimer")]
-z_index = 100
+y_sort_enabled = true
 collision_layer = 2
 collision_mask = 7
 motion_mode = 1
@@ -42,7 +44,8 @@ Left = ExtResource("6_3tq2x")
 Right = ExtResource("7_6xcbt")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-shape = SubResource("CircleShape2D_3pk4b")
+position = Vector2(0, 1.5)
+shape = SubResource("CapsuleShape2D_wwsi2")
 
 [node name="Stats" type="Node2D" parent="."]
 script = ExtResource("2_75lbi")
@@ -55,7 +58,8 @@ collision_layer = 13
 collision_mask = 15
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="InteractionArea"]
-shape = SubResource("CircleShape2D_7g7to")
+position = Vector2(0, 2)
+shape = SubResource("CapsuleShape2D_3y81k")
 debug_color = Color(0.86453, 0.339727, 0.297452, 0.42)
 
 [node name="InvincibleTimer" type="Timer" parent="."]

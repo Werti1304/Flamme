@@ -38,4 +38,5 @@ public static class PathConstants
   public const string PrisonPropsTileSetPath = "res://assets/tilesets/prison/prison_props.tres";
   public const string PrisonWallTileSetPath = "res://assets/tilesets/prison/prison_wall.tres";
 
+  public const string NodeParentPath = "res://world/rooms/node_parent.tscn";
 }

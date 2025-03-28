@@ -24,7 +24,6 @@ radial_accel_max = 5.0
 color_ramp = SubResource("GradientTexture1D_ip0m6")
 
 [node name="Arrow" type="Area2D" node_paths=PackedStringArray("Sprite", "DestructionParticles")]
-z_index = 10
 collision_layer = 3
 collision_mask = 3
 script = ExtResource("1_ip0m6")
