@@ -1,0 +1,14 @@
+[gd_scene load_steps=2 format=3 uid="uid://d3xj4kosc7iqg"]
+
+[sub_resource type="CSharpScript" id="CSharpScript_akc0n"]
+script/source = "using Godot;
+using System;
+
+public partial class ItemPickupInterlinker : Node2D
+{
+  [Export] public NodePath ItemPath;
+}
+"
+
+[node name="ItemPickupInterlinker" type="Node2D"]
+script = SubResource("CSharpScript_akc0n")

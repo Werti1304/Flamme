@@ -273,7 +273,7 @@ public partial class PlayableCharacter : CharacterBody2D, IEnemyDamagable
   
   private void OnAreaEntered(Area2D area)
   {
-    if (area is Flamme.entities.env.ItemPickup itemPickup)
+    if (area is env.ItemPickup itemPickup)
     {
       PickupItem(itemPickup.Pickup());
     }

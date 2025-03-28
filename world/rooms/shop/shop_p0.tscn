@@ -10,7 +10,7 @@
 [ext_resource type="PackedScene" uid="uid://ct41on4c43mde" path="res://entities/env/purse/purse_pickup.tscn" id="9_cy0pq"]
 [ext_resource type="PackedScene" uid="uid://cu2hrf4t2q3w0" path="res://entities/env/health/health_pickup.tscn" id="10_b45db"]
 [ext_resource type="PackedScene" uid="uid://to5gnfx5ksif" path="res://world/rooms/node_parent.tscn" id="11_7s4eo"]
-[ext_resource type="PackedScene" uid="uid://bfulsjxd53ikv" path="res://entities/env/itemPickup.tscn" id="11_n3jul"]
+[ext_resource type="PackedScene" uid="uid://bfulsjxd53ikv" path="res://entities/env/item_pickup/item_pickup.tscn" id="11_n3jul"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_l1djv"]
 atlas = ExtResource("7_7s4eo")

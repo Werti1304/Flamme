@@ -461,6 +461,7 @@ public partial class Room : Area2D
       AddChild(CollisionShape);
       CollisionShape.Name = "CollisionShape";
       CollisionShape.Owner = this;
+      CollisionShape.ZIndex = -2000;
       
       var shape = new RectangleShape2D();
       shape.Size = MinRoomSize;

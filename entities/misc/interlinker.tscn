@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://b0lhqivi1sdfp"]
+
+[ext_resource type="Script" uid="uid://0op1loo8km5s" path="res://entities/misc/Interlinker.cs" id="1_tpy6d"]
+
+[node name="Interlinker" type="Node2D"]
+script = ExtResource("1_tpy6d")

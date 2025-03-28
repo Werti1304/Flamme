@@ -64,18 +64,18 @@ public partial class DoorMarker : StaticBody2D
   public void Open()
   {
     Sprite.Texture = TextureOpen;
-    CollisionShape.SetDeferred(CollisionShape2D.PropertyName.Disabled, true);
+    SetDeferred(CollisionObject2D.PropertyName.CollisionLayer, (int)CollisionFlags.Entities);
   }
 
   public void Close()
   {
     Sprite.Texture = TextureClosed;
-    CollisionShape.SetDeferred(CollisionShape2D.PropertyName.Disabled, false);
+    SetDeferred(CollisionObject2D.PropertyName.CollisionLayer, (int)(CollisionFlags.Entities | CollisionFlags.Walls));
   }
 
   public void Disguise()
   {
     Sprite.Texture = DisguiseTexture;
-    CollisionShape.SetDeferred(CollisionShape2D.PropertyName.Disabled, false);
+    SetDeferred(CollisionObject2D.PropertyName.CollisionLayer, (int)(CollisionFlags.Entities | CollisionFlags.Walls));
   }
 }

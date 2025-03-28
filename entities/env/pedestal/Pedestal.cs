@@ -4,7 +4,7 @@ using Godot;
 public partial class Pedestal : StaticBody2D
 {
   [Export] public ItemPickup ItemPickupLoot;
-
+  
   public override void _Ready()
   {
     if (ItemPickupLoot == null)

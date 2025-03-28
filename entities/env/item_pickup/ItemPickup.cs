@@ -1,12 +1,14 @@
 using Flamme.common.enums;
 using Flamme.common.helpers;
 using Flamme.common.scenes;
+using Flamme.entities.misc;
 using Flamme.items;
 using Godot;
+using System;
 
 namespace Flamme.entities.env;
 
-public partial class ItemPickup : Area2D
+public partial class ItemPickup : Area2D, IInterlinkable
 {
   public enum ItemRetrievel
   {
@@ -23,6 +25,8 @@ public partial class ItemPickup : Area2D
   [Export] private Sprite2D _sprite;
   [Export] private CollisionShape2D _collisionShape;
   [Export] public GpuParticles2D Particles2D;
+  
+  public event Action SendUnavailable;
 
   private Item _item;
 
@@ -90,17 +94,23 @@ public partial class ItemPickup : Area2D
     if (_pickedUp)
       return null;
     _pickedUp = true;
+    SendUnavailable?.Invoke();
     
-    _sprite.Hide();
-    Particles2D.OneShot = true;
-    Particles2D.Restart();
-    Particles2D.Finished += QueueFree;
+    StartDestruct();
 
     if (_item == null)
     {
       return ItemManager.Instance.DefaultItem;
     }
     return _item;
+  }
+
+  private void StartDestruct()
+  {
+    _sprite.Hide();
+    Particles2D.OneShot = true;
+    Particles2D.Restart();
+    Particles2D.Finished += QueueFree;
   }
 
   public void SetItem(Item item)
@@ -131,5 +141,13 @@ public partial class ItemPickup : Area2D
     }
     Particles2D.Emitting = true;
     _sprite.Show();
+  }
+  
+  public void MakeUnavailable()
+  {
+    if (!_pickedUp)
+    {
+      StartDestruct();
+    }
   }
 }

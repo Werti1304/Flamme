@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://cu3vdn0r1mer3" path="res://world/rooms/Room.cs" id="1_rabtc"]
 [ext_resource type="PackedScene" uid="uid://cu2hrf4t2q3w0" path="res://entities/env/health/health_pickup.tscn" id="3_x642v"]
 [ext_resource type="PackedScene" uid="uid://ct41on4c43mde" path="res://entities/env/purse/purse_pickup.tscn" id="4_1i1kx"]
-[ext_resource type="PackedScene" uid="uid://bfulsjxd53ikv" path="res://entities/env/itemPickup.tscn" id="5_q01ak"]
+[ext_resource type="PackedScene" uid="uid://bfulsjxd53ikv" path="res://entities/env/item_pickup/item_pickup.tscn" id="5_q01ak"]
 [ext_resource type="PackedScene" uid="uid://bgqrp6nhkayrg" path="res://entities/env/shop/coin_buyable.tscn" id="6_ogn66"]
 [ext_resource type="TileSet" uid="uid://ciata4jhj6wvu" path="res://assets/tilesets/prison/prison_floor.tres" id="6_wysig"]
 [ext_resource type="TileSet" uid="uid://c5qpaglqhfr5s" path="res://assets/tilesets/prison/prison_props.tres" id="7_ny30j"]
@@ -300,14 +300,11 @@ z_index = -2000
 position = Vector2(272, 176)
 shape = SubResource("RectangleShape2D_1ed62")
 
-[node name="Enemies" type="Node2D" parent="." instance=ExtResource("11_ww5ik")]
-y_sort_enabled = true
+[node name="Enemies" parent="." instance=ExtResource("11_ww5ik")]
 
-[node name="Loot" type="Node2D" parent="." instance=ExtResource("11_ww5ik")]
-y_sort_enabled = true
+[node name="Loot" parent="." instance=ExtResource("11_ww5ik")]
 
-[node name="TileEntities" type="Node2D" parent="." instance=ExtResource("11_ww5ik")]
-y_sort_enabled = true
+[node name="TileEntities" parent="." instance=ExtResource("11_ww5ik")]
 
 [node name="Tutorial" type="Node2D" parent="." node_paths=PackedStringArray("TutorialRoom", "KeyPresses")]
 script = ExtResource("11_7c6e3")

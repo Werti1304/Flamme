@@ -1,6 +1,6 @@
 [gd_scene load_steps=7 format=3 uid="uid://bfulsjxd53ikv"]
 
-[ext_resource type="Script" uid="uid://d2seg062g50v4" path="res://entities/env/ItemPickup.cs" id="1_rp6wu"]
+[ext_resource type="Script" uid="uid://d2seg062g50v4" path="res://entities/env/item_pickup/ItemPickup.cs" id="1_rp6wu"]
 [ext_resource type="Texture2D" uid="uid://b2bq2t7ftmcrl" path="res://flamme_item.png" id="2_um77p"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_qluf5"]

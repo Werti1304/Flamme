@@ -4,7 +4,7 @@
 [ext_resource type="TileSet" uid="uid://ciata4jhj6wvu" path="res://assets/tilesets/prison/prison_floor.tres" id="2_kpldu"]
 [ext_resource type="TileSet" uid="uid://c5qpaglqhfr5s" path="res://assets/tilesets/prison/prison_props.tres" id="3_44otc"]
 [ext_resource type="TileSet" uid="uid://ca3qx51g3yg3u" path="res://assets/tilesets/prison/prison_wall.tres" id="4_q8bm0"]
-[ext_resource type="PackedScene" uid="uid://bfulsjxd53ikv" path="res://entities/env/itemPickup.tscn" id="5_44otc"]
+[ext_resource type="PackedScene" uid="uid://bfulsjxd53ikv" path="res://entities/env/item_pickup/item_pickup.tscn" id="5_44otc"]
 [ext_resource type="PackedScene" uid="uid://bnx0j5b2ekjat" path="res://world/doors/DoorMarker.tscn" id="5_q8bm0"]
 [ext_resource type="PackedScene" uid="uid://de4gtmblvgbyu" path="res://entities/env/pedestal/pedestal.tscn" id="7_r6uni"]
 [ext_resource type="PackedScene" uid="uid://to5gnfx5ksif" path="res://world/rooms/node_parent.tscn" id="8_mlug2"]
@@ -13,6 +13,7 @@
 size = Vector2(672, 352)
 
 [node name="TreasureP1" type="Area2D" node_paths=PackedStringArray("TheoreticalDoorMarkers", "FloorTileMap", "PropsTileMap", "OuterWallTileMap", "RoofTileMap", "CollisionShape", "DoorMarkerParent", "MidPoint", "EnemiesParent", "LootParent", "TileEntitiesParent")]
+y_sort_enabled = true
 collision_layer = 15
 collision_mask = 15
 script = ExtResource("1_mbywd")
@@ -80,18 +81,16 @@ position = Vector2(320, 32)
 position = Vector2(336, 176)
 shape = SubResource("RectangleShape2D_r6uni")
 
-[node name="Enemies" type="Node2D" parent="." instance=ExtResource("8_mlug2")]
-y_sort_enabled = true
+[node name="Enemies" parent="." instance=ExtResource("8_mlug2")]
 
-[node name="Loot" type="Node2D" parent="." instance=ExtResource("8_mlug2")]
-y_sort_enabled = true
+[node name="Loot" parent="." instance=ExtResource("8_mlug2")]
 
-[node name="Pedestal" parent="Loot" instance=ExtResource("7_r6uni")]
+[node name="Pedestal" parent="Loot" node_paths=PackedStringArray("ItemPickupLoot") instance=ExtResource("7_r6uni")]
 position = Vector2(336, 144)
+ItemPickupLoot = NodePath("ItemPickupFireRateToken")
 
-[node name="ItemPickup" parent="Loot/Pedestal" instance=ExtResource("5_44otc")]
+[node name="ItemPickupFireRateToken" parent="Loot/Pedestal" instance=ExtResource("5_44otc")]
 RetrievelMode = 1
-ItemId = 6
+ItemId = 12
 
-[node name="TileEntities" type="Node2D" parent="." instance=ExtResource("8_mlug2")]
-y_sort_enabled = true
+[node name="TileEntities" parent="." instance=ExtResource("8_mlug2")]

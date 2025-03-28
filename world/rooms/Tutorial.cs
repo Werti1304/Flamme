@@ -10,6 +10,8 @@ public partial class Tutorial : Node2D
   [Export] public Room TutorialRoom;
   [Export] public Array<ui.key_press.KeyPress> KeyPresses = [];
 
+  public static bool Completed = false;
+  
   public override void _Ready()
   {
     LevelManager.Instance.LevelReady += OnLevelReady;
@@ -17,6 +19,18 @@ public partial class Tutorial : Node2D
 
   private void OnLevelReady()
   {
+    // This is so that the tutorial won't be shown at the start of the next level
+    if (Completed)
+    {
+      foreach (var keyPress in KeyPresses)
+      {
+        keyPress.SetProcessInput(false);
+        keyPress.Visible = false;
+      }
+      SetProcessInput(false);
+      return;
+    }
+    
     TutorialRoom.OverrideDoorLogic = true;
     foreach (var door in TutorialRoom.Doors.Values)
     {
@@ -48,6 +62,7 @@ public partial class Tutorial : Node2D
       keyPress.SetProcessInput(false);
       keyPress.Modulate = keyPress.ModulateColor;
     }
+    Completed = true;
     SetProcessInput(false);
   }
 }

@@ -41,7 +41,7 @@ public partial class Minimap : GridContainer
   private ulong _timeMsec;
   public override void _Input(InputEvent @event)
   {
-    if (@event.IsActionPressed(PlayerInputMap.Dict[PlayerInputMap.Action.Pause]))
+    if (@event.IsActionPressed(PlayerInputMap.Dict[PlayerInputMap.Action.ToggleMap]))
     {
       if (Modulate != Colors.White)
       {
@@ -51,7 +51,7 @@ public partial class Minimap : GridContainer
       }
       Modulate = Colors.White;
     }
-    else if (@event.IsActionReleased(PlayerInputMap.Dict[PlayerInputMap.Action.Pause]))
+    else if (@event.IsActionReleased(PlayerInputMap.Dict[PlayerInputMap.Action.ToggleMap]))
     {
       if (Time.Singleton.GetTicksMsec() - _timeMsec < MaxTimeMsec)
       {

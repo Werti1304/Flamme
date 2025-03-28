@@ -8,7 +8,7 @@ radius = 11.0
 
 [sub_resource type="Gradient" id="Gradient_eryr7"]
 offsets = PackedFloat32Array(0, 0.460432, 1)
-colors = PackedColorArray(1, 1, 1, 1, 0.803922, 0.396078, 0.662745, 1, 0, 0, 0, 1)
+colors = PackedColorArray(1, 1, 0.8, 1, 1, 1, 0.32, 1, 0, 0, 0, 1)
 
 [sub_resource type="GradientTexture1D" id="GradientTexture1D_oovqd"]
 gradient = SubResource("Gradient_eryr7")
@@ -18,16 +18,19 @@ lifetime_randomness = 0.3
 emission_shape = 1
 emission_sphere_radius = 8.0
 inherit_velocity_ratio = 0.1
+spread = 180.0
+initial_velocity_max = 20.0
 gravity = Vector3(0, 0, 0)
 radial_accel_min = -2.23517e-06
 radial_accel_max = 5.0
-scale_min = 4.0
+scale_min = 2.0
 scale_max = 4.0
 color_ramp = SubResource("GradientTexture1D_oovqd")
 
 [node name="BigHoming" type="Area2D" node_paths=PackedStringArray("Sprite", "DestructionParticles")]
 script = ExtResource("1_eryr7")
-ShotSpeed = 1.0
+Damage = 8
+ShotSpeed = 1.2
 WindupTime = 1.0
 Sprite = NodePath("Sprite2D")
 DestructionParticles = NodePath("GPUParticles2D")
@@ -39,9 +42,7 @@ texture = ExtResource("2_3qhty")
 shape = SubResource("CircleShape2D_eryr7")
 
 [node name="GPUParticles2D" type="GPUParticles2D" parent="."]
-emitting = false
 amount = 64
-one_shot = true
 explosiveness = 1.0
 randomness = 1.0
 process_material = SubResource("ParticleProcessMaterial_3qhty")
