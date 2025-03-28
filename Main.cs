@@ -1,7 +1,5 @@
 using Flamme.entities.env.Loot;
 using Flamme.items;
-using Flamme.world;
-using Flamme.world.generation;
 using Godot;
 
 namespace Flamme;
@@ -38,7 +36,7 @@ public partial class Main : Node
   // Fix enemy spawning in wall thats not good
   // Make it so boss room 1 is on level 1 and 2 on 2
   
-  public bool ShuttingDown { get; private set; }= false;
+  public bool ShuttingDown { get; private set; }
 
   public override void _Notification(int what)
   {

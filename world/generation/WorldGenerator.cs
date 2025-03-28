@@ -1,9 +1,6 @@
 using System;
 using Flamme.common.constant;
 using Flamme.common.enums;
-using Flamme.entities.env.Loot;
-using Flamme.entities.staff;
-using Flamme.ui;
 using Flamme.world.rooms;
 using Godot;
 using System.Collections.Generic;
@@ -28,7 +25,7 @@ public partial class WorldGenerator : Node2D
   }
 
   public System.Collections.Generic.Dictionary<LevelFloor, Level> Levels = new System.Collections.Generic.Dictionary<LevelFloor, Level>();
-  public bool WaitingForSceneChangeToNewLevel = false;
+  public bool WaitingForSceneChangeToNewLevel;
   public bool GenerateNewLevel = true;
 
   public void GenerateLevels(ulong seed)

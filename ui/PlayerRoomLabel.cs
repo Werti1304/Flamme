@@ -6,7 +6,7 @@ namespace Flamme.ui;
 public partial class PlayerRoomLabel : Label
 {
   private double TIMER_LIMIT = 0.3f;
-  private double timer = 0.0;
+  private double timer;
   
   public override void _Process(double delta)
   {

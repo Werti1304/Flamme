@@ -1,15 +1,3 @@
-#region *.hpp
-// //----------------------------------------------------------------------------------------------------------------------
-// // RoomMeta.cs
-// //
-// // <Explanation of the file's contents ...>
-// // <... may span multiple lines.>
-// //
-// // Author: <name>, <name> ...
-// //----------------------------------------------------------------------------------------------------------------------
-// //
-#endregion
-
 using Flamme.common.constant;
 using Flamme.common.enums;
 using Godot;
@@ -17,7 +5,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
 
 namespace Flamme.world.rooms;
 

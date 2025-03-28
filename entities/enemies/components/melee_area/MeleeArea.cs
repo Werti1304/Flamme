@@ -14,7 +14,7 @@ public partial class MeleeArea : Area2D
   private readonly List<IEnemyDamagable> _damagables = [];
   
   private const double DamageMaxTime = 0.1;  
-  private double _damageTimer = 0;
+  private double _damageTimer;
   
   public override void _Ready()
   {

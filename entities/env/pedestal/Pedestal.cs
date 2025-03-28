@@ -1,6 +1,5 @@
 using Flamme.entities.env;
 using Godot;
-using System;
 
 public partial class Pedestal : StaticBody2D
 {

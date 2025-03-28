@@ -21,10 +21,10 @@ public partial class Shooter : Node2D
   [Export] public int ProjectileCount = 1;
   // Describes the MAX + and - degree that the bullet will have from the target
   [Export] public float SpreadDegree = 15.0f;
-  [Export] public float SpawnSpreadPosV = 0.0f; 
+  [Export] public float SpawnSpreadPosV; 
   
   [ExportGroup("Flags")]
-  [Export] public bool Homing = false;
+  [Export] public bool Homing;
 
   private Enemy _shooter;
   private player.PlayableCharacter _target;

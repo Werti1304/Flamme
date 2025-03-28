@@ -143,7 +143,7 @@ public partial class GrandWizard : Enemy
   }
 
   private Attack _currentAttack = Attack.None;
-  private int _shootCounter = 0; // General shoot counter, used for different attacks
+  private int _shootCounter; // General shoot counter, used for different attacks
   private Vector2 _initialTargetPos;
   private void AttackTimerOnTimeout()
   {

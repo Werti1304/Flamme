@@ -7,7 +7,7 @@ namespace Flamme.entities.enemies;
 public abstract partial class Enemy : CharacterBody2D, IPlayerDamageable
 {
   private float _health = 10;
-  [Export] public bool EnemyDisabled = false;
+  [Export] public bool EnemyDisabled;
   [Export] public float Health
   {
     get => _health;

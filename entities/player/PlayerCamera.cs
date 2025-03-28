@@ -18,7 +18,7 @@ public partial class PlayerCamera : Camera2D
     return _activeRoom;
   }
 
-  private bool _roomChange = false;
+  private bool _roomChange;
   public void UpdateRoom()
   {
     var room = Room.Current;

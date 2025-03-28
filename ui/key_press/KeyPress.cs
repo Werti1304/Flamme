@@ -9,7 +9,7 @@ public partial class KeyPress : Sprite2D
   [Export] public Color ModulateCurrentPressedColor = Colors.Lime;
   [Export] public PlayerInputMap.Action ActionToTriggerModulate = PlayerInputMap.Action.ShootUp;
   
-  public bool WasPressed = false;
+  public bool WasPressed;
 
   public override void _Ready()
   {

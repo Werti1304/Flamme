@@ -1,4 +1,3 @@
-using Flamme.common.constant;
 using Flamme.common.input;
 using Godot;
 
@@ -15,7 +14,7 @@ public partial class EscapeMenu : CanvasLayer
 
   public override void _Input(InputEvent @event)
   {
-    if (@event.IsActionPressed(PlayerInputMap.EscapeMenu))
+    if (@event.IsActionPressed(PlayerInputMap.Dict[PlayerInputMap.Action.Pause]))
     {
       if (GetTree().Paused)
       {

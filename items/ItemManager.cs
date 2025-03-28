@@ -2,7 +2,6 @@ using Flamme.common.enums;
 using Godot;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace Flamme.items;
 

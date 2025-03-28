@@ -1,15 +1,13 @@
-using Flamme.common.constant;
 using Flamme.common.helpers;
 using Flamme.entities.env.health;
 using Flamme.entities.env.purse;
 using Godot;
-using System;
 
 namespace Flamme.entities.env.shop;
 
 public partial class CoinBuyable : Area2D
 {
-  [Export] public int Price = 0;
+  [Export] public int Price;
   private Node2D _selling;
 
   [ExportGroup("Meta")] 

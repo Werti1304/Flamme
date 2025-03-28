@@ -91,7 +91,7 @@ public partial class PlayableCharacter : CharacterBody2D, IEnemyDamagable
   }
 
 
-  private int _stuckCounter = 0;
+  private int _stuckCounter;
   public override void _PhysicsProcess(double delta)
   {
     Move(delta);
@@ -123,7 +123,7 @@ public partial class PlayableCharacter : CharacterBody2D, IEnemyDamagable
     return false;
   }
 
-  private bool _invincible = false;
+  private bool _invincible;
   private bool Invincible
   {
     get => _invincible;
@@ -150,7 +150,7 @@ public partial class PlayableCharacter : CharacterBody2D, IEnemyDamagable
     }
   }
 
-  private bool _isTeleporting = false;
+  private bool _isTeleporting;
   private void SoftTeleport(Vector2 newGlobalPos)
   {
     if (_isTeleporting)

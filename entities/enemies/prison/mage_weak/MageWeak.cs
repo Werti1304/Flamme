@@ -70,7 +70,7 @@ public partial class MageWeak : Enemy
     MoveAndSlide();
   }
 
-  private int _shootingCounter = 0;
+  private int _shootingCounter;
   private void ShootingTimerOnTimeout()
   {
     Shooter.ProjectileCount = _shootingCounter + 1;

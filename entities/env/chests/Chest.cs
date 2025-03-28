@@ -18,7 +18,7 @@ public partial class Chest : RigidBody2D
   }
   
   [Export] public ChestType Type = ChestType.Normal;
-  [Export] public bool IsOpen = false;
+  [Export] public bool IsOpen;
   
   [ExportGroup("Textures")]
   [Export] public AtlasTexture NormalChestClosedexture;
@@ -31,7 +31,7 @@ public partial class Chest : RigidBody2D
   [ExportGroup("Meta")] 
   [Export] public Sprite2D Sprite;
   [Export] public CollisionShape2D CollisionShape;
-  [Export] public ItemPickup ItemPickupLoot = null;
+  [Export] public ItemPickup ItemPickupLoot;
   
   private List<Node2D> _lootList = new();
   // private ItemPickup _itemPickupLoot;

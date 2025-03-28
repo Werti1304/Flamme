@@ -3,9 +3,7 @@ using Flamme.common.enums;
 using Flamme.common.helpers;
 using Flamme.common.input;
 using Flamme.world;
-using Flamme.world.generation;
 using Godot;
-using System.Diagnostics;
 using Room = Flamme.world.rooms.Room;
 
 namespace Flamme.ui;
@@ -40,10 +38,10 @@ public partial class Minimap : GridContainer
   }
 
   private const ulong MaxTimeMsec = 200;
-  private ulong _timeMsec = 0;
+  private ulong _timeMsec;
   public override void _Input(InputEvent @event)
   {
-    if (@event.IsActionPressed(PlayerInputMap.MapKey))
+    if (@event.IsActionPressed(PlayerInputMap.Dict[PlayerInputMap.Action.Pause]))
     {
       if (Modulate != Colors.White)
       {
@@ -53,7 +51,7 @@ public partial class Minimap : GridContainer
       }
       Modulate = Colors.White;
     }
-    else if (@event.IsActionReleased(PlayerInputMap.MapKey))
+    else if (@event.IsActionReleased(PlayerInputMap.Dict[PlayerInputMap.Action.Pause]))
     {
       if (Time.Singleton.GetTicksMsec() - _timeMsec < MaxTimeMsec)
       {

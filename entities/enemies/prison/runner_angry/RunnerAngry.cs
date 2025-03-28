@@ -13,7 +13,7 @@ public partial class RunnerAngry : Enemy
   [Export] public Sprite2D PassiveSprite;
   [Export] public Sprite2D ActiveSprite;
 
-  private bool _isTriggered = false;
+  private bool _isTriggered;
 
   public override void _Ready()
   {

@@ -39,9 +39,9 @@ public partial class Door : Node2D
   [Export] public AtlasTexture SecretClosedTexture;
   [Export] public AtlasTexture SecretOpenTexture;
   
-  private bool _isOpen = false;
-  private bool _isLocked = false;
-  private bool _isLockedByKey = false;
+  private bool _isOpen;
+  private bool _isLocked;
+  private bool _isLockedByKey;
   
   private AtlasTexture _openTexture;
   private AtlasTexture _closedTexture;

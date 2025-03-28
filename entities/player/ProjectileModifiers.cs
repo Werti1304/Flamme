@@ -7,8 +7,8 @@ namespace Flamme.entities.player;
 
 public class ProjectileModifiers
 {
-  public bool IsHoming { get; private set; } = false;
-  public bool IsFireball { get; private set; } = false;
+  public bool IsHoming { get; private set; }
+  public bool IsFireball { get; private set; }
 
   public enum Modifier
   {

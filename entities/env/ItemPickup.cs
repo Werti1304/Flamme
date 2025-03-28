@@ -3,7 +3,6 @@ using Flamme.common.helpers;
 using Flamme.common.scenes;
 using Flamme.items;
 using Godot;
-using System;
 
 namespace Flamme.entities.env;
 
@@ -85,7 +84,7 @@ public partial class ItemPickup : Area2D
     SetItem(ItemManager.Instance.GetRandomFromPool(ItemLootPool));
   }
 
-  private bool _pickedUp = false;
+  private bool _pickedUp;
   public Item Pickup()
   {
     if (_pickedUp)

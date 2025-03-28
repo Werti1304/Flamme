@@ -1,5 +1,3 @@
-using Flamme.entities;
-using Flamme.entities.player;
 using Flamme.world.rooms;
 using Godot;
 using System.Collections.Generic;
@@ -18,8 +16,8 @@ public partial class Trailing : PlayerProjectile
   
   private Vector2 _normalToDirection = Vector2.Left;
   
-  private entities.enemies.Enemy _homingTarget = null;
-  private bool _homing = false;
+  private entities.enemies.Enemy _homingTarget;
+  private bool _homing;
 
   protected override void CustomFireExec(entities.player.PlayableCharacter player, Room room)
   {
@@ -83,7 +81,7 @@ public partial class Trailing : PlayerProjectile
   }
 
   private readonly Queue<(double, Vector2)> _points = new Queue<(double, Vector2)>();
-  private double _t = 0;
+  private double _t;
   
   public override void _Process(double delta)
   {

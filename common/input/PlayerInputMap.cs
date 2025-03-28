@@ -1,8 +1,6 @@
-﻿using System;
+﻿namespace Flamme.common.input;
 
-namespace Flamme.common.input;
-
-public class PlayerInputMap
+public static class PlayerInputMap
 {
   public enum Action
   {
@@ -18,9 +16,6 @@ public class PlayerInputMap
     ToggleMap,
     Interact
   }
-
-  public const string EscapeMenu = "open_escape_menu";
-  public const string MapKey = "toggle_map";
   
   public static readonly Godot.Collections.Dictionary<Action, string> Dict = new Godot.Collections.Dictionary<Action, string>()
   {

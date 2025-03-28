@@ -11,15 +11,13 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
-using Vector2I = Godot.Vector2I;
 
 namespace Flamme.world.rooms;
 
 [Tool]
 public partial class Room : Area2D
 {
-  public static Room Current { get; private set; } = null;
-  
+  public static Room Current { get; private set; }
   [Export] private bool CommitChangesTool // Button to create current RoomSize/Exits configuration on tilemap
   {
     get => false;
@@ -34,10 +32,10 @@ public partial class Room : Area2D
   [Export] public LevelType LevelType;
   // Room type, affects generation
   [Export] public RoomType Type;
-  [Export] public bool RestrictToFloor = false;
+  [Export] public bool RestrictToFloor;
   [Export] public LevelFloor LevelFloor;
-  [Export] public bool CameraFixedX = false;
-  [Export] public bool CameraFixedY = false;
+  [Export] public bool CameraFixedX;
+  [Export] public bool CameraFixedY;
   
   // How likely this specific room is generated in comparison to others
   // To make a room super rare for example, make it 10
@@ -60,7 +58,7 @@ public partial class Room : Area2D
   [Export] public Godot.Collections.Dictionary<Cardinal, DoorMarker> TheoreticalDoorMarkers = [];
   
   // Gets filled during world generation
-  public readonly Dictionary<Cardinal, doors.Door> Doors = [];
+  public readonly Dictionary<Cardinal, Door> Doors = [];
   
   [ExportGroup("Generation")]
   [Export]
@@ -102,7 +100,7 @@ public partial class Room : Area2D
   [Signal] public delegate void PlayerEnteredEventHandler(entities.player.PlayableCharacter playableCharacter);
   [Signal] public delegate void PlayerExitedEventHandler(entities.player.PlayableCharacter playableCharacter);
 
-  public bool WasVisited = false;
+  public bool WasVisited;
   public readonly List<entities.enemies.Enemy> Enemies = [];
 
   private entities.player.PlayableCharacter _playableCharacter;
@@ -372,9 +370,9 @@ public partial class Room : Area2D
   // Context: Editor Tool
   private void GenerateTemplate()
   {
-    TileSet FloorTileSet = null;
-    TileSet PropsTileSet = null;
-    TileSet OuterWallTileSet = null;
+    TileSet floorTileSet;
+    TileSet propsTileSet;
+    TileSet outerWallTileSet;
 
     YSortEnabled = true;
 
@@ -382,9 +380,9 @@ public partial class Room : Area2D
     {
       case LevelType.Prison:
       {
-        FloorTileSet = GD.Load<TileSet>(PathConstants.PrisonFloorTileSetPath);
-        PropsTileSet = GD.Load<TileSet>(PathConstants.PrisonPropsTileSetPath);
-        OuterWallTileSet = GD.Load<TileSet>(PathConstants.PrisonWallTileSetPath);
+        floorTileSet = GD.Load<TileSet>(PathConstants.PrisonFloorTileSetPath);
+        propsTileSet = GD.Load<TileSet>(PathConstants.PrisonPropsTileSetPath);
+        outerWallTileSet = GD.Load<TileSet>(PathConstants.PrisonWallTileSetPath);
       }
         break;
       default:
@@ -395,7 +393,7 @@ public partial class Room : Area2D
     {
       FloorTileMap = new TileMapLayer();
       AddChild(FloorTileMap);
-      FloorTileMap.TileSet = FloorTileSet;
+      FloorTileMap.TileSet = floorTileSet;
       FloorTileMap.Name = "Floor";
       FloorTileMap.Owner = this;
     }
@@ -404,7 +402,7 @@ public partial class Room : Area2D
     {
       PropsTileMap = new TileMapLayer();
       AddChild(PropsTileMap);
-      PropsTileMap.TileSet = PropsTileSet;
+      PropsTileMap.TileSet = propsTileSet;
       PropsTileMap.Name = "Props";
       PropsTileMap.Owner = this;
     }
@@ -413,7 +411,7 @@ public partial class Room : Area2D
     {
       OuterWallTileMap = new TileMapLayer();
       AddChild(OuterWallTileMap);
-      OuterWallTileMap.TileSet = OuterWallTileSet;
+      OuterWallTileMap.TileSet = outerWallTileSet;
       OuterWallTileMap.Name = "Wall";
       OuterWallTileMap.Owner = this;
     }
@@ -422,7 +420,7 @@ public partial class Room : Area2D
     {
       RoofTileMap = new TileMapLayer();
       AddChild(RoofTileMap);
-      RoofTileMap.TileSet = OuterWallTileSet;
+      RoofTileMap.TileSet = outerWallTileSet;
       RoofTileMap.Name = "Roof (Auto)";
       RoofTileMap.Owner = this;
     }
@@ -563,8 +561,6 @@ public partial class Room : Area2D
     Debug.Assert(shape != null, "CollisionShape is not a rectangle!");
     var roomSize = (Vector2I)(shape.Size / 32);
 
-    var alreadyFilledRect = new RectangleShape2D();
-
     var toFill = new Godot.Collections.Array<Vector2I>();
 
     // TODO Fill list with to be terrained tilemap positions, do setcellterrainconnect at the bottom
@@ -585,18 +581,18 @@ public partial class Room : Area2D
       }
     }
 
-    RoofTileMap.SetCellsTerrainConnect(toFill, 0, 0, true);
+    RoofTileMap.SetCellsTerrainConnect(toFill, 0, 0);
 
     // Do the still water in minecraft equivalent with terrain tiles
     for (var x = -1; x <= roomSize.X; x++)
     {
       for (var y = -1; y <= roomSize.Y; y++)
       {
-        if (x == -1 || x == roomSize.X || y == -1 || y == roomSize.Y)
-        {
-          var coords = new Vector2I(x, y);
-          RoofTileMap.SetCell(coords, -1);
-        }
+        if (x != -1 && x != roomSize.X && y != -1 && y != roomSize.Y)
+          continue;
+        
+        var coords = new Vector2I(x, y);
+        RoofTileMap.SetCell(coords);
       }
     }
   }

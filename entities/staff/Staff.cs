@@ -5,7 +5,6 @@ using Flamme.world;
 using Flamme.world.generation;
 using Flamme.world.rooms;
 using Godot;
-using System;
 
 namespace Flamme.entities.staff;
 
@@ -18,7 +17,7 @@ public partial class Staff : RigidBody2D
   [Export] public float SnapSpeed = 700.0f;
   [Export] public float SnapDamp = 0.3f;
   [ExportGroup("Trailing")] 
-  [Export] public float TrailingForce = 0f; // Deprecated; Set according to player speed stat now 
+  [Export] public float TrailingForce; // Deprecated; Set according to player speed stat now 
   [Export] public float TrailingFrictionWeight = .3f;
   [Export] public float DistanceToStartTrailing = 60.0f;
   [Export] public float DistanceToStopTrailing = 40.0f;
@@ -36,9 +35,9 @@ public partial class Staff : RigidBody2D
   public bool Snapped { get; private set; }
   
   private player.PlayableCharacter _owner;
-  private bool _staffOverlappingWithPlayer = false;
-  private bool _trailing = false;
-  private bool _collisionDisabled = false;
+  private bool _staffOverlappingWithPlayer;
+  private bool _trailing;
+  private bool _collisionDisabled;
   private Tween _tween;
 
   // TODO 2 make pulsate when no owner yet
@@ -57,7 +56,7 @@ public partial class Staff : RigidBody2D
     Area.BodyExited += AreaOnBodyExited;
   }
 
-  private double _shootTimer = 0.0f;
+  private double _shootTimer;
   private double _shootTimerMax = 100.0f;
   public override void _PhysicsProcess(double delta)
   {
@@ -173,7 +172,7 @@ public partial class Staff : RigidBody2D
     _shootTimerMax = 1 / _owner.Stats.FireRate;
   }
 
-  private Vector2? _teleportTargetPos = null;
+  private Vector2? _teleportTargetPos;
   public void TeleportNextFrame(Vector2 targetPos)
   {
     _teleportTargetPos = targetPos;

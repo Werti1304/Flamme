@@ -15,15 +15,15 @@ public abstract partial class PlayerProjectile : Area2D
   
   public Vector2 Direction = Vector2.Up;
   
-  protected bool Fired = false;
-  protected bool Destructing = false;
-  protected bool Dissipating = false;
-  protected bool HitSomething = false;
+  protected bool Fired;
+  protected bool Destructing;
+  protected bool Dissipating;
+  protected bool HitSomething;
 
   // 1:1 stats from the player, can be interpreted however
-  protected float StatDamage = 0;
-  protected float StatShotSpeed = 0;
-  protected float StatRange = 0;
+  protected float StatDamage;
+  protected float StatShotSpeed;
+  protected float StatRange;
   
   public override void _Ready()
   {
@@ -34,7 +34,7 @@ public abstract partial class PlayerProjectile : Area2D
   }
 
   // Counts how often shot (while shooting active)
-  protected static int Counter = 0;
+  protected static int Counter;
   public static void ResetCounter()
   {
     Counter = 0;
