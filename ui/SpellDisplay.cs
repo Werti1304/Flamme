@@ -48,11 +48,13 @@ public partial class SpellDisplay : RichTextLabel
   private string BuildStatString(PlayerSpellPurse purse)
   {
     var sb = new StringBuilder();
+
     foreach (var spellPair in purse.Spells)
     {
       var spell = spellPair.Key;
       var state = spellPair.Value;
-      if (state == PlayerSpellPurse.SpellState.Inactive)
+
+      if (state == PlayerSpellPurse.SpellState.Ready)
       {
         if (!purse.IsListening)
         {
@@ -69,11 +71,31 @@ public partial class SpellDisplay : RichTextLabel
       }
       else if (state == PlayerSpellPurse.SpellState.OnCoolDown)
       {
-        sb.Append($"[color=Dimgray]{spell.Name}[/color]\n");
+        if (spell.CooldownRoomComponent == null)
+        {
+          sb.Append($"[color=Dimgray]{spell.Name}[/color]\n");
+        }
+        else
+        {
+          sb.Append($"[color=Dimgray]{spell.Name} [[/color]");
+
+          for (var i = 0; i < spell.CooldownRoomComponent.Cooldown; i++)
+          {
+            if (spell.CooldownRoomComponent.CooldownCounter > i)
+            {
+              sb.Append($"[color=Orange]|[/color]");
+            }
+            else
+            {
+              sb.Append($"[color=Dimgray]|[/color]");
+            }
+          }
+          sb.Append($"[color=Dimgray]][/color]\n");
+        }
       }
       else if (state == PlayerSpellPurse.SpellState.Casting)
       {
-        sb.Append($"[color=Indigo]{spell.Name}[/color]\n");
+        sb.Append($"[color=Orange]{spell.Name}[/color]\n");
       }
     }
     return sb.ToString();

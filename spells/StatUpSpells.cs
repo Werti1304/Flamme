@@ -14,6 +14,7 @@ public class StatUpSpells
       ShootUp, ShootDown, ShootLeft, ShootRight)
       .AddStatUp(StatType.FireMultiplier, 5)
       .AddModifier(ProjectileModifiers.Modifier.Homing)
-      .SetUptime(3.0f));
+      .SetUptime(3.0f)
+      .SetCooldownRooms(3));
   }
 }

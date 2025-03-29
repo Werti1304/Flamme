@@ -99,7 +99,7 @@ public partial class Room : Area2D
 
   [Signal] public delegate void PlayerEnteredEventHandler(entities.player.PlayableCharacter playableCharacter);
   [Signal] public delegate void PlayerExitedEventHandler(entities.player.PlayableCharacter playableCharacter);
-
+  
   public bool WasVisited;
   public readonly List<entities.enemies.Enemy> Enemies = [];
 
@@ -307,6 +307,7 @@ public partial class Room : Area2D
     }
     
     GD.Print($"Room {Name} Cleared!");
+    _playableCharacter.NotifyOfRoomClear(this, enemiesDefeated);
 
     if (Type == RoomType.Boss)
     {

@@ -28,10 +28,10 @@ public class Spell
   public readonly List<ProjectileModifiers.Modifier> ProjectileModifiers = [];
   
   public UptimeComponent UptimeComponent = null;
+  public CooldownRoomComponent CooldownRoomComponent = null;
+  
   public int CastTime = -1;
   
-  // public int CooldownTime = -1; Maybe later
-  public int CooldownRooms = -1;
   public int MagicCost = -1;
 
   public Spell(SpellId id, string name, string description, params PlayerInputMap.Action[] actionsNeeded)
@@ -63,6 +63,12 @@ public class Spell
   public Spell SetUptime(double uptime)
   {
     UptimeComponent = new UptimeComponent(uptime);
+    return this;
+  }
+
+  public Spell SetCooldownRooms(int cooldownRooms)
+  {
+    CooldownRoomComponent = new CooldownRoomComponent(cooldownRooms);
     return this;
   }
   

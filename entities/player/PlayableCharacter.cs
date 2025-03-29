@@ -332,4 +332,12 @@ public partial class PlayableCharacter : CharacterBody2D, IEnemyDamagable
       }
     }
   }
+
+  public void NotifyOfRoomClear(Room room, bool enemiesDefeated)
+  {
+    if (enemiesDefeated)
+    {
+      SpellPurse.RoomCleared();
+    }
+  }
 }

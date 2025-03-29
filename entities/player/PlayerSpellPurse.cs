@@ -14,7 +14,7 @@ public partial class PlayerSpellPurse : Node2D
   
   public enum SpellState
   {
-    Inactive,
+    Ready,
     OnCoolDown,
     Possible,
     Casting
@@ -31,7 +31,8 @@ public partial class PlayerSpellPurse : Node2D
   public ReadOnlyDictionary<Spell, SpellState> Spells => _spells.AsReadOnly();
   private readonly Dictionary<Spell, SpellState> _spells = new Dictionary<Spell, SpellState>();
   
-  private readonly List<Spell> _upTimeSpells = new List<Spell>();
+  private readonly List<Spell> _upTimeSpells = new List<Spell>(); // Only of State Casting
+  private readonly List<Spell> _roomCooldownSpells = new List<Spell>(); // Only of State OnCoolDown
 
   public int ActionsNeededIdx { get; private set; }
 
@@ -44,7 +45,7 @@ public partial class PlayerSpellPurse : Node2D
 
   public void AddSpell(Spell spell)
   {
-    _spells.Add(spell, SpellState.Inactive);
+    _spells.Add(spell, SpellState.Ready);
     Hud.Instance.SpellDisplay.Update(this);
   }
 
@@ -86,7 +87,12 @@ public partial class PlayerSpellPurse : Node2D
       {
         spell.UptimeComponent.Reset();
         _upTimeSpells.Remove(spell);
-        _spells[spell] = SpellState.Inactive;
+        _spells[spell] = SpellState.OnCoolDown;
+
+        if (spell.CooldownRoomComponent != null)
+        {
+          _roomCooldownSpells.Add(spell);
+        }
         EmitSignal(SignalName.CastedSpellsChanged);
         Hud.Instance.SpellDisplay.Update(this);
       }
@@ -114,7 +120,7 @@ public partial class PlayerSpellPurse : Node2D
     
     foreach (var spell in _spells.Keys)
     {
-      if (_spells[spell] == SpellState.Inactive)
+      if (_spells[spell] == SpellState.Ready)
       {
         _spells[spell] = SpellState.Possible;
       }
@@ -144,7 +150,7 @@ public partial class PlayerSpellPurse : Node2D
       }
       else
       {
-        _spells[spell] = SpellState.Inactive;
+        _spells[spell] = SpellState.Ready;
       }
     }
 
@@ -168,11 +174,28 @@ public partial class PlayerSpellPurse : Node2D
     {
       if (_spells[spell] == SpellState.Possible)
       {
-        _spells[spell] = SpellState.Inactive;
+        _spells[spell] = SpellState.Ready;
       }
     }
     IsListening = false;
     ActionsNeededIdx = 0;
+    Hud.Instance.SpellDisplay.Update(this);
+  }
+
+  public void RoomCleared()
+  {
+    for (var i = 0; i < _roomCooldownSpells.Count; i++)
+    {
+      var spell = _roomCooldownSpells[i];
+      spell.CooldownRoomComponent.Tick();
+      if (spell.CooldownRoomComponent.IsFinished())
+      {
+        spell.CooldownRoomComponent.Reset();
+        _roomCooldownSpells.Remove(spell);
+        _spells[spell] = SpellState.Ready;
+        EmitSignal(SignalName.CastedSpellsChanged);
+      }
+    }
     Hud.Instance.SpellDisplay.Update(this);
   }
 }
