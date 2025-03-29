@@ -67,17 +67,13 @@ public partial class Staff : RigidBody2D
     CheckSnap();
     
     // --- Shooting / Snapping ---
-    
+    _shootTimer += delta;
     if (_owner.IsShooting)
     {
       if (_shootTimer >= _shootTimerMax)
       {
         ShootingTimerOnTimeout();
         _shootTimer = 0.0f;
-      }
-      else
-      {
-        _shootTimer += delta;
       }
       
       // When shooting, remove all collision from staff

@@ -70,7 +70,7 @@ public abstract partial class PlayerProjectile : Area2D
     Fired = true;
   }
   
-  private void OnBulletEntered(Node2D body)
+  protected virtual void OnBulletEntered(Node2D body)
   {
     // Change to counter for piercing rounds
     if (HitSomething)
@@ -83,35 +83,19 @@ public abstract partial class PlayerProjectile : Area2D
     {
       OnBulletHitEnemy(body, enemy);
     }
-    else
-    {
-      OnBulletHit(body);
-    }
 
     if (DestructOnHit)
     {
       DestructBullet();
     }
   }
-
-  protected virtual void OnBulletHit(Node2D body)
-  {
-    
-  }
-
+  
   protected virtual void OnBulletHitEnemy(Node2D body, IPlayerDamageable enemy)
   {
-    if (DebugToggles.InstaKill)
-    {
-      enemy.Hit(9999999, StatDamage * StatShotSpeed * 100, (body.GlobalPosition - GlobalPosition).Normalized());
-      return;
-    }
-#pragma warning disable CS0162 // Unreachable code detected
-    enemy.Hit(StatDamage, StatDamage * StatShotSpeed * 100, (body.GlobalPosition - GlobalPosition).Normalized());
-#pragma warning restore CS0162 // Unreachable code detected
+    Hit(body, enemy);
   }
   
-  public override void _Process(double delta)
+  public override void _PhysicsProcess(double delta)
   {
     if (!Fired)
       return;
@@ -166,5 +150,15 @@ public abstract partial class PlayerProjectile : Area2D
     tween.TweenProperty(Sprite, CanvasItem.PropertyName.Modulate.ToString(), Colors.Transparent, 0.2f);
     tween.Parallel().TweenProperty(TrailLine, CanvasItem.PropertyName.Modulate.ToString(), Colors.Transparent, 0.2f);
     tween.TweenCallback(Callable.From(QueueFree));
+  }
+
+  protected void Hit(Node2D body, IPlayerDamageable enemy)
+  {
+    if (DebugToggles.InstaKill)
+    {
+      enemy.Hit(9999999, StatDamage * StatShotSpeed * 100, (body.GlobalPosition - GlobalPosition).Normalized());
+      return;
+    }
+    enemy.Hit(StatDamage, StatDamage * StatShotSpeed * 100, (body.GlobalPosition - GlobalPosition).Normalized());
   }
 }

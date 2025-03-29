@@ -71,7 +71,7 @@ public partial class Fireball : PlayerProjectile
 
   private readonly Queue<(double, Vector2)> _points = new Queue<(double, Vector2)>();
   private double _t;
-  public override void _Process(double delta)
+  public override void _PhysicsProcess(double delta)
   {
     if (!Fired || HitSomething)
       return;

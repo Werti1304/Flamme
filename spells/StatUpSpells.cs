@@ -29,6 +29,8 @@ public class StatUpSpells
     manager.RegisterSpell(new Spell(SpellId.Blargh, "Blargh", "Blaaargh", 
         ShootUp, ShootDown, ShootUp, ShootDown, ShootUp, ShootUp)
       .AddStatUp(StatType.FireMultiplier, 0.1f)
+      .AddStatUp(StatType.Damage, 10)
+      .AddStatUp(StatType.DamageMultiplier, 3)
       .AddModifier(ProjectileModifiers.Modifier.Blargh)
       .SetUptime(5.0f)
       .SetCooldownRooms(5));

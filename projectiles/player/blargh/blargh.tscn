@@ -11,9 +11,6 @@ point_count = 2
 interpolation_mode = 2
 colors = PackedColorArray(0.5824, 0.80626, 0.91, 0.588235, 0.5824, 0.80626, 0.91, 1)
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_e8l0q"]
-size = Vector2(5, 22)
-
 [sub_resource type="Gradient" id="Gradient_e8l0q"]
 colors = PackedColorArray(0.239216, 0.501961, 0.686275, 1, 1, 1, 1, 1)
 
@@ -66,10 +63,15 @@ gravity = Vector3(0, 0, 0)
 color_ramp = SubResource("GradientTexture1D_s710v")
 color_initial_ramp = SubResource("GradientTexture1D_dt4in")
 
-[node name="Blargh" type="Area2D" node_paths=PackedStringArray("Sprite", "TrailLine")]
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_e8l0q"]
+radius = 3.0
+height = 22.0
+
+[node name="Blargh" type="Area2D" node_paths=PackedStringArray("CollisionShape", "Sprite", "TrailLine")]
 collision_layer = 5
 collision_mask = 5
 script = ExtResource("1_e8l0q")
+CollisionShape = NodePath("CollisionPolygon2D")
 Sprite = NodePath("Sprite2D")
 TrailLine = NodePath("Line2D")
 
@@ -84,10 +86,6 @@ antialiased = true
 [node name="Sprite2D" type="Sprite2D" parent="."]
 z_index = 1
 texture = ExtResource("2_e8l0q")
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(0.5, 0)
-shape = SubResource("RectangleShape2D_e8l0q")
 
 [node name="GPUParticles2D" type="GPUParticles2D" parent="."]
 z_index = 5
@@ -113,3 +111,13 @@ amount = 16
 randomness = 1.0
 visibility_rect = Rect2(0, 0, 0, 0)
 process_material = SubResource("ParticleProcessMaterial_dt4in")
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
+modulate = Color(1, 0, 0, 1)
+top_level = true
+position = Vector2(0, 1)
+build_mode = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CapsuleShape2D_e8l0q")
+debug_color = Color(1, 0, 0.216667, 1)
