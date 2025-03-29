@@ -12,7 +12,7 @@ public partial class Staff : RigidBody2D
 {
   [Export] public float BaseFriction = .1f;
   [ExportCategory("Staff Player Interaction")]
-  [Export] public float DistanceFromPlayer = 16;
+  [Export] public float DistanceFromPlayer = 12;
   [ExportGroup("Snapping")] 
   [Export] public float SnapSpeed = 700.0f;
   [Export] public float SnapDamp = 0.3f;
@@ -22,7 +22,7 @@ public partial class Staff : RigidBody2D
   [Export] public float DistanceToStartTrailing = 60.0f;
   [Export] public float DistanceToStopTrailing = 40.0f;
   [ExportGroup("Shooting")] 
-  [Export] public float ShootDistanceFromStaff = 10.0f;
+  [Export] public float ShootDistanceFromStaff = 2.0f;
   
   [ExportGroup("Meta")]
   [Export] public Sprite2D StaffSprite;
@@ -184,7 +184,13 @@ public partial class Staff : RigidBody2D
     {
       return;
     }
-    _tween?.Kill();
+
+    if (_tween != null && _tween.IsRunning())
+    {
+      _tween.Kill();
+      Shoot();
+    }
+
     _tween = GetTree().CreateTween();
 
     _tween.TweenProperty(StaffCore, "modulate:a", 1, 0.2f).SetTrans(Tween.TransitionType.Sine)
@@ -195,6 +201,11 @@ public partial class Staff : RigidBody2D
   
   private void Shoot()
   {
+    if (_owner.ShootingVector.Length() < 0.01f)
+    {
+      // Don't shoot if owner has stopped shooting, but we already initiated shooting process
+      return;
+    }
     PackedScene projectileScene;
     if (_owner.Modifiers.IsFireball)
     {
@@ -269,11 +280,11 @@ public partial class Staff : RigidBody2D
       var targetVec = _owner.GlobalPosition + (_owner.ShootingVector * DistanceFromPlayer) - GlobalPosition; // ;
       var distance = targetVec.Length();
       
-      if (Snapped && distance > 10.0f)
+      if (Snapped && distance > 8.0f)
       {
         SetSnap(false);
       }
-      else if (!Snapped && distance < 5.0f)
+      else if (!Snapped && distance < 4.0f)
       {
         SetDeferred(Node2D.PropertyName.GlobalPosition, _owner.GlobalPosition + (_owner.ShootingVector * DistanceFromPlayer));
         SetSnap(true);
@@ -287,7 +298,7 @@ public partial class Staff : RigidBody2D
 
   private void SetSnap(bool snapEnabled)
   {
-    GD.Print($"SetSnap: {snapEnabled}");
+    // GD.Print($"SetSnap: {snapEnabled}");
     if (snapEnabled)
     {
       PinJoint.NodeB = _owner.GetPath();

@@ -3,6 +3,7 @@ using System;
 using System.Linq;
 using Flamme.common.enums;
 using Flamme.items;
+using Flamme.spells;
 using Godot;
 using System.Collections.Generic;
 
@@ -59,7 +60,8 @@ public partial class PlayerStats : Node2D
   /// Should be called every time a stats change (item held change) occurs
   /// </summary>
   /// <param name="items">items held by the player</param>
-  public void Update(IEnumerable<Item> items)
+  /// <param name="spells">spells that are ACTIVE currently</param>
+  public void Update(IEnumerable<Item> items, IEnumerable<Spell> spells)
   {
     foreach (StatType statType in Enum.GetValues(typeof(StatType)))
     {
@@ -67,6 +69,11 @@ public partial class PlayerStats : Node2D
     }
     
     foreach (var statUp in items.SelectMany(item => item.StatsUpDict))
+    {
+      _statSumDict[statUp.Key] += statUp.Value;
+    }
+    
+    foreach (var statUp in spells.SelectMany(spell => spell.StatsUpDict))
     {
       _statSumDict[statUp.Key] += statUp.Value;
     }

@@ -1,5 +1,6 @@
 using Flamme.entities.env.Loot;
 using Flamme.items;
+using Flamme.spells;
 using Godot;
 
 namespace Flamme;
@@ -59,7 +60,8 @@ public partial class Main : Node
   {
     _instance = this;
     
-    StatUpItems.RegisterStatUpItems();
+    StatUpItems.Register();
+    StatUpSpells.Register();
     ModifierItems.RegisterItems();
     DefaultLoot.RegisterDefaultLoot();
   }

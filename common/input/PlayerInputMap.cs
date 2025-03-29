@@ -1,4 +1,6 @@
-﻿namespace Flamme.common.input;
+﻿using Godot;
+
+namespace Flamme.common.input;
 
 public static class PlayerInputMap
 {
@@ -14,7 +16,20 @@ public static class PlayerInputMap
     ShootLeft,
     Pause,
     ToggleMap,
-    Interact
+    Interact,
+    Interact2
+  }
+
+  public static Action? GetPressedAction(InputEvent @event)
+  {
+    foreach (var actionEntry in Dict)
+    {
+      if (@event.IsActionPressed(actionEntry.Value))
+      {
+        return actionEntry.Key;
+      }
+    }
+    return null;
   }
   
   public static readonly Godot.Collections.Dictionary<Action, string> Dict = new Godot.Collections.Dictionary<Action, string>()
@@ -29,6 +44,7 @@ public static class PlayerInputMap
     { Action.ShootLeft, "shoot_left" },
     { Action.Pause, "open_escape_menu" },
     { Action.ToggleMap, "toggle_map" },
-    { Action.Interact, "interact" }
+    { Action.Interact, "interact" },
+    { Action.Interact2, "interact_space" }
   };
 }

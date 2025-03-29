@@ -6,7 +6,7 @@ namespace Flamme.items;
 
 public static class StatUpItems
 {
-  public static void RegisterStatUpItems()
+  public static void Register()
   {
     var manager = ItemManager.Instance;
     

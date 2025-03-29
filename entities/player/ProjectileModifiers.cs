@@ -1,4 +1,5 @@
 using Flamme.items;
+using Flamme.spells;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -37,9 +38,16 @@ public class ProjectileModifiers
     IsFireball = false;
   }
 
-  public void Update(List<Item> heldItems)
+  public void Update(List<Item> heldItems, List<Spell> activeSpells)
   {
+    ClearModifiers();
+    
     foreach (var modifier in heldItems.SelectMany(item => item.ProjectileModifiers))
+    {
+      AddModifier(modifier);
+    }
+    
+    foreach (var modifier in activeSpells.SelectMany(spell => spell.ProjectileModifiers))
     {
       AddModifier(modifier);
     }

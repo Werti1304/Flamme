@@ -7,6 +7,7 @@ using Flamme.entities.enemies;
 using Flamme.entities.env.health;
 using Flamme.entities.env.shop;
 using Flamme.items;
+using Flamme.spells;
 using Flamme.ui;
 using Flamme.ui.death_screen;
 using Flamme.world.doors;
@@ -28,6 +29,7 @@ public partial class PlayableCharacter : CharacterBody2D, IEnemyDamagable
   [ExportGroup("Meta")] 
   [Export] public PlayerStats Stats;
   [Export] public PlayerPurse Purse;
+  [Export] public PlayerSpellPurse SpellPurse;
   [Export] public PlayerSprite Sprite;
   [Export] public Area2D InteractionArea;
   [Export] public Timer InvincibilityTimer;
@@ -38,6 +40,7 @@ public partial class PlayableCharacter : CharacterBody2D, IEnemyDamagable
   public delegate void StatsChangedEventHandler(PlayerStats stats);
   
   public readonly List<Item> HeldItems = new List<Item>();
+  public readonly List<Spell> ActiveSpells = new List<Spell>();
   
   public bool IsShooting { get; private set; }
 
@@ -49,10 +52,14 @@ public partial class PlayableCharacter : CharacterBody2D, IEnemyDamagable
     InteractionArea.AreaEntered += OnAreaEntered;
     
     InvincibilityTimer.Timeout += () => Invincible = false;
+    
+    SpellPurse.CastedSpellsChanged += OnInvChange;
 
     OnInvChange();
     Hud.Instance.PurseDisplay.UpdatePurse(Purse);
+    Hud.Instance.SpellDisplay.Update(SpellPurse);
     GD.Print($"Player {Name} ready, Parent: {GetParent()}, Owner: {GetOwner()}!");
+
   }
 
   private Vector2 _movingVector = Vector2.Zero;
@@ -191,7 +198,8 @@ public partial class PlayableCharacter : CharacterBody2D, IEnemyDamagable
       QueueFree(); 
     }
     Invincible = true;
-    OnInvChange();
+    EmitSignal(SignalName.StatsChanged, Stats);
+    Hud.Instance.UpdateStats(Stats);
     return true;
   }
 
@@ -203,11 +211,26 @@ public partial class PlayableCharacter : CharacterBody2D, IEnemyDamagable
     Hud.Instance.CollectItem(item);
     OnInvChange(item);
   }
-
-  private void OnInvChange(Item item = null)
+  
+  // Needed for events
+  private void OnInvChange()
   {
-    Stats.Update(HeldItems);
-    Modifiers.Update(HeldItems);
+    OnInvChange(null);
+  }
+
+  private void OnInvChange(Item item)
+  {
+    ActiveSpells.Clear();
+    foreach (var spells in SpellPurse.Spells)
+    {
+      if (spells.Value == PlayerSpellPurse.SpellState.Casting)
+      {
+        ActiveSpells.Add(spells.Key);
+      }
+    }
+    
+    Stats.Update(HeldItems, ActiveSpells);
+    Modifiers.Update(HeldItems, ActiveSpells);
     if (item != null)
     {
       Stats.AddHealth(item.HealingDict);

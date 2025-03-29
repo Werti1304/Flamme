@@ -29,6 +29,7 @@ public partial class Hud : CanvasLayer
   [Export] public ColorRect Vignette;
   [Export] public MarginContainer MainContainer;
   [Export] public Minimap Minimap;
+  [Export] public SpellDisplay SpellDisplay;
   [Export] private Timer _showCollectedItemtimer;
   [Export] public Control HealthBarContainer;
   
