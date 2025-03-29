@@ -7,8 +7,6 @@ public class CooldownRoomComponent
   public int Cooldown;
   public int CooldownCounter { get; private set; }
   
-  public event EventHandler CooldownFinished;
-
   public CooldownRoomComponent(int cooldown)
   {
     Cooldown = cooldown;

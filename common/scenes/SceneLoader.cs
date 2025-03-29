@@ -27,6 +27,7 @@ public partial class SceneLoader : Node2D
     DoorMarker,
     Trailing,
     Fireball,
+    Blargh
   }
 
   public readonly Dictionary<Scene, PackedScene> Scenes = new Dictionary<Scene, PackedScene>()
@@ -50,6 +51,7 @@ public partial class SceneLoader : Node2D
     { Scene.DoorMarker, GD.Load<PackedScene>(PathConstants.DoorMarkerScenePath) },
     { Scene.Trailing, GD.Load<PackedScene>(PathConstants.TrailingProjectileScenePath) },
     { Scene.Fireball, GD.Load<PackedScene>(PathConstants.FireballProjectileScenePath) },
+    { Scene.Blargh, GD.Load<PackedScene>(PathConstants.BlarghProjectileScenePath) },
   };
   
   public PackedScene this[Scene scene] => Scenes[scene]; 

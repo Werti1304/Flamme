@@ -24,7 +24,7 @@ public class Spell
   
   public readonly List<PlayerInputMap.Action> ActionsNeeded = new List<PlayerInputMap.Action>();
 
-  public readonly Dictionary<StatType, int> StatsUpDict = new Dictionary<StatType, int>();
+  public readonly Dictionary<StatType, float> StatsUpDict = new Dictionary<StatType, float>();
   public readonly Dictionary<HealthType, int> HealingDict = new Dictionary<HealthType, int>();
   
   public readonly List<ProjectileModifiers.Modifier> ProjectileModifiers = [];
@@ -44,7 +44,7 @@ public class Spell
     ActionsNeeded.AddRange(actionsNeeded);
   }
 
-  public Spell AddStatUp(StatType statType, int count)
+  public Spell AddStatUp(StatType statType, float count)
   {
     StatsUpDict.Add(statType, count);
     return this;

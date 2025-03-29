@@ -31,16 +31,16 @@ public partial class PlayerStats : Node2D
   public int HealthContainers { get; private set; }
   public int NormalHealth { get; private set; }
   public int AbsorptionHealth { get; private set; }
-  public int Speed { get; private set; }
-  public int Range { get; private set; }
+  public float Speed { get; private set; }
+  public float Range { get; private set; }
   public float Damage { get; private set; }
   public float FireRate { get; private set; } // [1-...]
-  public int ShotSpeed { get; private set; }
+  public float ShotSpeed { get; private set; }
   public int ShotSize { get; private set; }
   public int Luck { get; private set; }
   public int Mana { get; private set; }
 
-  private readonly Godot.Collections.Dictionary<StatType, int> _statSumDict = new Godot.Collections.Dictionary<StatType, int>();
+  private readonly Godot.Collections.Dictionary<StatType, float> _statSumDict = new Godot.Collections.Dictionary<StatType, float>();
 
   public override void _Ready()
   {
@@ -70,12 +70,33 @@ public partial class PlayerStats : Node2D
     
     foreach (var statUp in items.SelectMany(item => item.StatsUpDict))
     {
-      _statSumDict[statUp.Key] += statUp.Value;
+      if (statUp.Key == StatType.FireMultiplier)
+      {
+        _statSumDict[statUp.Key] *= statUp.Value;
+      }
+      else
+      {
+        _statSumDict[statUp.Key] += statUp.Value;
+      }
     }
     
     foreach (var statUp in spells.SelectMany(spell => spell.StatsUpDict))
     {
-      _statSumDict[statUp.Key] += statUp.Value;
+      if (statUp.Key == StatType.FireMultiplier)
+      {
+        if (_statSumDict[StatType.FireMultiplier] == 0)
+        {
+          _statSumDict[StatType.FireMultiplier] = statUp.Value;
+        }
+        else
+        {
+          _statSumDict[statUp.Key] *= statUp.Value;
+        }
+      }
+      else
+      {
+        _statSumDict[statUp.Key] += statUp.Value;
+      }
     }
     
     CalculateHealthContainers();
@@ -171,7 +192,7 @@ public partial class PlayerStats : Node2D
 
   private void CalculateHealthContainers()
   {
-    HealthContainers = BaseHealthContainers + _statSumDict[StatType.HealthContainer];
+    HealthContainers = (int)(BaseHealthContainers + _statSumDict[StatType.HealthContainer]);
     HealthContainers = Math.Min(HealthContainers, Universal.MaxPlayerHealthContainers);
     LimitHealthToBounds();
   }
@@ -202,8 +223,17 @@ public partial class PlayerStats : Node2D
 
   private void CalculateFireRate()
   {
-    var fireRateMultiplier = BaseFireMultiplier + _statSumDict[StatType.FireMultiplier];
-    FireRate =  fireRateMultiplier * Mathf.Log(BaseFireRate + _statSumDict[StatType.FireRate]);
+    float fireRateMultiplier;
+
+    if (_statSumDict[StatType.FireMultiplier] == 0)
+    {
+      fireRateMultiplier = BaseFireMultiplier;
+    }
+    else
+    {
+      fireRateMultiplier = BaseFireMultiplier * _statSumDict[StatType.FireMultiplier];
+    }
+    FireRate = fireRateMultiplier * Mathf.Log(BaseFireRate + _statSumDict[StatType.FireRate]);
   }
   
   private void CalculateRange()
@@ -219,16 +249,16 @@ public partial class PlayerStats : Node2D
 
   private void CalculateShotSize()
   {
-    ShotSize = BaseShotSize + (int)(Mathf.Sqrt(Damage) - 2) + _statSumDict[StatType.ShotSize];
+    ShotSize = (int)(BaseShotSize + (int)(Mathf.Sqrt(Damage) - 2) + _statSumDict[StatType.ShotSize]);
   }
 
   private void CalculateLuck()
   {
-    Luck = BaseLuck + _statSumDict[StatType.Luck];
+    Luck = (int)(BaseLuck + _statSumDict[StatType.Luck]);
   }
 
   private void CalculateMana()
   {
-    Mana = BaseMana + _statSumDict[StatType.Mana];
+    Mana = (int)(BaseMana + _statSumDict[StatType.Mana]);
   }
 }

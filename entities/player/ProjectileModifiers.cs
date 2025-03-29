@@ -10,11 +10,13 @@ public class ProjectileModifiers
 {
   public bool IsHoming { get; private set; }
   public bool IsFireball { get; private set; }
+  public bool IsBlargh { get; private set; }
 
   public enum Modifier
   {
     Homing,
-    Fireball
+    Fireball,
+    Blargh
   }
 
   public void AddModifier(Modifier modifier)
@@ -27,6 +29,9 @@ public class ProjectileModifiers
       case Modifier.Fireball:
         IsFireball = true;
         break;
+      case Modifier.Blargh:
+        IsBlargh = true;
+        break;
       default:
         throw new ArgumentOutOfRangeException(nameof(modifier), modifier, null);
     }
@@ -36,6 +41,7 @@ public class ProjectileModifiers
   {
     IsHoming = false;
     IsFireball = false;
+    IsBlargh = false;
   }
 
   public void Update(List<Item> heldItems, List<Spell> activeSpells)

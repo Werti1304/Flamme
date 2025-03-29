@@ -25,6 +25,13 @@ public class StatUpSpells
       .SetCooldownRooms(5);
     spell.SpellCast += SpellOnSpellCast;
     manager.RegisterSpell(spell);
+    
+    manager.RegisterSpell(new Spell(SpellId.Blargh, "Blargh", "Blaaargh", 
+        ShootUp, ShootDown, ShootUp, ShootDown, ShootUp, ShootUp)
+      .AddStatUp(StatType.FireMultiplier, 0.1f)
+      .AddModifier(ProjectileModifiers.Modifier.Blargh)
+      .SetUptime(5.0f)
+      .SetCooldownRooms(5));
   }
 
   private static void SpellOnSpellCast(object sender, EventArgs e)

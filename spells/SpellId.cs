@@ -16,4 +16,5 @@ public enum SpellId
 {
   RapidFire,
   DoorOpen,
+  Blargh
 }

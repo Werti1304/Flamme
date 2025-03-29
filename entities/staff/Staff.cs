@@ -5,6 +5,7 @@ using Flamme.world;
 using Flamme.world.generation;
 using Flamme.world.rooms;
 using Godot;
+using System;
 
 namespace Flamme.entities.staff;
 
@@ -169,6 +170,13 @@ public partial class Staff : RigidBody2D
 
   public void UpdateFireRate()
   {
+    var newShootTimerMax = 1 / _owner.Stats.FireRate;
+
+    // Upon more or less significant change to fire rate, let him fire the first shot fast
+    if (Math.Abs(newShootTimerMax - _shootTimerMax) > 0.01f)
+    {
+      _shootTimer = newShootTimerMax - 0.5f;
+    }
     _shootTimerMax = 1 / _owner.Stats.FireRate;
   }
 
@@ -210,6 +218,10 @@ public partial class Staff : RigidBody2D
     if (_owner.Modifiers.IsFireball)
     {
       projectileScene = Flamme.common.scenes.SceneLoader.Instance[Flamme.common.scenes.SceneLoader.Scene.Fireball];
+    }
+    else if (_owner.Modifiers.IsBlargh)
+    {
+      projectileScene = Flamme.common.scenes.SceneLoader.Instance[Flamme.common.scenes.SceneLoader.Scene.Blargh];
     }
     else
     {

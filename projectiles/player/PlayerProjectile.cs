@@ -3,6 +3,7 @@ using Flamme.common.helpers;
 using Flamme.entities;
 using Flamme.world.rooms;
 using Godot;
+using System.Collections.Generic;
 
 namespace Flamme.projectiles.player;
 
@@ -24,10 +25,13 @@ public abstract partial class PlayerProjectile : Area2D
   protected float StatDamage;
   protected float StatShotSpeed;
   protected float StatRange;
+  protected float FireRate;
+
+  protected bool DestructOnHit = true;
   
   public override void _Ready()
   {
-    ExportMetaNonNull.Check(this);
+    // ExportMetaNonNull.Check(this);
     
     Direction = Direction.Normalized();
     Sprite.Visible = false;
@@ -54,6 +58,7 @@ public abstract partial class PlayerProjectile : Area2D
     StatDamage = player.Stats.Damage;
     StatShotSpeed = player.Stats.ShotSpeed;
     StatRange = player.Stats.Range;
+    FireRate = player.Stats.FireRate;
   }
 
   protected abstract void CustomFireExec(entities.player.PlayableCharacter player, Room room);
@@ -76,12 +81,25 @@ public abstract partial class PlayerProjectile : Area2D
 
     if (body is IPlayerDamageable enemy)
     {
-      OnBulletHit(body, enemy);
+      OnBulletHitEnemy(body, enemy);
     }
-    DestructBullet();
+    else
+    {
+      OnBulletHit(body);
+    }
+
+    if (DestructOnHit)
+    {
+      DestructBullet();
+    }
   }
 
-  protected virtual void OnBulletHit(Node2D body, IPlayerDamageable enemy)
+  protected virtual void OnBulletHit(Node2D body)
+  {
+    
+  }
+
+  protected virtual void OnBulletHitEnemy(Node2D body, IPlayerDamageable enemy)
   {
     if (DebugToggles.InstaKill)
     {
@@ -93,7 +111,7 @@ public abstract partial class PlayerProjectile : Area2D
 #pragma warning restore CS0162 // Unreachable code detected
   }
   
-  public override void _PhysicsProcess(double delta)
+  public override void _Process(double delta)
   {
     if (!Fired)
       return;
@@ -102,7 +120,7 @@ public abstract partial class PlayerProjectile : Area2D
     Position += Direction * StatShotSpeed;
   }
   
-  private void DestructBulletInit()
+  protected void DestructBulletInit()
   {
     if (Destructing)
       return;
@@ -117,8 +135,16 @@ public abstract partial class PlayerProjectile : Area2D
   {
     Sprite.Visible = false;
     TrailLine.Visible = false;
-    DestructionParticles.Emitting = true;
-    DestructionParticles.Finished += QueueFree;
+
+    if (DestructionParticles != null)
+    {
+      DestructionParticles.Emitting = true;
+      DestructionParticles.Finished += QueueFree;
+    }
+    else
+    {
+      QueueFree();
+    }
   }
 
   private void DissipateBulletInit()

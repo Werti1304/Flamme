@@ -34,6 +34,7 @@ public static class PathConstants
   
   public const string TrailingProjectileScenePath = "res://projectiles/player/trailing/trailing.tscn";
   public const string FireballProjectileScenePath = "res://projectiles/player/fireball/fireball.tscn";
+  public const string BlarghProjectileScenePath = "res://projectiles/player/blargh/blargh.tscn";
   
   // TileSets
   public const string PrisonFloorTileSetPath = "res://assets/tilesets/prison/prison_floor.tres";
@@ -41,5 +42,4 @@ public static class PathConstants
   public const string PrisonWallTileSetPath = "res://assets/tilesets/prison/prison_wall.tres";
 
   public const string NodeParentPath = "res://world/rooms/node_parent.tscn";
-
 }

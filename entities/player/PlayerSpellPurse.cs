@@ -40,6 +40,7 @@ public partial class PlayerSpellPurse : Node2D
   {
     AddSpell(SpellManager.Instance.GetFromId(SpellId.RapidFire));
     AddSpell(SpellManager.Instance.GetFromId(SpellId.DoorOpen));
+    AddSpell(SpellManager.Instance.GetFromId(SpellId.Blargh));
     
     StopListening();
   }
