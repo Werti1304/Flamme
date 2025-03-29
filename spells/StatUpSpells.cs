@@ -1,5 +1,7 @@
 using Flamme.common.enums;
 using Flamme.entities.player;
+using Flamme.world.rooms;
+using System;
 using static Flamme.common.input.PlayerInputMap.Action;
 
 namespace Flamme.spells;
@@ -16,5 +18,25 @@ public class StatUpSpells
       .AddModifier(ProjectileModifiers.Modifier.Homing)
       .SetUptime(3.0f)
       .SetCooldownRooms(3));
+
+    var spell = new Spell(SpellId.DoorOpen, "Sesame", "Open All Doors",
+        ShootLeft, ShootDown, ShootDown, ShootDown, ShootRight)
+      .SetUptime(1.0f)
+      .SetCooldownRooms(5);
+    spell.SpellCast += SpellOnSpellCast;
+    manager.RegisterSpell(spell);
+  }
+
+  private static void SpellOnSpellCast(object sender, EventArgs e)
+  {
+    if (Room.Current != null)
+    {
+      Room.Current.OverrideDoorLogic = true;
+      foreach (var door in Room.Current.Doors)
+      {
+        door.Value.ForceOpen();
+      }
+      Room.Current.OverrideDoorLogic = false;
+    }
   }
 }

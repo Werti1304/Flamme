@@ -20,6 +20,8 @@ public class Spell
   public event EventHandler SpellPickedUp;
   public event EventHandler SpellRemoved;
   
+  public event EventHandler SpellCast;
+  
   public readonly List<PlayerInputMap.Action> ActionsNeeded = new List<PlayerInputMap.Action>();
 
   public readonly Dictionary<StatType, int> StatsUpDict = new Dictionary<StatType, int>();
@@ -70,6 +72,11 @@ public class Spell
   {
     CooldownRoomComponent = new CooldownRoomComponent(cooldownRooms);
     return this;
+  }
+
+  public void OnCast()
+  {
+    SpellCast?.Invoke(this, EventArgs.Empty);
   }
   
   public void InvokePickupEvent(entities.player.PlayableCharacter playableCharacter)

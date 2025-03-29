@@ -150,6 +150,15 @@ public partial class Door : Node2D
     _isLocked = false;
   }
 
+  public void ForceOpen()
+  {
+    _isLocked = false;
+    _isLockedByKey = false;
+    _isOpen = true;
+    DoorMarker1.Open();
+    DoorMarker2.Open();
+  }
+
   public void OpenByClearingRoom()
   {
     Unlock();

@@ -39,6 +39,7 @@ public partial class PlayerSpellPurse : Node2D
   public override void _Ready()
   {
     AddSpell(SpellManager.Instance.GetFromId(SpellId.RapidFire));
+    AddSpell(SpellManager.Instance.GetFromId(SpellId.DoorOpen));
     
     StopListening();
   }
@@ -66,7 +67,13 @@ public partial class PlayerSpellPurse : Node2D
       IsListening = true;
       Hud.Instance.SpellDisplay.Update(this);
       SetProcessInput(true);
-
+      foreach (var spell in _spells.Keys)
+      {
+        if (_spells[spell] == SpellState.Ready)
+        {
+          _spells[spell] = SpellState.Possible;
+        }
+      }
     }
     else if (@event.IsActionReleased(PlayerInputMap.Dict[PlayerInputMap.Action.Interact])
              || @event.IsActionReleased(PlayerInputMap.Dict[PlayerInputMap.Action.Interact2]))
@@ -120,11 +127,6 @@ public partial class PlayerSpellPurse : Node2D
     
     foreach (var spell in _spells.Keys)
     {
-      if (_spells[spell] == SpellState.Ready)
-      {
-        _spells[spell] = SpellState.Possible;
-      }
-      
       if(_spells[spell] != SpellState.Possible)
         continue;
       
@@ -139,12 +141,12 @@ public partial class PlayerSpellPurse : Node2D
           _spells[spell] = SpellState.Casting;
           EmitSignal(SignalName.CastedSpellsChanged);
           StopListening();
-
           if (spell.UptimeComponent != null)
           {
             _upTimeSpells.Add(spell);
             SetPhysicsProcess(true);
           }
+          spell.OnCast();
           return;
         }
       }
