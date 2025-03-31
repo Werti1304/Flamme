@@ -18,6 +18,8 @@ collision_layer = 15
 collision_mask = 15
 script = ExtResource("1_mbywd")
 Type = 2
+RestrictToFloor = true
+LevelFloor = 1
 CameraFixedX = true
 TheoreticalDoorMarkers = {
 0: NodePath("DoorMarkerParent/DoorMarker4"),

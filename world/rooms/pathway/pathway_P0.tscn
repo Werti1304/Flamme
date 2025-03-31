@@ -11,6 +11,7 @@
 size = Vector2(544, 416)
 
 [node name="PathwayP0" type="Area2D" node_paths=PackedStringArray("TheoreticalDoorMarkers", "FloorTileMap", "PropsTileMap", "OuterWallTileMap", "RoofTileMap", "CollisionShape", "DoorMarkerParent", "MidPoint", "EnemiesParent", "LootParent", "TileEntitiesParent")]
+y_sort_enabled = true
 collision_layer = 15
 collision_mask = 15
 script = ExtResource("1_bgdc2")
@@ -76,11 +77,8 @@ FacingDirection = 3
 position = Vector2(272, 208)
 shape = SubResource("RectangleShape2D_74xsj")
 
-[node name="Enemies" type="Node2D" parent="." instance=ExtResource("6_mt5c4")]
-y_sort_enabled = true
+[node name="Enemies" parent="." instance=ExtResource("6_mt5c4")]
 
-[node name="Loot" type="Node2D" parent="." instance=ExtResource("6_mt5c4")]
-y_sort_enabled = true
+[node name="Loot" parent="." instance=ExtResource("6_mt5c4")]
 
-[node name="TileEntities" type="Node2D" parent="." instance=ExtResource("6_mt5c4")]
-y_sort_enabled = true
+[node name="TileEntities" parent="." instance=ExtResource("6_mt5c4")]

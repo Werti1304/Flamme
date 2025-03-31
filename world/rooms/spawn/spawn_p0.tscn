@@ -58,11 +58,6 @@ TileEntitiesParent = NodePath("TileEntities")
 
 [node name="MoreDebugStuff" type="Node2D" parent="."]
 
-[node name="ItemPickup" parent="MoreDebugStuff" instance=ExtResource("5_q01ak")]
-position = Vector2(183, 87)
-RetrievelMode = 1
-ItemId = 11
-
 [node name="Debug Stuff" type="Node2D" parent="."]
 process_mode = 4
 visible = false

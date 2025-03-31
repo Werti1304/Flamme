@@ -90,21 +90,25 @@ collision_mask = 7
 
 [node name="PursePickup" parent="TileEntities" instance=ExtResource("9_usqv8")]
 position = Vector2(208, 80)
+collision_mask = 8
 
 [node name="Box2" parent="TileEntities" instance=ExtResource("8_4msvd")]
 position = Vector2(336, 80)
 collision_mask = 7
 
 [node name="PursePickup2" parent="TileEntities/Box2" instance=ExtResource("9_usqv8")]
+collision_mask = 8
 
 [node name="Box3" parent="TileEntities" instance=ExtResource("8_4msvd")]
 position = Vector2(336, 208)
 collision_mask = 7
 
 [node name="PursePickup3" parent="TileEntities/Box3" instance=ExtResource("9_usqv8")]
+collision_mask = 8
 
 [node name="Box4" parent="TileEntities" instance=ExtResource("8_4msvd")]
 position = Vector2(208, 208)
 collision_mask = 7
 
 [node name="PursePickup4" parent="TileEntities/Box4" instance=ExtResource("9_usqv8")]
+collision_mask = 8

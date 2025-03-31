@@ -245,7 +245,6 @@ public partial class LevelManager : Node2D
       level.ActiveStaff = stuff.Staff;
       level.ActiveStaff.GlobalPosition = level.PlayableCharacter.GlobalPosition - new Vector2(64, 64);
       level.AddChild(level.ActiveStaff);
-      level.ActiveStaff.ClearOwner();
     }
     
     level.PlayerCamera = stuff.Camera;

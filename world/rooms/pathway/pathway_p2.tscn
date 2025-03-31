@@ -81,16 +81,16 @@ shape = SubResource("RectangleShape2D_gymle")
 [node name="Enemies" parent="." instance=ExtResource("6_6tps4")]
 
 [node name="Runner" parent="Enemies" instance=ExtResource("9_6tps4")]
-position = Vector2(80, 80)
+position = Vector2(112, 80)
 
 [node name="Runner2" parent="Enemies" instance=ExtResource("9_6tps4")]
-position = Vector2(80, 272)
+position = Vector2(112, 272)
 
 [node name="Runner3" parent="Enemies" instance=ExtResource("9_6tps4")]
-position = Vector2(528, 272)
+position = Vector2(496, 272)
 
 [node name="Runner4" parent="Enemies" instance=ExtResource("9_6tps4")]
-position = Vector2(528, 80)
+position = Vector2(496, 80)
 
 [node name="Loot" parent="." instance=ExtResource("6_6tps4")]
 
