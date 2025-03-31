@@ -11,7 +11,7 @@ public partial class MeleeArea : Area2D
   [Export] public bool MeleeDamageEnabled = true;
   [Export] public int Damage = 1;
 
-  private readonly List<IEnemyDamagable> _damagables = [];
+  private readonly List<Node2D> _damagables = [];
   
   private const double DamageMaxTime = 0.1;  
   private double _damageTimer;
@@ -23,6 +23,24 @@ public partial class MeleeArea : Area2D
     
     // Is only activated after area is entered
     SetPhysicsProcess(false);
+  }
+
+  private void Hit(Node2D body)
+  {
+    if (!IsInstanceValid(body))
+      return;
+    
+    var e = body as IEnemyDamagable;
+    if (e != null && e.TakeDamage(Damage))
+    {
+      EmitSignal(SignalName.DamagedTarget, Damage);
+    }
+    var parent = GetParent() as Enemy;
+    if (parent != null)
+    {
+      var direction = parent.GlobalPosition.DirectionTo(body.GlobalPosition);
+      parent.Velocity += -direction * 100.0f; // Small knockback upon hitting something
+    }
   }
   
   private void OnBodyEntered(Node2D body)
@@ -36,8 +54,8 @@ public partial class MeleeArea : Area2D
       {
         SetPhysicsProcess(true);
       }
-      _damagables.Add(e);
-      e.TakeDamage(Damage);
+      _damagables.Add(body);
+      Hit(body);
     }
   }
   
@@ -48,7 +66,7 @@ public partial class MeleeArea : Area2D
     
     if (body is IEnemyDamagable e)
     {
-      _damagables.Remove(e);
+      _damagables.Remove(body);
     }
   }
 
@@ -70,12 +88,9 @@ public partial class MeleeArea : Area2D
     
     _damageTimer = 0;
 
-    foreach (var damagable in _damagables)
+    foreach (var node in _damagables)
     {
-      if (damagable.TakeDamage(Damage))
-      {
-        EmitSignal(SignalName.DamagedTarget, Damage);
-      }
+      Hit(node);
     }
   }
 }

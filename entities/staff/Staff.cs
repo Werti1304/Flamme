@@ -72,8 +72,8 @@ public partial class Staff : RigidBody2D
     {
       if (_shootTimer >= _shootTimerMax)
       {
-        ShootingTimerOnTimeout();
         _shootTimer = 0.0f;
+        ShootingTimerOnTimeout();
       }
       
       // When shooting, remove all collision from staff
@@ -169,11 +169,11 @@ public partial class Staff : RigidBody2D
     var newShootTimerMax = 1 / _owner.Stats.FireRate;
 
     // Upon more or less significant change to fire rate, let him fire the first shot fast
-    if (Math.Abs(newShootTimerMax - _shootTimerMax) > 0.01f)
+    if (Math.Abs(newShootTimerMax - _shootTimerMax) > 0.3f)
     {
       _shootTimer = newShootTimerMax - 0.5f;
     }
-    _shootTimerMax = 1 / _owner.Stats.FireRate;
+    _shootTimerMax = newShootTimerMax;
   }
 
   private Vector2? _teleportTargetPos;
@@ -208,7 +208,7 @@ public partial class Staff : RigidBody2D
     if (_owner.ShootingVector.Length() < 0.01f)
     {
       // Don't shoot if owner has stopped shooting, but we already initiated shooting process
-      _shootTimer = _shootTimerMax;
+      // _shootTimer = _shootTimerMax;
       return;
     }
     PackedScene projectileScene;
