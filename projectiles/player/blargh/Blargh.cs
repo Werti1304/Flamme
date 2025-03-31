@@ -159,6 +159,10 @@ public partial class Blargh : PlayerProjectile
 
   protected override void OnBulletHitEnemy(Node2D body, IPlayerDamageable enemy)
   {
+    if (IsInstanceValid(_homingTarget) && body == _homingTarget)
+    {
+      _hitHomingTarget = true;
+    }
     Hit(body, enemy, false);
   }
 
@@ -166,6 +170,7 @@ public partial class Blargh : PlayerProjectile
   private double _t;
   private int _tickCounter = -1;
   private bool _polygonFinished = false;
+  private bool _hitHomingTarget = false;
   public override void _PhysicsProcess(double delta)
   {
     if (!Fired)
@@ -201,7 +206,7 @@ public partial class Blargh : PlayerProjectile
         false);
     }
 
-    if (_homing && IsInstanceValid(_homingTarget))
+    if (_homing && IsInstanceValid(_homingTarget) && !_hitHomingTarget)
     {
       _endPointP2 = _homingTarget.GlobalPosition;
     }

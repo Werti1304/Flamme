@@ -212,13 +212,13 @@ public partial class Staff : RigidBody2D
       return;
     }
     PackedScene projectileScene;
-    if (_owner.Modifiers.IsFireball)
-    {
-      projectileScene = Flamme.common.scenes.SceneLoader.Instance[Flamme.common.scenes.SceneLoader.Scene.Fireball];
-    }
-    else if (_owner.Modifiers.IsBlargh)
+    if (_owner.Modifiers.IsBlargh)
     {
       projectileScene = Flamme.common.scenes.SceneLoader.Instance[Flamme.common.scenes.SceneLoader.Scene.Blargh];
+    }
+    else if (_owner.Modifiers.IsFireball)
+    {
+      projectileScene = Flamme.common.scenes.SceneLoader.Instance[Flamme.common.scenes.SceneLoader.Scene.Fireball];
     }
     else
     {

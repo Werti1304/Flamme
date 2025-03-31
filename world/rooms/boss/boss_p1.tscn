@@ -13,6 +13,7 @@
 size = Vector2(608, 416)
 
 [node name="BossP1" type="Area2D" node_paths=PackedStringArray("TheoreticalDoorMarkers", "FloorTileMap", "PropsTileMap", "OuterWallTileMap", "RoofTileMap", "CollisionShape", "DoorMarkerParent", "MidPoint", "EnemiesParent", "LootParent", "TileEntitiesParent")]
+y_sort_enabled = true
 collision_layer = 15
 collision_mask = 15
 script = ExtResource("1_630ix")
@@ -77,17 +78,14 @@ FacingDirection = 3
 position = Vector2(304, 208)
 shape = SubResource("RectangleShape2D_epu1w")
 
-[node name="Enemies" type="Node2D" parent="." instance=ExtResource("6_2l6fi")]
-y_sort_enabled = true
+[node name="Enemies" parent="." instance=ExtResource("6_2l6fi")]
 
 [node name="GrandWizard" parent="Enemies" instance=ExtResource("8_gj205")]
 position = Vector2(304, 208)
 
-[node name="Loot" type="Node2D" parent="." instance=ExtResource("6_2l6fi")]
-y_sort_enabled = true
+[node name="Loot" parent="." instance=ExtResource("6_2l6fi")]
 
-[node name="TileEntities" type="Node2D" parent="." instance=ExtResource("6_2l6fi")]
-y_sort_enabled = true
+[node name="TileEntities" parent="." instance=ExtResource("6_2l6fi")]
 
 [node name="Box" parent="TileEntities" instance=ExtResource("8_oemoo")]
 position = Vector2(144, 176)

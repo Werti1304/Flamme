@@ -41,12 +41,13 @@ public abstract partial class Enemy : CharacterBody2D, IPlayerDamageable
   {
     QueueFree(); 
   }
-  
+
   /// <summary>
   /// When the enemy takes damage
   /// </summary>
   /// <param name="attackDamage">How much damage</param>
   /// <returns>Whether the enemy died (true)</returns>
+  private bool _died = false;
   public bool TakeDamage(float attackDamage)
   {
     Health -= attackDamage;
@@ -56,7 +57,11 @@ public abstract partial class Enemy : CharacterBody2D, IPlayerDamageable
       return false;
     }
     Health = 0;
-    OnDeath();
+    if (!_died)
+    {
+      _died = true;
+      OnDeath();
+    }
     return true;
   }
 
