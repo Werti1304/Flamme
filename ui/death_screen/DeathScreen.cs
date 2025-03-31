@@ -34,6 +34,7 @@ public partial class DeathScreen : CanvasLayer
   public void OnMainMenuButtonPressed()
   {
     Hide();
+    Hud.Instance.Hide();
     SetProcessInput(false);
     Tutorial.Reset();
     Main.Instance.UnloadingLevel = true;

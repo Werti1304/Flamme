@@ -7,6 +7,7 @@ using Flamme.projectiles;
 using Flamme.projectiles.player;
 using Flamme.world.rooms;
 using Godot;
+using Godot.Collections;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,7 +15,10 @@ using System.Linq;
 public partial class Blargh : PlayerProjectile
 {
   [ExportGroup("Meta")]
-  [Export] public CollisionPolygon2D CollisionShape;
+  [Export] public CollisionPolygon2D LineCollisionShape;
+  [Export] public Area2D LineCollisionArea;
+  [Export] public GpuParticles2D SpawnParticles;
+  [Export] public Array<GpuParticles2D> EndParticles = new Array<GpuParticles2D>();
   
   private Vector2 _startPointP0;
   private Vector2 _controlPointP1;
@@ -28,6 +32,22 @@ public partial class Blargh : PlayerProjectile
   public override void _Ready()
   {
     BodyExited += OnBulletLeave;
+    
+    LineCollisionArea.BodyEntered += OnBulletEntered;
+    LineCollisionArea.BodyExited += OnBulletLeave;
+    
+    Sprite.GlobalPosition = GlobalPosition;
+    Sprite.Visible = false;
+
+    SpawnParticles.GlobalPosition = GlobalPosition;
+    SpawnParticles.Emitting = false;
+    
+    DestructionParticles.GlobalPosition = GlobalPosition;
+
+    foreach (var particles in EndParticles)
+    {
+      particles.Emitting = false;
+    }
   }
 
   protected override void CustomFireExec(PlayableCharacter player, Room room)
@@ -47,10 +67,10 @@ public partial class Blargh : PlayerProjectile
     // Determine magnitude of swing
     // In this case this means it's +- 16 to 32 pixels
     var magnitude = Main.Instance.Rnd.RandfRange(-4.0f, 4.0f);;
-    _startPointP0 = GlobalPosition + _normalToDirection * magnitude / 4.0f;
+    _startPointP0 = GlobalPosition;
     
     _endPointP2 = GlobalPosition + Direction * rangeInPx;
-    _controlPointP1 = GlobalPosition + Direction * rangeInPx / 2 + _normalToDirection * magnitude;
+    _controlPointP1 = GlobalPosition + Direction * rangeInPx / 2;
     
     TrailLine.AddPoint(_startPointP0);
     
@@ -82,10 +102,19 @@ public partial class Blargh : PlayerProjectile
     
     // CollisionShape.Pol
     
+    SpawnParticles.Lifetime = 0.5f * totalTime;
+    SpawnParticles.OneShot = true;
+    
     var tween = GetTree().CreateTween();
     tween.TweenProperty(Sprite, CanvasItem.PropertyName.Modulate.ToString(), Colors.White, 0.1f);
     tween.Parallel().TweenProperty(TrailLine, CanvasItem.PropertyName.Modulate.ToString(), Colors.White, 0.1f);
-    tween.TweenInterval(0.6f * totalTime);
+    tween.TweenInterval(0.5f * totalTime);
+    // Stop all end particles shortly before the trail gets smaller
+    tween.TweenInterval(0.1f * totalTime);
+    foreach (var particle in EndParticles)
+    {
+      tween.Parallel().TweenProperty(particle, GpuParticles2D.PropertyName.Emitting.ToString(), false, 0.1f * totalTime);
+    }
     tween.TweenProperty(TrailLine, Line2D.PropertyName.Width.ToString(), 0, 0.3f  * totalTime ).SetTrans(Tween.TransitionType.Expo);
     tween.TweenCallback(Callable.From(DestructBulletInit));
   }
@@ -95,15 +124,14 @@ public partial class Blargh : PlayerProjectile
   {
     GD.Print($"Hit something: {body}");
     
-    // Change to counter for piercing rounds
-    if (HitSomething)
-    {
-      return;
-    }
-
-    if (body is StaticBody2D or TileMapLayer)
+    if (body is TileMapLayer tileMapLayer && tileMapLayer.Name != "Props")
     {
       HitSomething = true;
+
+      foreach (var particle in EndParticles)
+      {
+        particle.Emitting = true;
+      }
     }
     else if(body is IPlayerDamageable damageable)
     {
@@ -113,11 +141,6 @@ public partial class Blargh : PlayerProjectile
     if (body is IPlayerDamageable enemy)
     {
       OnBulletHitEnemy(body, enemy);
-    }
-
-    if (DestructOnHit)
-    {
-      DestructBullet();
     }
   }
 
@@ -141,8 +164,8 @@ public partial class Blargh : PlayerProjectile
   {
     if (!Fired)
       return;
-
-    if (_playerDamageables.Count > 0)
+    
+    if (_playerDamageables.Count > 0 && _tickCounter % 30 == 0) // Every 30 ticks, try to damage
     {
       foreach (var damageable in _playerDamageables)
       {
@@ -159,35 +182,40 @@ public partial class Blargh : PlayerProjectile
     }
     
     var oldPosition = GlobalPosition;
-    _t += delta * 2.0;
+    _t += delta * 4.0;
     GlobalPosition = ProjectileHelper.QuadraticBezier(_startPointP0, _controlPointP1, _endPointP2, (float)_t);
 
     var direction = GlobalPosition - oldPosition;
     var normalDirection = new Vector2(-Direction.Y, Direction.X).Normalized();
     
-    Sprite.Rotation = direction.AngleTo(normalDirection) + Mathf.DegToRad(90);
-    if (Sprite.Visible == false)
+    if (_tickCounter < 3) // For the first 3 ticks, correct the rotation
     {
+      var angle = (GlobalPosition - oldPosition).Angle();
       Sprite.Visible = true;
+      Sprite.Rotation = angle;
+      SpawnParticles.Rotation = angle;
+      SpawnParticles.Emitting = true;
     }
+    
+    TrailLine.AddPoint(GlobalPosition);
+    _points.Enqueue((_t, GlobalPosition));
 
-    if (_tickCounter % 1 == 0)
+    if (_tickCounter % 4 == 0)
     {
       // All this so the polygon gets calculated correctly
-      // var half = CollisionShape.Polygon.Length / 2;
-      // var newPolygon = new List<Vector2>();
-      // newPolygon.AddRange(CollisionShape.Polygon);
-      // newPolygon.Insert(half, GlobalPosition + normalDirection * 14);
-      // newPolygon.Insert(half, GlobalPosition - normalDirection * 14);
-      // CollisionShape.Polygon = newPolygon.ToArray();
-      TrailLine.AddPoint(GlobalPosition);
-      _points.Enqueue((_t, GlobalPosition));
-
-      // GD.Print($"Tick {_tickCounter}");
-      // foreach (var vector in CollisionShape.Polygon)
-      // {
-      //   GD.Print($"Vector: {vector}");
-      // }
+      var half = LineCollisionShape.Polygon.Length / 2;
+      var newPolygon = new List<Vector2>();
+      newPolygon.AddRange(LineCollisionShape.Polygon);
+      // -> Line Width / 2
+      newPolygon.Insert(half, GlobalPosition + normalDirection * 11);
+      newPolygon.Insert(half, GlobalPosition - normalDirection * 11);
+      LineCollisionShape.Polygon = newPolygon.ToArray();
+      
+      GD.Print($"Tick {_tickCounter}");
+      foreach (var vector in LineCollisionShape.Polygon)
+      {
+        GD.Print($"Vector: {vector}");
+      }
     }
 
     _tickCounter++;

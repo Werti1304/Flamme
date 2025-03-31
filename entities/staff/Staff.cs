@@ -208,6 +208,7 @@ public partial class Staff : RigidBody2D
     if (_owner.ShootingVector.Length() < 0.01f)
     {
       // Don't shoot if owner has stopped shooting, but we already initiated shooting process
+      _shootTimer = _shootTimerMax;
       return;
     }
     PackedScene projectileScene;

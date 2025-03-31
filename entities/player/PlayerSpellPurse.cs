@@ -64,17 +64,7 @@ public partial class PlayerSpellPurse : Node2D
     if (@event.IsActionPressed(PlayerInputMap.Dict[PlayerInputMap.Action.Interact])
         || @event.IsActionPressed(PlayerInputMap.Dict[PlayerInputMap.Action.Interact2]))
     {
-      // Start listening
-      IsListening = true;
-      Hud.Instance.SpellDisplay.Update(this);
-      SetProcessInput(true);
-      foreach (var spell in _spells.Keys)
-      {
-        if (_spells[spell] == SpellState.Ready)
-        {
-          _spells[spell] = SpellState.Possible;
-        }
-      }
+      StartListening();
     }
     else if (@event.IsActionReleased(PlayerInputMap.Dict[PlayerInputMap.Action.Interact])
              || @event.IsActionReleased(PlayerInputMap.Dict[PlayerInputMap.Action.Interact2]))
@@ -160,7 +150,7 @@ public partial class PlayerSpellPurse : Node2D
     // If no spells are possible through our pressed inputs, just lets the user try again
     if (!_spells.Any(spell => spell.Value == SpellState.Possible))
     {
-      ActionsNeededIdx = 0;
+      StartListening();
     }
     else
     {
@@ -168,7 +158,23 @@ public partial class PlayerSpellPurse : Node2D
     }
     Hud.Instance.SpellDisplay.Update(this);
   }
-  
+
+  private void StartListening()
+  {
+    // Start listening
+    ActionsNeededIdx = 0;
+    IsListening = true;
+    Hud.Instance.SpellDisplay.Update(this);
+    SetProcessInput(true);
+    foreach (var spell in _spells.Keys)
+    {
+      if (_spells[spell] == SpellState.Ready)
+      {
+        _spells[spell] = SpellState.Possible;
+      }
+    }
+  }
+
   private void StopListening()
   {
     SetProcessInput(false);

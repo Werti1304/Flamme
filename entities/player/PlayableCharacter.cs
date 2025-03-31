@@ -87,7 +87,9 @@ public partial class PlayableCharacter : CharacterBody2D, IEnemyDamagable
       PlayerInputMap.Dict[PlayerInputMap.Action.ShootDown]);
     ShootingVector = ShootingVector.Normalized().Round();
     // TODO 1 Possible race condition
-    IsShooting = ShootingVector.Length() > 0;
+    IsShooting = ShootingVector.Length() > 0 
+                 && !(Input.IsActionPressed(PlayerInputMap.Dict[PlayerInputMap.Action.Interact]) 
+                      || Input.IsActionPressed(PlayerInputMap.Dict[PlayerInputMap.Action.Interact2]));
 
     GetViewport().SetInputAsHandled();
     var newFacing = PlayerFacingMethods.GetFacing(ShootingVector, _movingVector);

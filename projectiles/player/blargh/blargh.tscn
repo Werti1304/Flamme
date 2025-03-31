@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://bnm613cncnwmk"]
+[gd_scene load_steps=15 format=3 uid="uid://bnm613cncnwmk"]
 
 [ext_resource type="Script" uid="uid://dwqitpbonspms" path="res://projectiles/player/blargh/Blargh.cs" id="1_e8l0q"]
 [ext_resource type="Texture2D" uid="uid://cs2lricmewmel" path="res://assets/sprites/projectiles/player/blargh.png" id="2_e8l0q"]
@@ -19,10 +19,22 @@ gradient = SubResource("Gradient_e8l0q")
 
 [sub_resource type="Gradient" id="Gradient_u4pe2"]
 offsets = PackedFloat32Array(0, 0.690141, 1)
-colors = PackedColorArray(0.68661, 0.835466, 0.951864, 1, 0.0944197, 0.244802, 0.348659, 1, 0, 0, 0, 1)
+colors = PackedColorArray(1, 1, 1, 1, 0.545098, 0.737255, 0.827451, 1, 0.5478, 0.740637, 0.83, 0)
 
 [sub_resource type="GradientTexture1D" id="GradientTexture1D_s710v"]
 gradient = SubResource("Gradient_u4pe2")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_u4pe2"]
+lifetime_randomness = 0.3
+emission_shape_scale = Vector3(0.7, 3, 1)
+emission_shape = 1
+emission_sphere_radius = 3.0
+spread = 5.0
+initial_velocity_min = 5.0
+initial_velocity_max = 15.0
+gravity = Vector3(0, 0, 0)
+color_ramp = SubResource("GradientTexture1D_s710v")
+color_initial_ramp = SubResource("GradientTexture1D_dt4in")
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_jcr1h"]
 lifetime_randomness = 0.3
@@ -55,10 +67,22 @@ lifetime_randomness = 0.3
 emission_shape_scale = Vector3(1, 4, 1)
 emission_shape = 1
 emission_sphere_radius = 3.0
+direction = Vector3(-1, 0, 0)
+spread = 90.0
+initial_velocity_min = 15.0
+initial_velocity_max = 20.0
+gravity = Vector3(0, 0, 0)
+color_ramp = SubResource("GradientTexture1D_s710v")
+color_initial_ramp = SubResource("GradientTexture1D_dt4in")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_s710v"]
+emission_shape_scale = Vector3(1, 4, 1)
+emission_shape = 1
+emission_sphere_radius = 3.0
 direction = Vector3(0, -1, 0)
 spread = 180.0
-initial_velocity_min = 5.0
-initial_velocity_max = 10.0
+initial_velocity_min = 15.0
+initial_velocity_max = 20.0
 gravity = Vector3(0, 0, 0)
 color_ramp = SubResource("GradientTexture1D_s710v")
 color_initial_ramp = SubResource("GradientTexture1D_dt4in")
@@ -67,13 +91,17 @@ color_initial_ramp = SubResource("GradientTexture1D_dt4in")
 radius = 3.0
 height = 22.0
 
-[node name="Blargh" type="Area2D" node_paths=PackedStringArray("CollisionShape", "Sprite", "TrailLine")]
-collision_layer = 5
-collision_mask = 5
+[node name="Blargh" type="Area2D" node_paths=PackedStringArray("LineCollisionShape", "LineCollisionArea", "SpawnParticles", "EndParticles", "Sprite", "TrailLine", "DestructionParticles")]
+collision_layer = 13
+collision_mask = 13
 script = ExtResource("1_e8l0q")
-CollisionShape = NodePath("CollisionPolygon2D")
+LineCollisionShape = NodePath("Line2D/Area2D/CollisionPolygon2D")
+LineCollisionArea = NodePath("Line2D/Area2D")
+SpawnParticles = NodePath("SpawnParticles")
+EndParticles = [NodePath("GPUParticles2D"), NodePath("GPUParticles2D2"), NodePath("GPUParticles2D3")]
 Sprite = NodePath("Sprite2D")
 TrailLine = NodePath("Line2D")
+DestructionParticles = NodePath("DestructionParticles")
 
 [node name="Line2D" type="Line2D" parent="."]
 top_level = true
@@ -83,14 +111,32 @@ width_curve = SubResource("Curve_0q7qc")
 gradient = SubResource("Gradient_0q7qc")
 antialiased = true
 
+[node name="Area2D" type="Area2D" parent="Line2D"]
+collision_mask = 15
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Line2D/Area2D"]
+modulate = Color(1, 0, 0, 1)
+top_level = true
+position = Vector2(0, 1)
+
 [node name="Sprite2D" type="Sprite2D" parent="."]
+top_level = true
 z_index = 1
 texture = ExtResource("2_e8l0q")
+
+[node name="SpawnParticles" type="GPUParticles2D" parent="."]
+top_level = true
+z_index = 5
+amount = 128
+lifetime = 5.0
+randomness = 1.0
+visibility_rect = Rect2(0, 0, 0, 0)
+process_material = SubResource("ParticleProcessMaterial_u4pe2")
 
 [node name="GPUParticles2D" type="GPUParticles2D" parent="."]
 z_index = 5
 position = Vector2(0, 2)
-amount = 16
+amount = 32
 lifetime = 0.5
 randomness = 1.0
 visibility_rect = Rect2(0, 0, 0, 0)
@@ -99,7 +145,7 @@ process_material = SubResource("ParticleProcessMaterial_jcr1h")
 [node name="GPUParticles2D2" type="GPUParticles2D" parent="."]
 z_index = 5
 position = Vector2(0, -3)
-amount = 16
+amount = 32
 lifetime = 0.5
 randomness = 1.0
 visibility_rect = Rect2(0, 0, 0, 0)
@@ -107,16 +153,20 @@ process_material = SubResource("ParticleProcessMaterial_e8l0q")
 
 [node name="GPUParticles2D3" type="GPUParticles2D" parent="."]
 z_index = 5
-amount = 16
+amount = 64
 randomness = 1.0
 visibility_rect = Rect2(0, 0, 0, 0)
 process_material = SubResource("ParticleProcessMaterial_dt4in")
 
-[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
-modulate = Color(1, 0, 0, 1)
+[node name="DestructionParticles" type="GPUParticles2D" parent="."]
 top_level = true
-position = Vector2(0, 1)
-build_mode = 1
+z_index = 5
+emitting = false
+amount = 64
+one_shot = true
+explosiveness = 1.0
+visibility_rect = Rect2(0, 0, 0, 0)
+process_material = SubResource("ParticleProcessMaterial_s710v")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CapsuleShape2D_e8l0q")
