@@ -117,6 +117,7 @@ public partial class Level : Node2D
 
   public override void _Ready()
   {
+    Main.Instance.UnloadingLevel = false;
     WorldGenerator.Instance.OnLevelReady(level: this);
     LevelManager.Instance.CurrentLevel = this;
 

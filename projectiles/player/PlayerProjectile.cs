@@ -152,13 +152,21 @@ public abstract partial class PlayerProjectile : Area2D
     tween.TweenCallback(Callable.From(QueueFree));
   }
 
-  protected void Hit(Node2D body, IPlayerDamageable enemy)
+  protected void Hit(Node2D body, IPlayerDamageable enemy, bool knockback = true)
   {
     if (DebugToggles.InstaKill)
     {
-      enemy.Hit(9999999, StatDamage * StatShotSpeed * 100, (body.GlobalPosition - GlobalPosition).Normalized());
+      enemy.Hit(9999999, 0, (body.GlobalPosition - GlobalPosition).Normalized());
       return;
     }
-    enemy.Hit(StatDamage, StatDamage * StatShotSpeed * 100, (body.GlobalPosition - GlobalPosition).Normalized());
+
+    if (knockback)
+    {
+      enemy.Hit(StatDamage, StatDamage * StatShotSpeed * 100, (body.GlobalPosition - GlobalPosition).Normalized());
+    }
+    else
+    {
+      enemy.Hit(StatDamage, 0, (body.GlobalPosition - GlobalPosition).Normalized());
+    }
   }
 }

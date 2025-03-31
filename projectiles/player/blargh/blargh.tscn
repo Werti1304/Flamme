@@ -9,7 +9,7 @@ point_count = 2
 
 [sub_resource type="Gradient" id="Gradient_0q7qc"]
 interpolation_mode = 2
-colors = PackedColorArray(0.5824, 0.80626, 0.91, 0.588235, 0.5824, 0.80626, 0.91, 1)
+colors = PackedColorArray(0.5824, 0.80626, 0.91, 1, 0.5824, 0.80626, 0.91, 0.588235)
 
 [sub_resource type="Gradient" id="Gradient_e8l0q"]
 colors = PackedColorArray(0.239216, 0.501961, 0.686275, 1, 1, 1, 1, 1)
@@ -92,7 +92,7 @@ radius = 3.0
 height = 22.0
 
 [node name="Blargh" type="Area2D" node_paths=PackedStringArray("LineCollisionShape", "LineCollisionArea", "SpawnParticles", "EndParticles", "Sprite", "TrailLine", "DestructionParticles")]
-collision_layer = 13
+collision_layer = 0
 collision_mask = 13
 script = ExtResource("1_e8l0q")
 LineCollisionShape = NodePath("Line2D/Area2D/CollisionPolygon2D")
@@ -112,7 +112,8 @@ gradient = SubResource("Gradient_0q7qc")
 antialiased = true
 
 [node name="Area2D" type="Area2D" parent="Line2D"]
-collision_mask = 15
+collision_layer = 0
+collision_mask = 13
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Line2D/Area2D"]
 modulate = Color(1, 0, 0, 1)

@@ -8,7 +8,7 @@ using System.Linq;
 
 namespace Flamme.entities.player;
 
-public partial class PlayerSpellPurse : Node2D
+public partial class PlayerSpellBook : Node2D
 {
   [Signal] public delegate void CastedSpellsChangedEventHandler();
   

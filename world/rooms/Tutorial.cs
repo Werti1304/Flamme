@@ -1,3 +1,4 @@
+using Flamme.ui.key_press;
 using Flamme.world.generation;
 using Godot;
 using Godot.Collections;
@@ -8,7 +9,7 @@ namespace Flamme.world.rooms;
 public partial class Tutorial : Node2D
 {
   [Export] public Room TutorialRoom;
-  [Export] public Array<ui.key_press.KeyPress> KeyPresses = [];
+  [Export] public Array<KeyPress> KeyPresses = new Array<KeyPress>();
 
   public static bool Completed;
 
@@ -24,6 +25,11 @@ public partial class Tutorial : Node2D
 
   private void OnLevelReady()
   {
+    // Bc we kinda get called from LevelManager, even if this object is already kinda disposed lol
+    if (!IsInstanceValid(this))
+    {
+      return;
+    }
     // This is so that the tutorial won't be shown at the start of the next level
     if (Completed)
     {

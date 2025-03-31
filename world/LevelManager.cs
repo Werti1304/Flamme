@@ -62,6 +62,7 @@ public partial class LevelManager : Node2D
   
   public void StartlevelChange(PackedScene levelScene)
   {
+    Main.Instance.UnloadingLevel = true;
     var character = CurrentLevel.PlayableCharacter;
     character.SetPhysicsProcess(false);
     character.SetProcessInput(false);
@@ -136,6 +137,9 @@ public partial class LevelManager : Node2D
   
   public void SetLevelActive(Level level)
   {
+    // Old level should be unloaded by now
+    Main.Instance.UnloadingLevel = false;
+    
     CurrentLevel = level;
     
     // Actually insert stuff to transfer into new level

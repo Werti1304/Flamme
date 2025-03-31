@@ -29,7 +29,7 @@ public partial class PlayableCharacter : CharacterBody2D, IEnemyDamagable
   [ExportGroup("Meta")] 
   [Export] public PlayerStats Stats;
   [Export] public PlayerPurse Purse;
-  [Export] public PlayerSpellPurse SpellPurse;
+  [Export] public PlayerSpellBook SpellBook;
   [Export] public PlayerSprite Sprite;
   [Export] public Area2D InteractionArea;
   [Export] public Timer InvincibilityTimer;
@@ -53,11 +53,11 @@ public partial class PlayableCharacter : CharacterBody2D, IEnemyDamagable
     
     InvincibilityTimer.Timeout += () => Invincible = false;
     
-    SpellPurse.CastedSpellsChanged += OnInvChange;
+    SpellBook.CastedSpellsChanged += OnInvChange;
 
     OnInvChange();
     Hud.Instance.PurseDisplay.UpdatePurse(Purse);
-    Hud.Instance.SpellDisplay.Update(SpellPurse);
+    Hud.Instance.SpellDisplay.Update(SpellBook);
     GD.Print($"Player {Name} ready, Parent: {GetParent()}, Owner: {GetOwner()}!");
 
   }
@@ -223,9 +223,9 @@ public partial class PlayableCharacter : CharacterBody2D, IEnemyDamagable
   private void OnInvChange(Item item)
   {
     ActiveSpells.Clear();
-    foreach (var spells in SpellPurse.Spells)
+    foreach (var spells in SpellBook.Spells)
     {
-      if (spells.Value == PlayerSpellPurse.SpellState.Casting)
+      if (spells.Value == PlayerSpellBook.SpellState.Casting)
       {
         ActiveSpells.Add(spells.Key);
       }
@@ -339,7 +339,7 @@ public partial class PlayableCharacter : CharacterBody2D, IEnemyDamagable
   {
     if (enemiesDefeated)
     {
-      SpellPurse.RoomCleared();
+      SpellBook.RoomCleared();
     }
   }
 }

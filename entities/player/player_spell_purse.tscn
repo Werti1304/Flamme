@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://d2kord38107nb"]
 
-[ext_resource type="Script" uid="uid://bf1xvv82pd2ay" path="res://entities/player/PlayerSpellPurse.cs" id="1_vbcbt"]
+[ext_resource type="Script" path="res://entities/player/PlayerSpellBook.cs" id="1_vbcbt"]
 
-[node name="PlayerSpellPurse" type="Node2D"]
+[node name="PlayerSpellBook" type="Node2D"]
 script = ExtResource("1_vbcbt")

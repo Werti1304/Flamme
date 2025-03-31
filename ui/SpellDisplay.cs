@@ -40,23 +40,23 @@ public partial class SpellDisplay : RichTextLabel
     _actionActiveIcons[PlayerInputMap.Action.ShootLeft] = _shootLeftActiveTexture;
   }
 
-  public void Update(PlayerSpellPurse purse)
+  public void Update(PlayerSpellBook book)
   {
-    Text = BuildStatString(purse);
+    Text = BuildStatString(book);
   }
   
-  private string BuildStatString(PlayerSpellPurse purse)
+  private string BuildStatString(PlayerSpellBook book)
   {
     var sb = new StringBuilder();
 
-    foreach (var spellPair in purse.Spells)
+    foreach (var spellPair in book.Spells)
     {
       var spell = spellPair.Key;
       var state = spellPair.Value;
 
-      if (state == PlayerSpellPurse.SpellState.Ready)
+      if (state == PlayerSpellBook.SpellState.Ready)
       {
-        if (!purse.IsListening)
+        if (!book.IsListening)
         {
           AppendStat(sb, spell.Name, spell.ActionsNeeded, -1);
         }
@@ -65,11 +65,11 @@ public partial class SpellDisplay : RichTextLabel
           AppendStat(sb, spell.Name, spell.ActionsNeeded);
         }
       }
-      else if (state == PlayerSpellPurse.SpellState.Possible)
+      else if (state == PlayerSpellBook.SpellState.Possible)
       {
-        AppendStat(sb, spell.Name, spell.ActionsNeeded, purse.ActionsNeededIdx);
+        AppendStat(sb, spell.Name, spell.ActionsNeeded, book.ActionsNeededIdx);
       }
-      else if (state == PlayerSpellPurse.SpellState.OnCoolDown)
+      else if (state == PlayerSpellBook.SpellState.OnCoolDown)
       {
         if (spell.CooldownRoomComponent == null)
         {
@@ -93,7 +93,7 @@ public partial class SpellDisplay : RichTextLabel
           sb.Append($"[color=Dimgray]][/color]\n");
         }
       }
-      else if (state == PlayerSpellPurse.SpellState.Casting)
+      else if (state == PlayerSpellBook.SpellState.Casting)
       {
         sb.Append($"[color=Orange]{spell.Name}[/color]\n");
       }

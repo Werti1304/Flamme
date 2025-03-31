@@ -23,7 +23,7 @@ height = 21.0
 radius = 9.0
 height = 23.0
 
-[node name="PlayableCharacter" type="CharacterBody2D" node_paths=PackedStringArray("Stats", "Purse", "SpellPurse", "Sprite", "InteractionArea", "InvincibilityTimer")]
+[node name="PlayableCharacter" type="CharacterBody2D" node_paths=PackedStringArray("Stats", "Purse", "SpellBook", "Sprite", "InteractionArea", "InvincibilityTimer")]
 y_sort_enabled = true
 collision_layer = 2
 collision_mask = 7
@@ -32,7 +32,7 @@ slide_on_ceiling = false
 script = ExtResource("1_7xu7i")
 Stats = NodePath("Stats")
 Purse = NodePath("Purse")
-SpellPurse = NodePath("SpellPurse")
+SpellBook = NodePath("SpellBook")
 Sprite = NodePath("Sprite")
 InteractionArea = NodePath("InteractionArea")
 InvincibilityTimer = NodePath("InvincibleTimer")
@@ -56,7 +56,7 @@ script = ExtResource("2_75lbi")
 [node name="Purse" type="Node2D" parent="."]
 script = ExtResource("9_p3q4a")
 
-[node name="SpellPurse" parent="." instance=ExtResource("10_wwsi2")]
+[node name="SpellBook" parent="." instance=ExtResource("10_wwsi2")]
 
 [node name="InteractionArea" type="Area2D" parent="."]
 position = Vector2(0, -2)

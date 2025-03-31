@@ -5,6 +5,7 @@ using Flamme.entities.enemies;
 using Flamme.entities.player;
 using Flamme.projectiles;
 using Flamme.projectiles.player;
+using Flamme.world.doors;
 using Flamme.world.rooms;
 using Godot;
 using Godot.Collections;
@@ -31,10 +32,8 @@ public partial class Blargh : PlayerProjectile
 
   public override void _Ready()
   {
-    BodyExited += OnBulletLeave;
-    
-    LineCollisionArea.BodyEntered += OnBulletEntered;
-    LineCollisionArea.BodyExited += OnBulletLeave;
+    LineCollisionArea.BodyEntered += OnLineHit;
+    LineCollisionArea.BodyExited += OnLineLeave;
     
     Sprite.GlobalPosition = GlobalPosition;
     Sprite.Visible = false;
@@ -124,18 +123,13 @@ public partial class Blargh : PlayerProjectile
   {
     GD.Print($"Hit something: {body}");
     
-    if (body is TileMapLayer tileMapLayer && tileMapLayer.Name != "Props")
+    if (body is DoorMarker || body is TileMapLayer && body.Name != "Props")
     {
       HitSomething = true;
-
       foreach (var particle in EndParticles)
       {
         particle.Emitting = true;
       }
-    }
-    else if(body is IPlayerDamageable damageable)
-    {
-      _playerDamageables.Add((body, damageable));
     }
 
     if (body is IPlayerDamageable enemy)
@@ -144,37 +138,68 @@ public partial class Blargh : PlayerProjectile
     }
   }
 
-  private void OnBulletLeave(Node2D body)
+  private void OnLineHit(Node2D body)
+  {
+    if(body is IPlayerDamageable damageable)
+    {
+      GD.Print($"Line hit something: {body}");
+      _playerDamageables.Add((body, damageable));
+      OnBulletHitEnemy(body, damageable);
+    }
+  }
+
+  private void OnLineLeave(Node2D body)
   {
     if (body is IPlayerDamageable damageable)
     {
+      GD.Print($"Line left something: {body}");
       _playerDamageables.Remove((body, damageable));
     }
   }
 
   protected override void OnBulletHitEnemy(Node2D body, IPlayerDamageable enemy)
   {
-    Hit(body, enemy);
+    Hit(body, enemy, false);
   }
 
   private readonly Queue<(double, Vector2)> _points = new Queue<(double, Vector2)>();
   private double _t;
-  private int _tickCounter = 0;
+  private int _tickCounter = -1;
+  private bool _polygonFinished = false;
   public override void _PhysicsProcess(double delta)
   {
     if (!Fired)
       return;
     
+    _tickCounter++;
+    
     if (_playerDamageables.Count > 0 && _tickCounter % 30 == 0) // Every 30 ticks, try to damage
     {
       foreach (var damageable in _playerDamageables)
       {
-        Hit(damageable.Item1, damageable.Item2);
+        if (!IsInstanceValid(damageable.Item1))
+        {
+          // Enemy has been defeated, ignore because it should be removed in BodyExited anyways
+          continue;
+        }
+        Hit(damageable.Item1, damageable.Item2, false);
       }
     }
 
     if (HitSomething)
-      return;
+    {
+      if (_polygonFinished)
+        return;
+      _polygonFinished = true;
+      
+      // Deferred not needed, since it's done inside the physics frame
+      var projectedPos = ProjectileHelper.QuadraticBezier(_startPointP0, _controlPointP1, _endPointP2,
+        (float)(_t + delta * 4.0));
+      var projectedDirection = GlobalPosition - projectedPos;
+      var projectedNormalDirection = new Vector2(-projectedDirection.Y, projectedDirection.X).Normalized();
+      AddToPolygon(GlobalPosition - projectedNormalDirection * 11, GlobalPosition + projectedNormalDirection * 11, 
+        false);
+    }
 
     if (_homing && IsInstanceValid(_homingTarget))
     {
@@ -186,7 +211,7 @@ public partial class Blargh : PlayerProjectile
     GlobalPosition = ProjectileHelper.QuadraticBezier(_startPointP0, _controlPointP1, _endPointP2, (float)_t);
 
     var direction = GlobalPosition - oldPosition;
-    var normalDirection = new Vector2(-Direction.Y, Direction.X).Normalized();
+    var normalDirection = new Vector2(-direction.Y, direction.X).Normalized();
     
     if (_tickCounter < 3) // For the first 3 ticks, correct the rotation
     {
@@ -202,49 +227,28 @@ public partial class Blargh : PlayerProjectile
 
     if (_tickCounter % 4 == 0)
     {
-      // All this so the polygon gets calculated correctly
-      var half = LineCollisionShape.Polygon.Length / 2;
-      var newPolygon = new List<Vector2>();
-      newPolygon.AddRange(LineCollisionShape.Polygon);
-      // -> Line Width / 2
-      newPolygon.Insert(half, GlobalPosition + normalDirection * 11);
-      newPolygon.Insert(half, GlobalPosition - normalDirection * 11);
-      LineCollisionShape.Polygon = newPolygon.ToArray();
-      
-      GD.Print($"Tick {_tickCounter}");
-      foreach (var vector in LineCollisionShape.Polygon)
-      {
-        GD.Print($"Vector: {vector}");
-      }
+      // Deferred not needed, since it's done inside the physics frame
+      AddToPolygon(GlobalPosition + normalDirection * 11, GlobalPosition - normalDirection * 11, false);
     }
+  }
 
-    _tickCounter++;
+  private void AddToPolygon(Vector2 point, Vector2 point2, bool setDeferred)
+  {
+    // All this so the polygon gets calculated correctly
+    var half = LineCollisionShape.Polygon.Length / 2;
+    var newPolygon = new List<Vector2>();
+    newPolygon.AddRange(LineCollisionShape.Polygon);
+    // -> Line Width / 2
+    newPolygon.Insert(half, point);
+    newPolygon.Insert(half, point2);
 
-    // TODO 4 Change collision shape approprietly
-    // var shape = CollisionShape.Shape as RectangleShape2D;
-    // CollisionShape.Shape
-    // SetDeferred(CollisionShape);
-
-    // if (_points.Count > 0)
-    // {
-    //   for (;;)
-    //   {
-    //     var point = _points.Peek();
-    //     if (_t > point.Item1 + 0.2f)
-    //     {
-    //       TrailLine.RemovePoint(0);
-    //       _points.Dequeue();
-    //     }
-    //     else
-    //     {
-    //       break;
-    //     }
-    //   }
-    // }
-
-    // if (_t >= 1)
-    // {
-    //   DissipateBullet();
-    // }
+    if (setDeferred)
+    {
+      LineCollisionShape.SetDeferred(CollisionPolygon2D.PropertyName.Polygon, newPolygon.ToArray());
+    }
+    else
+    {
+      LineCollisionShape.Polygon = newPolygon.ToArray();
+    }
   }
 }
