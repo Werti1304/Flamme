@@ -28,7 +28,6 @@ script = ExtResource("2_oqwk7")
 Speed = 80.0
 NewDirectionTimeMax = 0.3
 Health = 6.0
-Weight = 5.0
 
 [node name="AnimatedSprite2D" parent="." index="0"]
 sprite_frames = SubResource("SpriteFrames_d1nfh")

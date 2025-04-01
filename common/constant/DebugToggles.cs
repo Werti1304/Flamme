@@ -7,7 +7,7 @@ public class DebugToggles
   public static bool DoorsAlwaysOpen = false;
   
   public static bool InstaKill = false;
-  public static bool GodMode = true;
+  public static bool GodMode = false;
 
   public static bool CheckMetaNonNull = false;
 }

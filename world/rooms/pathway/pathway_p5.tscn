@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=4 uid="uid://cnndecuo4ail8"]
+[gd_scene load_steps=11 format=4 uid="uid://cnndecuo4ail8"]
 
 [ext_resource type="Script" uid="uid://cu3vdn0r1mer3" path="res://world/rooms/Room.cs" id="1_cc212"]
 [ext_resource type="TileSet" uid="uid://ciata4jhj6wvu" path="res://assets/tilesets/prison/prison_floor.tres" id="2_nvwor"]
@@ -7,7 +7,6 @@
 [ext_resource type="PackedScene" uid="uid://bnx0j5b2ekjat" path="res://world/doors/DoorMarker.tscn" id="5_wsd4t"]
 [ext_resource type="Texture2D" uid="uid://bgc4ewqfbryq3" path="res://assets/sprites/levels/PrisonWalls.png" id="7_bj23f"]
 [ext_resource type="PackedScene" uid="uid://to5gnfx5ksif" path="res://world/rooms/node_parent.tscn" id="7_bxonj"]
-[ext_resource type="PackedScene" uid="uid://dxtul4kw81ds6" path="res://entities/enemies/prison/mage_strong/mage_strong.tscn" id="8_lseld"]
 [ext_resource type="PackedScene" uid="uid://cy646ln75o03g" path="res://entities/enemies/prison/mage_weak/mage_weak.tscn" id="9_bxonj"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_l1djv"]
@@ -87,12 +86,6 @@ position = Vector2(272, 160)
 shape = SubResource("RectangleShape2D_nvwor")
 
 [node name="Enemies" parent="." instance=ExtResource("7_bxonj")]
-
-[node name="MageStrong" parent="Enemies" instance=ExtResource("8_lseld")]
-position = Vector2(224, 160)
-
-[node name="MageStrong2" parent="Enemies" instance=ExtResource("8_lseld")]
-position = Vector2(320, 160)
 
 [node name="MageWeak" parent="Enemies" instance=ExtResource("9_bxonj")]
 position = Vector2(272, 160)

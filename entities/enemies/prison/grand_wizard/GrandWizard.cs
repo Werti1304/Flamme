@@ -7,7 +7,7 @@ namespace Flamme.entities.enemies.prison.grand_wizard;
 public partial class GrandWizard : Enemy
 {
   [Export] public float Speed = 10.0f;
-  [Export] public float AttackTimerSec = 3.0f;
+  [Export] public float AttackTimerSec = 2.5f;
 
   [Export] public float Range = 96.0f;
   
@@ -34,8 +34,8 @@ public partial class GrandWizard : Enemy
   {
     AttackTimerSec = (Health / MaxHealth) switch
     {
-      <= 0.33f => 2.0f,
-      <= 0.66f => 2.5f,
+      <= 0.33f => 1.5f,
+      <= 0.66f => 2.0f,
       _ => AttackTimerSec
     };
   }

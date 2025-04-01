@@ -23,8 +23,8 @@ animations = [{
 
 [node name="FireflyHoming" node_paths=PackedStringArray("Shooter") instance=ExtResource("1_he1i6")]
 script = ExtResource("2_wh2wh")
-Range = 96.0
-ShootTimerSec = 3.0
+Range = 128.0
+ShootTimerSec = 2.5
 Shooter = NodePath("Shooter")
 Health = 10.0
 
@@ -34,4 +34,4 @@ frame_progress = 0.296057
 
 [node name="Shooter" parent="." index="3" instance=ExtResource("3_0tutc")]
 ProjectileScene = ExtResource("6_4fhci")
-Range = 124.0
+Range = 164.0

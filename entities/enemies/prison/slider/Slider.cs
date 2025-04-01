@@ -6,7 +6,7 @@ namespace Flamme.entities.enemies.prison.slider;
 
 public partial class Slider : Enemy
 {
-  [Export] public int RunnersSpawnedOnDeath = 7;
+  [Export] public int RunnersSpawnedOnDeath = 5;
   [Export] public float WaitTimeRandomnessPercentage = 0.3f;
   [Export] public float KnockbackMultiplier = 2.0f;
   
@@ -128,17 +128,26 @@ public partial class Slider : Enemy
 
   public override void OnDeath()
   {
-    var runnerScene = Flamme.common.scenes.SceneLoader.Instance[Flamme.common.scenes.SceneLoader.Scene.Runner];
-    var smartRunnerScene = Flamme.common.scenes.SceneLoader.Instance[Flamme.common.scenes.SceneLoader.Scene.RunnerSmart];
-    
     SetPhysicsProcess(false);
     Body.Hide();
     Eye.Hide();
     DeathParticles.Emitting = true;
+    
+    CallDeferred(MethodName.OnDeathDeferred);
 
+    DeathParticles.Finished += base.OnDeath;
+  }
+
+  private void OnDeathDeferred()
+  {
+    CollisionShape.Disabled = true;
+    
+    var runnerScene = Flamme.common.scenes.SceneLoader.Instance[Flamme.common.scenes.SceneLoader.Scene.Runner];
+    var smartRunnerScene = Flamme.common.scenes.SceneLoader.Instance[Flamme.common.scenes.SceneLoader.Scene.RunnerSmart];
+    
     for (var i = 0; i < RunnersSpawnedOnDeath; i++)
     {
-      var randomPosOffset = new Vector2(Main.Instance.Rnd.RandfRange(-8, 8), Main.Instance.Rnd.RandfRange(-8, 8));
+      var randomPosOffset = new Vector2(Main.Instance.Rnd.RandfRange(-4, 4), Main.Instance.Rnd.RandfRange(-4, 4));
       if (Main.Instance.Rnd.Randf() < 0.3f)
       {
         SpawnEnemy(smartRunnerScene, GlobalPosition + randomPosOffset);
@@ -148,7 +157,6 @@ public partial class Slider : Enemy
         SpawnEnemy(runnerScene, GlobalPosition + randomPosOffset);
       }
     }
-    DeathParticles.Finished += base.OnDeath;
   }
 
   private void ChangeDirectionTimerOnTimeout()

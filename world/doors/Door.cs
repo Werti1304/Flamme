@@ -122,8 +122,15 @@ public partial class Door : Node2D
       default:
         throw new ArgumentOutOfRangeException();
     }
-    
-    Open();
+
+    if (_isLockedByKey)
+    {
+      Close();
+    }
+    else
+    {
+      Open();
+    }
     
     DoorMarker1.Teleport += OnTeleportDoorMarker1;
     DoorMarker2.Teleport += OnTeleportDoorMarker2;

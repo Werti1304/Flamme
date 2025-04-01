@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://x30cfw2oh84c"]
+[gd_scene load_steps=11 format=3 uid="uid://x30cfw2oh84c"]
 
 [ext_resource type="Script" uid="uid://g4g0jxxysykv" path="res://ui/MainMenu.cs" id="1_fdjbh"]
 [ext_resource type="Texture2D" uid="uid://djyibtpo5ch1m" path="res://assets/sprites/EscapeMenu.png" id="9_iyrh0"]
@@ -20,6 +20,10 @@ atlas = ExtResource("9_iyrh0")
 region = Rect2(0, 128, 64, 16)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_pbm0j"]
+atlas = ExtResource("9_iyrh0")
+region = Rect2(0, 144, 64, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0dkrt"]
 atlas = ExtResource("9_iyrh0")
 region = Rect2(0, 144, 64, 16)
 
@@ -71,10 +75,13 @@ texture_hover = SubResource("AtlasTexture_0i0gl")
 stretch_mode = 5
 
 [node name="DevButton" type="TextureButton" parent="Control/MarginContainer/VBoxContainer"]
+modulate = Color(0.22, 0.22, 0.22, 1)
 custom_minimum_size = Vector2(0, 64)
 layout_mode = 2
+disabled = true
 texture_normal = SubResource("AtlasTexture_jqly5")
 texture_hover = SubResource("AtlasTexture_pbm0j")
+texture_disabled = SubResource("AtlasTexture_0dkrt")
 stretch_mode = 5
 
 [node name="QuitButton" type="TextureButton" parent="Control/MarginContainer/VBoxContainer"]

@@ -20,6 +20,7 @@ region = Rect2(0, 0, 32, 32)
 size = Vector2(544, 320)
 
 [node name="ShopP0" type="Area2D" node_paths=PackedStringArray("TheoreticalDoorMarkers", "FloorTileMap", "PropsTileMap", "OuterWallTileMap", "RoofTileMap", "CollisionShape", "DoorMarkerParent", "MidPoint", "EnemiesParent", "LootParent", "TileEntitiesParent")]
+y_sort_enabled = true
 collision_layer = 15
 collision_mask = 15
 script = ExtResource("1_yngi1")
@@ -89,11 +90,9 @@ DisguiseTexture = SubResource("AtlasTexture_l1djv")
 position = Vector2(272, 160)
 shape = SubResource("RectangleShape2D_2qjs0")
 
-[node name="Enemies" type="Node2D" parent="." instance=ExtResource("11_7s4eo")]
-y_sort_enabled = true
+[node name="Enemies" parent="." instance=ExtResource("11_7s4eo")]
 
-[node name="Loot" type="Node2D" parent="." instance=ExtResource("11_7s4eo")]
-y_sort_enabled = true
+[node name="Loot" parent="." instance=ExtResource("11_7s4eo")]
 
 [node name="CoinBuyable" parent="Loot" instance=ExtResource("8_tsus6")]
 position = Vector2(176, 176)
@@ -122,5 +121,4 @@ Price = 5
 [node name="PursePickup" parent="Loot/CoinBuyable4" instance=ExtResource("9_cy0pq")]
 PurseContent = 2
 
-[node name="TileEntities" type="Node2D" parent="." instance=ExtResource("11_7s4eo")]
-y_sort_enabled = true
+[node name="TileEntities" parent="." instance=ExtResource("11_7s4eo")]
