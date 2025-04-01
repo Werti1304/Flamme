@@ -24,6 +24,14 @@ public partial class PlayerPurse : Node2D
     Keys = BaseKeys;
   }
 
+  public bool TryUseCrystals(int amount)
+  {
+    if (Crystals < amount) 
+      return false;
+    Crystals -= amount;
+    return true;
+  }
+
   public void Add(Tuple<PurseContent, int> purseContent)
   {
     switch (purseContent.Item1)

@@ -1,4 +1,4 @@
-[gd_scene load_steps=37 format=3 uid="uid://dykd30fkfcn81"]
+[gd_scene load_steps=38 format=3 uid="uid://dykd30fkfcn81"]
 
 [ext_resource type="Script" uid="uid://c4i51i2wltxdo" path="res://ui/Hud.cs" id="1_kc1f2"]
 [ext_resource type="Texture2D" uid="uid://dvc802522cyjx" path="res://ui/textures/heart_full.tres" id="2_6mpex"]
@@ -34,6 +34,7 @@
 [ext_resource type="Texture2D" uid="uid://ilcyvi1ty8dl" path="res://assets/ui/keyboard/RIGHT_ACTIVE.png" id="32_2u3la"]
 [ext_resource type="Texture2D" uid="uid://wkwoekmtdqjf" path="res://assets/ui/keyboard/DOWN_ACTIVE.png" id="33_g4gvt"]
 [ext_resource type="Texture2D" uid="uid://bn70t5f3d1kx" path="res://assets/ui/keyboard/LEFT_ACTIVE.png" id="34_085mh"]
+[ext_resource type="Texture2D" uid="uid://b8u05gnqd4e26" path="res://ui/textures/crystal_greyed.tres" id="35_0f6tk"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_2uaof"]
 shader = ExtResource("7_b1px6")
@@ -248,6 +249,8 @@ _shootUpActiveTexture = ExtResource("31_5rocq")
 _shootRightActiveTexture = ExtResource("32_2u3la")
 _shootDownActiveTexture = ExtResource("33_g4gvt")
 _shootLeftActiveTexture = ExtResource("34_085mh")
+_crystal = ExtResource("11_hyw70")
+_crystalCanNotAfford = ExtResource("35_0f6tk")
 
 [node name="HealthBarContainer" type="Control" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2

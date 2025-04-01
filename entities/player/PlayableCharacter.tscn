@@ -56,7 +56,8 @@ script = ExtResource("2_75lbi")
 [node name="Purse" type="Node2D" parent="."]
 script = ExtResource("9_p3q4a")
 
-[node name="SpellBook" parent="." instance=ExtResource("10_wwsi2")]
+[node name="SpellBook" parent="." node_paths=PackedStringArray("_purse") instance=ExtResource("10_wwsi2")]
+_purse = NodePath("../Purse")
 
 [node name="InteractionArea" type="Area2D" parent="."]
 position = Vector2(0, -2)

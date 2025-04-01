@@ -31,6 +31,8 @@ public class Spell
   
   public UptimeComponent UptimeComponent = null;
   public CooldownRoomComponent CooldownRoomComponent = null;
+
+  public int ChargeCrystalCost = 0; 
   
   public int CastTime = -1;
   
@@ -73,6 +75,12 @@ public class Spell
   public Spell SetUptimeStartUponShooting(bool val = true)
   {
     StartUptimeUponShooting = val;
+    return this;
+  }
+
+  public Spell SetChargeCrystalCost(int chargeCrystalCost)
+  {
+    ChargeCrystalCost = chargeCrystalCost;
     return this;
   }
 

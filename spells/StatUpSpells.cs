@@ -22,8 +22,9 @@ public class StatUpSpells
 
     var spell = new Spell(SpellId.DoorOpen, "Sesame", "Open All Doors",
         ShootLeft, ShootDown, ShootDown, ShootDown, ShootRight)
-      .SetUptime(1.0f)
-      .SetCooldownRooms(5);
+      .SetUptime(2.5f)
+      .SetCooldownRooms(1)
+      .SetChargeCrystalCost(2);
     spell.SpellCast += SpellOnSpellCast;
     manager.RegisterSpell(spell);
     

@@ -12,6 +12,8 @@ public partial class PlayerSpellBook : Node2D
 {
   [Signal] public delegate void CastedSpellsChangedEventHandler();
   
+  [Export] private PlayerPurse _purse;
+  
   public enum SpellState
   {
     Ready,
@@ -36,12 +38,14 @@ public partial class PlayerSpellBook : Node2D
   private readonly List<Spell> _roomCooldownSpells = new List<Spell>(); // Only of State OnCoolDown
 
   public int ActionsNeededIdx { get; private set; }
+  
+  public int AvailableCrystals => _purse.Crystals;
 
   public override void _Ready()
   {
     AddSpell(SpellManager.Instance.GetFromId(SpellId.RapidFire));
-    AddSpell(SpellManager.Instance.GetFromId(SpellId.DoorOpen));
     AddSpell(SpellManager.Instance.GetFromId(SpellId.Blargh));
+    AddSpell(SpellManager.Instance.GetFromId(SpellId.DoorOpen));
     
     StopListening();
   }
@@ -121,6 +125,12 @@ public partial class PlayerSpellBook : Node2D
     {
       if(_spells[spell] != SpellState.Possible)
         continue;
+
+      if (spell.ChargeCrystalCost > 0 && spell.ChargeCrystalCost > _purse.Crystals)
+      {
+        _spells[spell] = SpellState.Ready;
+        continue;
+      }
       
       if (spell.ActionsNeeded.Count > ActionsNeededIdx 
         && spell.ActionsNeeded[ActionsNeededIdx] == pressedAction)
@@ -128,6 +138,9 @@ public partial class PlayerSpellBook : Node2D
         GD.Print($"Spell {spell.Name} now at idx {ActionsNeededIdx}");
         if (ActionsNeededIdx >= spell.ActionsNeeded.Count - 1)
         {
+          if(spell.ChargeCrystalCost > 0 && !_purse.TryUseCrystals(spell.ChargeCrystalCost))
+            continue;
+          
           // Cast spell
           GD.Print($"Spell {spell.Name} is casting!");
           _spells[spell] = SpellState.Casting;

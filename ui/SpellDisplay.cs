@@ -1,6 +1,7 @@
 using Flamme.common.helpers;
 using Flamme.common.input;
 using Flamme.entities.player;
+using Flamme.spells;
 using Godot;
 using System.Collections.Generic;
 using System.Text;
@@ -9,8 +10,7 @@ namespace Flamme.ui;
 
 public partial class SpellDisplay : RichTextLabel
 {
-  [ExportGroup("Action Icons")]
-  [Export] private Texture2D _shootUpTexture;
+  [ExportGroup("Action Icons")] [Export] private Texture2D _shootUpTexture;
   [Export] private Texture2D _shootRightTexture;
   [Export] private Texture2D _shootDownTexture;
   [Export] private Texture2D _shootLeftTexture;
@@ -18,10 +18,12 @@ public partial class SpellDisplay : RichTextLabel
   [Export] private Texture2D _shootRightActiveTexture;
   [Export] private Texture2D _shootDownActiveTexture;
   [Export] private Texture2D _shootLeftActiveTexture;
+  [Export] private Texture2D _crystal;
+  [Export] private Texture2D _crystalCanNotAfford;
 
   private readonly Dictionary<PlayerInputMap.Action, Texture2D> _actionIcons =
     new Dictionary<PlayerInputMap.Action, Texture2D>();
-  
+
   private readonly Dictionary<PlayerInputMap.Action, Texture2D> _actionActiveIcons =
     new Dictionary<PlayerInputMap.Action, Texture2D>();
 
@@ -33,7 +35,7 @@ public partial class SpellDisplay : RichTextLabel
     _actionIcons[PlayerInputMap.Action.ShootRight] = _shootRightTexture;
     _actionIcons[PlayerInputMap.Action.ShootDown] = _shootDownTexture;
     _actionIcons[PlayerInputMap.Action.ShootLeft] = _shootLeftTexture;
-    
+
     _actionActiveIcons[PlayerInputMap.Action.ShootUp] = _shootUpActiveTexture;
     _actionActiveIcons[PlayerInputMap.Action.ShootRight] = _shootRightActiveTexture;
     _actionActiveIcons[PlayerInputMap.Action.ShootDown] = _shootDownActiveTexture;
@@ -44,7 +46,7 @@ public partial class SpellDisplay : RichTextLabel
   {
     Text = BuildStatString(book);
   }
-  
+
   private string BuildStatString(PlayerSpellBook book)
   {
     var sb = new StringBuilder();
@@ -58,16 +60,16 @@ public partial class SpellDisplay : RichTextLabel
       {
         if (!book.IsListening)
         {
-          AppendStat(sb, spell.Name, spell.ActionsNeeded, -1);
+          AppendSpell(sb, spell, book, spell.ActionsNeeded, -1);
         }
         else
         {
-          AppendStat(sb, spell.Name, spell.ActionsNeeded);
+          AppendSpell(sb, spell, book, spell.ActionsNeeded);
         }
       }
       else if (state == PlayerSpellBook.SpellState.Possible)
       {
-        AppendStat(sb, spell.Name, spell.ActionsNeeded, book.ActionsNeededIdx);
+        AppendSpell(sb, spell, book, spell.ActionsNeeded, book.ActionsNeededIdx);
       }
       else if (state == PlayerSpellBook.SpellState.OnCoolDown)
       {
@@ -101,26 +103,46 @@ public partial class SpellDisplay : RichTextLabel
     return sb.ToString();
   }
 
-  /// <summary>
-  /// 
-  /// </summary>
   /// <param name="sb"></param>
-  /// <param name="name"></param>
+  /// <param name="spell"></param>
+  /// <param name="book"></param>
   /// <param name="actions"></param>
   /// <param name="possibleIdx">
   /// 0: Inactive
   /// >0: Possible
   /// -1: Spell Casting Inactive in general</param>
-  private void AppendStat(StringBuilder sb, string name, IEnumerable<PlayerInputMap.Action> actions, int possibleIdx = 0)
+  private void AppendSpell(StringBuilder sb, Spell spell, PlayerSpellBook book, IEnumerable<PlayerInputMap.Action> actions,
+    int possibleIdx = 0)
   {
-    if (possibleIdx == -1)
+    if (possibleIdx == -1 || spell.ChargeCrystalCost > book.AvailableCrystals)
     {
-      sb.Append($"[color=Gray]{name}[/color]\n");
+      sb.Append($"[color=Gray]{spell.Name} [/color]");
+    }
+    else
+    {
+      sb.Append($"{spell.Name} ");
+    }
+
+    for (var k = 0; k < spell.ChargeCrystalCost; k++)
+    {
+      if (k + 1 <= book.AvailableCrystals)
+      {
+        sb.Append($"[img=16]{_crystal.ResourcePath}[/img]");
+      }
+      else
+      {
+        sb.Append($"[img=16]{_crystalCanNotAfford.ResourcePath}[/img]");
+      }
+    }
+
+    if (possibleIdx == -1 || spell.ChargeCrystalCost > book.AvailableCrystals)
+    {
+      sb.Append("\n");
       return;
     }
-    sb.Append($"{name} ");
 
     var i = 0;
+
     foreach (var a in actions)
     {
       if (i < possibleIdx)
