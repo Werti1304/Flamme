@@ -36,6 +36,8 @@ public class Spell
   
   public int MagicCost = -1;
 
+  public bool StartUptimeUponShooting = false;
+
   public Spell(SpellId id, string name, string description, params PlayerInputMap.Action[] actionsNeeded)
   {
     Id = id;
@@ -65,6 +67,12 @@ public class Spell
   public Spell SetUptime(double uptime)
   {
     UptimeComponent = new UptimeComponent(uptime);
+    return this;
+  }
+
+  public Spell SetUptimeStartUponShooting(bool val = true)
+  {
+    StartUptimeUponShooting = val;
     return this;
   }
 

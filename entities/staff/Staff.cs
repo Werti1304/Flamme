@@ -230,6 +230,7 @@ public partial class Staff : RigidBody2D
     var targetRotation = projectile.Direction.Angle();
     projectile.Rotation = targetRotation;
     GetTree().Root.AddChild(projectile);
+    _owner.SpellBook.NotifyOfShot();
     projectile.Fire(_owner, Room.Current);
   }
 

@@ -32,6 +32,7 @@ public partial class PlayerSpellBook : Node2D
   private readonly Dictionary<Spell, SpellState> _spells = new Dictionary<Spell, SpellState>();
   
   private readonly List<Spell> _upTimeSpells = new List<Spell>(); // Only of State Casting
+  private readonly List<Spell> _upTimeWaitingForShotSpells = new List<Spell>(); // Only of State Casting
   private readonly List<Spell> _roomCooldownSpells = new List<Spell>(); // Only of State OnCoolDown
 
   public int ActionsNeededIdx { get; private set; }
@@ -132,10 +133,17 @@ public partial class PlayerSpellBook : Node2D
           _spells[spell] = SpellState.Casting;
           EmitSignal(SignalName.CastedSpellsChanged);
           StopListening();
+          // If uptime should start instantly
           if (spell.UptimeComponent != null)
           {
-            _upTimeSpells.Add(spell);
-            SetPhysicsProcess(true);
+            if (spell.StartUptimeUponShooting)
+            {
+              _upTimeWaitingForShotSpells.Add(spell);
+            }
+            else
+            {
+              StartUptimeTimer(spell);
+            }
           }
           spell.OnCast();
           return;
@@ -157,6 +165,12 @@ public partial class PlayerSpellBook : Node2D
       ActionsNeededIdx++;
     }
     Hud.Instance.SpellDisplay.Update(this);
+  }
+
+  private void StartUptimeTimer(Spell spell)
+  {
+    _upTimeSpells.Add(spell);
+    SetPhysicsProcess(true);
   }
 
   private void StartListening()
@@ -206,5 +220,17 @@ public partial class PlayerSpellBook : Node2D
       }
     }
     Hud.Instance.SpellDisplay.Update(this);
+  }
+
+  public void NotifyOfShot()
+  {
+    if (_upTimeWaitingForShotSpells.Count == 0)
+      return;
+    
+    foreach (var spell in _upTimeWaitingForShotSpells)
+    {
+      StartUptimeTimer(spell);
+    }
+    _upTimeWaitingForShotSpells.Clear();
   }
 }
