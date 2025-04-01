@@ -40,7 +40,7 @@ public partial class RunnerAngry : Enemy
     _isTriggered = triggered;
   }
   
-  public override void _PhysicsProcess(double delta)
+  protected override void PhysicsProcess(double delta)
   {
     if(!IsActive)
       return;
@@ -74,8 +74,6 @@ public partial class RunnerAngry : Enemy
     {
       ActiveSprite.FlipH = true;
     }
-    
-    MoveAndSlide();
   }
 
   protected override void OnSetPassive()

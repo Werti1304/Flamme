@@ -13,7 +13,7 @@ public partial class FireflyNeutral : Enemy
   
   protected Vector2 Direction = Vector2.Zero;
 
-  public override void _PhysicsProcess(double delta)
+  protected override void PhysicsProcess(double delta)
   {
     if (!IsActive)
       return;
@@ -43,9 +43,7 @@ public partial class FireflyNeutral : Enemy
     {
       Sprite.FlipH = true;
     }
-    Velocity = Velocity.Lerp(Direction * Speed, 0.3f);
-        
-    MoveAndSlide();
+    Velocity = Velocity.Lerp(Direction * Speed, 0.05f);
   }
 
   protected virtual Vector2 GetNewDirection()

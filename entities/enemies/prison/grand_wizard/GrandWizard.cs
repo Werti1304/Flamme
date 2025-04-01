@@ -40,7 +40,7 @@ public partial class GrandWizard : Enemy
     };
   }
 
-  public override void _PhysicsProcess(double delta)
+  protected override void PhysicsProcess(double delta)
   {
     if (!IsActive)
       return;
@@ -127,8 +127,6 @@ public partial class GrandWizard : Enemy
     {
       Velocity = Velocity.Lerp(Vector2.Zero, 0.05f);
     }
-
-    MoveAndSlide();
   }
 
   private enum Attack

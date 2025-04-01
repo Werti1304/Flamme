@@ -37,6 +37,7 @@ motion_mode = 1
 script = ExtResource("1_n8acw")
 Sprite = NodePath("AnimatedSprite2D")
 Health = 3.0
+Weight = 5.0
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_2s5rg")

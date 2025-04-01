@@ -16,10 +16,8 @@ public partial class Runner : Enemy
     QueueFree();
   }
 
-  public override void _PhysicsProcess(double delta)
+  protected override void PhysicsProcess(double delta)
   {
-    base._PhysicsProcess(delta);
-    
     // TODO 1 Relevant for pretty much all _PhysicsProcess -> enable PhysicProcess only when needed in addition to these ifs
     // Not yet tho cuz else Im gonna miss something and get funny bugs
     if (Target == null)
@@ -34,8 +32,6 @@ public partial class Runner : Enemy
     {
       Sprite.FlipH = true;
     }
-    Velocity = Velocity.Lerp(direction * Speed, 0.1f);
-        
-    MoveAndSlide();
+    Velocity = Velocity.Lerp(direction * Speed, 0.07f);
   }
 }

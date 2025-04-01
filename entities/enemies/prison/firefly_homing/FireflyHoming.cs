@@ -20,12 +20,10 @@ public partial class FireflyHoming : firefly_neutral.FireflyNeutral
   }
 
   private double _shootTimer;
-  public override void _PhysicsProcess(double delta)
+  protected override void PhysicsProcess(double delta)
   {
     if (!IsActive)
       return;
-    
-    base._PhysicsProcess(delta);
     
     _shootTimer += delta;
     if (_shootTimer > ShootTimerSec)
@@ -33,5 +31,7 @@ public partial class FireflyHoming : firefly_neutral.FireflyNeutral
       _shootTimer = 0.0f;
       Shooter.Shoot(this, Target);
     }
+    
+    Velocity = Velocity.Lerp(Vector2.Zero, 0.05f);
   }
 }

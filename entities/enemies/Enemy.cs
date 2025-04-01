@@ -36,6 +36,26 @@ public abstract partial class Enemy : CharacterBody2D, IPlayerDamageable
     
     MaxHealth = Health;
   }
+  
+  protected abstract void PhysicsProcess(double delta);
+
+  public override void _PhysicsProcess(double delta)
+  {
+    PhysicsProcess(delta);
+    
+    if (MoveAndSlide())
+    {
+      for(var i = 0; i < GetSlideCollisionCount(); i++)
+      {
+        var col = GetSlideCollision(i);
+
+        if (col.GetCollider() is Enemy enemy)
+        {
+          enemy.Velocity += col.GetNormal() * - 7.5f;
+        }
+      }
+    }
+  }
 
   public virtual void OnDeath()
   {

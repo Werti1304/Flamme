@@ -35,12 +35,6 @@ public partial class MeleeArea : Area2D
     {
       EmitSignal(SignalName.DamagedTarget, Damage);
     }
-    var parent = GetParent() as Enemy;
-    if (parent != null)
-    {
-      var direction = parent.GlobalPosition.DirectionTo(body.GlobalPosition);
-      parent.Velocity += -direction * 100.0f; // Small knockback upon hitting something
-    }
   }
   
   private void OnBodyEntered(Node2D body)

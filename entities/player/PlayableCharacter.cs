@@ -317,8 +317,6 @@ public partial class PlayableCharacter : CharacterBody2D, IEnemyDamagable
   private void Move(double delta)
   {
     Velocity = Velocity.Lerp(_movingVector * Stats.Speed, AccelerationFactor);
-    // Velocity = Velocity.LimitLength(Stats.Speed * 2);
-    // Velocity = Velocity.Lerp(Vector2.Zero, Friction);
 
     if (MoveAndSlide())
     {
@@ -329,7 +327,7 @@ public partial class PlayableCharacter : CharacterBody2D, IEnemyDamagable
         if (col.GetCollider() is Enemy enemy)
         {
           // enemy.Velocity += col.GetNormal() * - (1 / enemy.Weight) * 100.0f;
-          enemy.Velocity += col.GetNormal() * - 15.0f;
+          enemy.Velocity += col.GetNormal() * - 15.0f * (10 / enemy.Weight);
         }
       }
     }

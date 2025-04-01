@@ -17,7 +17,7 @@ public partial class MageStrong : Enemy
   
   private double _shootTimer;
 
-  public override void _PhysicsProcess(double delta)
+  protected override void PhysicsProcess(double delta)
   {
     if (!IsActive)
       return;
@@ -66,8 +66,6 @@ public partial class MageStrong : Enemy
         Sprite.FlipH = true;
       }
     }
-    
-    MoveAndSlide();
   }
   
   private void ShootingTimerOnTimeout()

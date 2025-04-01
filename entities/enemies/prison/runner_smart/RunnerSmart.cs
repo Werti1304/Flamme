@@ -16,7 +16,7 @@ public partial class RunnerSmart : Enemy
     ExportMetaNonNull.Check(this);
   }
 
-  public override void _PhysicsProcess(double delta)
+  protected override void PhysicsProcess(double delta)
   {
     if (!IsActive)
       return;
@@ -25,7 +25,7 @@ public partial class RunnerSmart : Enemy
     
     var nextPos = NavigationAgent.GetNextPathPosition();
     var direction = (nextPos - GlobalPosition).Normalized();
-    Velocity = Velocity.Lerp(direction * Speed, 0.02f);
+    Velocity = Velocity.Lerp(direction * Speed, 0.05f);
     
     if (direction.X < 0 && Sprite.FlipH)
     {
@@ -35,8 +35,6 @@ public partial class RunnerSmart : Enemy
     {
       Sprite.FlipH = true;
     }
-    
-    MoveAndSlide();
   }
 
   public override void OnDeath()

@@ -114,7 +114,7 @@ public partial class Slider : Enemy
     ChangeDirectionTimer.Stop();
   }
 
-  public override void _PhysicsProcess(double delta)
+  protected override void PhysicsProcess(double delta)
   {
     if (!IsActive)
       return;
@@ -124,8 +124,6 @@ public partial class Slider : Enemy
     Eye.Position = pupilPosition;
     
     Velocity = _direction * _speed;
-
-    MoveAndSlide();
   }
 
   public override void OnDeath()
@@ -140,7 +138,7 @@ public partial class Slider : Enemy
 
     for (var i = 0; i < RunnersSpawnedOnDeath; i++)
     {
-      var randomPosOffset = new Vector2(Main.Instance.Rnd.RandfRange(-16, 16), Main.Instance.Rnd.RandfRange(-16, 16));
+      var randomPosOffset = new Vector2(Main.Instance.Rnd.RandfRange(-8, 8), Main.Instance.Rnd.RandfRange(-8, 8));
       if (Main.Instance.Rnd.Randf() < 0.3f)
       {
         SpawnEnemy(smartRunnerScene, GlobalPosition + randomPosOffset);

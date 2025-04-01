@@ -88,17 +88,10 @@ public class RoomMeta(
       RoomDict[roomType] = new List<RoomMeta>();
     }
 
-    var dir = DirAccess.Open(PathConstants.RoomFolderPath);
-    Debug.Assert(dir != null, "Room folder not found!");
-
-    dir.ListDirBegin();
-
     // TODO Better ways probably exist - but this is the easiest one 
     // Horribly performance but for now, that's okay
-    foreach (var file in Directory.GetFiles(PathConstants.RoomFolderPath, "*.tscn", SearchOption.AllDirectories))
+    foreach (var roomScene in RoomManager.Instance.AllRoomScenes)
     {
-      var roomScene = GD.Load<PackedScene>(file);
-
       Room roomTemp;
 
       var nodeTemp = roomScene.Instantiate();

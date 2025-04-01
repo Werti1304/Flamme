@@ -18,7 +18,7 @@ public partial class Archer : Enemy
   
   private double _shootTimer;
 
-  public override void _PhysicsProcess(double delta)
+  protected override void PhysicsProcess(double delta)
   {
     if (!IsActive)
       return;
@@ -66,8 +66,6 @@ public partial class Archer : Enemy
         Sprite.FlipH = true;
       }
     }
-    
-    MoveAndSlide();
   }
 
   private void ShootingTimerOnTimeout()
