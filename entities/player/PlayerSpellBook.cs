@@ -120,17 +120,22 @@ public partial class PlayerSpellBook : Node2D
     if (!ValidActions.Contains(pressedActionRet.Value))
       return;
 
-    var actionStr = PlayerInputMap.Dict[pressedActionRet.Value];
-    if (@event.GetActionStrength(actionStr) < 0.8f)
+    // Only for controllers with inbetween values needed
+    // Could be integrated better, but can't think of anything right now
+    if (Main.Instance.PlayerUsingController)
     {
-      _pressedDown = false;
-      return;
+      var actionStr = PlayerInputMap.Dict[pressedActionRet.Value];
+      if (@event.GetActionStrength(actionStr) < 0.8f)
+      {
+        _pressedDown = false;
+        return;
+      }
+      else if (_pressedDown)
+      {
+        return;
+      }
+      _pressedDown = true;
     }
-    else if (_pressedDown)
-    {
-      return;
-    }
-    _pressedDown = true;
       
     var pressedAction = pressedActionRet.Value;
     

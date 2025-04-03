@@ -8,6 +8,9 @@ public partial class KeyPress : Sprite2D
   [Export] public Color ModulateColor = Colors.ForestGreen;
   [Export] public Color ModulateCurrentPressedColor = Colors.Lime;
   [Export] public PlayerInputMap.Action ActionToTriggerModulate = PlayerInputMap.Action.ShootUp;
+
+  [Export] public Texture2D ControllerTexture;
+  private Texture2D _defaultTexture;
   
   public bool WasPressed;
 
@@ -18,6 +21,24 @@ public partial class KeyPress : Sprite2D
     {
       Modulate = ModulateColor;
       WasPressed = true;
+    }
+    _defaultTexture = Texture;
+    
+    Main.Instance.PlayerInputDeviceChanged += OnPlayerInputDeviceChanged;
+  }
+
+  private void OnPlayerInputDeviceChanged()
+  {
+    if (ControllerTexture == null)
+      return;
+    
+    if (Main.Instance.PlayerUsingController)
+    {
+      Texture = ControllerTexture;
+    }
+    else
+    {
+      Texture = _defaultTexture;
     }
   }
 

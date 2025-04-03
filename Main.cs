@@ -39,6 +39,23 @@ public partial class Main : Node
   // Fix enemy spawning in wall thats not good
   // Make it so boss room 1 is on level 1 and 2 on 2
 
+  [Signal] public delegate void PlayerInputDeviceChangedEventHandler();
+  public bool PlayerUsingController { get; private set; }
+
+  public override void _Input(InputEvent @event)
+  {
+    if (!PlayerUsingController && @event is InputEventJoypadButton || @event is InputEventJoypadMotion)
+    {
+      PlayerUsingController = true;
+      EmitSignal(SignalName.PlayerInputDeviceChanged);
+    }
+    else if(PlayerUsingController && @event is InputEventKey)
+    {
+      PlayerUsingController = false;
+      EmitSignal(SignalName.PlayerInputDeviceChanged);
+    }
+  }
+
   public bool UnloadingLevel;
 
   public override void _Notification(int what)

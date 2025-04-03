@@ -1,4 +1,4 @@
-[gd_scene load_steps=27 format=4 uid="uid://pfhymug74cbs"]
+[gd_scene load_steps=32 format=4 uid="uid://pfhymug74cbs"]
 
 [ext_resource type="Script" uid="uid://cu3vdn0r1mer3" path="res://world/rooms/Room.cs" id="1_rabtc"]
 [ext_resource type="PackedScene" uid="uid://cu2hrf4t2q3w0" path="res://entities/env/health/health_pickup.tscn" id="3_x642v"]
@@ -19,11 +19,16 @@
 [ext_resource type="Texture2D" uid="uid://bkvyhln2t6a34" path="res://assets/ui/keyboard/W.png" id="15_c67k0"]
 [ext_resource type="Texture2D" uid="uid://b5k0jmcy85ybr" path="res://assets/ui/keyboard/A.png" id="16_umd8m"]
 [ext_resource type="Texture2D" uid="uid://cjw62w8ckqxmh" path="res://assets/ui/keyboard/S.png" id="17_l8iu0"]
+[ext_resource type="Texture2D" uid="uid://bxww55w18rbee" path="res://assets/ui/keyboard/UP.png" id="18_e6nmd"]
 [ext_resource type="Texture2D" uid="uid://c0fwvxmjr3mlv" path="res://assets/ui/keyboard/D.png" id="18_yeuik"]
 [ext_resource type="Texture2D" uid="uid://tvavkpgcsnhm" path="res://assets/ui/keyboard/ESC.png" id="19_l8iu0"]
 [ext_resource type="Texture2D" uid="uid://bhw4ww48ojfdk" path="res://assets/ui/keyboard/E.png" id="20_yeuik"]
 [ext_resource type="Texture2D" uid="uid://dvtwa1xowbhb6" path="res://assets/ui/keyboard/TAB.png" id="21_yeuik"]
+[ext_resource type="Texture2D" uid="uid://c53prdp08f6ae" path="res://assets/ui/keyboard/PAUSE.png" id="23_60ho2"]
+[ext_resource type="Texture2D" uid="uid://t8exjagbbb0b" path="res://assets/ui/keyboard/RB.png" id="24_8jr5t"]
+[ext_resource type="Texture2D" uid="uid://cbvaijh1r6qyw" path="res://assets/ui/keyboard/MAP.png" id="24_ax6lo"]
 [ext_resource type="Texture2D" uid="uid://bmyw8h0nfgjbt" path="res://assets/ui/keyboard/SPACE.png" id="24_w1jvf"]
+[ext_resource type="Texture2D" uid="uid://ufr2nhx73ur4" path="res://assets/ui/keyboard/LB.png" id="26_e6nmd"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_l1djv"]
 atlas = ExtResource("11_dcmud")
@@ -334,38 +339,46 @@ ActionToTriggerModulate = 6
 position = Vector2(208, 240)
 texture = ExtResource("15_c67k0")
 ActionToTriggerModulate = 0
+ControllerTexture = ExtResource("18_e6nmd")
 
 [node name="A" parent="Tutorial" instance=ExtResource("11_ogn66")]
 position = Vector2(192, 256)
 texture = ExtResource("16_umd8m")
 ActionToTriggerModulate = 2
+ControllerTexture = ExtResource("13_swocj")
 
 [node name="S" parent="Tutorial" instance=ExtResource("11_ogn66")]
 position = Vector2(208, 256)
 texture = ExtResource("17_l8iu0")
 ActionToTriggerModulate = 1
+ControllerTexture = ExtResource("12_ny30j")
 
 [node name="D" parent="Tutorial" instance=ExtResource("11_ogn66")]
 position = Vector2(224, 256)
 texture = ExtResource("18_yeuik")
 ActionToTriggerModulate = 3
+ControllerTexture = ExtResource("14_swocj")
 
 [node name="ESC" parent="Tutorial" instance=ExtResource("11_ogn66")]
 position = Vector2(208, 112)
 texture = ExtResource("19_l8iu0")
 ActionToTriggerModulate = 8
+ControllerTexture = ExtResource("23_60ho2")
 
 [node name="ToggleMap" parent="Tutorial" instance=ExtResource("11_ogn66")]
 position = Vector2(208, 128)
 texture = ExtResource("21_yeuik")
 ActionToTriggerModulate = 9
+ControllerTexture = ExtResource("24_ax6lo")
 
 [node name="Interact" parent="Tutorial" instance=ExtResource("11_ogn66")]
 position = Vector2(336, 112)
 texture = ExtResource("20_yeuik")
 ActionToTriggerModulate = 10
+ControllerTexture = ExtResource("26_e6nmd")
 
 [node name="Interact2" parent="Tutorial" instance=ExtResource("11_ogn66")]
 position = Vector2(336, 128)
 texture = ExtResource("24_w1jvf")
 ActionToTriggerModulate = 11
+ControllerTexture = ExtResource("24_8jr5t")

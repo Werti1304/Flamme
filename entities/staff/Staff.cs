@@ -121,22 +121,28 @@ public partial class Staff : RigidBody2D
 
   public override void _IntegrateForces(PhysicsDirectBodyState2D state)
   {
-    if (_owner == null || !IsInstanceValid(_owner) || Snapped)
+    if (_owner == null || !IsInstanceValid(_owner))
       return;
+
+    if (Snapped)
+    {
+      if (_owner.ShootingVector != Vector2.Zero)
+      {
+        var targetPos = _owner.GlobalPosition + (_owner.ShootingVector * DistanceFromPlayer);
+        var rotationDirection = _owner.GlobalPosition.DirectionTo(targetPos);
+        var targetRotation = rotationDirection.Angle();
+        Rotation = targetRotation;
+        GlobalPosition = targetPos;
+        LinearVelocity = Vector2.Zero;
+        AngularVelocity = 0;
+      }
+      // Needed because of call order
+      return;
+    }
 
     if (_teleportTargetPos is not null && _teleportTargetPos.Value != GlobalPosition)
     {
-      if (PinJoint.NodeB != null)
-      {
-        var nodeB = PinJoint.NodeB;
-        PinJoint.NodeB = null;
-        GlobalPosition = _teleportTargetPos.Value;
-        PinJoint.NodeB = nodeB;
-      }
-      else
-      {
-        GlobalPosition = _teleportTargetPos.Value;
-      }
+      GlobalPosition = _teleportTargetPos.Value;
       LinearVelocity = Vector2.Zero;
       AngularVelocity = 0;
       _teleportTargetPos = null;
@@ -289,13 +295,8 @@ public partial class Staff : RigidBody2D
       var targetVec = _owner.GlobalPosition + (_owner.ShootingVector * DistanceFromPlayer) - GlobalPosition; // ;
       var distance = targetVec.Length();
       
-      if (Snapped && distance > 8.0f)
+      if (!Snapped && distance < 4.0f)
       {
-        SetSnap(false);
-      }
-      else if (!Snapped && distance < 4.0f)
-      {
-        SetDeferred(Node2D.PropertyName.GlobalPosition, _owner.GlobalPosition + (_owner.ShootingVector * DistanceFromPlayer));
         SetSnap(true);
       }
     }
@@ -307,17 +308,14 @@ public partial class Staff : RigidBody2D
 
   private void SetSnap(bool snapEnabled)
   {
-    // GD.Print($"SetSnap: {snapEnabled}");
     if (snapEnabled)
     {
       PinJoint.NodeB = _owner.GetPath();
-      SetDeferred(RigidBody2D.PropertyName.LockRotation, true);
       Snapped = true;
     }
     else
     {
       PinJoint.NodeB = null;
-      SetDeferred(RigidBody2D.PropertyName.LockRotation, false);
       Snapped = false;
     }
   }
