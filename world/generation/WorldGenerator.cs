@@ -19,11 +19,6 @@ public partial class WorldGenerator : Node2D
     new Vector2I(-1, 0), // west
   };
 
-  public override void _Ready()
-  {
-    RoomMeta.Init();
-  }
-
   public void Reset()
   {
     Levels.Clear();

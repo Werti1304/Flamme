@@ -20,7 +20,7 @@ public partial class RoomManager : Node2D
     set
     {
       if(value)
-        OnRoomChanged();
+        UpdateRoomScenesList();
     }
   }
   
@@ -28,10 +28,12 @@ public partial class RoomManager : Node2D
 
   public override void _Ready()
   {
-    GD.Print(AllRoomScenes.Count);
+    GD.Print($"Adding all {AllRoomScenes.Count} to RoomDict...");
+    FillRoomMetaDict();
+    GD.Print("Done!");
   }
-
-  public void OnRoomChanged()
+  
+  private void UpdateRoomScenesList()
   {
     var dir = DirAccess.Open(PathConstants.RoomFolderPath);
     Debug.Assert(dir != null, "Room folder not found!");
@@ -61,7 +63,40 @@ public partial class RoomManager : Node2D
     }
     GD.Print("Done!");
   }
-  
+
+  private void FillRoomMetaDict()
+  {
+    RoomMeta.RoomDict.Clear();
+
+    foreach (var roomType in Enum.GetValues<RoomType>())
+    {
+      RoomMeta.RoomDict[roomType] = new List<RoomMeta>();
+    }
+
+    // TODO Better ways probably exist - but this is the easiest one 
+    // Horribly performance but for now, that's okay
+    foreach (var roomScene in AllRoomScenes)
+    {
+      Room roomTemp;
+
+      var nodeTemp = roomScene.Instantiate();
+      roomTemp = nodeTemp as Room;
+
+      if (roomTemp == null)
+      {
+        // For other scenes, which aren't rooms, but are still in some subfolder (tools, etc.)
+        nodeTemp.QueueFree();
+        continue;
+      }
+
+      var roomData = new RoomMeta(
+        roomScene, roomTemp.Name, roomTemp.Type, roomTemp.TheoreticalDoorMarkers.Keys, roomTemp.RoomGenerationTickets,
+        roomTemp.RestrictToFloor, roomTemp.LevelFloor);
+      RoomMeta.RoomDict[roomTemp.Type].Add(roomData);
+      roomTemp.QueueFree();
+    }
+  }
+
   private static RoomManager _instance;
   private static readonly object Padlock = new();
   

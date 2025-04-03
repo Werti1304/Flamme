@@ -68,47 +68,6 @@ public class RoomMeta(
       }
       idx++;
     }
-
     return chosenRoom;
-  }
-
-  /// <summary>
-  /// Fills RoomDict, must only be called once
-  /// </summary>
-  public static void Init()
-  {
-    if (RoomDict.Count != 0)
-    {
-      GD.PushError("RoomMeta init() called twice!");
-      return;
-    }
-
-    foreach (var roomType in Enum.GetValues<RoomType>())
-    {
-      RoomDict[roomType] = new List<RoomMeta>();
-    }
-
-    // TODO Better ways probably exist - but this is the easiest one 
-    // Horribly performance but for now, that's okay
-    foreach (var roomScene in RoomManager.Instance.AllRoomScenes)
-    {
-      Room roomTemp;
-
-      var nodeTemp = roomScene.Instantiate();
-      roomTemp = nodeTemp as Room;
-
-      if (roomTemp == null)
-      {
-        // For other scenes, which aren't rooms, but are still in some subfolder (tools, etc.)
-        nodeTemp.QueueFree();
-        continue;
-      }
-
-      var roomData = new RoomMeta(
-        roomScene, roomTemp.Name, roomTemp.Type, roomTemp.TheoreticalDoorMarkers.Keys, roomTemp.RoomGenerationTickets,
-        roomTemp.RestrictToFloor, roomTemp.LevelFloor);
-      RoomDict[roomTemp.Type].Add(roomData);
-      roomTemp.QueueFree();
-    }
   }
 }

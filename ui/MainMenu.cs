@@ -16,7 +16,7 @@ public partial class MainMenu : CanvasLayer
 
   public void OnNewGame()
   {
-    WorldGenerator.Instance.GenerateLevels((ulong)_spinBox.Value);
+    Main.Instance.StartNewGame((ulong)_spinBox.Value);
   }
 
   public void OnDev()

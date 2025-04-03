@@ -44,18 +44,24 @@ public partial class LevelManager : Node2D
 
   private TransferableStuff? _stuffToTransfer;
 
-  public void Unload()
+  public void Reset()
   {
     _currentLevel = null;
 
     if (_stuffToTransfer != null && _stuffToTransfer.HasValue)
     {
-      if (_stuffToTransfer.Value.Staff != null)
+      if (IsInstanceValid(_stuffToTransfer.Value.Staff))
       {
         _stuffToTransfer.Value.Staff.QueueFree();
+      }
+
+      // PlayerCamera and PlayableCharacter should never ever ever exist seperatly
+      if (IsInstanceValid(_stuffToTransfer.Value.Character))
+      {
         _stuffToTransfer.Value.Character.QueueFree();
         _stuffToTransfer.Value.Camera.QueueFree();
       }
+      
       _stuffToTransfer = null;
     }
   }

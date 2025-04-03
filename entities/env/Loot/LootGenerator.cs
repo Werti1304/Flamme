@@ -9,7 +9,7 @@ using System.Diagnostics;
 
 namespace Flamme.entities.env.Loot;
 
-public partial class LootGenerator
+public partial class LootGenerator : Node2D
 {
   public static RandomNumberGenerator NotSeedRng = new RandomNumberGenerator();
 

@@ -1,6 +1,7 @@
-[gd_scene load_steps=27 format=4 uid="uid://pfhymug74cbs"]
+[gd_scene load_steps=28 format=4 uid="uid://pfhymug74cbs"]
 
 [ext_resource type="Script" uid="uid://cu3vdn0r1mer3" path="res://world/rooms/Room.cs" id="1_rabtc"]
+[ext_resource type="PackedScene" uid="uid://dqvcpot6wxnyt" path="res://entities/env/warper.tscn" id="2_x8eg7"]
 [ext_resource type="PackedScene" uid="uid://cu2hrf4t2q3w0" path="res://entities/env/health/health_pickup.tscn" id="3_x642v"]
 [ext_resource type="PackedScene" uid="uid://ct41on4c43mde" path="res://entities/env/purse/purse_pickup.tscn" id="4_1i1kx"]
 [ext_resource type="PackedScene" uid="uid://bfulsjxd53ikv" path="res://entities/env/item_pickup/item_pickup.tscn" id="5_q01ak"]
@@ -58,6 +59,9 @@ LootParent = NodePath("Loot")
 TileEntitiesParent = NodePath("TileEntities")
 
 [node name="MoreDebugStuff" type="Node2D" parent="."]
+
+[node name="Warper" parent="MoreDebugStuff" instance=ExtResource("2_x8eg7")]
+position = Vector2(176, 80)
 
 [node name="Debug Stuff" type="Node2D" parent="."]
 process_mode = 4

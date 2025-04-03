@@ -1,6 +1,8 @@
 using Flamme.entities.env.Loot;
 using Flamme.items;
 using Flamme.spells;
+using Flamme.world;
+using Flamme.world.generation;
 using Godot;
 
 namespace Flamme;
@@ -64,6 +66,17 @@ public partial class Main : Node
     StatUpSpells.Register();
     ModifierItems.RegisterItems();
     DefaultLoot.RegisterDefaultLoot();
+  }
+
+  public void StartNewGame(ulong seed)
+  {
+    ResetPersistantData();
+    WorldGenerator.Instance.GenerateLevels(seed);
+  }
+
+  private void ResetPersistantData()
+  {
+    LevelManager.Instance.Reset();
   }
 
   public static Main Instance

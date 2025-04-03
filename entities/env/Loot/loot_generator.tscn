@@ -1,3 +1,6 @@
-[gd_scene format=3 uid="uid://cosikwoeucxn4"]
+[gd_scene load_steps=2 format=3 uid="uid://cosikwoeucxn4"]
+
+[ext_resource type="Script" uid="uid://cdopkyamufpdc" path="res://entities/env/Loot/LootGenerator.cs" id="1_3e0h1"]
 
 [node name="LootGenerator" type="Node2D"]
+script = ExtResource("1_3e0h1")
