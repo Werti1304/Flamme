@@ -18,9 +18,12 @@ public partial class Minimap : GridContainer
 
   private readonly TextureRect[,] _grid = new TextureRect[16, 16];
 
+  private Vector2 _startingPos;
+  
   public override void _Ready()
   {
     ExportMetaNonNull.Check(this);
+    _startingPos = Position;
 
     // Needed cuz of grid container shenanigans
     for (var y = 0; y < Columns; y++)
@@ -146,6 +149,8 @@ public partial class Minimap : GridContainer
       }
     }
 
+    var highestGridX = 0;
+    var highestGridY = 0;
     for (var x = 0; x < level.Grid.GetLength(0); x++)
     {
       for (var y = 0; y < level.Grid.GetLength(0); y++)
@@ -156,7 +161,15 @@ public partial class Minimap : GridContainer
 
         var gridX = x - _lowestX;
         var gridY = y - _lowestY;
-        //GD.Print($"Set grid at {gridX}, {gridY}");
+
+        if (gridX > highestGridX)
+        {
+          highestGridX = gridX;
+        }
+        if (gridY > highestGridY)
+        {
+          highestGridY = gridY;
+        }
 
         switch (room.Type)
         {
@@ -179,5 +192,8 @@ public partial class Minimap : GridContainer
         }
       }
     }
+    var addedVector = new Vector2((16 - highestGridX - 1) * 16, 0);
+    Position = _startingPos + addedVector;
+    GD.Print($"Highest grid x: {highestGridX}");
   }
 }

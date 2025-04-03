@@ -83,10 +83,15 @@ grow_vertical = 2
 color = Color(0, 0, 0, 0)
 
 [node name="Minimap" type="GridContainer" parent="."]
-offset_left = 475.0
-offset_top = 31.0
-offset_right = 475.0
-offset_bottom = 159.0
+top_level = true
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -265.0
+offset_top = 24.0
+offset_right = -9.0
+offset_bottom = 152.0
+grow_horizontal = 0
 size_flags_horizontal = 3
 theme_override_constants/h_separation = 0
 theme_override_constants/v_separation = 0
