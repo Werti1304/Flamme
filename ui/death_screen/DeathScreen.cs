@@ -7,6 +7,8 @@ namespace Flamme.ui.death_screen;
 
 public partial class DeathScreen : CanvasLayer
 {
+  [Export] private Control _focusStartElement;
+  
   public override void _Ready()
   {
     Hide();
@@ -16,6 +18,7 @@ public partial class DeathScreen : CanvasLayer
   public void ShowDeathScreen()
   {
     Show();
+    _focusStartElement.GrabFocus();
     SetProcessInput(true);
   }
 

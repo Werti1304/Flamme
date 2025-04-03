@@ -87,6 +87,25 @@ public partial class SeedSelector : SpinBox
       }
       holdTime += (float)delta;
       _totalHoldTime += (float)delta;
+      
+      if (_totalHoldTime >= 10.0f)
+      {
+        repeatRate = 0.001f;
+        Step = 10;
+      }
+      else if (_totalHoldTime >= 6.0f)
+      {
+        repeatRate = 0.01f;
+      }
+      else if (_totalHoldTime >= 3.0f)
+      {
+        repeatRate = 0.05f;
+      }
+      else
+      {
+        repeatRate = 0.1f;
+        Step = 1;
+      }
       if (holdTime >= repeatDelay)
       {
         Value -= Step;

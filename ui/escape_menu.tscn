@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3 uid="uid://co7tcblqmu258"]
+[gd_scene load_steps=22 format=3 uid="uid://co7tcblqmu258"]
 
 [ext_resource type="Script" uid="uid://c0nvmme0liq12" path="res://ui/EscapeMenu.cs" id="1_4h62w"]
 [ext_resource type="Texture2D" uid="uid://djyibtpo5ch1m" path="res://assets/sprites/EscapeMenu.png" id="1_6kgr1"]
@@ -22,8 +22,11 @@ region = Rect2(0, 16, 64, 16)
 atlas = ExtResource("1_6kgr1")
 region = Rect2(0, 16, 64, 16)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_bjhuu"]
-atlas = ExtResource("1_6kgr1")
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_0dkrt"]
+load_path = "res://.godot/imported/EscapeMenu.png-3af01a193198c680559e8c494ebd77c5.ctex"
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_p01x3"]
+atlas = SubResource("CompressedTexture2D_0dkrt")
 region = Rect2(0, 192, 64, 16)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_x3vlh"]
@@ -33,6 +36,10 @@ region = Rect2(0, 64, 64, 16)
 [sub_resource type="AtlasTexture" id="AtlasTexture_6qvfa"]
 atlas = ExtResource("1_6kgr1")
 region = Rect2(0, 80, 64, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bjhuu"]
+atlas = ExtResource("1_6kgr1")
+region = Rect2(0, 192, 64, 16)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_igtm0"]
 atlas = ExtResource("1_6kgr1")
@@ -120,7 +127,7 @@ layout_mode = 2
 texture_normal = SubResource("AtlasTexture_7es34")
 texture_pressed = SubResource("AtlasTexture_rggcx")
 texture_hover = SubResource("AtlasTexture_vrj0n")
-texture_focused = SubResource("AtlasTexture_bjhuu")
+texture_focused = SubResource("AtlasTexture_p01x3")
 stretch_mode = 5
 
 [node name="OptionsButton" type="TextureButton" parent="Control/MarginContainer/VBoxContainer"]

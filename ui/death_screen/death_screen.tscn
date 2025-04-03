@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3 uid="uid://cukmkbhrtbcuf"]
+[gd_scene load_steps=8 format=3 uid="uid://cukmkbhrtbcuf"]
 
 [ext_resource type="Script" uid="uid://haconxetctgh" path="res://ui/death_screen/DeathScreen.cs" id="1_yvlic"]
 [ext_resource type="Texture2D" uid="uid://djyibtpo5ch1m" path="res://assets/sprites/EscapeMenu.png" id="8_awrqq"]
@@ -15,9 +15,17 @@ region = Rect2(0, 176, 64, 16)
 atlas = ExtResource("8_awrqq")
 region = Rect2(0, 176, 64, 16)
 
-[node name="DeathScreen" type="CanvasLayer"]
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_0dkrt"]
+load_path = "res://.godot/imported/EscapeMenu.png-3af01a193198c680559e8c494ebd77c5.ctex"
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_t6qdb"]
+atlas = SubResource("CompressedTexture2D_0dkrt")
+region = Rect2(0, 192, 64, 16)
+
+[node name="DeathScreen" type="CanvasLayer" node_paths=PackedStringArray("_focusStartElement")]
 layer = 10
 script = ExtResource("1_yvlic")
+_focusStartElement = NodePath("Control/MarginContainer/VBoxContainer/MainMenuButton")
 
 [node name="ColorRect" type="ColorRect" parent="."]
 anchors_preset = 15
@@ -60,6 +68,7 @@ layout_mode = 2
 texture_normal = SubResource("AtlasTexture_u4mlj")
 texture_pressed = SubResource("AtlasTexture_2m4f0")
 texture_hover = SubResource("AtlasTexture_as6ee")
+texture_focused = SubResource("AtlasTexture_t6qdb")
 stretch_mode = 5
 
 [node name="Label2" type="Label" parent="Control/MarginContainer/VBoxContainer"]
