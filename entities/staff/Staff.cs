@@ -189,16 +189,15 @@ public partial class Staff : RigidBody2D
       return;
     }
 
-    if (_tween != null && _tween.IsRunning())
-    {
-      _tween.Kill();
-      Shoot();
-    }
+    // if (_tween != null && _tween.IsRunning())
+    // {
+    //   _tween.Kill();
+    //   Shoot();
+    // }
 
     _tween = GetTree().CreateTween();
-
-    _tween.TweenProperty(StaffCore, "modulate:a", 1, 0.2f).SetTrans(Tween.TransitionType.Sine)
-      .Finished += Shoot;
+    _tween.TweenProperty(StaffCore, "modulate:a", 1, 0.2f).SetTrans(Tween.TransitionType.Sine);
+    _tween.TweenCallback(Callable.From(Shoot));
     _tween.TweenProperty(StaffCore, "modulate:a", 0, _shootTimerMax / 2.0f)
       .SetTrans(Tween.TransitionType.Sine);
   }
@@ -208,7 +207,7 @@ public partial class Staff : RigidBody2D
     if (_owner.ShootingVector.Length() < 0.01f)
     {
       // Don't shoot if owner has stopped shooting, but we already initiated shooting process
-      // _shootTimer = _shootTimerMax;
+      _shootTimer = _shootTimerMax;
       return;
     }
     PackedScene projectileScene;
