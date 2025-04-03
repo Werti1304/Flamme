@@ -137,6 +137,10 @@ public partial class Staff : RigidBody2D
         AngularVelocity = 0;
       }
       // Needed because of call order
+      if (_teleportTargetPos is not null)
+      {
+        _teleportTargetPos = null;
+      }
       return;
     }
 
@@ -175,9 +179,9 @@ public partial class Staff : RigidBody2D
     var newShootTimerMax = 1 / _owner.Stats.FireRate;
 
     // Upon more or less significant change to fire rate, let him fire the first shot fast
-    if (Math.Abs(newShootTimerMax - _shootTimerMax) > 0.3f)
+    if (Math.Abs(newShootTimerMax - _shootTimerMax) > 0.3f && newShootTimerMax > 2.0f)
     {
-      _shootTimer = newShootTimerMax - 0.5f;
+      _shootTimer = newShootTimerMax - 2.0f;
     }
     _shootTimerMax = newShootTimerMax;
   }

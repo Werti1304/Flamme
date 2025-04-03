@@ -30,6 +30,11 @@ LevelManager="*res://world/LevelManager.cs"
 EscapeMenu="*res://ui/escape_menu.tscn"
 DeathScreen="*res://ui/death_screen/death_screen.tscn"
 
+[debug]
+
+shapes/navigation/enable_agent_paths=false
+shapes/navigation/enable_agent_paths_xray=false
+
 [display]
 
 window/size/viewport_width=640

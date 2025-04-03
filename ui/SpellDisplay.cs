@@ -114,7 +114,11 @@ public partial class SpellDisplay : RichTextLabel
   private void AppendSpell(StringBuilder sb, Spell spell, PlayerSpellBook book, IEnumerable<PlayerInputMap.Action> actions,
     int possibleIdx = 0)
   {
-    if (possibleIdx == -1 || spell.ChargeCrystalCost > book.AvailableCrystals)
+    if (spell.ChargeCrystalCost > book.AvailableCrystals)
+    {
+      sb.Append($"[color=Dimgray]{spell.Name} [/color]");
+    }
+    else if (possibleIdx == -1)
     {
       sb.Append($"[color=Gray]{spell.Name} [/color]");
     }

@@ -26,14 +26,14 @@
 [ext_resource type="Texture2D" uid="uid://cbvu8alql60w0" path="res://ui/textures/minimap_boss.tres" id="17_mgoxf"]
 [ext_resource type="Texture2D" uid="uid://dkcavwnhe4cnp" path="res://ui/textures/minimap_shop.tres" id="18_0f6tk"]
 [ext_resource type="Script" uid="uid://bqeqym1b6d3tm" path="res://ui/SpellDisplay.cs" id="26_5jwjf"]
-[ext_resource type="Texture2D" uid="uid://bxww55w18rbee" path="res://assets/ui/keyboard/UP.png" id="27_mgoxf"]
-[ext_resource type="Texture2D" uid="uid://cewa7uxl8ttyo" path="res://assets/ui/keyboard/RIGHT.png" id="28_0f6tk"]
-[ext_resource type="Texture2D" uid="uid://d10jtjvekibmf" path="res://assets/ui/keyboard/DOWN.png" id="29_e4yjp"]
-[ext_resource type="Texture2D" uid="uid://7owf21gsv1vg" path="res://assets/ui/keyboard/LEFT.png" id="30_3y3rt"]
-[ext_resource type="Texture2D" uid="uid://c5my7jqx56saa" path="res://assets/ui/keyboard/UP_ACTIVE.png" id="31_5rocq"]
-[ext_resource type="Texture2D" uid="uid://ilcyvi1ty8dl" path="res://assets/ui/keyboard/RIGHT_ACTIVE.png" id="32_2u3la"]
-[ext_resource type="Texture2D" uid="uid://wkwoekmtdqjf" path="res://assets/ui/keyboard/DOWN_ACTIVE.png" id="33_g4gvt"]
-[ext_resource type="Texture2D" uid="uid://bn70t5f3d1kx" path="res://assets/ui/keyboard/LEFT_ACTIVE.png" id="34_085mh"]
+[ext_resource type="Texture2D" uid="uid://c3kl7r7hswtck" path="res://assets/ui/keyboard/INPUT_DISPLAY_UP.png" id="27_0f6tk"]
+[ext_resource type="Texture2D" uid="uid://kj2jisyhefqo" path="res://assets/ui/keyboard/INPUT_DISPLAY_RIGHT.png" id="28_e4yjp"]
+[ext_resource type="Texture2D" uid="uid://ic51x6c7o6co" path="res://assets/ui/keyboard/INPUT_DISPLAY_DOWN.png" id="29_3y3rt"]
+[ext_resource type="Texture2D" uid="uid://tgbjnq00sk5r" path="res://assets/ui/keyboard/INPUT_DISPLAY_LEFT.png" id="30_5rocq"]
+[ext_resource type="Texture2D" uid="uid://dwyws6258tcct" path="res://assets/ui/keyboard/INPUT_DISPLAY_UP_ACTIVE.png" id="31_2u3la"]
+[ext_resource type="Texture2D" uid="uid://de1pymc8454t2" path="res://assets/ui/keyboard/INPUT_DISPLAY_RIGHT_ACTIVE.png" id="32_g4gvt"]
+[ext_resource type="Texture2D" uid="uid://bkif5aniy8frq" path="res://assets/ui/keyboard/INPUT_DISPLAY_DOWN_ACTIVE.png" id="33_085mh"]
+[ext_resource type="Texture2D" uid="uid://tpfnhjkjjxoo" path="res://assets/ui/keyboard/INPUT_DISPLAY_LEFT_ACTIVE.png" id="34_vqcky"]
 [ext_resource type="Texture2D" uid="uid://b8u05gnqd4e26" path="res://ui/textures/crystal_greyed.tres" id="35_0f6tk"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_2uaof"]
@@ -246,14 +246,14 @@ Spell1
 Spell2
 ..."
 script = ExtResource("26_5jwjf")
-_shootUpTexture = ExtResource("27_mgoxf")
-_shootRightTexture = ExtResource("28_0f6tk")
-_shootDownTexture = ExtResource("29_e4yjp")
-_shootLeftTexture = ExtResource("30_3y3rt")
-_shootUpActiveTexture = ExtResource("31_5rocq")
-_shootRightActiveTexture = ExtResource("32_2u3la")
-_shootDownActiveTexture = ExtResource("33_g4gvt")
-_shootLeftActiveTexture = ExtResource("34_085mh")
+_shootUpTexture = ExtResource("27_0f6tk")
+_shootRightTexture = ExtResource("28_e4yjp")
+_shootDownTexture = ExtResource("29_3y3rt")
+_shootLeftTexture = ExtResource("30_5rocq")
+_shootUpActiveTexture = ExtResource("31_2u3la")
+_shootRightActiveTexture = ExtResource("32_g4gvt")
+_shootDownActiveTexture = ExtResource("33_085mh")
+_shootLeftActiveTexture = ExtResource("34_vqcky")
 _crystal = ExtResource("11_hyw70")
 _crystalCanNotAfford = ExtResource("35_0f6tk")
 

@@ -27,6 +27,13 @@ public partial class KeyPress : Sprite2D
     Main.Instance.PlayerInputDeviceChanged += OnPlayerInputDeviceChanged;
   }
 
+  protected override void Dispose(bool disposing)
+  {
+    Main.Instance.PlayerInputDeviceChanged -= OnPlayerInputDeviceChanged;
+    
+    base.Dispose(disposing);
+  }
+
   private void OnPlayerInputDeviceChanged()
   {
     if (ControllerTexture == null)

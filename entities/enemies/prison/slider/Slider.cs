@@ -15,8 +15,8 @@ public partial class Slider : Enemy
   [Export] public float SpeedPhase2 = 225.0f;
   [Export] public float SpeedPhase3 = 350.0f;
   [Export] public float WaitTimePhase1 = 3.0f;
-  [Export] public float WaitTimePhase2 = 2f;
-  [Export] public float WaitTimePhase3 = 1f;
+  [Export] public float WaitTimePhase2 = 2.1f;
+  [Export] public float WaitTimePhase3 = 1.3f;
   
   [ExportGroup("Textures")]
   [Export] public Texture2D TexturePhase1;
