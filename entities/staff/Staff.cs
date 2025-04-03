@@ -67,7 +67,13 @@ public partial class Staff : RigidBody2D
     CheckSnap();
     
     // --- Shooting / Snapping ---
-    _shootTimer += delta;
+    if (_owner.IsShooting
+        || (_shootTimerMax > 2.0f && _shootTimer < _shootTimerMax - 2.0f)
+        || _shootTimerMax <= 0.2f)
+    {
+      _shootTimer += delta;
+    }
+    
     if (_owner.IsShooting)
     {
       if (_shootTimer >= _shootTimerMax)
@@ -179,9 +185,9 @@ public partial class Staff : RigidBody2D
     var newShootTimerMax = 1 / _owner.Stats.FireRate;
 
     // Upon more or less significant change to fire rate, let him fire the first shot fast
-    if (Math.Abs(newShootTimerMax - _shootTimerMax) > 0.3f && newShootTimerMax > 2.0f)
+    if (Math.Abs(newShootTimerMax - _shootTimerMax) > 0.3f)
     {
-      _shootTimer = newShootTimerMax - 2.0f;
+      _shootTimer = newShootTimerMax - 0.5f;
     }
     _shootTimerMax = newShootTimerMax;
   }

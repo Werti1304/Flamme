@@ -140,6 +140,11 @@ public partial class Room : Area2D
       }
     }
 
+    if (IsInstanceValid(RoofTileMap))
+    {
+      RoofTileMap.ZIndex = 100;
+    }
+
     if (GetTree().CurrentScene == this)
     {
       // We are just testing this room, spawn in player, etc.
@@ -307,7 +312,10 @@ public partial class Room : Area2D
     }
     
     GD.Print($"Room {Name} Cleared!");
-    _playableCharacter.NotifyOfRoomClear(this, enemiesDefeated);
+    if (IsInstanceValid(_playableCharacter))
+    {
+      _playableCharacter.NotifyOfRoomClear(this, enemiesDefeated);
+    }
 
     if (Type == RoomType.Boss)
     {

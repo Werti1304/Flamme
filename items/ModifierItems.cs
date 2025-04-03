@@ -35,7 +35,7 @@ public class ModifierItems
     manager.RegisterItem(new Item(ItemId.Fireball, "Flamme", "Fireball!", Item.Tier.Rare)
         .AddSpriteFull(GD.Load<Texture2D>(Path.Combine(AssetPaths.AssetPath, AssetPaths.FireballPath)))
         .AddSpriteInventory()
-        .AddStatUp(StatType.DamageMultiplier, 3)
+        .AddStatUp(StatType.DamageMultiplier, 2)
         .AddStatUp(StatType.Damage, 3)
         .AddStatUp(StatType.FireRate, -3) // TODO Change all stats to float so I can do .5 multiplier here
         .AddModifier(ProjectileModifiers.Modifier.Fireball),

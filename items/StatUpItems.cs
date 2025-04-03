@@ -39,7 +39,7 @@ public static class StatUpItems
       new Item(ItemId.DamageToken,"Token of Damage", "+1 Damage", Item.Tier.Uncommon)
         .AddSpriteFull(AssetManager.Asset.SpriteItemStatup1, new Vector2I(2, 0))
         .AddSpriteInventory()
-        .AddStatUp(StatType.Damage, 1),
+        .AddStatUp(StatType.Damage, 2),
       ItemLootPool.Treasure, ItemLootPool.LockedChest, ItemLootPool.Boss, ItemLootPool.Shop
     );
     
@@ -51,13 +51,13 @@ public static class StatUpItems
       ItemLootPool.Treasure, ItemLootPool.LockedChest, ItemLootPool.Boss, ItemLootPool.Shop
     );
     
-    manager.RegisterItem(
-      new Item(ItemId.ShotSpeedToken,"Token of Shot Speed", "Shot speed up!", Item.Tier.Common)
-        .AddSpriteFull(AssetManager.Asset.SpriteItemStatup1, new Vector2I(4, 0))
-        .AddSpriteInventory()
-        .AddStatUp(StatType.ShotSpeed, 1),
-      ItemLootPool.Treasure, ItemLootPool.LockedChest, ItemLootPool.Boss, ItemLootPool.Shop
-    );
+    // manager.RegisterItem(
+    //   new Item(ItemId.ShotSpeedToken,"Token of Shot Speed", "Shot speed up!", Item.Tier.Common)
+    //     .AddSpriteFull(AssetManager.Asset.SpriteItemStatup1, new Vector2I(4, 0))
+    //     .AddSpriteInventory()
+    //     .AddStatUp(StatType.ShotSpeed, 1),
+    //   ItemLootPool.Treasure, ItemLootPool.LockedChest, ItemLootPool.Boss, ItemLootPool.Shop
+    // );
     
     manager.RegisterItem(
       new Item(ItemId.FireRateToken,"Token of Fire Rate", "Fire Rate up!", Item.Tier.Uncommon)
@@ -67,35 +67,35 @@ public static class StatUpItems
       ItemLootPool.Treasure, ItemLootPool.LockedChest, ItemLootPool.Boss, ItemLootPool.Shop
     );
     
-    manager.RegisterItem(
-      new Item(ItemId.ShotSizeToken,"Token of Shot Size", "Shot Size up!", Item.Tier.Common)
-        .AddSpriteFull(AssetManager.Asset.SpriteItemStatup1, new Vector2I(6, 0))
-        .AddSpriteInventory()
-        .AddStatUp(StatType.ShotSize, 2),
-      ItemLootPool.Treasure, ItemLootPool.LockedChest, ItemLootPool.Boss, ItemLootPool.Shop
-    );
+    // manager.RegisterItem(
+    //   new Item(ItemId.ShotSizeToken,"Token of Shot Size", "Shot Size up!", Item.Tier.Common)
+    //     .AddSpriteFull(AssetManager.Asset.SpriteItemStatup1, new Vector2I(6, 0))
+    //     .AddSpriteInventory()
+    //     .AddStatUp(StatType.ShotSize, 2),
+    //   ItemLootPool.Treasure, ItemLootPool.LockedChest, ItemLootPool.Boss, ItemLootPool.Shop
+    // );
+
+    // manager.RegisterItem(
+    //   new Item(ItemId.LuckToken,"Token of Luck", "+1 Luck!", Item.Tier.Uncommon)
+    //     .AddSpriteFull(AssetManager.Asset.SpriteItemStatup1, new Vector2I(7, 0))
+    //     .AddSpriteInventory()
+    //     .AddStatUp(StatType.Luck, 1),
+    //   ItemLootPool.Treasure, ItemLootPool.LockedChest, ItemLootPool.Boss, ItemLootPool.Shop
+    // );
     
-    manager.RegisterItem(
-      new Item(ItemId.LuckToken,"Token of Luck", "+1 Luck!", Item.Tier.Uncommon)
-        .AddSpriteFull(AssetManager.Asset.SpriteItemStatup1, new Vector2I(7, 0))
-        .AddSpriteInventory()
-        .AddStatUp(StatType.Luck, 1),
-      ItemLootPool.Treasure, ItemLootPool.LockedChest, ItemLootPool.Boss, ItemLootPool.Shop
-    );
-    
-    manager.RegisterItem(
-      new Item(ItemId.RangeToken,"Range Token", "Range Up!", Item.Tier.Common)
-        .AddSpriteFull(AssetManager.Asset.SpriteItemStatup1, new Vector2I(0, 1))
-        .AddSpriteInventory()
-        .AddStatUp(StatType.Range, 4),
-      ItemLootPool.Treasure, ItemLootPool.LockedChest, ItemLootPool.Boss, ItemLootPool.Shop
-    );
+    // manager.RegisterItem(
+    //   new Item(ItemId.RangeToken,"Range Token", "Range Up!", Item.Tier.Common)
+    //     .AddSpriteFull(AssetManager.Asset.SpriteItemStatup1, new Vector2I(0, 1))
+    //     .AddSpriteInventory()
+    //     .AddStatUp(StatType.Range, 4),
+    //   ItemLootPool.Treasure, ItemLootPool.LockedChest, ItemLootPool.Boss, ItemLootPool.Shop
+    // );
     
     manager.RegisterItem(
       new Item(ItemId.AllStatsUpToken,"Lucky Wheel Token", "All Stats Up!", Item.Tier.Uncommon)
         .AddSpriteFull(AssetManager.Asset.SpriteItemStatup1, new Vector2I(1, 1))
         .AddSpriteInventory()
-        .AddStatUp(StatType.HealthContainer, 1).AddStatUp(StatType.Damage, 12).AddStatUp(StatType.Speed, 10)
+        .AddStatUp(StatType.HealthContainer, 1).AddStatUp(StatType.Damage, 2).AddStatUp(StatType.Speed, 10)
         .AddHealing(HealthType.Absorption, 4).AddHealing(HealthType.Normal, 4),
       ItemLootPool.Treasure, ItemLootPool.LockedChest, ItemLootPool.Boss, ItemLootPool.Shop
     );

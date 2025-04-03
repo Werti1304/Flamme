@@ -34,7 +34,7 @@ public class StatUpSpells
       .AddStatUp(StatType.Damage, 10)
       .AddStatUp(StatType.DamageMultiplier, 3)
       .AddModifier(ProjectileModifiers.Modifier.Blargh)
-      .SetUptime(2.5f).SetUptimeStartUponShooting()
+      .SetUptime(0.5f).SetUptimeStartUponShooting()
       .SetCooldownRooms(5));
   }
 
