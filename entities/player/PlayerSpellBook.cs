@@ -107,6 +107,7 @@ public partial class PlayerSpellBook : Node2D
     }
   }
 
+  private bool _pressedDown = false;
   public override void _Input(InputEvent @event)
   {
     if (!IsListening || @event is InputEventMouse)
@@ -118,7 +119,19 @@ public partial class PlayerSpellBook : Node2D
 
     if (!ValidActions.Contains(pressedActionRet.Value))
       return;
-    
+
+    var actionStr = PlayerInputMap.Dict[pressedActionRet.Value];
+    if (@event.GetActionStrength(actionStr) < 0.8f)
+    {
+      _pressedDown = false;
+      return;
+    }
+    else if (_pressedDown)
+    {
+      return;
+    }
+    _pressedDown = true;
+      
     var pressedAction = pressedActionRet.Value;
     
     foreach (var spell in _spells.Keys)

@@ -21,16 +21,18 @@ public partial class KeyPress : Sprite2D
     }
   }
 
+  private bool _wasPressed;
   public override void _Input(InputEvent @event)
   {
     if (@event is InputEventMouse)
       return;
 
-    if (Input.IsActionPressed(PlayerInputMap.Dict[ActionToTriggerModulate]))
+    if (Input.IsActionPressed(PlayerInputMap.Dict[ActionToTriggerModulate]) && Input.GetActionStrength(PlayerInputMap.Dict[ActionToTriggerModulate]) > 0.8f)
     {
       Modulate = ModulateCurrentPressedColor;
+      _wasPressed = true;
     }
-    else if (@event.IsActionReleased(PlayerInputMap.Dict[ActionToTriggerModulate]))
+    else if (@event.IsActionReleased(PlayerInputMap.Dict[ActionToTriggerModulate]) && _wasPressed)
     {
       Modulate = ModulateColor;
       WasPressed = true;

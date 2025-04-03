@@ -85,8 +85,9 @@ public partial class PlayableCharacter : CharacterBody2D, IEnemyDamagable
       PlayerInputMap.Dict[PlayerInputMap.Action.ShootRight],
       PlayerInputMap.Dict[PlayerInputMap.Action.ShootUp],
       PlayerInputMap.Dict[PlayerInputMap.Action.ShootDown]);
-    ShootingVector = ShootingVector.Normalized().Round();
-    // TODO 1 Possible race condition
+    ShootingVector = ShootingVector.Normalized().Round(); // TODO 3 Make staff rotate correctly with player when Round() is removed
+    // Would be great for controller
+
     IsShooting = ShootingVector.Length() > 0 
                  && !(Input.IsActionPressed(PlayerInputMap.Dict[PlayerInputMap.Action.Interact]) 
                       || Input.IsActionPressed(PlayerInputMap.Dict[PlayerInputMap.Action.Interact2]));

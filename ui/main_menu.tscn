@@ -163,6 +163,16 @@ theme_override_constants/line_spacing = 0
 theme_override_font_sizes/font_size = 11
 text = "seed:"
 
+[node name="Label3" type="Label" parent="."]
+offset_left = 504.0
+offset_top = 342.0
+offset_right = 636.0
+offset_bottom = 355.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_constants/line_spacing = 0
+theme_override_font_sizes/font_size = 11
+text = "Now with controller support!"
+
 [node name="Title" type="Control" parent="."]
 layout_mode = 3
 anchors_preset = 0
