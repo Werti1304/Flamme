@@ -26,7 +26,7 @@ public partial class SpellManager : Node
   
   public Spell GetRandom()
   {
-    var randomIndex = GD.RandRange(0, _spellDict.Count - 1);
+    var randomIndex = Main.Instance.Rnd.RandiRange(0, _spellDict.Count - 1);
     GD.Print($"Random index: {randomIndex}");
     var spell = _spellDict.ElementAt(randomIndex);
     

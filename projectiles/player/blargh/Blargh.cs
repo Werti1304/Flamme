@@ -114,8 +114,14 @@ public partial class Blargh : PlayerProjectile
     {
       tween.Parallel().TweenProperty(particle, GpuParticles2D.PropertyName.Emitting.ToString(), false, 0.1f * totalTime);
     }
+    tween.TweenCallback(Callable.From(DisableCollisions)).SetDelay(0.15f * totalTime);
     tween.TweenProperty(TrailLine, Line2D.PropertyName.Width.ToString(), 0, 0.3f  * totalTime ).SetTrans(Tween.TransitionType.Expo);
     tween.TweenCallback(Callable.From(DestructBulletInit));
+  }
+
+  private void DisableCollisions()
+  {
+    LineCollisionShape.SetDeferred(CollisionPolygon2D.PropertyName.Disabled, true);
   }
 
   private List<(Node2D, IPlayerDamageable)> _playerDamageables = new List<(Node2D, IPlayerDamageable)>();

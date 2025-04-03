@@ -88,7 +88,7 @@ public partial class WorldGenerator : Node2D
     
     var levelSize = new Vector2I(level.Grid.GetLength(0), level.Grid.GetLength(1));
     var levelCenter = levelSize / 2;
-
+    
     GD.Print("Generating spawn...");
     // Good enough for now as theres only 1 spawn
     var spawnData = RoomMeta.RoomDict[RoomType.Spawn][0];

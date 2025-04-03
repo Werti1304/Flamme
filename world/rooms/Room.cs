@@ -2,6 +2,7 @@ using Flamme.common.enums;
 using Godot;
 using Flamme.common.constant;
 using Flamme.common.helpers;
+using Flamme.entities.enemies.prison.firefly_neutral;
 using Flamme.entities.env.Loot;
 using Flamme.ui;
 using Flamme.world.doors;
@@ -221,7 +222,7 @@ public partial class Room : Area2D
       case entities.enemies.Enemy e:
         Enemies.Remove(e);
 
-        if (Enemies.Count == 0)
+        if (Enemies.Count == 0 || Enemies.TrueForAll(enemy => enemy is FireflyNeutral))
         {
           SetRoomCleared(true);
         }
