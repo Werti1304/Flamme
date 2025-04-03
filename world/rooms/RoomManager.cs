@@ -28,7 +28,7 @@ public partial class RoomManager : Node2D
 
   public override void _Ready()
   {
-    GD.Print($"Adding all {AllRoomScenes.Count} to RoomDict...");
+    GD.Print($"Adding all {AllRoomScenes.Count} rooms to RoomDict...");
     FillRoomMetaDict();
     GD.Print("Done!");
   }

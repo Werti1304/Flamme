@@ -280,11 +280,6 @@ public partial class LootGenerator : Node2D
     {
       lock (Padlock)
       {
-        if (_instance == null)
-        {
-          // ReSharper disable once ObjectCreationAsStatement
-          new LootGenerator();
-        }
         return _instance;
       }
     }

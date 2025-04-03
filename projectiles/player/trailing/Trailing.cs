@@ -16,7 +16,7 @@ public partial class Trailing : PlayerProjectile
   
   private Vector2 _normalToDirection = Vector2.Left;
   
-  private entities.enemies.Enemy _homingTarget;
+  private entities.enemies.Enemy _nearestEnemy;
   private bool _homing;
 
   protected override void CustomFireExec(entities.player.PlayableCharacter player, Room room)
@@ -69,7 +69,7 @@ public partial class Trailing : PlayerProjectile
             nearestEnemy = enemy;
           }
         }
-        _homingTarget = nearestEnemy;
+        _nearestEnemy = nearestEnemy;
         _homing = true;
       }
       Sprite.Texture = HomingTexture;
@@ -88,9 +88,9 @@ public partial class Trailing : PlayerProjectile
     if (!Fired || HitSomething)
       return;
 
-    if (_homing && IsInstanceValid(_homingTarget))
+    if (_homing && IsInstanceValid(_nearestEnemy))
     {
-      _endPointP2 = _homingTarget.GlobalPosition;
+      _endPointP2 = _nearestEnemy.GlobalPosition;
     }
     
     _t += delta;

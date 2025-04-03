@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://co7tcblqmu258"]
+[gd_scene load_steps=20 format=3 uid="uid://co7tcblqmu258"]
 
 [ext_resource type="Script" uid="uid://c0nvmme0liq12" path="res://ui/EscapeMenu.cs" id="1_4h62w"]
 [ext_resource type="Texture2D" uid="uid://djyibtpo5ch1m" path="res://assets/sprites/EscapeMenu.png" id="1_6kgr1"]
@@ -22,6 +22,10 @@ region = Rect2(0, 16, 64, 16)
 atlas = ExtResource("1_6kgr1")
 region = Rect2(0, 16, 64, 16)
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_bjhuu"]
+atlas = ExtResource("1_6kgr1")
+region = Rect2(0, 192, 64, 16)
+
 [sub_resource type="AtlasTexture" id="AtlasTexture_x3vlh"]
 atlas = ExtResource("1_6kgr1")
 region = Rect2(0, 64, 64, 16)
@@ -29,6 +33,14 @@ region = Rect2(0, 64, 64, 16)
 [sub_resource type="AtlasTexture" id="AtlasTexture_6qvfa"]
 atlas = ExtResource("1_6kgr1")
 region = Rect2(0, 80, 64, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_igtm0"]
+atlas = ExtResource("1_6kgr1")
+region = Rect2(0, 160, 64, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_uncnl"]
+atlas = ExtResource("1_6kgr1")
+region = Rect2(0, 176, 64, 16)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_io40a"]
 atlas = ExtResource("1_6kgr1")
@@ -38,11 +50,12 @@ region = Rect2(0, 32, 64, 16)
 atlas = ExtResource("1_6kgr1")
 region = Rect2(0, 48, 64, 16)
 
-[node name="CanvasLayer" type="CanvasLayer" node_paths=PackedStringArray("StatsDisplay")]
+[node name="EscapeMenu" type="CanvasLayer" node_paths=PackedStringArray("StatsDisplay", "_focusStartElement")]
 process_mode = 3
 layer = 10
 script = ExtResource("1_4h62w")
 StatsDisplay = NodePath("Control/StatsDisplay")
+_focusStartElement = NodePath("Control/MarginContainer/VBoxContainer/ContinueButton")
 
 [node name="ColorRect" type="ColorRect" parent="."]
 anchors_preset = 15
@@ -107,13 +120,24 @@ layout_mode = 2
 texture_normal = SubResource("AtlasTexture_7es34")
 texture_pressed = SubResource("AtlasTexture_rggcx")
 texture_hover = SubResource("AtlasTexture_vrj0n")
+texture_focused = SubResource("AtlasTexture_bjhuu")
 stretch_mode = 5
 
 [node name="OptionsButton" type="TextureButton" parent="Control/MarginContainer/VBoxContainer"]
+visible = false
 custom_minimum_size = Vector2(0, 64)
 layout_mode = 2
 texture_normal = SubResource("AtlasTexture_x3vlh")
 texture_hover = SubResource("AtlasTexture_6qvfa")
+texture_focused = SubResource("AtlasTexture_bjhuu")
+stretch_mode = 5
+
+[node name="MainMenuButton" type="TextureButton" parent="Control/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 64)
+layout_mode = 2
+texture_normal = SubResource("AtlasTexture_igtm0")
+texture_hover = SubResource("AtlasTexture_uncnl")
+texture_focused = SubResource("AtlasTexture_bjhuu")
 stretch_mode = 5
 
 [node name="QuitButton" type="TextureButton" parent="Control/MarginContainer/VBoxContainer"]
@@ -121,7 +145,9 @@ custom_minimum_size = Vector2(0, 64)
 layout_mode = 2
 texture_normal = SubResource("AtlasTexture_io40a")
 texture_hover = SubResource("AtlasTexture_vcb5n")
+texture_focused = SubResource("AtlasTexture_bjhuu")
 stretch_mode = 5
 
 [connection signal="button_down" from="Control/MarginContainer/VBoxContainer/ContinueButton" to="." method="Resume"]
+[connection signal="pressed" from="Control/MarginContainer/VBoxContainer/MainMenuButton" to="." method="OnMainMenuButtonPressed"]
 [connection signal="button_down" from="Control/MarginContainer/VBoxContainer/QuitButton" to="." method="Quit"]

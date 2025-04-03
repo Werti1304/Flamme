@@ -39,7 +39,7 @@
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_2uaof"]
 shader = ExtResource("7_b1px6")
 shader_parameter/darkness_intensity = 1.0
-shader_parameter/darkness_out = 0.7
+shader_parameter/darkness_out = 0.5
 shader_parameter/darkness_in = 1.5
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_gte7p"]

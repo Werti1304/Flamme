@@ -11,6 +11,7 @@
 #endregion
 
 using Flamme.common.enums;
+using Godot;
 using System.Collections.Generic;
 
 namespace Flamme.entities.env.Loot;

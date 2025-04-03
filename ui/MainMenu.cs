@@ -7,11 +7,14 @@ namespace Flamme.ui;
 public partial class MainMenu : CanvasLayer
 {
   [ExportGroup("Meta")] 
-  [Export] private SpinBox _spinBox;
+  [Export] private SeedSelector _spinBox;
+
+  [Export] private Control _focusStartElement;
 
   public override void _Ready()
   {
     Main.Instance.UnloadingLevel = false;
+    _focusStartElement.CallDeferred(Control.MethodName.GrabFocus);
   }
 
   public void OnNewGame()

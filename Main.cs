@@ -62,10 +62,15 @@ public partial class Main : Node
   {
     _instance = this;
     
+    GD.Print("Registering Stat-Up Items...");
     StatUpItems.Register();
-    StatUpSpells.Register();
+    GD.Print("Done!\nRegistering Modifier Items");
     ModifierItems.RegisterItems();
+    GD.Print("Done!\nRegistering Spells");
+    StatUpSpells.Register();
+    GD.Print("Done!\nRegistering Default Loot");
     DefaultLoot.RegisterDefaultLoot();
+    GD.Print("Done!");
   }
 
   public void StartNewGame(ulong seed)
