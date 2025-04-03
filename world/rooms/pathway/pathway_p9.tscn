@@ -1,11 +1,10 @@
-[gd_scene load_steps=13 format=4 uid="uid://c30rpv4h0r3fq"]
+[gd_scene load_steps=12 format=4 uid="uid://c30rpv4h0r3fq"]
 
 [ext_resource type="Script" uid="uid://cu3vdn0r1mer3" path="res://world/rooms/Room.cs" id="1_tv02d"]
 [ext_resource type="TileSet" uid="uid://ciata4jhj6wvu" path="res://assets/tilesets/prison/prison_floor.tres" id="2_mstbg"]
 [ext_resource type="TileSet" uid="uid://c5qpaglqhfr5s" path="res://assets/tilesets/prison/prison_props.tres" id="3_ga3mw"]
 [ext_resource type="TileSet" uid="uid://ca3qx51g3yg3u" path="res://assets/tilesets/prison/prison_wall.tres" id="4_nfv8s"]
 [ext_resource type="PackedScene" uid="uid://bnx0j5b2ekjat" path="res://world/doors/DoorMarker.tscn" id="5_xjvfd"]
-[ext_resource type="Script" uid="uid://lxis3ashrpf4" path="res://world/doors/DoorMarker.cs" id="6_tsjwd"]
 [ext_resource type="Texture2D" uid="uid://bgc4ewqfbryq3" path="res://assets/sprites/levels/PrisonWalls.png" id="7_fwwcg"]
 [ext_resource type="PackedScene" uid="uid://to5gnfx5ksif" path="res://world/rooms/node_parent.tscn" id="8_lc6fo"]
 [ext_resource type="PackedScene" uid="uid://copi3yylq7fvi" path="res://entities/enemies/prison/firefly_homing/firefly_homing.tscn" id="9_o57c2"]
@@ -61,55 +60,34 @@ position = Vector2(272, 160)
 
 [node name="DoorMarkerParent" type="Node2D" parent="."]
 
-[node name="DoorMarker North" type="StaticBody2D" parent="DoorMarkerParent" node_paths=PackedStringArray("Sprite", "CollisionShape", "TeleportZone", "TeleportPoint") instance=ExtResource("5_xjvfd")]
+[node name="DoorMarker North" parent="DoorMarkerParent" instance=ExtResource("5_xjvfd")]
 position = Vector2(256, 32)
-script = ExtResource("6_tsjwd")
 DisguiseTexture = SubResource("AtlasTexture_l1djv")
-Sprite = NodePath("Sprite2D")
-CollisionShape = NodePath("CollisionShape2D")
-TeleportZone = NodePath("Area2D")
-TeleportPoint = NodePath("TeleportPoint")
 
-[node name="DoorMarker East" type="StaticBody2D" parent="DoorMarkerParent" node_paths=PackedStringArray("Sprite", "CollisionShape", "TeleportZone", "TeleportPoint") instance=ExtResource("5_xjvfd")]
+[node name="DoorMarker East" parent="DoorMarkerParent" instance=ExtResource("5_xjvfd")]
 position = Vector2(512, 160)
 rotation = 1.5708
-script = ExtResource("6_tsjwd")
 FacingDirection = 1
 DisguiseTexture = SubResource("AtlasTexture_l1djv")
-Sprite = NodePath("Sprite2D")
-CollisionShape = NodePath("CollisionShape2D")
-TeleportZone = NodePath("Area2D")
-TeleportPoint = NodePath("TeleportPoint")
 
-[node name="DoorMarker South" type="StaticBody2D" parent="DoorMarkerParent" node_paths=PackedStringArray("Sprite", "CollisionShape", "TeleportZone", "TeleportPoint") instance=ExtResource("5_xjvfd")]
+[node name="DoorMarker South" parent="DoorMarkerParent" instance=ExtResource("5_xjvfd")]
 position = Vector2(288, 320)
 rotation = 3.14159
-script = ExtResource("6_tsjwd")
 FacingDirection = 2
 DisguiseTexture = SubResource("AtlasTexture_l1djv")
-Sprite = NodePath("Sprite2D")
-CollisionShape = NodePath("CollisionShape2D")
-TeleportZone = NodePath("Area2D")
-TeleportPoint = NodePath("TeleportPoint")
 
-[node name="DoorMarker West" type="StaticBody2D" parent="DoorMarkerParent" node_paths=PackedStringArray("Sprite", "CollisionShape", "TeleportZone", "TeleportPoint") instance=ExtResource("5_xjvfd")]
+[node name="DoorMarker West" parent="DoorMarkerParent" instance=ExtResource("5_xjvfd")]
 position = Vector2(32, 192)
 rotation = -1.5708
-script = ExtResource("6_tsjwd")
 FacingDirection = 3
 DisguiseTexture = SubResource("AtlasTexture_l1djv")
-Sprite = NodePath("Sprite2D")
-CollisionShape = NodePath("CollisionShape2D")
-TeleportZone = NodePath("Area2D")
-TeleportPoint = NodePath("TeleportPoint")
 
 [node name="CollisionShape" type="CollisionShape2D" parent="."]
 z_index = -2000
 position = Vector2(272, 176)
 shape = SubResource("RectangleShape2D_scejt")
 
-[node name="Enemies" type="Node2D" parent="." instance=ExtResource("8_lc6fo")]
-y_sort_enabled = true
+[node name="Enemies" parent="." instance=ExtResource("8_lc6fo")]
 
 [node name="FireflyHoming" parent="Enemies" instance=ExtResource("9_o57c2")]
 position = Vector2(272, 160)
@@ -132,8 +110,6 @@ position = Vector2(352, 240)
 [node name="FireflyNeutral4" parent="Enemies" instance=ExtResource("10_ga3mw")]
 position = Vector2(416, 208)
 
-[node name="Loot" type="Node2D" parent="." instance=ExtResource("8_lc6fo")]
-y_sort_enabled = true
+[node name="Loot" parent="." instance=ExtResource("8_lc6fo")]
 
-[node name="TileEntities" type="Node2D" parent="." instance=ExtResource("8_lc6fo")]
-y_sort_enabled = true
+[node name="TileEntities" parent="." instance=ExtResource("8_lc6fo")]

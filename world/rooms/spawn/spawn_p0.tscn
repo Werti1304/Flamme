@@ -1,4 +1,4 @@
-[gd_scene load_steps=26 format=4 uid="uid://pfhymug74cbs"]
+[gd_scene load_steps=27 format=4 uid="uid://pfhymug74cbs"]
 
 [ext_resource type="Script" uid="uid://cu3vdn0r1mer3" path="res://world/rooms/Room.cs" id="1_rabtc"]
 [ext_resource type="PackedScene" uid="uid://cu2hrf4t2q3w0" path="res://entities/env/health/health_pickup.tscn" id="3_x642v"]
@@ -23,6 +23,7 @@
 [ext_resource type="Texture2D" uid="uid://tvavkpgcsnhm" path="res://assets/ui/keyboard/ESC.png" id="19_l8iu0"]
 [ext_resource type="Texture2D" uid="uid://bhw4ww48ojfdk" path="res://assets/ui/keyboard/E.png" id="20_yeuik"]
 [ext_resource type="Texture2D" uid="uid://dvtwa1xowbhb6" path="res://assets/ui/keyboard/TAB.png" id="21_yeuik"]
+[ext_resource type="Texture2D" uid="uid://bmyw8h0nfgjbt" path="res://assets/ui/keyboard/SPACE.png" id="24_w1jvf"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_l1djv"]
 atlas = ExtResource("11_dcmud")
@@ -309,7 +310,7 @@ shape = SubResource("RectangleShape2D_1ed62")
 [node name="Tutorial" type="Node2D" parent="." node_paths=PackedStringArray("TutorialRoom", "KeyPresses")]
 script = ExtResource("11_7c6e3")
 TutorialRoom = NodePath("..")
-KeyPresses = [NodePath("W"), NodePath("A"), NodePath("S"), NodePath("D"), NodePath("ShootUp"), NodePath("ShootDown"), NodePath("ShootLeft"), NodePath("ShootRight"), NodePath("ESC"), NodePath("ToggleMap"), NodePath("Interact")]
+KeyPresses = [NodePath("W"), NodePath("A"), NodePath("S"), NodePath("D"), NodePath("ShootUp"), NodePath("ShootDown"), NodePath("ShootLeft"), NodePath("ShootRight"), NodePath("ESC"), NodePath("ToggleMap"), NodePath("Interact"), NodePath("Interact2")]
 
 [node name="ShootUp" parent="Tutorial" instance=ExtResource("11_ogn66")]
 position = Vector2(336, 240)
@@ -363,3 +364,8 @@ ActionToTriggerModulate = 9
 position = Vector2(336, 112)
 texture = ExtResource("20_yeuik")
 ActionToTriggerModulate = 10
+
+[node name="Interact2" parent="Tutorial" instance=ExtResource("11_ogn66")]
+position = Vector2(336, 128)
+texture = ExtResource("24_w1jvf")
+ActionToTriggerModulate = 11

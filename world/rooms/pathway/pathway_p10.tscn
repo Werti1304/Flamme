@@ -1,11 +1,10 @@
-[gd_scene load_steps=11 format=4 uid="uid://bf5rkq8f31woj"]
+[gd_scene load_steps=10 format=4 uid="uid://bf5rkq8f31woj"]
 
 [ext_resource type="Script" uid="uid://cu3vdn0r1mer3" path="res://world/rooms/Room.cs" id="1_eetao"]
 [ext_resource type="TileSet" uid="uid://ciata4jhj6wvu" path="res://assets/tilesets/prison/prison_floor.tres" id="2_l8m1k"]
 [ext_resource type="TileSet" uid="uid://c5qpaglqhfr5s" path="res://assets/tilesets/prison/prison_props.tres" id="3_7f4x1"]
 [ext_resource type="TileSet" uid="uid://ca3qx51g3yg3u" path="res://assets/tilesets/prison/prison_wall.tres" id="4_2jy0h"]
 [ext_resource type="PackedScene" uid="uid://bnx0j5b2ekjat" path="res://world/doors/DoorMarker.tscn" id="5_fgi6j"]
-[ext_resource type="Script" uid="uid://lxis3ashrpf4" path="res://world/doors/DoorMarker.cs" id="6_nivah"]
 [ext_resource type="Texture2D" uid="uid://bgc4ewqfbryq3" path="res://assets/sprites/levels/PrisonWalls.png" id="7_jjfhc"]
 [ext_resource type="PackedScene" uid="uid://to5gnfx5ksif" path="res://world/rooms/node_parent.tscn" id="8_f7o0d"]
 
@@ -59,36 +58,23 @@ position = Vector2(272, 176)
 
 [node name="DoorMarkerParent" type="Node2D" parent="."]
 
-[node name="DoorMarker North" type="StaticBody2D" parent="DoorMarkerParent" node_paths=PackedStringArray("Sprite", "CollisionShape", "TeleportZone", "TeleportPoint") instance=ExtResource("5_fgi6j")]
+[node name="DoorMarker North" parent="DoorMarkerParent" instance=ExtResource("5_fgi6j")]
 position = Vector2(256, 32)
-script = ExtResource("6_nivah")
 DisguiseTexture = SubResource("AtlasTexture_l1djv")
-Sprite = NodePath("Sprite2D")
-CollisionShape = NodePath("CollisionShape2D")
-TeleportZone = NodePath("Area2D")
-TeleportPoint = NodePath("TeleportPoint")
 
-[node name="DoorMarker West" type="StaticBody2D" parent="DoorMarkerParent" node_paths=PackedStringArray("Sprite", "CollisionShape", "TeleportZone", "TeleportPoint") instance=ExtResource("5_fgi6j")]
+[node name="DoorMarker West" parent="DoorMarkerParent" instance=ExtResource("5_fgi6j")]
 position = Vector2(64, 192)
 rotation = -1.5708
-script = ExtResource("6_nivah")
 FacingDirection = 3
 DisguiseTexture = SubResource("AtlasTexture_l1djv")
-Sprite = NodePath("Sprite2D")
-CollisionShape = NodePath("CollisionShape2D")
-TeleportZone = NodePath("Area2D")
-TeleportPoint = NodePath("TeleportPoint")
 
 [node name="CollisionShape" type="CollisionShape2D" parent="."]
 z_index = -2000
 position = Vector2(272, 176)
 shape = SubResource("RectangleShape2D_yradt")
 
-[node name="Enemies" type="Node2D" parent="." instance=ExtResource("8_f7o0d")]
-y_sort_enabled = true
+[node name="Enemies" parent="." instance=ExtResource("8_f7o0d")]
 
-[node name="Loot" type="Node2D" parent="." instance=ExtResource("8_f7o0d")]
-y_sort_enabled = true
+[node name="Loot" parent="." instance=ExtResource("8_f7o0d")]
 
-[node name="TileEntities" type="Node2D" parent="." instance=ExtResource("8_f7o0d")]
-y_sort_enabled = true
+[node name="TileEntities" parent="." instance=ExtResource("8_f7o0d")]
